@@ -11,8 +11,8 @@ const userRoutes = require("./api/routes/user");
 // Setup connection
 mongoose.connect(
   "mongodb://admin:" +
-    process.env.MONGO_ATLAS_PW +
-    "@personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/test?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true",
+  process.env.MONGO_ATLAS_PW +
+  "@personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/personal-website?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true",
   {
     usingMongoClient: true
   }
@@ -44,16 +44,18 @@ app.use((req, res, next) => {
 });
 
 // Setup routes
-app.use("/projects", projectRoutes);
-app.use("user", userRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/user", userRoutes);
 
-// Handle errors 
+// Handle 404 error
+// If it gets down there, then there is no route for the given request
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
   next(error);
 });
 
+// Handle 500 errors
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
   res.json({
