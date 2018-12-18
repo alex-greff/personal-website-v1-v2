@@ -7,10 +7,12 @@ exports.projects_get_all = (req, res, next) => {
         .select("name description _id thumbnailImage links")
         .exec()
         .then(docs => {
+            let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+
+            // Construct response
             const response = {
                 count: docs.length,
                 projects: docs.map(doc => {
-                    let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${doc._id}`
                     return {
                         name: doc.name,
                         description: doc.description,
@@ -19,12 +21,12 @@ exports.projects_get_all = (req, res, next) => {
                         _id: doc._id,
                         request: {
                             type: "GET",
-                            url: url
+                            url: `${urlBase}/${doc._id}`
                         }
                     };
                 })
             };
-
+            // Send response
             res.status(200).json(response);
 
         }).catch(err => {
@@ -36,6 +38,7 @@ exports.projects_get_all = (req, res, next) => {
 };
 
 exports.projects_create_project = (req, res, next) => {
+    // Create project mongodb doc
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -50,7 +53,7 @@ exports.projects_create_project = (req, res, next) => {
             console.log(result);
 
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
-
+            // Send response
             res.status(201).json({
                 message: "Created project successfully",
                 createdProject: {
@@ -88,6 +91,7 @@ exports.projects_create_project = (req, res, next) => {
 exports.projects_get_project = (req, res, next) => { 
     const id = req.params.projectID;
 
+    // Get specific project
     Project.findById(id)
         .select("name description _id thumbnailImage links")
         .exec()
@@ -96,6 +100,7 @@ exports.projects_get_project = (req, res, next) => {
 
             if (doc) { // If document is found
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
+                // Send response
                 res.status(200).json({
                     project: doc,
                     request: {
@@ -113,16 +118,19 @@ exports.projects_get_project = (req, res, next) => {
 
 exports.projects_update_project = (req, res, next) => { 
     const id = req.params.projectID;
+
+    // Construct update operations object
     const updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
 
     Project
-        .update({ _id: id }, { $set: updateOps })
+        .update({ _id: id }, { $set: updateOps }) // Update document
         .exec()
         .then(result => {
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`
+            // Send response
             res.status(200).json({
                 message: "Project updated",
                 request: {
@@ -158,7 +166,7 @@ exports.projects_delete_project = (req, res, next) => {
                 // Do nothing if file is not found
             });
 
-            // Response
+            // Send response
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
             res.status(200).json({
                 message: "Project deleted",
