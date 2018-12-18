@@ -13,8 +13,8 @@ mongoose.connect(
   "mongodb://admin:" +
   process.env.MONGO_ATLAS_PW +
   "@personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/personal-website?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true",
-  {
-    usingMongoClient: true
+  { 
+    useNewUrlParser: true
   }
 );
 mongoose.Promise = global.Promise; // Fixes a thing with mongoose promises

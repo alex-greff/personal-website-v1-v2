@@ -166,7 +166,7 @@ exports.projects_delete_project = (req, res, next) => {
                 // Do nothing if file is not found
             });
 
-            // Send response
+            // Send r   esponse
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
             res.status(200).json({
                 message: "Project deleted",
