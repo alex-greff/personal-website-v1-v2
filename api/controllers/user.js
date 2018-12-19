@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const canDoAllOperations = require("../roles/role-check");
 
 const User = require("../models/user");
 
@@ -94,6 +95,60 @@ exports.user_login = (req, res, next) => {
                 res.status(401).json({
                     message: "Authorization failed"
                 });
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.user_update = (req, res, next) => {
+    const id = req.params.userID;
+
+    // Construct update operations object
+    const updateOps = {};
+    for (const ops of req.body) {
+        const $name = ops.propName;
+        var $value = ops.value;
+
+        // If the password is being changed
+        if ($name === "password") {
+            // Hash the password
+            try {
+                let hash = bcrypt.hashSync($value, 10);
+                $value = hash;
+            } catch (err) {
+                return res.status(500).json({
+                    error: err
+                });
+            };
+        }
+        else if ($name === "role") {
+            // Check if user has access to editing roles and not just self
+            if (req.userAccessType !== "role") {
+                return res.status(401).json({
+                    message: "Unauthorized role edit"
+                });
+            }
+        }
+        
+        updateOps[$name] = $value;
+    }
+
+    User.update({ _id: id }, { $set: updateOps }) // Update the user
+        .exec()
+        .then(result => {
+            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/login`
+            // Send response
+            res.status(200).json({
+                message: "User data updated",
+                request: {
+                    type: "POST",
+                    url: url
+                }
             });
         })
         .catch(err => {

@@ -11,14 +11,14 @@ module.exports = function(checkSelf, ...operations) {
     
             console.log("USER DATA", req.userData);
 
-            // Check if the user is self
-            if (checkSelf && req.userData.userId === req.params.userID) {
-                console.log("Is self");
-                next();
-            }
-
             // Check if user has access
             if (req.userData && canDoAllOperations(req.userData.role, ...operations)) {
+                req.userAccessType = "role";
+                next();
+            }
+            // Check if the user is self
+            else if (checkSelf && req.userData.userId === req.params.userID) {
+                req.userAccessType = "self";
                 next();
             }
             else {
