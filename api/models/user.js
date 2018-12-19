@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Setup user shema
-const userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     email: { 
         type: String, 
@@ -17,19 +17,32 @@ const userSchema = mongoose.Schema({
 // TODO: the problem with this is that it does not throw an error
 userSchema.plugin(require("mongoose-immutable-plugin")); 
 
-// TODO: Doesnt work
-// userSchema.pre('validate', function(next) {
+// // TODO: Doesnt work
+// userSchema.pre('validate', { query: true }, function(next) {
+//     console.log("PRE CHECK");
+
 //     // Disallow modification of _id and email fields
 //     if (self.isModified("_id")) {
-//         // self.invalidate("_id");
-//         return next(new Error("Trying to modify restricted data"));
+//         console.log("_id change detected, invalidating it");
+//         self.invalidate("_id");
+//         // return next(new Error("Trying to modify restricted data"));
 //     }
 //     if (self.isModified("email")) {
-//         // self.invalidate("email");
-//         return next(new Error("Trying to modify restricted data"));
+//         console.log("email change detected, invalidating it");
+//         self.invalidate("email");
+//         // return next(new Error("Trying to modify restricted data"));
 //     }
 
-//     return next();
+//     next();
+// });
+
+// userSchema.pre('find', function(next) {
+//     console.log("find");
+//     // next();
+// });
+
+// userSchema.pre('remove', { query: true }, function() {
+//     console.log('Removing!');
 // });
 
 module.exports = mongoose.model('User', userSchema);

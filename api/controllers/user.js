@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const canDoAllOperations = require("../roles/role-check");
 
 const User = require("../models/user");
 
@@ -138,7 +137,7 @@ exports.user_update = (req, res, next) => {
         updateOps[$name] = $value;
     }
 
-    User.update({ _id: id }, { $set: updateOps }) // Update the user
+    User.updateOne({ _id: id }, { $set: updateOps }) // Update the user
         .exec()
         .then(result => {
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/login`
