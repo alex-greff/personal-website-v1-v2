@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
+const canDoAllOperations = require("../roles/role-check");
 
-module.exports = function(minPermissionLevel) {
-    // Function checking if the permissions are allowed
-    const isAllowed = (role) => role >= minPermissionLevel;
-
+module.exports = function(checkSelf, ...operations) {
     return (req, res, next) => {
         try {
             // Validate token
@@ -12,9 +10,15 @@ module.exports = function(minPermissionLevel) {
             req.userData = decoded;
     
             console.log("USER DATA", req.userData);
-    
+
+            // Check if the user is self
+            if (checkSelf && req.userData.userId === req.params.userID) {
+                console.log("Is self");
+                next();
+            }
+
             // Check if user has access
-            if (req.userData && isAllowed(req.userData.permissionLevel)) {
+            if (req.userData && canDoAllOperations(req.userData.role, ...operations)) {
                 next();
             }
             else {

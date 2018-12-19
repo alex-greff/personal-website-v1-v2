@@ -15,8 +15,9 @@ router.post("/signup", UserController.user_signup);
 router.post("/login", UserController.user_login);
 
 // [domain]/api/user/[userID] : DELETE
-router.post("/:userID", permit(2), UserController.user_delete); 
+router.delete("/:userID", permit(true, "delete-user"), UserController.user_delete);
 
 // TODO: add request to modify user permissions
+//   - with edit self access
 
 module.exports = router;

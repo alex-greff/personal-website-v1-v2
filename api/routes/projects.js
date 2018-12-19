@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     // Bug fix: https://stackoverflow.com/questions/48418680/enoent-no-such-file-or-directory?rq=1
-    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    cb(null, new Date().toISOString().replace(/:/g, '-') + "-" + file.originalname);
   }
 });
 
@@ -40,16 +40,16 @@ const upload = multer({
 router.get("/", ProjectsController.projects_get_all);
 
 // [domain]/api/projects : POST
-router.post("/", permit(1), upload.single("thumbnailImage"), ProjectsController.projects_create_project);
+router.post("/", permit(false, "create-project"), upload.single("thumbnailImage"), ProjectsController.projects_create_project);
 
 // [domain]/api/projects/[projectID] : GET
 router.get("/:projectID", ProjectsController.projects_get_project);
 
 // [domain]/api/projects/[projectID] : PATCH
-router.patch("/:projectID", permit(1), ProjectsController.projects_update_project);
+router.patch("/:projectID", permit(false, "edit-project"), ProjectsController.projects_update_project);
 
 // [domain]/api/projects/[projectID] : DELETE
-router.delete("/:projectID", permit(1), ProjectsController.projects_delete_project);
+router.delete("/:projectID", permit(false, "delete-project"), ProjectsController.projects_delete_project);
 
 
 module.exports = router;

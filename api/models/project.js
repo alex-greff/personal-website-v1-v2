@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const productSchema = mongoose.Schema({
+const projectSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
 
     // Mandatory
@@ -13,4 +13,4 @@ const productSchema = mongoose.Schema({
     links: { type: String, of: String, required: false }
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Project', projectSchema);
