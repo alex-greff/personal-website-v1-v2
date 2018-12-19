@@ -24,9 +24,5 @@ module.exports = function(role, ...operations) {
         return $role.inherits.some(childRole => canDoOperation(childRole, operation));
     };
 
-    // const canDoAllOperations = (role) => {
-    //     return operations.every(operation => canDoOperation(role, operation));
-    // };
-
     return operations.every(operation => canDoOperation(role, operation));
 }
