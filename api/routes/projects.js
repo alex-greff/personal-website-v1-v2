@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-// TODO: auth import
+const permit = require("../middleware/permission");
 
 const ProjectsController = require("../controllers/projects");
 
@@ -40,16 +40,16 @@ const upload = multer({
 router.get("/", ProjectsController.projects_get_all);
 
 // [domain]/api/projects : POST
-router.post("/", upload.single("thumbnailImage"), ProjectsController.projects_create_project); // TODO: check auth
+router.post("/", permit(1), upload.single("thumbnailImage"), ProjectsController.projects_create_project);
 
 // [domain]/api/projects/[projectID] : GET
 router.get("/:projectID", ProjectsController.projects_get_project);
 
 // [domain]/api/projects/[projectID] : PATCH
-router.patch("/:projectID", ProjectsController.projects_update_project); // TODO: check auth
+router.patch("/:projectID", permit(1), ProjectsController.projects_update_project);
 
 // [domain]/api/projects/[projectID] : DELETE
-router.delete("/:projectID", ProjectsController.projects_delete_project); // TODO: check auth
+router.delete("/:projectID", permit(1), ProjectsController.projects_delete_project);
 
 
 module.exports = router;

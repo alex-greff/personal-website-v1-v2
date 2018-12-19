@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// TODO: auth import
+const permit = require("../middleware/permission");
 
 const UserController = require("../controllers/user");
 
@@ -15,6 +15,8 @@ router.post("/signup", UserController.user_signup);
 router.post("/login", UserController.user_login);
 
 // [domain]/api/user/[userID] : DELETE
-router.post("/:userID", UserController.user_delete); // TODO: check auth
+router.post("/:userID", permit(2), UserController.user_delete); 
+
+// TODO: add request to modify user permissions
 
 module.exports = router;
