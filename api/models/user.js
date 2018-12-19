@@ -17,7 +17,7 @@ let userSchema = mongoose.Schema({
 // TODO: the problem with this is that it does not throw an error
 userSchema.plugin(require("mongoose-immutable-plugin")); 
 
-// // TODO: Doesnt work
+// // TODO: Doesnt work b/c "validate" is not fired on update(), "find" is supposed to but does not
 // userSchema.pre('validate', { query: true }, function(next) {
 //     console.log("PRE CHECK");
 
@@ -34,15 +34,6 @@ userSchema.plugin(require("mongoose-immutable-plugin"));
 //     }
 
 //     next();
-// });
-
-// userSchema.pre('find', function(next) {
-//     console.log("find");
-//     // next();
-// });
-
-// userSchema.pre('remove', { query: true }, function() {
-//     console.log('Removing!');
 // });
 
 module.exports = mongoose.model('User', userSchema);
