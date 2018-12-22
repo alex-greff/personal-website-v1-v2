@@ -1,9 +1,5 @@
 <template>
     <div>
-        
+        <h1>About Page Component</h1>
     </div>
 </template>
-
-<style lang="scss">
-
-</style>
