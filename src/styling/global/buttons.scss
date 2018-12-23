@@ -1,0 +1,23 @@
+.btn {
+    color: $btn-color;
+
+    border: 0.1rem solid;
+    border-radius: 0.2rem;
+
+    cursor: pointer;
+
+    text-align: center;
+
+    &:hover {
+        background-color: $btn-color-hover;
+    }
+
+    & a {
+        text-decoration: none;
+        color: $btn-color;
+
+        display: block;
+
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    }
+}
