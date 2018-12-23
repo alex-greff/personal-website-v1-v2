@@ -55,7 +55,8 @@
             color: inherit;
 
             &:hover {
-                color: $nav-color-tertiary;
+                // color: $nav-color-tertiary;
+                color: var(--nav-color-tertiary);
             }
         }
     }

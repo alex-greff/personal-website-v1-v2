@@ -1,5 +1,6 @@
 .btn {
-    color: $btn-color;
+    // color: $btn-color;
+    color: var(--btn-color);
 
     border: 0.1rem solid;
     border-radius: 0.2rem;
@@ -9,12 +10,15 @@
     text-align: center;
 
     &:hover {
-        background-color: $btn-color-hover;
+        // background-color: $btn-color-hover;
+        background-color: var(--btn-color-hover);
     }
 
     & a {
         text-decoration: none;
-        color: $btn-color;
+
+        // color: $btn-color;
+        color: var(--btn-color);
 
         display: block;
 

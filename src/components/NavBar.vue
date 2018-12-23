@@ -1,10 +1,14 @@
 <template>
     <div class="container">
-        <div class="sidebar" ref="sidebar" v-show="sidebarActive">
-            <div class="close" @click="showSidebar(false)">
-                <i class="fas fa-times"></i>
-            </div>
+        <div class="close-btn" @click="showSidebar(false)" v-show="sidebarActive">
+            <i class="fas fa-times"></i>
+        </div>
 
+        <div class="menu-btn" @click="showSidebar(true)" v-show="!sidebarActive">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="sidebar" ref="sidebar" v-show="sidebarActive">
             <ul class="navbar navbar-mobile">
                 <router-link v-for="page in pages" :key="page.name" :to="page.path" tag="li" active-class="nav-item-active" class="nav-item" exact>
                     <i class="fas fa-angle-right icon-arrow"></i>
@@ -12,7 +16,8 @@
                 </router-link>
 
                 <li class="btn resume-btn">
-                    <a href="#" target="_blank">Resume</a>
+                    <!-- <a href="#" target="_blank">Resume</a> -->
+                    <a href="#" @click="testThemeSwitch()">Test</a>
                 </li>
             </ul>
         </div>
@@ -31,13 +36,10 @@
                 </router-link>
 
                 <li class="btn resume-btn">
-                    <a href="#" target="_blank">Resume</a>
+                    <!-- <a href="#" target="_blank">Resume</a> -->
+                    <a href="#" @click="testThemeSwitch()">Test</a>
                 </li>
             </ul>
-
-            <div class="hamburger-menu" @click="showSidebar(true)">
-                <i class="fas fa-bars"></i>
-            </div>
         </nav>
     </div>
 </template>
@@ -53,12 +55,35 @@
                     { name: "Experience", path: "/experience" },
                     { name: "Music", path: "/music" },
                     { name: "Contact", path: "/contact" },
-                ]
+                ],
+                themeToggle: false
+            }
+        },
+        watch: {
+            themeToggle(newVal) {
+                let bodyStyles = document.body.style;
+
+                if (newVal) {
+                    bodyStyles.setProperty('--btn-color', 'rgb(253, 101, 101)')
+                    bodyStyles.setProperty('--btn-color-hover', 'rgb(138, 17, 17, 0.192)')
+
+                    bodyStyles.setProperty('--nav-color-secondary', 'rgb(138, 17, 17)')
+                    bodyStyles.setProperty('--nav-color-tertiary', 'rgb(253, 101, 101)')
+                } else {
+                    bodyStyles.setProperty('--btn-color', 'rgb(112, 167, 250)')
+                    bodyStyles.setProperty('--btn-color-hover', 'rgba(33, 79, 148, 0.192)')
+
+                    bodyStyles.setProperty('--nav-color-secondary', 'rgb(33, 79, 148)')
+                    bodyStyles.setProperty('--nav-color-tertiary', 'rgb(112, 167, 250)')
+                }
             }
         },
         methods: {
             showSidebar(show) {
                 this.sidebarActive = show;
+            },
+            testThemeSwitch() {
+                this.themeToggle = !this.themeToggle;
             }
         }
     }
@@ -85,7 +110,8 @@
 
         padding: 0 1rem 0 1rem; // top right bottom left
 
-        background-color: $nav-color-bg;
+        // background-color: $nav-color-bg;
+        background-color: var(--nav-color-bg);
     }
 
     .sidebar {
@@ -98,7 +124,8 @@
 
         display: none; // By default do not show
 
-        background-color: $nav-color-sidebar;
+        // background-color: $nav-color-sidebar;
+        background-color: var(--nav-color-sidebar);
 
         box-shadow: -2px 0 2px rgba(26, 26, 26, 0.466);
 
@@ -111,27 +138,40 @@
 
         justify-content: center;
         flex-direction: column;
-
-        
     }
 
-    .close {
+    .close-btn {
+        z-index: 15;
+    }
+
+    .menu-btn, .close-btn {
+        display: none;
+
         position: fixed;
         top: 0;
         right: 0;
-        
+
         margin-top: 0.7rem;
         margin-right: 2rem;
 
         font-size: 3rem;
 
-        color: $nav-color-tertiary;
+        // color: $nav-color-primary;
+        color: var(--nav-color-primary);
 
         cursor: pointer;
+
+        @include respond(tab-port) {
+            display: inline;
+        }
+
+        &:hover {
+            // color: $nav-color-tertiary;
+            color: var(--nav-color-tertiary);
+        }
     }
 
     .logo {
-        // display: inline-block;
         display: block;
 
         box-sizing: inherit;
@@ -147,7 +187,6 @@
 
     .navbar-desktop {
         @include respond(tab-port) {
-            //flex-direction: column;
             display: none;
         }
 
@@ -178,12 +217,14 @@
 
         text-decoration: none;
 
-        color: $nav-color-primary;
+        // color: $nav-color-primary;
+        color: var(--nav-color-primary);
 
         &:hover {
             cursor: pointer;
 
-            color: $nav-color-tertiary;
+            // color: $nav-color-tertiary;
+            color: var(--nav-color-tertiary);
         }
 
         white-space: nowrap;
@@ -191,38 +232,25 @@
 
     .nav-item-active {
         font-weight: 400;
-        color: $nav-color-tertiary;
+
+        // color: $nav-color-tertiary;
+        color: var(--nav-color-tertiary);
 
         & > i {
-            color: $nav-color-tertiary;
+            // color: $nav-color-tertiary;
+            color: var(--nav-color-tertiary);
         }
     }
 
     .icon-arrow {
-        color: $nav-color-secondary;
+        // color: $nav-color-secondary;
+        color: var(--nav-color-secondary);
 
         margin-right: 1rem;
     }
 
     .icon-arrow, .nav-item-name {
         display: inline-block;
-    }
-
-    .hamburger-menu {
-        display: none;
-
-        margin-top: auto;
-        margin-bottom: auto;
-
-        font-size: 2.5rem;
-
-        color: $nav-color-tertiary;
-
-        cursor: pointer;
-
-        @include respond(tab-port) {
-            display: inline;
-        }
     }
 </style>
 
