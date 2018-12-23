@@ -2,10 +2,18 @@
     <footer class="footer">
         <div class="credits">Designed and Built by Alexander Greff</div>
         <div class="social-media">
-            <i class="fab fa-github icon"></i>
-            <i class="fab fa-linkedin icon"></i>
-            <i class="fas fa-envelope icon"></i>
-            <i class="fab fa-soundcloud icon"></i>
+            <a title="Github" href="https://github.com/alex-greff" target="_blank" class="icon">
+                <i class="fab fa-github"></i>
+            </a>
+            <a title="LinkedIn" href="https://www.linkedin.com/in/alex-greff/" target="_blank" class="icon">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a title="Email" href="mailto:alex.j.greff@gmail.com" target="_blank" class="icon">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a title="SoundCloud" href="https://soundcloud.com/hammerled" target="_blank" class="icon">
+                <i class="fab fa-soundcloud"></i>
+            </a>
         </div>
     </footer>
 </template>
@@ -43,6 +51,8 @@
             margin-left: 0.5rem;
 
             cursor: pointer;
+
+            color: inherit;
 
             &:hover {
                 color: $nav-color-tertiary;
