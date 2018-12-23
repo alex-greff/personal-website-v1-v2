@@ -8,7 +8,7 @@
             <a title="LinkedIn" href="https://www.linkedin.com/in/alex-greff/" target="_blank" class="icon">
                 <i class="fab fa-linkedin"></i>
             </a>
-            <a title="Email" href="mailto:alex.j.greff@gmail.com" target="_blank" class="icon">
+            <a title="Email" href="mailto:alex.j.greff@gmail.com" target="_top" class="icon">
                 <i class="fas fa-envelope"></i>
             </a>
             <a title="SoundCloud" href="https://soundcloud.com/hammerled" target="_blank" class="icon">
