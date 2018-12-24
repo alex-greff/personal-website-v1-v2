@@ -1,6 +1,6 @@
 .btn {
     // color: $btn-color;
-    color: var(--btn-color);
+    color: rgba(var(--color-accent-primary), 1);
 
     border: 0.1rem solid;
     border-radius: 0.2rem;
@@ -10,15 +10,13 @@
     text-align: center;
 
     &:hover {
-        // background-color: $btn-color-hover;
-        background-color: var(--btn-color-hover);
+        background-color: rgba(var(--color-accent-secondary), 0.192);
     }
 
     & a {
         text-decoration: none;
 
-        // color: $btn-color;
-        color: var(--btn-color);
+        color: rgba(var(--btn-color), 1);
 
         display: block;
 

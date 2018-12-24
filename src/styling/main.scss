@@ -24,11 +24,10 @@ html {
     // font-family: 'Ubuntu', sans-serif;
     // font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto Mono', monospace;
-
 }
 
 body {
-    background-color: $color-background;
+    background-color: rgba(var(--color-page-bg), 1);
     color: white;
 }
 

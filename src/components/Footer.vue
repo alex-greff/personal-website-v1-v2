@@ -36,9 +36,8 @@
         padding: 1.3rem;
         z-index: 5;
 
-        background: rgb(41, 41, 41);
-        color: rgb(151, 151, 151);
-        // box-shadow: 0 -2px 2px rgba(44, 44, 44, 0.445);
+        background: rgba(var(--color-footer-bg), 1);
+        color: rgba(var(--color-footer-text), 1);
     }
 
     .social-media {
@@ -55,8 +54,7 @@
             color: inherit;
 
             &:hover {
-                // color: $nav-color-tertiary;
-                color: var(--nav-color-tertiary);
+                color: rgba(var(--color-accent-primary), 1);
             }
         }
     }

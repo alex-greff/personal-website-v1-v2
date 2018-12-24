@@ -1,27 +1,13 @@
-// TODO: don't need these anymore
-$color-background: rgb(61, 61, 61);
-
-$btn-color: rgb(112, 167, 250);
-$btn-color-hover: rgba(33, 79, 148, 0.192);
-
-$nav-color-primary: rgb(143, 143, 143);
-$nav-color-secondary: rgb(33, 79, 148);
-$nav-color-tertiary: rgb(112, 167, 250);
-$nav-color-bg: rgb(43, 42, 42);
-$nav-color-sidebar: rgb(27, 26, 26);
-
-// Need to refactor this stuff to use less colors
-// Fix to the dynamic alpha problem
+// Fix to the dynamic rgba alpha problem
 // https://stackoverflow.com/questions/6962432/is-it-possible-to-change-only-the-alpha-of-a-rgba-background-colour-on-hover
 :root {
-    --color-background: rgb(61, 61, 61); // rgb(61, 61, 61)
+    --color-page-bg: 61, 61, 61; // rgb(61, 61, 61)
+    --color-nav-bg: 42, 42, 42; // rgb(42, 42, 42)
+    --color-sidebar-bg: 26, 26, 26; // rgb(26, 26, 26)
+    --color-footer-bg: 42, 42, 42; // rgb(42, 42, 42)
+    --color-footer-text: 151, 151, 151; // rgb(151, 151, 151)
 
-    --btn-color: rgb(112, 167, 250);
-    --btn-color-hover: rgb(33, 79, 148, 0.192);
-
-    --nav-color-primary: rgb(143, 143, 143);
-    --nav-color-secondary: rgb(33, 79, 148);
-    --nav-color-tertiary: rgb(112, 167, 250);
-    --nav-color-bg: rgb(43, 42, 42);
-    --nav-color-sidebar: rgb(27, 26, 26);
+    --color-accent-primary: 112, 167, 250; // rgb(112, 167, 250)
+    --color-accent-secondary: 33, 79, 148;// rgb(33, 79, 148)
+    --color-accent-tertiary: 143, 143, 143; // rgb(143, 143, 143)
 }

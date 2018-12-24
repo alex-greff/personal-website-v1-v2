@@ -64,17 +64,11 @@
                 let bodyStyles = document.body.style;
 
                 if (newVal) {
-                    bodyStyles.setProperty('--btn-color', 'rgb(253, 101, 101)')
-                    bodyStyles.setProperty('--btn-color-hover', 'rgb(138, 17, 17, 0.192)')
-
-                    bodyStyles.setProperty('--nav-color-secondary', 'rgb(138, 17, 17)')
-                    bodyStyles.setProperty('--nav-color-tertiary', 'rgb(253, 101, 101)')
+                    bodyStyles.setProperty('--color-accent-primary', '253, 101, 101') // rgb(253, 101, 101)
+                    bodyStyles.setProperty('--color-accent-secondary', '138, 17, 17') // rgb(138, 17, 17)
                 } else {
-                    bodyStyles.setProperty('--btn-color', 'rgb(112, 167, 250)')
-                    bodyStyles.setProperty('--btn-color-hover', 'rgba(33, 79, 148, 0.192)')
-
-                    bodyStyles.setProperty('--nav-color-secondary', 'rgb(33, 79, 148)')
-                    bodyStyles.setProperty('--nav-color-tertiary', 'rgb(112, 167, 250)')
+                    bodyStyles.setProperty('--color-accent-primary', '112, 167, 250') // rgb(112, 167, 250)
+                    bodyStyles.setProperty('--color-accent-secondary', '33, 79, 148') // rgb(33, 79, 148)
                 }
             }
         },
@@ -110,8 +104,7 @@
 
         padding: 0 1rem 0 1rem; // top right bottom left
 
-        // background-color: $nav-color-bg;
-        background-color: var(--nav-color-bg);
+        background-color: rgba(var(--color-nav-bg), 1);
     }
 
     .sidebar {
@@ -124,12 +117,10 @@
 
         display: none; // By default do not show
 
-        // background-color: $nav-color-sidebar;
-        background-color: var(--nav-color-sidebar);
+        background-color: rgba(var(--color-sidebar-bg), 1);
 
-        box-shadow: -2px 0 2px rgba(26, 26, 26, 0.466);
+        box-shadow: -2px 0 2px rgba(var(--color-sidebar-bg), 0.466);
 
-        // padding: 1rem 2rem 5rem 2rem;
         padding: 1rem 7rem 1rem 7rem;
 
         @include respond(tab-port) {
@@ -156,8 +147,7 @@
 
         font-size: 3rem;
 
-        // color: $nav-color-primary;
-        color: var(--nav-color-primary);
+        color: rgba(var(--color-accent-tertiary), 1);
 
         cursor: pointer;
 
@@ -166,8 +156,7 @@
         }
 
         &:hover {
-            // color: $nav-color-tertiary;
-            color: var(--nav-color-tertiary);
+            color: rgba(var(--color-accent-primary), 1);
         }
     }
 
@@ -217,14 +206,12 @@
 
         text-decoration: none;
 
-        // color: $nav-color-primary;
-        color: var(--nav-color-primary);
+        color: rgba(var(--color-accent-tertiary), 1);
 
         &:hover {
             cursor: pointer;
 
-            // color: $nav-color-tertiary;
-            color: var(--nav-color-tertiary);
+            color: rgba(var(--color-accent-primary), 1);
         }
 
         white-space: nowrap;
@@ -233,18 +220,15 @@
     .nav-item-active {
         font-weight: 400;
 
-        // color: $nav-color-tertiary;
-        color: var(--nav-color-tertiary);
+        color: rgba(var(--color-accent-primary), 1);
 
         & > i {
-            // color: $nav-color-tertiary;
-            color: var(--nav-color-tertiary);
+            color: rgba(var(--color-accent-primary), 1);
         }
     }
 
     .icon-arrow {
-        // color: $nav-color-secondary;
-        color: var(--nav-color-secondary);
+        color: rgba(var(--color-accent-secondary), 1);
 
         margin-right: 1rem;
     }

@@ -9,7 +9,7 @@ import Contact from './views/Contact.vue';
 import About from './views/About.vue';
 import NotFound from './views/404.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
     mode: 'history',
@@ -28,4 +28,4 @@ export default new Router({
         { path: '/home', redirect: {name: 'home' }},
         { path: '*', component: NotFound }
     ]
-})
+});
