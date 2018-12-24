@@ -1,5 +1,6 @@
 const state = {
-    currentTheme: "default"
+    currentTheme: "default",
+    themes: {}
 };
 
 const getters = {
@@ -13,7 +14,10 @@ const mutations =  {
 };
 
 const actions = {
-
+    populateThemes() {
+        console.log("populating themes");
+        // TODO: this will be done soon, gotta do all the API calls here
+    }
 };
 
 export default {

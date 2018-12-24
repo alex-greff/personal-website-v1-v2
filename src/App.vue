@@ -14,6 +14,10 @@
         components: {
             navBar: NavBar,
             generalFooter: Footer
+        }, 
+        created() {
+            console.log("App: created");
+            this.$store.dispatch('populateThemes');
         }
     }
 </script>
