@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Theme = require('../models/theme');
 
-const selectStr = "name _id '--color-page-bg' '--color-nav-bg' '--color-sidebar-bg' '--color-footer-bg' " +
-    "'--color-footer-text' '--color-accent-primary' '--color-accent-secondary' '--color-accent-tertiary'";
+// const selectStr = "name _id '--color-page-bg' '--color-nav-bg' '--color-sidebar-bg' '--color-footer-bg' " +
+    // "'--color-footer-text' '--color-accent-primary' '--color-accent-secondary' '--color-accent-tertiary'";
 
 const UNREMOVEABLE_DOC_IDS = ["5c203f373175b50ebc77ebf4"]; // ["default"]
 
 exports.themes_get_all = (req, res, next) => {
     Theme.find()
-        .select(selectStr)
+        // .select(selectStr)
         .exec()
         .then(docs => {
             let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
@@ -104,7 +104,7 @@ exports.themes_get_theme = (req, res, next) => {
     // Get specific theme
     Theme.findById(id)
         .exec()
-        .select(selectStr)
+        // .select(selectStr)
         .then(doc => {
             console.log("From database", doc);
 
