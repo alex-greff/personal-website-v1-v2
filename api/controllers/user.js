@@ -137,7 +137,7 @@ exports.user_update = (req, res, next) => {
         updateOps[$name] = $value;
     }
 
-    User.updateOne({ _id: id }, { $set: updateOps }) // Update the user
+    User.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update the user
         .exec()
         .then(result => {
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/login`

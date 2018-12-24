@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 // Import routes
 const projectRoutes = require("./api/routes/projects");
 const userRoutes = require("./api/routes/user");
+const themeRoutes = require("./api/routes/themes");
 
 // Setup connection
 mongoose.connect(
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 // Setup routes
 app.use("/api/projects", projectRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/themes", themeRoutes);
 
 // Handle 404 error
 // If it gets down there, then there is no route for the given request

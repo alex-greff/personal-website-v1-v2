@@ -52,7 +52,7 @@ exports.projects_create_project = (req, res, next) => {
         .then(result => {
             console.log(result);
 
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
+            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`;
             // Send response
             res.status(201).json({
                 message: "Created project successfully",
@@ -99,7 +99,7 @@ exports.projects_get_project = (req, res, next) => {
             console.log("From database", doc);
 
             if (doc) { // If document is found
-                let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
+                let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
                 // Send response
                 res.status(200).json({
                     project: doc,
@@ -113,6 +113,13 @@ exports.projects_get_project = (req, res, next) => {
                     message: "No valid entry found for provided ID"
                 });
             }
+        })
+        .catch(err => {
+            console.log(err);
+
+            res.status(500).json({
+                error: err
+            });
         });
 };
 
@@ -126,10 +133,10 @@ exports.projects_update_project = (req, res, next) => {
     }
 
     Project
-        .update({ _id: id }, { $set: updateOps }) // Update document
+        .updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update document
         .exec()
         .then(result => {
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`
+            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
             // Send response
             res.status(200).json({
                 message: "Project updated",
@@ -166,8 +173,8 @@ exports.projects_delete_project = (req, res, next) => {
                 // Do nothing if file is not found
             });
 
-            // Send r   esponse
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
+            // Send response
+            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
             res.status(200).json({
                 message: "Project deleted",
                 request: {
