@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from './views/Home.vue'
-import Projects from './views/Projects.vue';
-import Music from './views/Music.vue';
-import Experience from './views/Experience.vue';
-import Contact from './views/Contact.vue';
-import About from './views/About.vue';
-import NotFound from './views/404.vue';
+import Home from '../views/Home.vue'
+import Projects from '../views/Projects.vue';
+import Music from '../views/Music.vue';
+import Experience from '../views/Experience.vue';
+import Contact from '../views/Contact.vue';
+import About from '../views/About.vue';
+import NotFound from '../views/404.vue';
 
 Vue.use(Router);
 
