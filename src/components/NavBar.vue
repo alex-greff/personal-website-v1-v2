@@ -16,8 +16,7 @@
                 </router-link>
 
                 <li class="btn resume-btn">
-                    <!-- <a href="#" target="_blank">Resume</a> -->
-                    <a href="#" @click="testThemeSwitch()">Test</a>
+                    <a href="#" target="_blank">Resume</a>
                 </li>
             </ul>
         </div>
@@ -36,8 +35,7 @@
                 </router-link>
 
                 <li class="btn resume-btn">
-                    <!-- <a href="#" target="_blank">Resume</a> -->
-                    <a href="#" @click="testThemeSwitch()">Test</a>
+                    <a href="#" target="_blank">Resume</a>
                 </li>
             </ul>
         </nav>
@@ -60,25 +58,10 @@
             }
         },
         watch: {
-            themeToggle(newVal) {
-                let bodyStyles = document.body.style;
-
-                if (newVal) {
-                    bodyStyles.setProperty('--color-accent-primary', '253, 101, 101') // rgb(253, 101, 101)
-                    bodyStyles.setProperty('--color-accent-secondary', '138, 17, 17') // rgb(138, 17, 17)
-                } else {
-                    bodyStyles.setProperty('--color-accent-primary', '112, 167, 250') // rgb(112, 167, 250)
-                    bodyStyles.setProperty('--color-accent-secondary', '33, 79, 148') // rgb(33, 79, 148)
-                }
-            }
+            
         },
         methods: {
-            showSidebar(show) {
-                this.sidebarActive = show;
-            },
-            testThemeSwitch() {
-                this.themeToggle = !this.themeToggle;
-            }
+            
         }
     }
 </script>
