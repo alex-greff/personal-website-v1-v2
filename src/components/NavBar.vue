@@ -61,7 +61,9 @@
             
         },
         methods: {
-            
+            showSidebar(sidebarOpen) {
+                this.sidebarActive = sidebarOpen;
+            }
         }
     }
 </script>

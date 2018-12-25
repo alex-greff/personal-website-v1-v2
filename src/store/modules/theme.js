@@ -40,10 +40,7 @@ const actions = {
         let newTheme = payload.theme;
         let forceAutoOff = payload.forceAutoOff || false;
 
-        console.log("force auto off: ", forceAutoOff);
-
         if (forceAutoOff) {
-            console.log("forcing disable auto theme");
             commit('setAutoThemeEnabled', false);
         }
         commit('setCurrentTheme', newTheme);
@@ -54,7 +51,6 @@ const actions = {
         let forceAutoOn = payload.forceAutoOn || false;
 
         if (forceAutoOn) {
-            console.log("forcing enable auto theme");
             commit('setAutoThemeEnabled', true);    
         }
         commit('setCurrentAutoTheme', newTheme);
@@ -66,19 +62,14 @@ const actions = {
     },
 
     populateThemes({ dispatch }) {
-        console.log("populating themes");   
-        
         // Get the default theme local theme (for incase we can't connect to the api server)
-        let bodyStyles = document.body.style;
+        let styles = getComputedStyle(document.documentElement);
         let defaultData = {};
         defaultData['name'] = 'default';
         THEME_ITEMS.forEach(THEME_ITEM => {
-            defaultData[THEME_ITEM] = bodyStyles.getPropertyValue(THEME_ITEM);
+            defaultData[THEME_ITEM] = styles.getPropertyValue(THEME_ITEM);
         });
-        state.themes['default'] = defaultData;
-
-        // console.log("default ", state.themes["default"]);
-
+        Vue.set(state.themes, 'default', defaultData); // Equivalent: state.themes['default'] = defaultData;
 
         // Get themes from the database
         Vue.axios.get('themes')
@@ -95,18 +86,8 @@ const actions = {
                         currData[THEME_ITEM] = theme[THEME_ITEM];
                     });
 
-                    // state.themes[theme.name] = currData;
-                    Vue.set(state.themes, theme.name, currData);
+                    Vue.set(state.themes, theme.name, currData); // Equivalent: state.themes[theme.name] = currData;
                 });
-
-                // console.log("Themes", state.themes);
-                // THIS IS HOW YOU ITERATE THE OBJECT
-                // for (let key in state.themes) {
-                //     if (!state.themes.hasOwnProperty(key)) continue;
-
-                //     console.log(key, state.themes[key]);
-                // }
-
                 dispatch('updateCurrentTheme');
 
             })
@@ -116,17 +97,14 @@ const actions = {
     },
 
     updateCurrentTheme() {
-        console.log("updating current theme");
-
         let bodyStyles = document.body.style;
         let currThemeName = (state.autoThemeEnabled) ? state.currentAutoTheme : state.currentTheme;
         let currTheme = state.themes[currThemeName];
 
         if (!currTheme) {
-            console.log("Erorr: '" + currThemeName + "' is not a theme");
+            console.log("Erorr: '" + currThemeName + "' is not a theme, using default instead");
             currThemeName = "default";
             currTheme = state.themes[currThemeName];
-            // return;
         }
 
         THEME_ITEMS.forEach(THEME_ITEM => {

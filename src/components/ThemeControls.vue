@@ -10,12 +10,6 @@
             :style="{ backgroundColor: toRGBA(theme['--color-accent-primary']) }"
             :class="{ 'theme-active': currentTheme === theme.name && autoThemeEnabled === false }"
             @click="setCurrentTheme({ theme: theme['name'], forceAutoOff: true })"></span>
-
-        <!-- <span class="theme-item"></span>
-        <span class="theme-item"></span>
-        <span class="theme-item theme-active"></span>
-        <span class="theme-item"></span>
-        <span class="theme-item"></span> -->
     </div>
 </template>
 
@@ -35,9 +29,6 @@
                 setCurrentTheme: "setCurrentTheme",
                 setAutoThemeEnabled: "setAutoThemeEnabled"
             }),
-            test() {
-                console.log(this.themes);
-            }, 
             toRGBA(themeColor) {
                 return "rgba(" + themeColor + ", 1)";
             }
@@ -59,6 +50,7 @@
             outline: 0.1rem solid rgba(0, 0, 0, 0);
             margin: 0.1rem;
 
+            // background-color: rgb(234, 234, 234);
             background-color: red;
 
             &:hover {
