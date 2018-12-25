@@ -64,7 +64,7 @@
 
         & .theme-auto {
             background: rgb(255,105,105);
-            background: linear-gradient(90deg, rgba(255,105,105,1) 0%, rgba(185,236,171,1) 57%, rgba(96,228,255,1) 100%);
+            background: linear-gradient(135deg, rgba(255,105,105,1) 0%, rgba(185,236,171,1) 57%, rgba(96,228,255,1) 100%);
         }
     }
 </style>
