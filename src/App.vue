@@ -13,7 +13,7 @@
     export default {
         components: {
             navBar: NavBar,
-            generalFooter: Footer
+            generalFooter: Footer,
         }, 
         created() {
             console.log("App: created");
