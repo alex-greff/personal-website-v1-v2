@@ -132,7 +132,7 @@
 
         font-size: 3rem;
 
-        color: rgba(var(--color-accent-tertiary), 1);
+        color: rgba(var(--color-nav-text), 1);
 
         cursor: pointer;
 
@@ -191,7 +191,7 @@
 
         text-decoration: none;
 
-        color: rgba(var(--color-accent-tertiary), 1);
+        color: rgba(var(--color-nav-text), 1);
 
         &:hover {
             cursor: pointer;
