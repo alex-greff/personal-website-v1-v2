@@ -14,11 +14,21 @@ const themeSchema = mongoose.Schema({
         match: colorFormat,
         default: "61, 61, 61"
     },
+    "--color-page-text": {
+        type: String,
+        match: colorFormat,
+        default: "229, 229, 229"
+    },
     "--color-nav-bg": {
         type: String, 
         match: colorFormat,
         default: "42, 42, 42"
     }, 
+    "--color-nav-text": {
+        type: String,
+        match: colorFormat,
+        default: "143, 143, 143"
+    },
     "--color-sidebar-bg": {
         type: String, 
         match: colorFormat,
@@ -38,17 +48,17 @@ const themeSchema = mongoose.Schema({
     "--color-accent-primary": {
         type: String, 
         match: colorFormat,
-        default: "112, 167, 250"
+        default: "234, 234, 234"
     },
     "--color-accent-secondary": {
         type: String, 
         match: colorFormat,
-        default: "33, 77, 148"
+        default: "194, 194, 194"
     },
     "--color-accent-tertiary": {
         type: String, 
         match: colorFormat,
-        default: "143, 143, 143"
+        default: "139, 139, 139"
     },
 });
 
