@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="music-content">
         <h1>Music Page Component</h1>
     </div>
 </template>

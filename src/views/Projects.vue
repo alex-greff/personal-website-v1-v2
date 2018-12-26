@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="projects-content">
         <h1>Projects Page Component</h1>
     </div>
 </template>
