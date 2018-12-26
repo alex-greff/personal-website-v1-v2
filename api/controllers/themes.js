@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
 const Theme = require('../models/theme');
+const THEME_ITEMS = require('../constants/themeItems');
 
-// const selectStr = "name _id '--color-page-bg' '--color-nav-bg' '--color-sidebar-bg' '--color-footer-bg' " +
-    // "'--color-footer-text' '--color-accent-primary' '--color-accent-secondary' '--color-accent-tertiary'";
-
-const UNREMOVEABLE_DOC_IDS = ["5c203f373175b50ebc77ebf4"]; // ["default"]
+const UNREMOVEABLE_DOC_IDS = require('../constants/unremovableDocs');
 
 exports.themes_get_all = (req, res, next) => {
     Theme.find()
-        // .select(selectStr)
         .exec()
         .then(docs => {
             let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
@@ -17,18 +14,15 @@ exports.themes_get_all = (req, res, next) => {
             const response = {
                 count: docs.length,
                 themes: docs.map(doc => {
+                    // Construct the theme items object
+                    let theme_colors = {};
+                    THEME_ITEMS.forEach(THEME_ITEM => {
+                        theme_colors[THEME_ITEM] = doc[THEME_ITEM];
+                    });
+
                     return {
                         name: doc.name,
-                        "--color-page-bg": doc["--color-page-bg"],
-                        "--color-page-text": doc["--color-page-text"],
-                        "--color-nav-bg": doc["--color-nav-bg"],
-                        "--color-nav-text": doc["--color-nav-text"],
-                        "--color-sidebar-bg": doc["--color-sidebar-bg"],
-                        "--color-footer-bg": doc["--color-footer-bg"],
-                        "--color-footer-text": doc["--color-footer-text"],
-                        "--color-accent-primary": doc["--color-accent-primary"],
-                        "--color-accent-secondary": doc["--color-accent-secondary"],
-                        "--color-accent-tertiary": doc["--color-accent-tertiary"],
+                        ...theme_colors, // Use the spread operator to inject the theme items
                         _id: doc._id,
                         request: {
                             type: "GET",
@@ -50,20 +44,17 @@ exports.themes_get_all = (req, res, next) => {
 }
 
 exports.themes_create_theme = (req, res, next) => {
+    // Construct the theme items object
+    let theme_colors = {};
+    THEME_ITEMS.forEach(THEME_ITEM => {
+        theme_colors[THEME_ITEM] = req.body[THEME_ITEM];
+    });
+
     // Create theme mongodb doc
     const theme = new Theme({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        "--color-page-bg": req.body["--color-page-bg"],
-        "--color-page-texy": req.body["--color-page-text"],
-        "--color-nav-bg": req.body["--color-nav-bg"],
-        "--color-nav-text": req.body["--color-nav-text"],
-        "--color-sidebar-bg": req.body["--color-sidebar-bg"],
-        "--color-footer-bg": req.body["--color-footer-bg"],
-        "--color-footer-text": req.body["--color-footer-text"],
-        "--color-accent-primary": req.body["--color-accent-primary"],
-        "--color-accent-secondary": req.body["--color-accent-secondary"],
-        "--color-accent-tertiary": req.body["--color-accent-tertiary"],
+        ...theme_colors
     });
 
     theme
@@ -71,22 +62,19 @@ exports.themes_create_theme = (req, res, next) => {
         .then(result => {
             console.log(result);
 
+            // Construct the theme items object
+            let theme_colors = {};
+            THEME_ITEMS.forEach(THEME_ITEM => {
+                theme_colors[THEME_ITEM] = result[THEME_ITEM];
+            });
+
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
             // Send response 
             res.status(201).json({
                 message: "Created theme sucessfully",
                 createdTheme: {
                     name: result.name,
-                    "--color-page-bg": result["--color-page-bg"],
-                    "--color-page-text": result["--color-page-text"],
-                    "--color-nav-bg": result["--color-nav-bg"],
-                    "--color-nav-text": result["--color-nav-text"],
-                    "--color-sidebar-bg": result["--color-sidebar-bg"],
-                    "--color-footer-bg": result["--color-footer-bg"],
-                    "--color-footer-text": result["--color-footer-text"],
-                    "--color-accent-primary": result["--color-accent-primary"],
-                    "--color-accent-secondary": result["--color-accent-secondary"],
-                    "--color-accent-tertiary": result["--color-accent-tertiary"],
+                    ...theme_colors,
                     _id: result._id,
                     request: {
                         type: "GET",
@@ -110,11 +98,16 @@ exports.themes_get_theme = (req, res, next) => {
     // Get specific theme
     Theme.findById(id)
         .exec()
-        // .select(selectStr)
         .then(doc => {
             console.log("From database", doc);
 
             if (doc) {
+                // Construct the theme items object
+                let theme_colors = {};
+                THEME_ITEMS.forEach(THEME_ITEM => {
+                    theme_colors[THEME_ITEM] = doc[THEME_ITEM];
+                });
+
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
 
                 // Send response
@@ -122,16 +115,7 @@ exports.themes_get_theme = (req, res, next) => {
                     theme: {
                         _id: doc._id,
                         name: doc.name,
-                        "--color-page-bg": doc["--color-page-bg"],
-                        "--color-page-text": doc["--color-page-text"],
-                        "--color-nav-bg": doc["--color-nav-bg"],
-                        "--color-nav-text": doc["--color-nav-text"],
-                        "--color-sidebar-bg": doc["--color-sidebar-bg"],
-                        "--color-footer-bg": doc["--color-footer-bg"],
-                        "--color-footer-text": doc["--color-footer-text"],
-                        "--color-accent-primary": doc["--color-accent-primary"],
-                        "--color-accent-secondary": doc["--color-accent-secondary"],
-                        "--color-accent-tertiary": doc["--color-accent-tertiary"],
+                        ...theme_colors
                     }, 
                     request: {
                         type: "GET",
@@ -197,6 +181,12 @@ exports.themes_delete_theme = (req, res, next) => {
         .findByIdAndRemove({ _id: id })
         .exec()
         .then(removed => {
+            // Construct the theme items object
+            let theme_colors = {};
+            THEME_ITEMS.forEach(THEME_ITEM => {
+                theme_colors[THEME_ITEM] = "String";
+            });
+
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
             // Send response
             res.status(200).json({
@@ -206,16 +196,7 @@ exports.themes_delete_theme = (req, res, next) => {
                     url: url,
                     body: {
                         name: "String",
-                        "--color-page-bg": "String",
-                        "--color-page-text": "String",
-                        "--color-nav-bg": "String",
-                        "--color-nav-text": "String",
-                        "--color-sidebar-bg": "String",
-                        "--color-footer-bg": "String",
-                        "--color-footer-text": "String",
-                        "--color-accent-primary": "String",
-                        "--color-accent-secondary": "String",
-                        "--color-accent-tertiary": "String",
+                        ...theme_colors
                     }
                 }
             });
