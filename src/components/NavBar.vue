@@ -27,7 +27,8 @@
 
         <nav class="header" ref="header">
             <div class="logo">
-                <router-link to="/" tag="div" active-class="" class="nav-item logo-container" exact>
+                <router-link to="/" tag="div" active-class="" class="nav-item logo-container" 
+                    @click.native="showSidebar(false)" exact>
                     <div class="logo-1">
                         <svg viewBox="0 0 16.5 16.5">
                             <use xlink:href="#logo-symbol" href="#logo-symbol"/>

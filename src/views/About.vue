@@ -27,8 +27,8 @@
             </div>
         </div>
         <div class="profile-image-container">
-            <div class="profile-image">
-                <div class="profile-image-sub"></div>
+            <div class="profile-image-super">
+                <div class="profile-image"></div>
             </div>
             
             
@@ -98,12 +98,6 @@
             grid-template-columns: 1fr;
             grid-template-rows: auto 1fr;
             grid-gap: 0 0;
-
-            // padding: 0 10rem 0 10rem;
-        }
-
-        @include respond(phone) {
-            // padding: 0 3rem 0 3rem;
         }
 
         // Align
@@ -191,7 +185,7 @@
 
         overflow: hidden;
 
-        & .profile-image {
+        & .profile-image-super {
             position: relative;
 
             width: 100%;
@@ -212,7 +206,7 @@
             }
         }
 
-        & .profile-image-sub {
+        & .profile-image {
             position: relative;
 
             width: 100%;
@@ -221,6 +215,8 @@
             background-size: cover;
             background-position: center;
             background-image: url('../assets/images/profile-picture-2.jpg');
+
+            border-radius: 2px;
 
             // filter: url(#duotone);
             opacity: 0.5;
