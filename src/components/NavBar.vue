@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="nav-container">
         <div class="close-btn" @click="showSidebar(false)" v-show="sidebarActive">
             <i class="fas fa-times"></i>
         </div>
@@ -7,6 +7,8 @@
         <div class="menu-btn" @click="showSidebar(true)" v-show="!sidebarActive">
             <i class="fas fa-bars"></i>
         </div>
+
+        <!-- <div class="sidebar-close-area" @click="showSidebar(false)" v-show="sidebarActive"></div> -->
 
         <div class="sidebar" ref="sidebar" v-show="sidebarActive">
             <ul class="navbar navbar-mobile">
@@ -23,8 +25,17 @@
 
         <nav class="header" ref="header">
             <div class="logo">
-                <router-link to="/" tag="div" active-class="" class="nav-item" exact>
-                A
+                <router-link to="/" tag="div" active-class="" class="nav-item logo-container" exact>
+                    <div class="logo-1">
+                        <svg viewBox="0 0 16.5 16.5">
+                            <use xlink:href="#logo-symbol" href="#logo-symbol"/>
+                        </svg>
+                    </div>
+                    <div class="logo-2">
+                        <svg viewBox="0 0 16.5 16.5">
+                            <use xlink:href="#logo-symbol" href="#logo-symbol"/>
+                        </svg>
+                    </div>
                 </router-link>
             </div>
 
@@ -70,7 +81,7 @@
 
 
 <style lang="scss" scoped>
-    .container {
+    .nav-container {
         font-size: 1.6rem;
         font-weight: 300;
 
@@ -114,6 +125,15 @@
 
         justify-content: center;
         flex-direction: column;
+    }
+
+    .sidebar-close-area {
+        position: fixed;
+
+        height: 100%;
+        width: 100%;
+
+        z-index: 10;
     }
 
     .close-btn {
@@ -186,6 +206,10 @@
         padding: 1rem 0 1rem 0;
     }
 
+    .logo {
+        margin-left: 1rem;
+    }
+
     .nav-item {
         margin: 0.5rem 1.5rem 0.5rem 1.8rem;
 
@@ -221,5 +245,56 @@
     .icon-arrow, .nav-item-name {
         display: inline-block;
     }
+
+    .logo-container {
+        padding: 1.35rem; // 2.7rem / 2 = 1.35rem (aka logo height divided by 2)
+        margin: 0;
+
+        position: relative;
+
+        // Hover effect
+        &:hover {
+            & .logo-1 svg {
+                transform: translate(-0.1rem, -0.1rem);
+            }
+        }
+
+        & .logo-1, & .logo-2 {
+            & svg {
+                height: 2.7rem;
+            }
+        }
+
+        & .logo-1 {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            & svg {
+                fill: rgba(var(--color-accent-primary), 1);
+
+                transition: transform 0.3s;
+            }
+            
+            z-index: 2;
+        }
+
+        & .logo-2 {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            & svg {
+                fill: rgba(var(--color-accent-tertiary), 0.7);
+
+                // Offset
+                transform: translate(0.2rem, 0.2rem);
+            }
+
+            z-index: 1;
+        }
+    }   
 </style>
 

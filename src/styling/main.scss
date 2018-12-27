@@ -3,6 +3,7 @@
 @import './variables/globalConstants.scss';
 @import './icons/icons.scss';
 @import './global/buttons.scss';
+@import './global/scrollbar.scss';
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
@@ -14,6 +15,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    // transition: color 0.1s, background-color 0.1s, fill 0.1s;
 }
 
 html {

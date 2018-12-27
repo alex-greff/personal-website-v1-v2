@@ -43,15 +43,13 @@
         flex-wrap: wrap;
 
         & .theme-item {
-            // padding: 0.5rem;
             width: 1rem;
             height: 1rem;
             
             outline: 0.1rem solid rgba(0, 0, 0, 0);
             margin: 0.1rem;
 
-            // background-color: rgb(234, 234, 234);
-            background-color: red;
+            background-color: rgb(234, 234, 234);
 
             &:hover {
                 outline: 0.1rem solid rgba(226, 226, 226, 0.4);
