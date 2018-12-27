@@ -41,10 +41,18 @@
     #app {
         min-height: 100%;
         display: grid;
+        grid-template-columns: 100%;
         grid-template-rows: 1fr auto;
     }
 
+    main {
+        flex: 1;
+    }
+
     .footer {
+        grid-column: 1 / 1;
+        grid-row: 2 / 2;
+
         font-size: 1.2rem;
 
         text-align: center;
