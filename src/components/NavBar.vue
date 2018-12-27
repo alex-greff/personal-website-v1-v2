@@ -1,18 +1,10 @@
 <template>
     <div class="nav-container">
-        <div class="close-btn" @click="showSidebar(false)" v-show="sidebarActive">
-            <i class="fas fa-times"></i>
-        </div>
-
-        <div class="menu-btn" @click="showSidebar(true)" v-show="!sidebarActive">
-            <i class="fas fa-bars"></i>
-        </div>
-
-        <!-- <div class="sidebar-close-area" @click="showSidebar(false)" v-show="sidebarActive"></div> -->
-
         <div class="sidebar" ref="sidebar" v-show="sidebarActive">
             <ul class="navbar navbar-mobile">
-                <router-link v-for="page in pages" :key="page.name" :to="page.path" tag="li" active-class="nav-item-active" class="nav-item" exact>
+                <router-link v-for="page in pages" :key="page.name" 
+                    :to="page.path" tag="li" active-class="nav-item-active" class="nav-item"
+                    @click.native="showSidebar(false)" exact>
                     <i class="fas fa-angle-right icon-arrow"></i>
                     <span class="nav-item-name">{{ page.name }}</span>
                 </router-link>
@@ -22,6 +14,16 @@
                 </li>
             </ul>
         </div>
+
+        <div class="close-btn" @click="showSidebar(false)" v-show="sidebarActive">
+            <i class="fas fa-times"></i>
+        </div>
+
+        <div class="menu-btn" @click="showSidebar(true)" v-show="!sidebarActive">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- <div class="sidebar-close-area" @click="showSidebar(false)" v-show="sidebarActive"></div> -->
 
         <nav class="header" ref="header">
             <div class="logo">
@@ -104,12 +106,14 @@
     }
 
     .sidebar {
-        position: absolute;
+        position: fixed;
         right: 0;
+        // top: 100%;
 
         z-index: 11;
 
-        height: 100vh;
+        // height: 100vh;
+        height: 100%;
 
         display: none; // By default do not show
 
