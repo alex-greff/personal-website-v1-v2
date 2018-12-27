@@ -48,18 +48,16 @@
     }
 
     .home-content {
-        position: relative;
-
         padding: 0 15rem 0 15rem;
 
         @include respond(tab-port) {
+            padding: 0 5rem 0 5rem;
+        }
+        @include respond(tab-land) {
             padding: 0 7rem 0 7rem;
         }
         @include respond(phone) {
             padding: 0 2rem 0 2rem;
-        }
-        @include respond(big-desktop) {
-            padding: 0 25rem 0 25rem;
         }
 
         display: grid;
@@ -74,7 +72,8 @@
             grid-gap: 2.5rem 0;
         }
 
-        // Vertical align grid
+        // Vertical align
+        position: relative;
         top: 50%;
         transform: translateY(-50%);
     }
@@ -84,6 +83,21 @@
         grid-row: 1 / 1;
 
         z-index: 5;
+
+        // Vertical align
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+        // Horizontal right align
+        margin-left: auto; 
+        margin-right: 0;
+
+        @include respond(tab-port) {
+            // Horizontal center
+            margin-left: auto; 
+            margin-right: auto;
+        }
 
         & .greeting-text {
             font-size: 2.5rem;
@@ -145,13 +159,22 @@
 
                 @include respond(big-desktop) {
                     height: 50rem;
+
                 }
             }
 
-            // Center them
+            @include respond(tab-port) {
+                // Center
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            // Vertical center
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateY(-50%);
+            // Left align
+            left: 0;
         }
 
         & .logo-1 {
