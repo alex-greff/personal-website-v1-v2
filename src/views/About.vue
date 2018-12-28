@@ -6,23 +6,13 @@
             <div class="blurb-text">
                 <p>
                     I am a computer science student specializing on software engineering at the University of Toronto.
-
-                </p>
-
-                <p>
-                    Throughout my childhood I have always had a knack for tinkering with things. 
-                    At the age of 13 I started coding and have not stopped since.
-                </p>
-                <p>
-                    Over the years I have completed numerous projects using various technologies including Java, C, C# and HTML/CSS/JavaScript to name a few. 
-                    Some of these projects I am more proud of than others but from every project I always strive to take away something to improve on in later projects.
-
                     I am a passionate and self-motivated person who absolutely loves to learn new technologies through school and numerous extracurricular sources. 
+                    I greatly enjoy many aspects of the computer science field with web development being one of my favorites.
                 </p>
-                <p>
-                    Recently I have been improving my web development skills by learning new frameworks such as Vue JS and Angular.
 
-                    I spend countless hours on Udemy and YouTube in my ever-presisting endeavors to learn more and more.
+                <p>
+                    As of January 2018, I am currently doing my co-op work term at CaseWare as a software developer. 
+                    <!-- Some more text here about the company and what skills I am improving on there... -->
                 </p>
             </div>
         </div>
@@ -30,11 +20,7 @@
             <div class="profile-image-super">
                 <div class="profile-image"></div>
             </div>
-            
-            
-            <!-- <img src="../assets/images/profile-picture-2.jpg"> -->
         </div>
-
 
         <!-- <feColorMatrix type="matrix" result="grayscale"
             values="1 0 0 0 0
@@ -83,20 +69,27 @@
 <style lang="scss" scoped>
     $cell-width: 50rem;
     $grid-padding: 2.5rem;
+    $encasing-cell-size: 8rem;
 
     .about-content {
+
         position: relative;
 
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
+        grid-template-rows: $encasing-cell-size 1fr $encasing-cell-size;
         grid-gap: 0 $grid-padding;
 
         padding: 0 3rem 0 3rem;
 
         @include respond(tab-port) {
             grid-template-columns: 1fr;
-            grid-template-rows: auto 1fr;
+            grid-template-rows: 30rem auto 1fr;
+            grid-gap: 0 0;
+        }
+        @include respond(phone) {
+            grid-template-columns: 1fr;
+            grid-template-rows: 20rem auto 1fr;
             grid-gap: 0 0;
         }
 
@@ -108,11 +101,11 @@
 
     .blurb-container {
         grid-column: 1 / 1;
-        grid-row: 1 / 1;
+        grid-row: 2 / 2;
 
         @include respond(tab-port) {
             grid-column: 1 / 1;
-            grid-row: 2 / 2;
+            grid-row: -1 / -1;
 
             // Horizontal center align
             margin-left: auto; 
@@ -143,12 +136,15 @@
         }
 
         & .blurb-text {
-            font-size: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 400;
+            font-size: 1.5rem;
 
-            color: rgba(var(--color-page-text), 1);
+            line-height: 1.5;
+            // text-indent: 30px;
 
-            text-indent: 30px;
+            // color: rgba(var(--color-page-text), 1);
+            color: #c0c0c0;
 
             & p {
                 margin-bottom: 1rem;   
@@ -158,11 +154,11 @@
 
     .profile-image-container {
         grid-column: 2 / 2;
-        grid-row: 1 / 1;
+        grid-row: 1 / -1;
 
         @include respond(tab-port) {
             grid-column: 1 / 1;
-            grid-row: 1 / 1;
+            grid-row: 1 / 2;
 
             margin-left: auto;
             margin-right: auto;

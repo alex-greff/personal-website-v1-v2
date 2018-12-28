@@ -119,7 +119,9 @@
 
         & .info-text {
             font-size: 1.5rem;
-            font-weight: 300;
+
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
 
             max-width: 50rem;
 
