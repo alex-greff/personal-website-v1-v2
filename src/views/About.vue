@@ -9,7 +9,6 @@
                     I am a passionate and self-motivated person who absolutely loves to learn new technologies through school and numerous extracurricular sources. 
                     I greatly enjoy many aspects of the computer science field with web development being one of my favorites.
                 </p>
-
                 <p>
                     As of January 2018, I am currently doing my co-op work term at CaseWare as a software developer. 
                     <!-- Some more text here about the company and what skills I am improving on there... -->
@@ -20,6 +19,9 @@
             <div class="profile-image-super">
                 <div class="profile-image"></div>
             </div>
+        </div>
+        <div class="timeline-container">
+            <timeline></timeline>
         </div>
 
         <!-- <feColorMatrix type="matrix" result="grayscale"
@@ -52,9 +54,13 @@
 </template>
 
 <script>
+    import Timeline from '@/components/Timeline.vue';
     import { mapActions } from 'vuex';
 
     export default {
+        components: {
+            timeline: Timeline
+        },
         methods: {
             ...mapActions({
                 setCurrentAutoTheme: "setCurrentAutoTheme"
@@ -70,6 +76,7 @@
     $cell-width: 50rem;
     $grid-padding: 2.5rem;
     $encasing-cell-size: 8rem;
+    $timeline-height: 10rem;
 
     .about-content {
 
@@ -77,7 +84,8 @@
 
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: $encasing-cell-size 1fr $encasing-cell-size;
+        grid-template-rows: 1fr $timeline-height;
+        // grid-template-rows: $encasing-cell-size 1fr $encasing-cell-size;
         grid-gap: 0 $grid-padding;
 
         padding: 0 3rem 0 3rem;
@@ -101,7 +109,8 @@
 
     .blurb-container {
         grid-column: 1 / 1;
-        grid-row: 2 / 2;
+        // grid-row: 2 / 2;
+        grid-row: 1 / 1;
 
         @include respond(tab-port) {
             grid-column: 1 / 1;
@@ -154,7 +163,8 @@
 
     .profile-image-container {
         grid-column: 2 / 2;
-        grid-row: 1 / -1;
+        // grid-row: 1 / -1;
+        grid-row: 1 / 1;
 
         @include respond(tab-port) {
             grid-column: 1 / 1;
@@ -230,6 +240,13 @@
                 filter: grayscale(0%) brightness(100%);
             }
         }
+    }
+
+    .timeline-container {
+        grid-column: 1 / -1;
+        grid-row: 2 / 2;
+
+        margin: 0 3rem 0 3rem;
     }
 </style>
 
