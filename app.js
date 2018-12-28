@@ -3,11 +3,13 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const expressValidator = require('express-validator');
 
 // Import routes
 const projectRoutes = require("./api/routes/projects");
 const userRoutes = require("./api/routes/user");
 const themeRoutes = require("./api/routes/themes");
+const contactRoutes = require("./api/routes/contact");
 
 // Setup connection
 mongoose.connect(
@@ -30,6 +32,9 @@ app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Setup express-validator
+app.use(expressValidator());
+
 // Setup headers
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -48,6 +53,7 @@ app.use((req, res, next) => {
 app.use("/api/projects", projectRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/themes", themeRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Handle 404 error
 // If it gets down there, then there is no route for the given request
