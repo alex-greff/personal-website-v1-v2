@@ -26,10 +26,11 @@
         <div class="line-vertical line-5"></div>
 
         <div class="timeline-event-plane">
-            <div class="temp timeline-event order-1 start-2015-Jan end-2019-Feb">Some event</div>
-            <div class="temp2 timeline-event order-2 start-2014-Jul end-2015-Mar">Some event</div>
-            <div class="temp3 timeline-event order-3 start-past end-future">Some event</div>
-            <!-- <div class="temp timeline-event order-1 start-2015 end-2017"></div> -->
+            <div class="temp timeline-event order-1 start-2015-Jan end-2019-Feb"><span>Some event</span></div>
+            <div class="temp2 timeline-event order-2 start-2014-Jul end-2015-Mar"><span>Some event</span></div>
+            <div class="temp3 timeline-event order-3 start-past end-future"><span>Some event</span></div>
+
+            <!-- <div class="temp3 timeline-event order-3 start-2014-Jul end-2019-Jun">Some event</div> -->
         </div>
     </div>
 </template>
@@ -53,10 +54,10 @@
     }
 </script>
 
-<style lang="scss">
-    :root {
-        --line-color: 31, 31, 31; // rgb(31, 31, 31)
-    }
+<style lang="scss" scoped>
+    // :root {
+    //     --line-color: 31, 31, 31; // rgb(31, 31, 31)
+    // }
 
     $grid-width: 100px;
 
@@ -67,7 +68,7 @@
     $base-year: 2015;
 
     $year-1st-half-map: (
-        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5
     );
     $year-2nd-half-map: (
         Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
@@ -75,18 +76,21 @@
     $year-map: map-merge($year-1st-half-map, $year-2nd-half-map);
 
     .temp {
-        background-color: red;
+        background-color: rgb(255, 0, 0);
     }
 
     .temp2 {
-        background-color: purple;
+        background-color: rgb(178, 0, 255);
     }
 
     .temp3 {
-        background-color: lightseagreen;
+        background: linear-gradient(to right, rgba(76, 226, 219, 0) 0%, rgb(29, 4, 255) 5rem, rgba(29, 4, 255, 1) calc(100% - 5rem), rgba(29, 4, 255, 0) 100%);
     }
 
     .timeline {
+        // Variables
+        --line-color: 31, 31, 31; // rgb(31, 31, 31)
+
         position: relative;
         width: 100%;
         height: 100%;
@@ -94,6 +98,7 @@
         display: grid;
         grid-template-columns: 2rem repeat(#{$num-years + 1}, 1fr) 2rem;
         grid-template-rows: repeat(#{$num-rows}, 1fr) 2rem;
+        // grid-template-rows: repeat(#{$num-rows}, minmax(10rem, 30rem)) 2rem;
 
         .timeline-event-plane {
             grid-column: 1 / -1;
@@ -104,6 +109,18 @@
             grid-template-rows: repeat(#{$num-rows}, 1fr);
         
             & .timeline-event {
+                margin-top: 0.3rem;
+                margin-bottom: 0.3rem;
+                // padding-left: 4rem;
+
+                position: relative;
+
+                & span {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+
                 // ---------------------------------
                 // --- Setup timeline event tags ---
                 // ---------------------------------
@@ -117,13 +134,13 @@
                         }
 
                         &.end-#{$base-year + $i}-#{$month} {
-                            grid-column-end: #{6 + $i * $year-granularity + $month-val + 2};
+                            grid-column-end: #{6 + $i * $year-granularity + $month-val + 2 + 1};
                         }
                     }
                 }
 
+                // Edge cases:
 
-                // Edge cases
                 // Half year before
                 $i: -1;
                 @each $month, $month-val in $year-2nd-half-map {
@@ -145,7 +162,7 @@
                     }
 
                     &.end-#{$base-year + $i}-#{$month} {
-                        grid-column-end: #{ 6 + $i * $year-granularity + $month-val + 2 };
+                        grid-column-end: #{ 6 + $i * $year-granularity + $month-val + 2 + 1};
                     }
                 }
 

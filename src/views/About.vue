@@ -11,7 +11,9 @@
                 </p>
                 <p>
                     As of January 2018, I am currently doing my co-op work term at CaseWare as a software developer. 
-                    <!-- Some more text here about the company and what skills I am improving on there... -->
+                    <!-- Some more text here about the company and what skills I am improving on there...
+                    Some more text here about the company and what skills I am improving on there...
+                    Some more text here about the company and what skills I am improving on there... -->
                 </p>
             </div>
         </div>
@@ -86,18 +88,30 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr $timeline-height;
         // grid-template-rows: $encasing-cell-size 1fr $encasing-cell-size;
-        grid-gap: 0 $grid-padding;
+        grid-gap: $grid-padding $grid-padding;
 
         padding: 0 3rem 0 3rem;
 
+        // ------------------------------------
+        // --- Responsive Grid Restructuring --
+        // ------------------------------------
         @include respond(tab-port) {
             grid-template-columns: 1fr;
-            grid-template-rows: 30rem auto 1fr;
+            // grid-template-rows: 30rem auto 1fr;
+            grid-template-rows: 30rem 2fr 1fr;
             grid-gap: 0 0;
+
+            // margin-bottom: 30rem;
+            // padding-bottom: 20rem;
+            // top: 0;
+            // left: 50%;
+            // transform: translate(-50%, 0);    
+            padding-bottom: 7rem;
         }
         @include respond(phone) {
             grid-template-columns: 1fr;
-            grid-template-rows: 20rem auto 1fr;
+            // grid-template-rows: 20rem auto 1fr;
+            grid-template-rows: 20rem 2fr 1fr;
             grid-gap: 0 0;
         }
 
@@ -108,20 +122,20 @@
     }
 
     .blurb-container {
-        grid-column: 1 / 1;
+        grid-column: 1 / 2;
         // grid-row: 2 / 2;
-        grid-row: 1 / 1;
+        grid-row: 1 / 2;
 
         @include respond(tab-port) {
-            grid-column: 1 / 1;
-            grid-row: -1 / -1;
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
 
             // Horizontal center align
             margin-left: auto; 
             margin-right: auto;
 
             padding-top: 3rem;
-            padding-bottom: 7rem;
+            padding-bottom: 3rem;
         }
 
         max-width: $cell-width;
@@ -162,12 +176,12 @@
     }
 
     .profile-image-container {
-        grid-column: 2 / 2;
+        grid-column: 2 / 3;
         // grid-row: 1 / -1;
-        grid-row: 1 / 1;
+        grid-row: 1 / 2;
 
         @include respond(tab-port) {
-            grid-column: 1 / 1;
+            grid-column: 1 / 2;
             grid-row: 1 / 2;
 
             margin-left: auto;
@@ -244,9 +258,20 @@
 
     .timeline-container {
         grid-column: 1 / -1;
-        grid-row: 2 / 2;
+        grid-row: 2 / 3;
 
-        margin: 0 3rem 0 3rem;
+        margin: 0 10rem 0 10rem;
+
+        @include respond(tab-port) {
+            grid-column: 1 / 2;
+            grid-row: -2 / -1;
+
+            margin: 0 3rem 0 3rem;
+        }
+
+        @include respond(big-desktop) {
+            margin: 0 15rem 0 15rem;
+        }
     }
 </style>
 
