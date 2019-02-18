@@ -5,7 +5,6 @@ The back-end for my personal website.
 * [HTTP Requests](#http-requests)
 
 ## HTTP Requests
-`#HTTP Request` 
 
 Note: for requests that have permissions a valid token obtained from ``` localhost:3000/api/users/signin``` must be provided as a header in the form: ``` Key: "Authorization", Value: "Bearer <token>"```
 
