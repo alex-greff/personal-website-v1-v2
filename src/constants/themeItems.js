@@ -11,3 +11,8 @@ export const THEME_ITEMS = [
     "--color-accent-secondary",
     "--color-accent-tertiary"
 ];
+
+
+export default {
+    THEME_ITEMS
+};

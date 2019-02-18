@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Home from '../views/Home.vue'
 import Projects from '../views/Projects.vue';
+import ProjectItem from '../views/ProjectItem.vue';
 import Music from '../views/Music.vue';
 import Experience from '../views/Experience.vue';
 import Contact from '../views/Contact.vue';
@@ -18,10 +19,14 @@ export default new Router({
         { path: '/', name: 'home', component: Home },
         { path: '/projects', name: 'projects', component: Projects, 
             children: [
-                { path: ':id', component: Projects } // TODO: make dynamic
+                { path: ':id', component: ProjectItem } // TODO: make dynamic
             ]
         },
-        { path: '/experience', name: 'experience', component: Experience },
+        { path: '/experience', name: 'experience', component: Experience,
+            children: [
+                { path: ':id', component: Experience } // TODO: make dynamic
+            ]
+        },
         { path: '/music', name: 'music', component: Music },
         { path: '/contact', name: 'contact', component: Contact },
         { path: '/about', name: 'about', component: About },

@@ -23,7 +23,7 @@ const getters = {
     }
 };
 
-const mutations =  {
+const mutations = {
     setCurrentTheme(state, newTheme) {
         state.currentTheme = newTheme;
     },
@@ -74,11 +74,11 @@ const actions = {
         // Get themes from the database
         Vue.axios.get('themes')
             .then(res => {
-                console.log("Get sucessful", res);
+                console.log("Themes get sucessful", res); // TODO: remove
 
                 // Construct our in-memory themes object
                 res.data.themes.forEach(theme => {
-                    let currData = {}
+                    const currData = {};
 
                     currData.name = theme.name;
 

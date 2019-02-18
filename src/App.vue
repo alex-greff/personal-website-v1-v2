@@ -35,10 +35,15 @@
             populateThemes() {
                 // Retrieves and populates the website with the themes
                 this.$store.dispatch('populateThemes');
+            },
+            populateProjects() {
+                this.$store.dispatch('populateProjects');
             }
         },
         created() {
+            // Instantiate vuex data
             this.populateThemes();
+            this.populateProjects();
         }, 
         mounted() {
             this.alignContent();
