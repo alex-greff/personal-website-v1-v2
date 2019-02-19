@@ -109,9 +109,9 @@ exports.user_update = (req, res, next) => {
 
     // Construct update operations object
     const updateOps = {};
-    for (const ops of req.body) {
-        const $name = ops.propName;
-        var $value = ops.value;
+    Object.entries(req.body).forEach(([field, newValue]) => {
+        const $name = field;
+        var $value = newValue;
 
         // If the password is being changed
         if ($name === "password") {
@@ -135,7 +135,7 @@ exports.user_update = (req, res, next) => {
         }
         
         updateOps[$name] = $value;
-    }
+    });
 
     User.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update the user
         .exec()

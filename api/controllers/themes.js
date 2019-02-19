@@ -141,9 +141,9 @@ exports.themes_update_theme = (req, res, next) => {
 
     // Construct update operations object
     const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
-    }
+    Object.entries(req.body).forEach(([field, newValue]) => {
+        updateOps[field] = newValue;
+    });
 
     Theme
         .updateOne({ _id: id}, { $set: updateOps }, { runValidators: true }) // Update document

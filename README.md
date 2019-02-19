@@ -32,7 +32,9 @@ Note: for requests that have permissions a valid token obtained from ``` localho
   "name": String (required),
   "description": String (required),
   "thumbnailImage": File (required),
-  "links": Array of Strings (optional)
+  "galleryImages": Array of Files (optional),
+  "links": String Map of Strings (optional),
+  "tags": Array of Strings (optional)
 }
 ```
 
@@ -45,9 +47,12 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 
 ```
 {
-  "name": String (optional),
-  "description": String (optional),
-  "links": Array of Strings (optional)
+  "name": String (required),
+  "description": String (required),
+  "thumbnailImage": File (required),
+  "galleryImages": Array of Files (optional),
+  "links": String Map of Strings (optional),
+  "tags": Array of Strings (optional)
 }
 ```
 
