@@ -9,7 +9,7 @@ module.exports = function(checkSelf, ...operations) {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             req.userData = decoded;
     
-            console.log("USER DATA", req.userData); // TODO: remove?
+            console.log("USER DATA\n", req.userData); // TODO: remove?
 
             // Check if user has access
             if (req.userData && canDoAllOperations(req.userData.role, ...operations)) {

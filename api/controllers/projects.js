@@ -11,6 +11,8 @@ exports.projects_get_all = (req, res, next) => {
         .then(docs => {
             let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
 
+            console.log("FROM DATABASE\n", docs);
+
             // Construct response
             const response = {
                 count: docs.length,
@@ -44,23 +46,19 @@ exports.projects_get_all = (req, res, next) => {
 };
 
 exports.projects_create_project = (req, res, next) => {
-    // Get the file paths
+    // Construct thumbnail image path entry
     let thumbnailImagePath;
     if (req.files['thumbnailImage']) {
-        console.log("got here");    
         thumbnailImagePath = req.files['thumbnailImage'][0].path;
     }
     
-    let galleryImagesPaths = [];
+    // Construct gallery images object
+    let galleryImagesPaths = {};
     if (req.files['galleryImages']) {
         req.files['galleryImages'].forEach(galleryImage => {
-            galleryImagesPaths.push(galleryImage.path);
+            galleryImagesPaths[new mongoose.Types.ObjectId()] = galleryImage.path;
         });
     }
-    console.log(galleryImagesPaths)
-    // Set to undefined if no gallery images were uploaded
-    galleryImagesPaths = (galleryImagesPaths.length <= 0) ? undefined : galleryImagesPaths;
-    console.log(galleryImagesPaths)
 
     // Create project mongodb doc
     const project = new Project({
@@ -81,7 +79,7 @@ exports.projects_create_project = (req, res, next) => {
     project
         .save()
         .then(result => {
-            console.log(result);
+            console.log("CREATED PROJECT\n", result);
 
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`;
             // Send response
@@ -133,7 +131,7 @@ exports.projects_get_project = (req, res, next) => {
         .select(SELECTED_FIELDS)
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            console.log("FROM DATABASE\n", doc);
 
             if (doc) { // If document is found
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
@@ -165,62 +163,116 @@ exports.projects_update_project = (req, res, next) => {
 
     // Construct update operations object
     const updateOps = {};
+
+    let removeGalleryImagesIDs = [];
     Object.entries(req.body).forEach(([field, newValue]) => {
+        // Manually handle the removeGalleryImages operation
+        if (field === "removeGalleryImages") {
+            // Construct the list of gallery image IDs to be removed
+            removeGalleryImagesIDs = (typeof newValue === 'string') ? [ newValue ] : newValue;
+            return;
+        }
+
+        // Add in the current regular operation 
         updateOps[field] = newValue;
     });
 
+    // If the thumbnail image is being updated then add it to the update ops
     if (req.files['thumbnailImage']) {
         updateOps['thumbnailImage'] = req.files['thumbnailImage'][0].path;
     }
 
+    // Construct the list of gallery image paths to be added
+    let addGalleryImages = [];
     if (req.files['galleryImages']) {
-        const imageList = [];
-
         req.files['galleryImages'].forEach(galleryImage => {
-            imageList.push(galleryImage.path);
+            addGalleryImages.push(galleryImage.path);
         });
-
-        updateOps['galleryImages'] = imageList;
     }
-
-    console.log("Update ops", updateOps);
     
     // TODO: this is pretty ugly, it should be cleaned up
-    // If either the thumbnail or gallery images is being updated
-    if (updateOps['thumbnailImage'] || updateOps['galleryImages']) {
-        Project.findById(id)
-        .select(SELECTED_FIELDS)
-        .exec()
-        .then(doc => {
-            if (doc) { // If document is found
-                if (!!doc.thumbnailImage && !!updateOps['thumbnailImage']) {
-                    Utilities.cleanupFile(doc.thumbnailImage);
-                }
+    Project.findById(id)
+    .select(SELECTED_FIELDS)
+    .exec()
+    .then(doc => {
+        if (doc) { // If document is found
+            // Cleanup the thumbnail image, if needed
+            if (!!doc.thumbnailImage && !!updateOps['thumbnailImage']) {
+                Utilities.cleanupFile(doc.thumbnailImage);
+            }
 
-                // TODO: right now all the gallery images are wiped if some more are added, this needs to be fixed
-                if (!!doc.galleryImages && !!updateOps['galleryImages']) {
-                    doc.galleryImages.forEach((galleryImage) => {
-                        Utilities.cleanupFile(galleryImage);
+
+            if (doc.galleryImages) {
+                // Construct the base updated gallery images map
+                const updatedGalleryImages = {};
+                doc.galleryImages.forEach((path, imageID) => {
+                    updatedGalleryImages[imageID] = path;
+                });
+
+                // Remove out the gallery images that are listed for removal
+                removeGalleryImagesIDs.forEach(imageID => {
+                    if (doc.galleryImages.get(imageID)) {
+                        // Cleanup the image
+                        Utilities.cleanupFile(doc.galleryImages.get(imageID));
+                    }
+
+                    // Remove the entry
+                    delete updatedGalleryImages[imageID];
+                });
+
+                // Add in the gallery images that are listed for addition
+                addGalleryImages.forEach(imagePath => {
+                    updatedGalleryImages[new mongoose.Types.ObjectId()] = imagePath;
+                });
+
+                // Add the updated gallery images map to the update ops
+                updateOps['galleryImages'] = updatedGalleryImages;
+            }
+        }
+
+        console.log("UPDATE OPS\n", updateOps);
+
+        // TODO: nested async functions... fix this using async await or something
+        Project
+            .updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update document
+            .exec()
+            .then(result => {
+                let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
+
+                // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
+                // If no project is found
+                if (result.n < 1) {
+                    const err = "Project not found"
+
+                    // TODO: duplicated code here... fix this
+
+                    // Delete uploaded files
+                    const fields = Object.entries(req.files);
+                    // Iterate through each field
+                    fields.forEach(([field, files])=> {
+                        // Iterate through the files in the current field
+                        files.forEach(file => {
+                            // Remove each file
+                            Utilities.cleanupFile(file.path);
+                        });
+                    });
+
+                    console.log(err);
+                    return res.status(500).json({
+                        error: err
                     });
                 }
-            }
-        })
-        .catch(); // Do nothing
-    }
 
-    // TODO: for some reason it doesn't error if the id does not exist... fix this
-
-    Project
-        .updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update document
-        .exec()
-        .then(result => {
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
-
-            if (result.n < 1) {
-                const err = "Project not found"
-
-                // TODO: duplicated code here... fix this
-
+                // Send response
+                res.status(200).json({
+                    message: "Project updated",
+                    request: {
+                        type: "GET",
+                        url: url
+                    }
+                });
+            })
+            .catch(err => {
                 // Delete uploaded files
                 const fields = Object.entries(req.files);
                 // Iterate through each field
@@ -233,37 +285,12 @@ exports.projects_update_project = (req, res, next) => {
                 });
 
                 console.log(err);
-                return res.status(500).json({
+                res.status(500).json({
                     error: err
                 });
-            }
-
-            // Send response
-            res.status(200).json({
-                message: "Project updated",
-                request: {
-                    type: "GET",
-                    url: url
-                }
             });
-        })
-        .catch(err => {
-            // Delete uploaded files
-            const fields = Object.entries(req.files);
-            // Iterate through each field
-            fields.forEach(([field, files])=> {
-                // Iterate through the files in the current field
-                files.forEach(file => {
-                    // Remove each file
-                    Utilities.cleanupFile(file.path);
-                });
-            });
-
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    })
+    .catch(); // Do nothing
 };
 
 exports.projects_delete_project = (req, res, next) => { 

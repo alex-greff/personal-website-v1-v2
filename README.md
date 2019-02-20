@@ -34,7 +34,9 @@ Note: for requests that have permissions a valid token obtained from ``` localho
   "thumbnailImage": File (required),
   "galleryImages": Array of Files (optional),
   "links": String Map of Strings (optional),
-  "tags": Array of Strings (optional)
+  "tags": Array of Strings (optional),
+  "startDate": Date (required),
+  "endDate": Date (required)
 }
 ```
 
@@ -50,9 +52,12 @@ Note: for requests that have permissions a valid token obtained from ``` localho
   "name": String (required),
   "description": String (required),
   "thumbnailImage": File (required),
-  "galleryImages": Array of Files (optional),
+  "galleryImages": Array of Files to be inserted (optional)
+  "removeGalleryImages": Array of File IDs to be removed (optional),
   "links": String Map of Strings (optional),
-  "tags": Array of Strings (optional)
+  "tags": Array of Strings (optional),
+  "startDate": Date (required),
+  "endDate": Date (required)
 }
 ```
 

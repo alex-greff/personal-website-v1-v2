@@ -9,12 +9,12 @@ const projectSchema = mongoose.Schema({
     description: { type: String, required: true },
 
     // Listed info
-    links: { type: String, of: String, required: false },
+    links: { type: Map, of: String, required: false },
     tags: { type: [String], required: false},
 
     // Images
     thumbnailImage: { type: String, required: true },
-    galleryImages: { type: [String], required: false},
+    galleryImages: { type: Map, of: String, required: false },
 
     // Dates
     startDate: { type: Date, required: true },
