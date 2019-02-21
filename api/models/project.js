@@ -6,6 +6,7 @@ const projectSchema = mongoose.Schema({
 
     // Text info
     name: { type: String, required: true, unique: true },
+    summary: { type: String, required: true },
     description: { type: String, required: true },
 
     // Listed info

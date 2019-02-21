@@ -30,6 +30,7 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 ```
 {
   "name": String (required),
+  "summary": String (required),
   "description": String (required),
   "thumbnailImage": File (required),
   "galleryImages": Array of Files (optional),
@@ -50,6 +51,7 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 ```
 {
   "name": String (required),
+  "summary": String (required),
   "description": String (required),
   "thumbnailImage": File (required),
   "galleryImages": Array of Files to be inserted (optional)

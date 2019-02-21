@@ -20,6 +20,7 @@ exports.projects_get_all = (req, res, next) => {
                     return {
                         _id: doc._id,
                         name: doc.name,
+                        summary: doc.summary,
                         description: doc.description,
                         thumbnailImage: doc.thumbnailImage,
                         galleryImages: doc.galleryImages,
@@ -64,6 +65,7 @@ exports.projects_create_project = (req, res, next) => {
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
+        summary: req.body.summary,
         description: req.body.description,
 
         thumbnailImage: thumbnailImagePath,
@@ -89,6 +91,7 @@ exports.projects_create_project = (req, res, next) => {
                     // TODO: don't hardcode this
                     _id: result._id,
                     name: result.name,
+                    summary: result.summary,
                     description: result.description,
                     thumbnailImage: result.thumbnailImage,
                     galleryImages: result.galleryImages,
@@ -310,6 +313,7 @@ exports.projects_delete_project = (req, res, next) => {
                     body: {
                         // TODO: don't hardcode this
                         name: "String",
+                        summary: "String",
                         description: "String",
                         thumbnailImage: "image/JPEG or image/PNG",
                         galleryImages: "Array of image/JPEG or image/PNG",
