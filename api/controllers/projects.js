@@ -312,7 +312,7 @@ exports.projects_delete_project = (req, res, next) => {
                         name: "String",
                         description: "String",
                         thumbnailImage: "image/JPEG or image/PNG",
-                        galleryImages: "Map of image/JPEG or image/PNG",
+                        galleryImages: "Array of image/JPEG or image/PNG",
                         links: "Map of String",
                         tags: "Array of String",
                         startDate: "Date",
