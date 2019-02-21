@@ -18,6 +18,7 @@ exports.projects_get_all = (req, res, next) => {
                 count: docs.length,
                 projects: docs.map(doc => {
                     return {
+                        _id: doc._id,
                         name: doc.name,
                         description: doc.description,
                         thumbnailImage: doc.thumbnailImage,
@@ -26,7 +27,6 @@ exports.projects_get_all = (req, res, next) => {
                         tags: doc.tags,
                         startDate: doc.startDate,
                         endDate: doc.endDate,
-                        _id: doc._id,
                         request: {
                             type: "GET",
                             url: `${urlBase}/${doc._id}`
@@ -87,6 +87,7 @@ exports.projects_create_project = (req, res, next) => {
                 message: "Created project successfully",
                 createdProject: {
                     // TODO: don't hardcode this
+                    _id: result._id,
                     name: result.name,
                     description: result.description,
                     thumbnailImage: result.thumbnailImage,
@@ -95,7 +96,6 @@ exports.projects_create_project = (req, res, next) => {
                     tags: result.tags,
                     startDate: result.startDate,
                     endDate: result.endDate,
-                    _id: result._id,
                     request: {
                         type: "GET",
                         url: url
@@ -159,6 +159,8 @@ exports.projects_get_project = (req, res, next) => {
 };
 
 exports.projects_update_project = (req, res, next) => { 
+    let errored = false;
+
     const id = req.params.projectID;
 
     // Construct update operations object
@@ -199,8 +201,7 @@ exports.projects_update_project = (req, res, next) => {
             // Cleanup the thumbnail image, if needed
             if (!!doc.thumbnailImage && !!updateOps['thumbnailImage']) {
                 Utilities.cleanupFile(doc.thumbnailImage);
-            }
-
+            }   
 
             if (doc.galleryImages) {
                 // Construct the base updated gallery images map
@@ -214,6 +215,8 @@ exports.projects_update_project = (req, res, next) => {
                     if (doc.galleryImages.get(imageID)) {
                         // Cleanup the image
                         Utilities.cleanupFile(doc.galleryImages.get(imageID));
+                    } else {
+                        throw `Error unable to remove gallery image with ID '${imageID}'. Image not found`;
                     }
 
                     // Remove the entry
@@ -232,65 +235,50 @@ exports.projects_update_project = (req, res, next) => {
 
         console.log("UPDATE OPS\n", updateOps);
 
-        // TODO: nested async functions... fix this using async await or something
-        Project
-            .updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }) // Update document
-            .exec()
-            .then(result => {
-                let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
-
-                // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
-                // If no project is found
-                if (result.n < 1) {
-                    const err = "Project not found"
-
-                    // TODO: duplicated code here... fix this
-
-                    // Delete uploaded files
-                    const fields = Object.entries(req.files);
-                    // Iterate through each field
-                    fields.forEach(([field, files])=> {
-                        // Iterate through the files in the current field
-                        files.forEach(file => {
-                            // Remove each file
-                            Utilities.cleanupFile(file.path);
-                        });
-                    });
-
-                    console.log(err);
-                    return res.status(500).json({
-                        error: err
-                    });
-                }
-
-                // Send response
-                res.status(200).json({
-                    message: "Project updated",
-                    request: {
-                        type: "GET",
-                        url: url
-                    }
-                });
-            })
-            .catch(err => {
-                // Delete uploaded files
-                const fields = Object.entries(req.files);
-                // Iterate through each field
-                fields.forEach(([field, files])=> {
-                    // Iterate through the files in the current field
-                    files.forEach(file => {
-                        // Remove each file
-                        Utilities.cleanupFile(file.path);
-                    });
-                });
-
-                console.log(err);
-                res.status(500).json({
-                    error: err
-                });
-            });
+        return Project
+            .updateOne({ _id: id }, { $set: updateOps }, { runValidators: true })
+            .exec();
     })
-    .catch(); // Do nothing
+    .then(result => {
+        // Stop from continuing if an error has already been thrown
+        if (errored) {
+            return;
+        }
+
+        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
+
+        // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
+        // If no project is found
+        if (result.n < 1) {
+            throw "Project not found";
+        }
+
+        // Send response
+        res.status(200).json({
+            message: "Project updated",
+            request: {
+                type: "GET",
+                url: url
+            }
+        });
+    })
+    .catch(err => {
+        // Delete uploaded files
+        const fields = Object.entries(req.files);
+        // Iterate through each field
+        fields.forEach(([field, files])=> {
+            // Iterate through the files in the current field
+            files.forEach(file => {
+                // Remove each file
+                Utilities.cleanupFile(file.path);
+            });
+        });
+
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
 };
 
 exports.projects_delete_project = (req, res, next) => { 
