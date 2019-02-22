@@ -183,13 +183,13 @@ exports.projects_update_project = (req, res, next) => {
     });
 
     // If the thumbnail image is being updated then add it to the update ops
-    if (req.files['thumbnailImage']) {
+    if (!!req.files && !!req.files['thumbnailImage']) {
         updateOps['thumbnailImage'] = req.files['thumbnailImage'][0].path;
     }
 
     // Construct the list of gallery image paths to be added
     let addGalleryImages = [];
-    if (req.files['galleryImages']) {
+    if (!!req.files && !!req.files['galleryImages']) {
         req.files['galleryImages'].forEach(galleryImage => {
             addGalleryImages.push(galleryImage.path);
         });
