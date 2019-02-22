@@ -5,7 +5,7 @@
             <div class="blurb-title">A little about myself</div>
             <div class="blurb-text">
                 <p>
-                    I am a computer science student specializing on software engineering at the University of Toronto.
+                    I am a computer science student specializing in software engineering at the University of Toronto.
                     I am a passionate and self-motivated person who absolutely loves to learn new technologies through school and numerous extracurricular sources. 
                     I greatly enjoy many aspects of the computer science field with web development being one of my favorites.
                 </p>

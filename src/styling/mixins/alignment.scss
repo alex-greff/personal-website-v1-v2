@@ -1,0 +1,21 @@
+// Horizontal and vertical alignment mixin
+@mixin HZ_Align($pos-type) {
+    position: $pos-type;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// Horizontal only alignment mixin
+@mixin H_Align($pos-type) {
+    position: $pos-type;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+// Vertical only alignment mixin
+@mixin V_Align($pos-type) {
+    position: $pos-type;
+    top: 50%;
+    transform: translateY(-50%);
+}
