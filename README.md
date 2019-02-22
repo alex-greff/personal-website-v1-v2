@@ -27,7 +27,7 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "name": String (required),
   "summary": String (required),
@@ -48,13 +48,13 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "name": String (required),
   "summary": String (required),
   "description": String (required),
   "thumbnailImage": File (required),
-  "galleryImages": Array of Files to be inserted (optional)
+  "galleryImages": Array of Files to be inserted (optional),
   "removeGalleryImages": Array of File IDs to be removed (optional),
   "links": String Map of Strings (optional),
   "tags": Array of Strings (optional),
@@ -78,7 +78,7 @@ Note: at the moment, updating the thumbnail image is not implemented
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "email": Email String (required),
   "password": String (required)
@@ -93,7 +93,7 @@ Note: at the moment, updating the thumbnail image is not implemented
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "email": Email String (required),
   "password": String (required)
@@ -131,7 +131,7 @@ Note: at the moment, updating the thumbnail image is not implemented
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "name": String (required),
   "<property>": RGB String (required)
@@ -148,7 +148,7 @@ Click [here](api/constants/themeItems.js) to see a list of all theme properties.
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "name": String (optional),
   "<property>": RGB String (optional)
@@ -172,7 +172,7 @@ Click [here](api/constants/themeItems.js) to see a list of all theme properties.
 
 &nbsp;&nbsp;Body: 
 
-```
+``` json
 {
   "email": Email String (required),
   "name": String (required),
