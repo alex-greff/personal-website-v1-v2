@@ -19,18 +19,31 @@
     import Footer from '@/components/Footer.vue';
 
     export default {
+        data() {
+            return {
+                lastNavBarHeight: -1
+            }
+        },
         components: {
             navBar: NavBar,
             generalFooter: Footer,
         }, 
         methods: {
             alignContent() {
-                // Align the content so that it is under the nav bar
-                let navBarEl = this.$refs.navBar.$el;
-                let contentEl = this.$refs.content;
+                const navBarEl = this.$refs.navBar.$el;
+                const contentEl = this.$refs.content;
+                const navBarHeight = navBarEl.offsetHeight;
 
-                let contentPlacement = navBarEl.offsetHeight;
-                contentEl.style.marginTop = contentPlacement + 'px';
+                // If no change occurs
+                if (navBarHeight === this.lastNavBarHeight) {
+                    return;
+                }
+
+                // Align the content so that it is under the nav bar
+                contentEl.style.marginTop = navBarHeight + 'px';
+
+                // Record change
+                this.lastNavBarHeight = navBarHeight;
             },
             populateThemes() {
                 // Retrieves and populates the website with the themes
@@ -38,6 +51,10 @@
             },
             populateProjects() {
                 this.$store.dispatch('populateProjects');
+            },
+            // Event handlers
+            onResize() {
+                this.alignContent();
             }
         },
         created() {
@@ -47,6 +64,13 @@
         }, 
         mounted() {
             this.alignContent();
+
+            this.$nextTick(function() {
+                window.addEventListener('resize', this.onResize);
+            });
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
         }
     }
 </script>
