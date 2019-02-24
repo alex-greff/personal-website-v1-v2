@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Project = require("../models/project");
 const Utilities = require("../utilities");
 
-const SELECTED_FIELDS = "name description _id thumbnailImage galleryImages links tags startDate endDate";
+const SELECTED_FIELDS = "name summary description _id thumbnailImage galleryImages links tags startDate endDate";
 
 exports.projects_get_all = (req, res, next) => {
     Project.find()
