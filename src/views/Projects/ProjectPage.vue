@@ -27,14 +27,6 @@ export default {
         projectDataLoaded() {
             return !!(this.projects[this.projectName]);
         }
-    },
-    mounted() {
-        // console.log(`${this.$route.params.id}`);
-        // console.log(this.projects);
-        // console.log(this.project(this.$route.params.id));
-    },
-    updated() {
-        // console.log(this.project(this.$route.params.id));
     }
 }
 </script>

@@ -74,8 +74,12 @@
                 text-decoration: none;
                 cursor: pointer;
 
-                &:not(:last-child) {
+                & > * {
                     margin-bottom: 2rem;
+                }
+
+                &:last-child {
+                    margin-bottom: 5rem;
                 }
             }
         }

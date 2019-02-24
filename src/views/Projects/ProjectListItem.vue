@@ -177,7 +177,7 @@
                 font-size: 1.7rem;
                 font-weight: 500;
 
-                color: rgba(var(--color-accent-tertiary), 1);
+                // color: rgba(var(--color-accent-tertiary), 1);
 
                 transition: color 0.5s;
             }
