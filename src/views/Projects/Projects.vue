@@ -1,6 +1,5 @@
 <template>
     <div class="projects-content">
-
         <div class="projects-nav-page" v-if="!hasSubPage">
             <h1>Projects</h1>
             <ul class="projects-list">
@@ -11,24 +10,28 @@
                     tag="li"
                     class="project-link"
                 >
-                    {{ project.name }}
+                    <project-list-item :projectData="project" />
                 </router-link>
             </ul>
         </div>
-
+        
         <router-view></router-view>
     </div>
 </template>
 
 <script>
     import { mapActions, mapGetters } from 'vuex';
+    import ProjectListItem from './ProjectListItem.vue';
 
     export default {
+        components: {
+            projectListItem: ProjectListItem
+        },
         computed: {
             ...mapGetters({
                 projects:'getProjects'
             }),
-            hasSubPage() {
+            hasSubPage() { // TODO: unused
                 return !!(this.$route.params.id);
             }
         },
@@ -43,28 +46,37 @@
     }
 </script>
 
-<style lang="scss" scoped>
-    @import '@/styling/mixins/alignment.scss';
+<style lang="scss" scoped>    
+    $grid-padding: 2.5rem;
 
     .projects-content {
-        position: relative;
 
-        height: 100%;
     }
-    
-    .projects-nav-page {
-        @include HZ_Align(absolute);
 
-        & .projects-list {
-            list-style-type: none;
+    .projects-nav-page {
+        position: relative;
+        
+        margin: 5rem 0 0 0;
+
+        & > h1 {
+            text-align: center;
+
+            font-size: 3rem;
+            color: rgba(var(--color-accent-primary), 1);
         }
 
-        & .project-link {
-            text-decoration: none;
-            cursor: pointer;
+        & > .projects-list {
+            list-style-type: none;
 
-            &:hover {
-                color: rgba(var(--color-accent-primary), 1);
+            margin-top: 2rem;
+
+            & > .project-link {
+                text-decoration: none;
+                cursor: pointer;
+
+                &:not(:last-child) {
+                    margin-bottom: 2rem;
+                }
             }
         }
     }

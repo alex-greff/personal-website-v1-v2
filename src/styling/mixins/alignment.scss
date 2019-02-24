@@ -1,5 +1,5 @@
 // Horizontal and vertical alignment mixin
-@mixin HZ_Align($pos-type) {
+@mixin HV_Align($pos-type) {
     position: $pos-type;
     top: 50%;
     left: 50%;

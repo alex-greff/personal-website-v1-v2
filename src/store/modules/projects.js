@@ -44,6 +44,17 @@ const actions = {
                         currData['thumbnailImage'] = `${BACKEND_SERVER_ADDRESS}/${thumbnailImage}`.replace('\\', '/');
                     }
 
+                    const galleryImages = currData['galleryImages'];
+                    if (galleryImages) {
+                        const newGalleryImages = {};
+
+                        Object.entries(galleryImages).forEach(([ID, path]) => {
+                            newGalleryImages[ID] = `${BACKEND_SERVER_ADDRESS}/${path}`.replace('\\', '/');
+                        });
+
+                        currData['galleryImages'] = newGalleryImages;
+                    }
+
                     Vue.set(state.projects, project.name, currData);
                 });
             });
