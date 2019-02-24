@@ -3,8 +3,11 @@
         <div class="sidebar" ref="sidebar" v-show="sidebarActive">
             <ul class="navbar navbar-mobile">
                 <router-link v-for="page in pages" :key="page.name" 
-                    :to="page.path" tag="li" active-class="nav-item-active" class="nav-item"
-                    @click.native="showSidebar(false)" exact>
+                    :to="page.path" tag="li" 
+                    active-class="nav-item-active" 
+                    class="nav-item"
+                    @click.native="showSidebar(false)" 
+                >
                     <i class="fas fa-angle-right icon-arrow"></i>
                     <span class="nav-item-name">{{ page.name }}</span>
                 </router-link>
@@ -27,8 +30,12 @@
 
         <nav class="header" ref="header">
             <div class="logo">
-                <router-link to="/" tag="div" active-class="" class="nav-item logo-container" 
-                    @click.native="showSidebar(false)" exact>
+                <router-link to="/" 
+                    tag="div" 
+                    active-class="" 
+                    class="nav-item logo-container" 
+                    @click.native="showSidebar(false)" exact
+                >
                     <div class="logo-1">
                         <svg viewBox="0 0 16.5 16.5">
                             <use xlink:href="#logo-symbol" href="#logo-symbol"/>
@@ -43,7 +50,12 @@
             </div>
 
             <ul class="navbar navbar-desktop">
-                <router-link v-for="page in pages" :key="page.name" :to="page.path" tag="li" active-class="nav-item-active" class="nav-item" exact>
+                <router-link v-for="page in pages" :key="page.name" 
+                    :to="page.path" 
+                    tag="li" 
+                    active-class="nav-item-active" 
+                    class="nav-item"
+                >
                     <i class="fas fa-angle-right icon-arrow"></i>
                     <span class="nav-item-name">{{ page.name }}</span>
                 </router-link>
