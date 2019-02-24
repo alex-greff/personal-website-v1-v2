@@ -70,6 +70,7 @@
 
         transition: background-color 0.5s;
 
+        // Hover stylings   
         &:hover {
             background-color: rgba(0, 0, 0, 0.075);
 
@@ -90,6 +91,10 @@
                     opacity: 1;
                 }
             }
+
+            & .project-info > .project-name {
+                color: rgba(var(--color-accent-primary), 1);
+            }
         }
 
         & .image-tint {
@@ -105,6 +110,9 @@
         }
 
         & .thumbnail {
+            // Note: Needed to stop flickering of project info items
+            will-change: clip-path;
+
             overflow: hidden;
 
             transition: clip-path 0.5s;
@@ -125,6 +133,9 @@
             }
 
             & .thumbnail-image {
+                // Note: Needed to stop flickering of project info items
+                will-change: filter, transform, opacity;
+
                 width: $thumbnail-width;
                 height: $project-item-height;
 
@@ -166,7 +177,9 @@
                 font-size: 1.7rem;
                 font-weight: 500;
 
-                color: rgba(var(--color-accent-primary), 1);
+                color: rgba(var(--color-accent-tertiary), 1);
+
+                transition: color 0.5s;
             }
 
             & > .project-summary {
