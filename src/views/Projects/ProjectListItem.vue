@@ -6,16 +6,18 @@
             </div>
         </div>
         <div class="project-info">
-            <div class="project-name">
-                {{ projectData.name }}
-            </div>
-            <div class="project-summary">
-                {{ projectData.summary }}
-            </div>
-            <div class="project-tags">
-                <div class="tag-header">Tags:</div>
-                <div class="tag">
-                    {{ tagStringList }}
+            <div class="project-info-container">
+                <div class="project-name">
+                    {{ projectData.name }}
+                </div>
+                <div class="project-summary">
+                    {{ projectData.summary }}
+                </div>
+                <div class="project-tags">
+                    <div class="tag-header">Tags:</div>
+                    <div class="tag">
+                        {{ tagStringList }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,7 +101,7 @@
 
         & .image-tint {
             @include respond(phone) {
-                background-color: rgba(var(--color-accent-tertiary), 0.8);
+                background-color: rgba(var(--color-accent-tertiary), 0.6);
             };
 
             background-color: rgba(var(--color-accent-tertiary), 1);
@@ -161,7 +163,7 @@
                 grid-row: 1 / 2;
             }
 
-            max-width: 50rem;
+            // max-width: 50rem;
 
             z-index: 3;
 
@@ -169,33 +171,43 @@
             flex-direction: column;
             justify-content: center;
 
-            & > *:not(:last-child) {
-                margin-bottom: .4rem;
-            }
+            & > .project-info-container {
+                // TODO: is this wanted?
+                // @include respond(phone) {
+                //     background-color: rgba(0, 0, 0, 0.2); // TODO: theme
+                // }
 
-            & > .project-name {
-                font-size: 1.7rem;
-                font-weight: 500;
+                padding: 0.5rem;
 
-                // color: rgba(var(--color-accent-tertiary), 1);
+                & > *:not(:last-child) {
+                    padding-bottom: .4rem;
+                }
+                
 
-                transition: color 0.5s;
-            }
+                & > .project-name {
+                    font-size: 1.7rem;
+                    font-weight: 500;
 
-            & > .project-summary {
-                font-weight: 300;
-            }
+                    // color: rgba(var(--color-accent-tertiary), 1);
 
-            & > .project-tags {
-                font-weight: 300;
-
-                & > .tag-header {
-                    font-weight: 400;
-                    color: rgba(var(--color-accent-tertiary), 1);
+                    transition: color 0.5s;
                 }
 
-                & > * {
-                    display: inline;
+                & > .project-summary {
+                    font-weight: 300;
+                }
+
+                & > .project-tags {
+                    font-weight: 300;
+
+                    & > .tag-header {
+                        font-weight: 400;
+                        color: rgba(var(--color-accent-tertiary), 1);
+                    }
+
+                    & > * {
+                        display: inline;
+                    }
                 }
             }
         }

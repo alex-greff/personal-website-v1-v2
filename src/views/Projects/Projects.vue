@@ -1,8 +1,8 @@
 <template>
     <div class="projects-content">
-        <div class="projects-nav-page" v-if="!hasSubPage">
+        <div class="projects-nav-page" v-if="!isSubPage">
             <h1>Projects</h1>
-            <ul class="projects-list">
+            <ul class="projects-list" v-if="projectDataLoaded">
                 <router-link
                     v-for="project in projects"
                     :key="project.name"
@@ -13,8 +13,12 @@
                     <project-list-item :projectData="project" />
                 </router-link>
             </ul>
+            <div v-else>
+                Loading...
+            </div>
         </div>
         
+        <!-- Subpage router view -->
         <router-view></router-view>
     </div>
 </template>
@@ -31,8 +35,11 @@
             ...mapGetters({
                 projects:'getProjects'
             }),
-            hasSubPage() { // TODO: unused
+            isSubPage() {
                 return !!(this.$route.params.id);
+            },
+            projectDataLoaded() {
+                return !!(this.projects);
             }
         },
         methods: {
