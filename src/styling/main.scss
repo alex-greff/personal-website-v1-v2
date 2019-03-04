@@ -7,11 +7,12 @@
 @import './global/scrollbar.scss';
 
 // Fonts
+// TODO: clean these up
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500');
-
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500');
 
 * {
     // Global resets
@@ -28,7 +29,9 @@ html {
     // font-family: 'Ubuntu', sans-serif;
     // font-family: 'Open Sans', sans-serif;
     // font-family: 'Montserrat', sans-serif;
+
     font-family: 'Roboto Mono', monospace;
+    // font-family: 'Raleway', sans-serif;
 }
 
 body {

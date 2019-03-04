@@ -2,7 +2,9 @@
     <div class="projects-content">
         <div class="projects-nav-page" v-if="!isSubPage">
             <h1>Projects</h1>
-            <ul class="projects-list" v-if="projectDataLoaded">
+
+            <!-- TODO: old stuff -->
+            <!-- <ul class="projects-list" v-if="projectDataLoaded">
                 <router-link
                     v-for="project in projects"
                     :key="project.name"
@@ -15,7 +17,17 @@
             </ul>
             <div v-else>
                 Loading...
-            </div>
+            </div> -->
+
+            <content-list
+                :contentIDs="projectIDs"
+            >
+                <template v-for="(val, key, index) in projects" v-slot:[key]>
+                    <h1 :key="index">{{key}}</h1>
+                </template>
+
+            </content-list>
+
         </div>
         
         <!-- Subpage router view -->
@@ -27,9 +39,12 @@
     import { mapActions, mapGetters } from 'vuex';
     import ProjectListItem from './ProjectListItem.vue';
 
+    import ContentList from '../../components/contentList/ContentList.vue';
+
     export default {
         components: {
-            projectListItem: ProjectListItem
+            projectListItem: ProjectListItem,
+            contentList: ContentList,
         },
         computed: {
             ...mapGetters({
@@ -40,6 +55,9 @@
             },
             projectDataLoaded() {
                 return !!(this.projects);
+            },
+            projectIDs() {
+                return Object.entries(this.projects).map(([projectName]) => projectName);
             }
         },
         methods: {
@@ -50,6 +68,10 @@
         created() {
             this.setCurrentAutoTheme({ theme: "red" });
         },
+        mounted() {
+            console.log(this.projectIDs);
+            // console.log(this.projects);
+        }
     }
 </script>
 
