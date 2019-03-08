@@ -1,0 +1,50 @@
+@import './mixins/mediaQueryManager.scss';
+@import './mixins/alignment.scss';
+@import './variables/colors.scss';
+@import './variables/globalConstants.scss';
+@import './icons/icons.scss';
+@import './global/buttons.scss';
+@import './global/scrollbar.scss';
+
+// Fonts
+// TODO: clean these up
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500');
+
+* {
+    // Global resets
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    // Definition of 1rem
+    font-size: 62.5%;
+
+    // Global font definition
+    // font-family: 'Ubuntu', sans-serif;
+    // font-family: 'Open Sans', sans-serif;
+    // font-family: 'Montserrat', sans-serif;
+
+    font-family: 'Roboto Mono', monospace;
+    // font-family: 'Raleway', sans-serif;
+}
+
+body {
+    background-color: rgba(var(--color-page-bg), 1);
+    color: white;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+// Positioning 
+.content {
+    position: relative;
+}
