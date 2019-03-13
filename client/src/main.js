@@ -6,14 +6,10 @@ import App from './App.vue';
 import router from './router/router';
 import store from './store/store';
 
-import { BACKEND_SERVER_API_ADDRESS } from './constants/backendServer';
-
 Vue.config.productionTip = false
 
-// Setup axios
-axios.defaults.baseURL = BACKEND_SERVER_API_ADDRESS;
-
 // Bind axios to vue
+// Note: the default request url can be set with axios.defaults.baseURL = <some url>;
 Vue.use(VueAxios, axios);
 
 new Vue({

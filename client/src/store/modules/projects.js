@@ -1,6 +1,5 @@
 import Vue from 'vue';
 
-import { BACKEND_SERVER_ADDRESS } from '../../constants/backendServer';
 import { PROJECT_ITEMS } from '../../constants/projectItems';
 
 const state =  {
@@ -25,7 +24,7 @@ const mutations = {
 const actions = {
     populateProjects({ dispatch }) {
         // Get all the projects from the database
-        Vue.axios.get('projects')
+        Vue.axios.get('/api/projects')
             .then(res => {
                 console.log("Projects get successful", res); // TODO: remove
 
@@ -41,7 +40,7 @@ const actions = {
                     // knows where to access it
                     const thumbnailImage = currData['thumbnailImage'];
                     if (thumbnailImage) {
-                        currData['thumbnailImage'] = `${BACKEND_SERVER_ADDRESS}/${thumbnailImage}`.replace('\\', '/');
+                        currData['thumbnailImage'] = `/${thumbnailImage}`.replace('\\', '/');
                     }
 
                     const galleryImages = currData['galleryImages'];
@@ -49,7 +48,7 @@ const actions = {
                         const newGalleryImages = {};
 
                         Object.entries(galleryImages).forEach(([ID, path]) => {
-                            newGalleryImages[ID] = `${BACKEND_SERVER_ADDRESS}/${path}`.replace('\\', '/');
+                            newGalleryImages[ID] = `/${path}`.replace('\\', '/');
                         });
 
                         currData['galleryImages'] = newGalleryImages;

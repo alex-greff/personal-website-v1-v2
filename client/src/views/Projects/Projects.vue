@@ -4,7 +4,7 @@
             <h1>Projects</h1>
 
             <!-- TODO: old stuff -->
-            <!-- <ul class="projects-list" v-if="projectDataLoaded">
+            <ul class="projects-list" v-if="projectDataLoaded">
                 <router-link
                     v-for="project in projects"
                     :key="project.name"
@@ -17,7 +17,7 @@
             </ul>
             <div v-else>
                 Loading...
-            </div> -->
+            </div>
 
             <content-list
                 :contentIDs="projectIDs"

@@ -72,7 +72,7 @@ const actions = {
         Vue.set(state.themes, 'default', defaultData); // Equivalent: state.themes['default'] = defaultData;
 
         // Get themes from the database
-        Vue.axios.get('themes')
+        Vue.axios.get('/api/themes')
             .then(res => {
                 console.log("Themes get sucessful", res); // TODO: remove
 
