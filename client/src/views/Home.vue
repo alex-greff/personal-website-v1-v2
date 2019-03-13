@@ -1,5 +1,5 @@
 <template>
-    <div class="home-content">
+    <!-- <div class="home-content">
         <div class="welcome-container">
             <div class="greeting-text">Hi, my name is</div>
             <h1 class="name-text">Alexander Greff</h1>
@@ -24,13 +24,39 @@
                 </svg>
             </div>
         </div>
-    </div>
+    </div> -->
+
+    <!-- <div class="test-container">
+        Some stuff
+    </div> -->
+    <content-container>
+        Some stuff
+        <br>
+        Some stuff
+        Some stuff
+        <br>
+        Some stuff
+        Some stuff
+        <br>
+        Some stuff
+        Some stuff
+        <br>
+        Some stuff
+        Some stuff
+        <br>
+        Some stuff
+    </content-container>
 </template>
 
 <script>
     import { mapActions } from 'vuex';
 
+    import ContentContainer from "@/components/containers/ContentContainer.vue";
+
     export default {
+        components: {
+            contentContainer: ContentContainer
+        },
         methods: {
             ...mapActions({
                 setCurrentAutoTheme: "setCurrentAutoTheme"
