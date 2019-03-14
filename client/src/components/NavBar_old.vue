@@ -155,6 +155,12 @@
         z-index: 10;
     }
 
+    .btn {
+        & a:hover {
+            text-decoration: none;
+        }
+    }
+
     .close-btn {
         z-index: 15;
     }

@@ -14,10 +14,10 @@ module.exports = {
     },
     css: {
         loaderOptions: {
-        sass: {
-            data: `
-                @import "@/styling/main.scss";
-            `
+            sass: {
+                data: `
+                    @import "@/styling/main.scss";
+                `,
             }
         }
     }

@@ -40,7 +40,7 @@ export default {
         }
 
         & .ContentContainer__decor-line {
-            width: 10px;
+            width: 5px;
             height: 100%;
 
             background-color: rgba(var(--color-accent-primary), 0.7);

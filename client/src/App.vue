@@ -15,7 +15,7 @@
 
 <script>
     // @ is an alias for /src
-    import NavBar from '@/components/NavBar.vue';
+    import NavBar from '@/components/NavBar/NavBar.vue';
     import Footer from '@/components/Footer.vue';
 
     export default {
@@ -29,9 +29,9 @@
             generalFooter: Footer,
         }, 
         methods: {
-            alignContent() {
+            alignContent() { // TODO: remove
                 const navBarEl = this.$refs.navBar.$el;
-                const contentEl = this.$refs.content;
+                const contentRef = this.$refs.content;
                 const navBarHeight = navBarEl.offsetHeight;
 
                 // If no change occurs
@@ -40,7 +40,7 @@
                 }
 
                 // Align the content so that it is under the nav bar
-                contentEl.style.marginTop = navBarHeight + 'px';
+                contentRef.style.marginTop = navBarHeight + 'px';
 
                 // Record change
                 this.lastNavBarHeight = navBarHeight;
@@ -63,7 +63,7 @@
             this.populateProjects();
         }, 
         mounted() {
-            this.alignContent();
+            // this.alignContent();
 
             this.$nextTick(function() {
                 window.addEventListener('resize', this.onResize);

@@ -6,7 +6,14 @@ import App from './App.vue';
 import router from './router/router';
 import store from './store/store';
 
-Vue.config.productionTip = false
+import { MdIcon } from 'vue-material/dist/components';
+import 'vue-material/dist/vue-material.min.css';
+
+Vue.config.productionTip = false;
+
+// Material UI 
+Vue.use(MdIcon);
+
 
 // Bind axios to vue
 // Note: the default request url can be set with axios.defaults.baseURL = <some url>;

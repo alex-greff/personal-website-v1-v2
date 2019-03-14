@@ -1,24 +1,25 @@
 {
-  "name": "personal-website-front-end",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "start": "npm run serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "vue": "^2.6.8",
-    "vue-axios": "^2.1.4",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.2.0",
-    "@vue/cli-service": "^3.2.0",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
-    "vue-template-compiler": "^2.5.17"
-  }
+    "name": "personal-website-front-end",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "start": "npm run serve",
+        "build": "vue-cli-service build"
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "vue": "^2.6.8",
+        "vue-axios": "^2.1.4",
+        "vue-material": "^1.0.0-beta-10.2",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^3.2.0",
+        "@vue/cli-service": "^3.2.0",
+        "node-sass": "^4.9.0",
+        "sass-loader": "^7.0.1",
+        "vue-template-compiler": "^2.5.17"
+    }
 }
