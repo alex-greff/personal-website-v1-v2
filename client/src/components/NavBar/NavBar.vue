@@ -1,11 +1,15 @@
 <template>
     <div class="NavBar">
         <!-- <md-icon class="NavBar__menu-icon">menu</md-icon> -->
-        <div class="NavBar__menu-container">
-            <md-icon class="NavBar__menu-icon">close</md-icon>
+        <div class="NavBar__menu-container" @click="toggleNavMenu">
+            <md-icon class="NavBar__menu-icon" v-if="isOpen">close</md-icon>
+            <md-icon class="NavBar__menu-icon" v-else>menu</md-icon>
         </div>
         <div class="NavBar__pages-container">
-            <nav-link-container></nav-link-container>
+            <nav-link-container 
+                :isOpen="isOpen"
+                :pages="pages"
+            />
         </div>
     </div>
 </template>
@@ -16,6 +20,25 @@ import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContai
 export default {
     components: {
         navLinkContainer: NavLinkContainer
+    }, 
+    data() {
+        return {
+            isOpen: false,
+            pages: [
+                // TODO: I need to deal with the home icon
+                { name: "Projects", path: "/projects" },
+                { name: "Experience", path: "/experience" },
+                { name: "Music", path: "/music" },
+                { name: "About", path: "/about" },
+                { name: "Contact", path: "/contact" },
+            ],
+        }
+    },
+    methods: {
+        toggleNavMenu() {
+            this.isOpen = !this.isOpen;
+            console.log("Toggling menu");
+        }
     }
 }
 </script>
