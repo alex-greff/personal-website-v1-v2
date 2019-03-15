@@ -69,7 +69,7 @@
             this.setCurrentAutoTheme({ theme: "red" });
         },
         mounted() {
-            console.log(this.projectIDs);
+            // console.log(this.projectIDs);
             // console.log(this.projects);
         }
     }

@@ -43,7 +43,7 @@ export default {
     watch: {
         // Watch when isOpen toggles
         isOpen(prevIsOpen, nextIsOpen) {
-            console.log("Detected isOpen change to", nextIsOpen);
+            // TODO: run the fade-in/fade-out anim
         }
     }
 }

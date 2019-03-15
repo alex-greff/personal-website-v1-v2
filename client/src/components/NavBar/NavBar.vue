@@ -37,7 +37,6 @@ export default {
     methods: {
         toggleNavMenu() {
             this.isOpen = !this.isOpen;
-            console.log("Toggling menu");
         }
     }
 }

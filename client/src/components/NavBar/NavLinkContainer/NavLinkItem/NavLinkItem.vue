@@ -36,9 +36,6 @@ export default {
 <style lang="scss" scoped>
     // TODO: I need to hook the theme colors up to the lookahead styles for each page
     .NavLinkItem {
-        // will-change: background-color;
-        // transform: translateX(-5rem);
-
         $gutter-length: 3rem;
 
         position: relative;
@@ -47,7 +44,7 @@ export default {
 
         background-color: rgba(39, 39, 39, 0.8); // TODO: theme
 
-        transition: background-color 0.2s;
+        transition: background-color 0.3s;
 
         // Offset for the gaps created by clip-path
         margin-right: calc(-1 * #{$gutter-length});
@@ -58,42 +55,21 @@ export default {
         cursor: pointer;
 
         $border-width: 2px;
-        $border-width-hover: 6px;
-        $border-width-active: 4px;
+        $border-width-hover: 3px;
+        $border-width-active: 6px;
 
-        $offset-difference: $border-width-hover - $border-width;
+        $offset-difference-hover: $border-width-hover - $border-width;
+        $offset-difference-active: $border-width-active - $border-width;
 
-        --curr-border-width: #{$border-width};
-
-        // Hover modifier
-        &:hover {
-            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
-
-            &::before {
-                --curr-border-width: #{$border-width-hover};
-
-                background-color: rgba(var(--color-accent-primary), 0.8); 
-            }
-
-            & .NavLinkItem__content {
-                padding-left: #{$offset-difference};
-            }
-        }
-
-        // Active modifer
-        &.active {
-            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
-
-            // background-color: rgba(var(--color-accent-secondary), 0.8);
-            --curr-border-width: #{$border-width-hover};
-
-            &::before {
-                background-color: rgba(var(--color-accent-primary), 0.8); 
-            }
-
-            & .NavLinkItem__content {
-                padding-left: #{$offset-difference};
-            }
+        // Computes the clip-path of the spoof border
+        @mixin compute-border-clip-path($gutter-length, $border-width) {
+            // top left, top right, bottom right, bottom left
+            clip-path: polygon(
+                $gutter-length 0%,
+                calc(#{$gutter-length} + #{$border-width}) 0%,
+                #{$border-width} 100%,
+                0% 100%
+            );
         }
 
         // Spoofs as the tilted left-border
@@ -109,13 +85,7 @@ export default {
 
             background-color: rgba(59, 59, 59, 0.8); // TODO: theme
 
-            // top left, top right, bottom right, bottom left
-            clip-path: polygon(
-                $gutter-length 0%,
-                calc(#{$gutter-length} + var(--curr-border-width)) 0%,
-                var(--curr-border-width) 100%,
-                0% 100%
-            );
+            @include compute-border-clip-path(#{$gutter-length}, #{$border-width});
 
             transition: clip-path 0.5s, background-color 0.5s;
         }
@@ -130,6 +100,40 @@ export default {
             position: relative;
             top: 50%;
             transform: translateY(-50%);
+        }
+
+        // -----------------------
+        // --- State modifiers ---
+        // -----------------------
+
+        // Hover modifier
+        &:hover {
+            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
+
+            &::before {
+                background-color: rgba(var(--color-accent-primary), 0.8); 
+
+                @include compute-border-clip-path(#{$gutter-length}, #{$border-width-hover});
+            }
+
+            & .NavLinkItem__content {
+                padding-left: #{$offset-difference-hover};
+            }
+        }
+
+        // Active modifer
+        &.active {
+            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
+
+            &::before {
+                background-color: rgba(var(--color-accent-primary), 0.8); 
+
+                @include compute-border-clip-path(#{$gutter-length}, #{$border-width-active});
+            }
+
+            & .NavLinkItem__content {
+                padding-left: #{$offset-difference-active};
+            }
         }
     }
 </style>
