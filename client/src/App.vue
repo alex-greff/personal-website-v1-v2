@@ -54,7 +54,7 @@
             },
             // Event handlers
             onResize() {
-                this.alignContent();
+                // this.alignContent(); // TODO: remove
             }
         },
         created() {
@@ -63,7 +63,7 @@
             this.populateProjects();
         }, 
         mounted() {
-            // this.alignContent();
+            // this.alignContent(); // TODO: remove
 
             this.$nextTick(function() {
                 window.addEventListener('resize', this.onResize);
