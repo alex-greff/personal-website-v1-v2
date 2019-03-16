@@ -72,7 +72,7 @@ export default {
             TweenMax.killTweensOf(this.navLinkEls);
 
             // Run the close animation
-            const ANIM_OPTIONS = { opacity: 0, x: 20 };
+            const ANIM_OPTIONS = { opacity: 0, x: 30 };
             const ON_COMPLETE_ALL = () => this.displayNavItems = false;
             const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkEls : this.navLinkElsReversed;
             TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER, ON_COMPLETE_ALL);

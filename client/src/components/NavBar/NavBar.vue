@@ -113,16 +113,8 @@ export default {
             align-items: flex-end;
         }
 
-        & .NavBar__pages-container {
-            flex-grow: 1;
-            flex-shrink: 1;
-        }
-
         & .NavBar__menu-container {
             $menu-btn-size: 4rem;
-
-            flex-grow: 0;
-            flex-shrink: 0;
 
             width: $menu-btn-size;
             height: $menu-btn-size;
@@ -135,12 +127,37 @@ export default {
         }
 
         &.desktop {
+            & .NavBar__pages-container {
+                flex-grow: 1;
+                flex-shrink: 1;
+            }
+
+            & .NavBar__menu-container {
+                flex-grow: 0;
+                flex-shrink: 0;
+            }
+
             & > .NavBar__overlay {
                 display: none;
             }
         }
 
         &.mobile {
+            display: block;
+            height: 100%;
+
+            & .NavBar__pages-container {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            & .NavBar__menu-container {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+
             & > .NavBar__overlay {
                 display: initial;
             }

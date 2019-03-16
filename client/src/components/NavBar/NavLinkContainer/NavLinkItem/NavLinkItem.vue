@@ -46,6 +46,7 @@ export default {
         cursor: pointer;
     }
 
+    // Desktop version
     .NavLinkItem.desktop {
         $gutter-length: 3rem;
         $item-length: 20rem;
@@ -147,13 +148,14 @@ export default {
         }
     }
 
+    // Mobile version
     .NavLinkItem.mobile {
-        $gutter-length: 2rem;
-        $item-length: 30rem;
+        $gutter-length: 3rem;
+        $item-length: 25rem;
         $item-height: 5rem;
 
         $hover-offset: 1rem;
-        $active-offset: 3rem;
+        $active-offset: 5rem;
 
         position: relative;
         max-width: $item-length;
@@ -225,7 +227,7 @@ export default {
         &:hover {
             background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
-            max-width: $item-length + $hover-offset;
+            max-width: calc(#{$item-length} + #{$hover-offset});
 
             &::before {
                 background-color: rgba(var(--color-accent-primary), 0.8); 
@@ -242,7 +244,7 @@ export default {
         &.active {
             background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
-            max-width: $item-length + $active-offset;
+            max-width: calc(#{$item-length} + #{$active-offset});
 
             &::before {
                 background-color: rgba(var(--color-accent-primary), 0.8); 
