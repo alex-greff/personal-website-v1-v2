@@ -26,5 +26,5 @@ export const isInBreakpoint = (i_sBreakpointName, i_nScreenWidth) => {
 
 // Public API export
 export default {
-    isBreakpoint
+    isInBreakpoint
 };
