@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VueFragment from "vue-fragment"
 
 import App from './App.vue';
 import router from './router/router';
@@ -14,6 +15,8 @@ Vue.config.productionTip = false;
 // Material UI 
 Vue.use(MdIcon);
 
+// Vue Fragment
+Vue.use(VueFragment.Plugin);
 
 // Bind axios to vue
 // Note: the default request url can be set with axios.defaults.baseURL = <some url>;
