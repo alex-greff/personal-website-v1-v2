@@ -1,21 +1,24 @@
 <template>
-    <div class="NavBar">
+    <div :class="navBarClasses">
+        <div :class="overlayClasses" @click="toggleNavMenu"></div>
+
         <!-- <md-icon class="NavBar__menu-icon">menu</md-icon> -->
         <div class="NavBar__menu-container" @click="toggleNavMenu">
             <md-icon class="NavBar__menu-icon" v-if="isOpen">close</md-icon>
             <md-icon class="NavBar__menu-icon" v-else>menu</md-icon>
         </div>
-        <!-- <div class="NavBar__pages-container"> -->
-            <nav-link-container 
-                class="NavBar__pages-container"
-                :isOpen="isOpen"
-                :pages="pages"
-            />
-        <!-- </div> -->
+        <nav-link-container 
+            class="NavBar__pages-container"
+            :isOpen="isOpen"
+            :pages="pages"
+            :displayMode="displayMode"
+        />
     </div>
 </template>
 
 <script>
+import Utilities from "@/utilities";
+
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
 export default {
@@ -25,6 +28,8 @@ export default {
     data() {
         return {
             isOpen: true,
+            displayMode: "desktop",
+            displayOverlay: true,
             pages: [
                 // TODO: I need to deal with the home icon
                 { name: "Projects", path: "/projects" },
@@ -35,9 +40,54 @@ export default {
             ],
         }
     },
+    mounted() {
+        // Initial screen sizecheck
+        this.onResize(window.innerWidth, window.innerHeight);
+
+        // Watch screen width
+        this.$nextTick(() => {
+            window.addEventListener('resize', () => {
+                this.onResize(window.innerWidth);
+            });
+        });
+    },
+    computed: {
+        navBarClasses() {
+            return `NavBar ${this.displayMode}`;
+        },
+        overlayClasses() {
+            return `NavBar__overlay ${(this.displayOverlay) ? "" : "hidden"}`.trim();
+        }
+    },
     methods: {
+        onResize(i_nNewWidth, i_nNewHeight) {
+            this.determineDisplayMode(i_nNewWidth);
+        },
+        determineDisplayMode(i_nWidth) {
+            if (Utilities.isInBreakpoint("phone", i_nWidth)) {
+                this.displayMode = "mobile";
+            } else {
+                this.displayMode = "desktop";
+            }
+        },
         toggleNavMenu() {
             this.isOpen = !this.isOpen;
+        },
+        showOverlay() {
+            this.displayOverlay = true;
+        },
+        hideOverlay() {
+            this.displayOverlay = false;
+        }
+    },
+    watch: {
+        isOpen(isOpening, isCurrentlyOpen) {
+            if (isOpening) {
+                this.showOverlay();
+            }
+            else {
+                this.hideOverlay();
+            }
         }
     }
 }
@@ -77,8 +127,41 @@ export default {
             width: $menu-btn-size;
             height: $menu-btn-size;
 
+            z-index: 2;
+
             & .NavBar__menu-icon {
                 @include icon-size($menu-btn-size);
+            }
+        }
+
+        &.desktop {
+            & > .NavBar__overlay {
+                display: none;
+            }
+        }
+
+        &.mobile {
+            & > .NavBar__overlay {
+                display: initial;
+            }
+        }
+        
+        & > .NavBar__overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.815); // TODO: theme
+
+            transition: background-color 0.2s;
+
+            &.hidden {
+                pointer-events: none;
+
+                background-color: rgba(0, 0, 0, 0); // TODO: theme
             }
         }
     }

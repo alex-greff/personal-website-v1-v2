@@ -16,7 +16,6 @@
 
 <script>
 import { TweenMax } from "gsap/all";
-import Utilities from "@/utilities";
 
 import NavLinkItem from "@/components/NavBar/NavLinkContainer/NavLinkItem/NavLinkItem.vue";
 
@@ -35,50 +34,30 @@ export default {
         pages: {
             type: Array,
             required: true
+        },
+        displayMode: {
+            type: String,
+            required: true
         }
     },
     data() {
         return {
-            displayMode: "desktop",
             displayNavItems: this.isOpen, // Initialize to the init isOpen prop
         }
     },
     mounted() {
-        // Initial screen sizecheck
-        this.onResize(window.innerWidth, window.innerHeight);
-
-        // Watch screen width
-        this.$nextTick(() => {
-            window.addEventListener('resize', () => {
-                this.onResize(window.innerWidth);
-            });
-        });
-
         // Initialize the nav item opacities
         this.navLinkEls.forEach(el => {
             el.style.opacity = (this.isOpen) ? 1 : 0;
         });
     },
     methods: {
-        onResize(i_nNewWidth, i_nNewHeight) {
-            this.determineDisplayModeClass(i_nNewWidth);
-        },
-        determineDisplayModeClass(i_nWidth) {
-            if (Utilities.isInBreakpoint("phone", i_nWidth)) {
-                this.displayMode = "mobile";
-            } else {
-                this.displayMode = "desktop";
-            }
-        },
         // ---------------------------
         // --- Nav Display Methods ---
         // ---------------------------
-        _setDisplayNavItems(i_bIsOpen) {
-            this.displayNavItems = i_bIsOpen;
-        },
         openNavItems() {
             // Display the nav items
-            this._setDisplayNavItems(true);
+            this.displayNavItems = true;
 
             // Stop the close animation if it's running
             TweenMax.killTweensOf(this.navLinkElsReversed);
@@ -93,16 +72,15 @@ export default {
             TweenMax.killTweensOf(this.navLinkEls);
 
             // Run the close animation
-            const ANIM_OPTIONS = { opacity: 0, x: 20, onComplete: () => {
-                this._setDisplayNavItems(false);
-            }};
+            const ANIM_OPTIONS = { opacity: 0, x: 20 };
+            const ON_COMPLETE_ALL = () => this.displayNavItems = false;
             const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkEls : this.navLinkElsReversed;
-            TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
+            TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER, ON_COMPLETE_ALL);
         }
     }, 
     computed: {
         displayModeClass() {
-            return `NavLinkContainer__${this.displayMode}`;
+            return `NavLinkContainer ${this.displayMode}`;
         },
         // ------------------------------
         // --- NavLink computed props ---
@@ -138,20 +116,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .NavLinkContainer__desktop {
-        display: flex;
-        flex-direction: row-reverse;
-        align-items: center;
+    .NavLinkContainer {
+        &.desktop {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
 
-        margin-right: 3rem; // TODO: link with $gutter-length in navLinkItem.vue
+            margin-right: 3rem; // TODO: link with $gutter-length in navLinkItem.vue
+        }
+
+        &.mobile {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+
+            width: 100%;
+        }
     }
-
-    .NavLinkContainer__mobile {
-        display: flex;
-        flex-direction: column-reverse;
-
-
-    }
-
 </style>
 
