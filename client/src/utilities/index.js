@@ -1,4 +1,4 @@
-import { BREAKPOINT_PHONE, BREAKPOINT_TAB_PORT, BREAKPOINT_TAB_LAND, BREAKPOINT_BIG_DESKTOP } from "@/constants";
+import { BREAKPOINT_PHONE, BREAKPOINT_TAB_PORT, BREAKPOINT_TAB_LAND, BREAKPOINT_BIG_DESKTOP } from "@/constants/breakpoints";
 
 /**
  * Returns if the given screen width is inside the given breakpoint.
@@ -23,8 +23,21 @@ export const isInBreakpoint = (i_sBreakpointName, i_nScreenWidth) => {
     }
 };
 
+/**
+ * Joins all the classnames together into a valid classnames string and filters out any undefined values.
+ * This is used for the common classname injection passthrough pattern that is used in many components.
+ * 
+ * @param  {...any} i_aClassnames The classnames to join.
+ */
+export const injectClasses = (...i_aClassnames) => {
+    // Remove any undefined indicies
+    const i_aSerialized = i_aClassnames.filter(i_sClassname => !!i_sClassname);
+
+    return i_aSerialized.join(" ");
+};
 
 // Public API export
 export default {
-    isInBreakpoint
+    isInBreakpoint,
+    injectClasses
 };
