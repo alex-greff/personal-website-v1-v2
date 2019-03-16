@@ -14,6 +14,9 @@
 </template>
 
 <script>
+    import * as actionTypes from '@/store/types/actionTypes';
+    import { mapActions } from 'vuex';
+
     // @ is an alias for /src
     import NavBar from '@/components/NavBar/NavBar.vue';
     import Footer from '@/components/Footer.vue';
@@ -29,7 +32,11 @@
             generalFooter: Footer,
         }, 
         methods: {
-            alignContent() { // TODO: remove
+            ...mapActions({
+                populateThemes: actionTypes.POPULATE_THEMES,
+                populateProjects: actionTypes.POPULATE_PROJECTS
+            }),
+            alignContent() { // TODO: remove???
                 const navBarEl = this.$refs.navBar.$el;
                 const contentRef = this.$refs.content;
                 const navBarHeight = navBarEl.offsetHeight;
@@ -44,13 +51,6 @@
 
                 // Record change
                 this.lastNavBarHeight = navBarHeight;
-            },
-            populateThemes() {
-                // Retrieves and populates the website with the themes
-                this.$store.dispatch('populateThemes');
-            },
-            populateProjects() {
-                this.$store.dispatch('populateProjects');
             },
             // Event handlers
             onResize() {

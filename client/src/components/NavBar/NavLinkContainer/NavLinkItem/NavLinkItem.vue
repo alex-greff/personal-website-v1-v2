@@ -4,6 +4,7 @@
         tag="div"
         :class="displayModeClasses"
         active-class="active"
+        :exact="exact"
     >
         <div class="NavLinkItem__content">
             <slot></slot>
@@ -21,6 +22,10 @@ export default {
         displayMode: {
             type: String,
             required: true
+        },
+        exact: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -155,7 +160,7 @@ export default {
         $item-height: 5rem;
 
         $hover-offset: 1rem;
-        $active-offset: 5rem;
+        $active-offset: 1rem;
 
         position: relative;
         max-width: $item-length;

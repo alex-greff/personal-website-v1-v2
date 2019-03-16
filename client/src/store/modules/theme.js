@@ -1,6 +1,30 @@
 import Vue from 'vue';
 import { THEME_ITEMS } from '../../constants/themeItems';
 
+import * as actionTypes from "@/store/types/actionTypes";
+import * as getterTypes from "@/store/types/getterTypes";
+import * as mutationTypes from "@/store/types/mutationTypes";
+
+// -----------------------
+// --- Check Functions ---
+// -----------------------
+
+const _themeExists = (i_oState, i_sThemeID) => {
+    if (!i_oState[i_sThemeID]) {
+        throw `Error: theme '${i_sThemeID}' does not exist`;
+    }
+};
+
+const _themeDoesNotExist = (i_oState, i_sThemeID) => {
+    if (i_oState[i_sThemeID]) {
+        throw `Error: theme '${i_sThemeID}' already exists`;
+    }
+}
+
+// -------------------
+// --- Store Setup ---
+// -------------------
+
 const state = {
     currentTheme: "default",
     currentAutoTheme: "default",
@@ -12,7 +36,7 @@ const getters = {
     getThemes: state => {
         return state.themes;
     },
-    getCurrentTheme: state => {
+    getCurrentTheme: state => { // TODO: remove
         return state.currentTheme;
     },
     getCurrentAutoTheme: state => {
@@ -61,7 +85,7 @@ const actions = {
         dispatch('updateCurrentTheme');
     },
 
-    populateThemes({ dispatch }) {
+    [actionTypes.POPULATE_THEMES]: async ({ dispatch }) => {
         // Get the default theme local theme (for incase we can't connect to the api server)
         let styles = getComputedStyle(document.documentElement);
         let defaultData = {};
@@ -71,38 +95,37 @@ const actions = {
         });
         Vue.set(state.themes, 'default', defaultData); // Equivalent: state.themes['default'] = defaultData;
 
-        // Get themes from the database
-        Vue.axios.get('/api/themes')
-            .then(res => {
-                console.log("Themes get sucessful", res); // TODO: remove
+        try {
+            // Get themes from the database
+            const res = await Vue.axios.get('/api/themes');
 
-                // Construct our in-memory themes object
-                res.data.themes.forEach(theme => {
-                    const currData = {};
+            console.log("Themes get sucessful", res); // TODO: remove
 
-                    currData.name = theme.name;
+            // Construct our in-memory themes object
+            res.data.themes.forEach(theme => {
+                const currData = {};
 
-                    THEME_ITEMS.forEach(THEME_ITEM => {
-                        currData[THEME_ITEM] = theme[THEME_ITEM];
-                    });
+                currData.name = theme.name;
 
-                    Vue.set(state.themes, theme.name, currData); // Equivalent: state.themes[theme.name] = currData;
+                THEME_ITEMS.forEach(THEME_ITEM => {
+                    currData[THEME_ITEM] = theme[THEME_ITEM];
                 });
-                dispatch('updateCurrentTheme');
 
-            })
-            .catch(err => {
-                console.log("Get failed", err)
+                Vue.set(state.themes, theme.name, currData); // Equivalent: state.themes[theme.name] = currData;
             });
+            dispatch('updateCurrentTheme');
+        } catch(err) {
+            console.error("Unable to retrieve themes from server:\n", err);
+        }
     },
 
-    updateCurrentTheme() {
+    updateCurrentTheme() { // TODO: this is gonna be removed
         let bodyStyles = document.body.style;
         let currThemeName = (state.autoThemeEnabled) ? state.currentAutoTheme : state.currentTheme;
         let currTheme = state.themes[currThemeName];
 
         if (!currTheme) {
-            console.log("Erorr: '" + currThemeName + "' is not a theme, using default instead");
+            console.warn("Warning: '" + currThemeName + "' is not a theme, using default instead");
             currThemeName = "default";
             currTheme = state.themes[currThemeName];
         }

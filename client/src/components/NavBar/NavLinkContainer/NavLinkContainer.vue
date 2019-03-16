@@ -8,6 +8,7 @@
             :style="navLinkStyles"
             :to="page.path"
             :displayMode="displayMode"
+            :exact="page.exact"
         >
             {{ page.name }}
         </nav-link-item>

@@ -32,11 +32,12 @@ export default {
             displayOverlay: true,
             pages: [
                 // TODO: I need to deal with the home icon
-                { name: "Projects", path: "/projects" },
-                { name: "Experience", path: "/experience" },
-                { name: "Music", path: "/music" },
-                { name: "About", path: "/about" },
-                { name: "Contact", path: "/contact" },
+                { name: "Home", path: "/", exact: true },
+                { name: "Projects", path: "/projects", exact: false },
+                { name: "Experience", path: "/experience", exact: false },
+                { name: "Music", path: "/music", exact: false },
+                { name: "About", path: "/about", exact: false },
+                { name: "Contact", path: "/contact", exact: false },
             ],
         }
     },
@@ -50,6 +51,9 @@ export default {
                 this.onResize(window.innerWidth);
             });
         });
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
     },
     computed: {
         navBarClasses() {

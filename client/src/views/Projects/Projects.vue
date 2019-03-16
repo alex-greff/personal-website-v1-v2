@@ -38,6 +38,7 @@
 <script>
     import { mapActions, mapGetters } from 'vuex';
     import ProjectListItem from './ProjectListItem.vue';
+    import * as getterTypes from '@/store/types/getterTypes';
 
     import ContentList from '../../components/contentList/ContentList.vue';
 
@@ -48,7 +49,7 @@
         },
         computed: {
             ...mapGetters({
-                projects:'getProjects'
+                projects: getterTypes.GET_ALL_PROJECTS
             }),
             isSubPage() {
                 return !!(this.$route.params.id);
