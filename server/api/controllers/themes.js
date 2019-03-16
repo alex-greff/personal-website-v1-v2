@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Theme = require('../models/theme');
+const Utilities = require('../utilities');
 const THEME_ITEMS = require('../constants/themeItems');
 
 const UNREMOVEABLE_DOC_IDS = require('../constants/unremovableDocs');
@@ -14,15 +15,14 @@ exports.themes_get_all = (req, res, next) => {
             const response = {
                 count: docs.length,
                 themes: docs.map(doc => {
-                    // Construct the theme items object
-                    let theme_colors = {};
-                    THEME_ITEMS.forEach(THEME_ITEM => {
-                        theme_colors[THEME_ITEM] = doc[THEME_ITEM];
-                    });
+                    // Get the properties of the theme
+                    const theme_properties = Utilities.map_to_object(doc["properties"]);
 
                     return {
                         name: doc.name,
-                        ...theme_colors, // Use the spread operator to inject the theme items
+                        properties: {
+                            ...theme_properties
+                        },
                         _id: doc._id,
                         request: {
                             type: "GET",
@@ -41,55 +41,6 @@ exports.themes_get_all = (req, res, next) => {
                 error: err
             });
         });
-}
-
-exports.themes_create_theme = (req, res, next) => {
-    // Construct the theme items object
-    let theme_colors = {};
-    THEME_ITEMS.forEach(THEME_ITEM => {
-        theme_colors[THEME_ITEM] = req.body[THEME_ITEM];
-    });
-
-    // Create theme mongodb doc
-    const theme = new Theme({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        ...theme_colors
-    });
-
-    theme
-        .save()
-        .then(result => {
-            console.log(result);
-
-            // Construct the theme items object
-            let theme_colors = {};
-            THEME_ITEMS.forEach(THEME_ITEM => {
-                theme_colors[THEME_ITEM] = result[THEME_ITEM];
-            });
-
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
-            // Send response 
-            res.status(201).json({
-                message: "Created theme sucessfully",
-                createdTheme: {
-                    name: result.name,
-                    ...theme_colors,
-                    _id: result._id,
-                    request: {
-                        type: "GET",
-                        url: url
-                    }
-                }
-            });
-        })
-        .catch(err => {
-            console.log(err);
-
-            res.status(500).json({
-                error: err
-            });
-        });
 };
 
 exports.themes_get_theme = (req, res, next) => {
@@ -102,11 +53,8 @@ exports.themes_get_theme = (req, res, next) => {
             console.log("From database", doc);
 
             if (doc) {
-                // Construct the theme items object
-                let theme_colors = {};
-                THEME_ITEMS.forEach(THEME_ITEM => {
-                    theme_colors[THEME_ITEM] = doc[THEME_ITEM];
-                });
+                // Get the properties of the theme
+                const theme_properties = Utilities.map_to_object(doc["properties"]);
 
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
 
@@ -115,7 +63,9 @@ exports.themes_get_theme = (req, res, next) => {
                     theme: {
                         _id: doc._id,
                         name: doc.name,
-                        ...theme_colors
+                        properties: {
+                            ...theme_properties
+                        }
                     }, 
                     request: {
                         type: "GET",
@@ -130,6 +80,51 @@ exports.themes_get_theme = (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.themes_create_theme = (req, res, next) => {
+    const theme_properties = req.body["properties"];
+
+    // Create theme mongodb doc
+    const theme = new Theme({
+        _id: new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        properties: {
+            ...theme_properties
+        }
+    });
+
+    theme
+        .save()
+        .then(result => {
+            console.log(result);
+
+            const theme_properties = Utilities.map_to_object(result["properties"]);
+
+            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
+            // Send response 
+            res.status(201).json({
+                message: "Created theme sucessfully",
+                createdTheme: {
+                    name: result.name,
+                    properties: {
+                        ...theme_properties
+                    },
+                    _id: result._id,
+                    request: {
+                        type: "GET",
+                        url: url
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+
             res.status(500).json({
                 error: err
             });
@@ -181,12 +176,6 @@ exports.themes_delete_theme = (req, res, next) => {
         .findByIdAndRemove({ _id: id })
         .exec()
         .then(removed => {
-            // Construct the theme items object
-            let theme_colors = {};
-            THEME_ITEMS.forEach(THEME_ITEM => {
-                theme_colors[THEME_ITEM] = "String";
-            });
-
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
             // Send response
             res.status(200).json({
@@ -196,7 +185,7 @@ exports.themes_delete_theme = (req, res, next) => {
                     url: url,
                     body: {
                         name: "String",
-                        ...theme_colors
+                        properties: "Map of Strings"
                     }
                 }
             });
