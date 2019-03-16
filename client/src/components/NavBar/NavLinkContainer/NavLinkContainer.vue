@@ -80,7 +80,7 @@ export default {
     },
     computed: {
         navLinkPagesData() {
-            return this.pages.reverse();
+            return this.pages.slice().reverse();
         },
         navLinkStyles() {
             return {
