@@ -5,12 +5,13 @@
             <md-icon class="NavBar__menu-icon" v-if="isOpen">close</md-icon>
             <md-icon class="NavBar__menu-icon" v-else>menu</md-icon>
         </div>
-        <div class="NavBar__pages-container">
+        <!-- <div class="NavBar__pages-container"> -->
             <nav-link-container 
+                class="NavBar__pages-container"
                 :isOpen="isOpen"
                 :pages="pages"
             />
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
     }, 
     data() {
         return {
-            isOpen: false,
+            isOpen: true,
             pages: [
                 // TODO: I need to deal with the home icon
                 { name: "Projects", path: "/projects" },
@@ -48,20 +49,37 @@ export default {
         top: 0;
         right: 0;
 
+        width: 100%;
+
         z-index: 10;
 
         display: flex;
         flex-direction: row-reverse;
-        // align-items: center;
-
-        & .NavBar__menu-container {
-            & .NavBar__menu-icon {
-                @include icon-size(4rem);
-            }
+        align-items: flex-start;
+        
+        // Switch column layouts when the phone breakpoint is reached
+        @include respond(phone) {
+            flex-direction: column;
+            align-items: flex-end;
         }
 
         & .NavBar__pages-container {
-            
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        & .NavBar__menu-container {
+            $menu-btn-size: 4rem;
+
+            flex-grow: 0;
+            flex-shrink: 0;
+
+            width: $menu-btn-size;
+            height: $menu-btn-size;
+
+            & .NavBar__menu-icon {
+                @include icon-size($menu-btn-size);
+            }
         }
     }
 

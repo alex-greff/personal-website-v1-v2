@@ -23,6 +23,10 @@ export default {
         to: {
             type: String,
             required: true
+        },
+        displayMode: {
+            type: String,
+            required: true
         }
     },
     data() {
@@ -39,8 +43,11 @@ export default {
         $gutter-length: 3rem;
 
         position: relative;
-        width: 20rem;
-        height: 100%;
+        max-width: 20rem;
+        height: 4rem;
+
+        flex-grow: 1;
+        flex-shrink: 1;
 
         background-color: rgba(39, 39, 39, 0.8); // TODO: theme
 
@@ -92,8 +99,7 @@ export default {
 
         & .NavLinkItem__content {
             margin-left: $gutter-length;
-            
-            max-width: calc(100% - (2 * #{$gutter-length}));
+            margin-right: $gutter-length;
 
             transition: padding-left 0.5s;
 

@@ -1,18 +1,13 @@
 <template>
-    <div class="NavLinkContainer">
-        <!-- TODO: add in the page routes -->
-        <!-- <nav-link-item>Something 1</nav-link-item>
-        <nav-link-item>Something 2</nav-link-item>
-        <nav-link-item>Something 3</nav-link-item> -->
-
+    <div :class="displayModeClass">
         <nav-link-item 
             v-for="page in navLinkPagesData" 
             :key="page.name"
+            ref="navLinkRefs"
 
             :style="navLinkStyles"
-
             :to="page.path"
-            ref="navLinkRefs"
+            :displayMode="displayMode"
         >
             {{ page.name }}
         </nav-link-item>
@@ -20,9 +15,10 @@
 </template>
 
 <script>
-import NavLinkItem from "@/components/NavBar/NavLinkContainer/NavLinkItem/NavLinkItem.vue";
-
 import { TweenMax } from "gsap/all";
+import Utilities from "@/utilities";
+
+import NavLinkItem from "@/components/NavBar/NavLinkContainer/NavLinkItem/NavLinkItem.vue";
 
 const ANIM_DURATION = 0.3;
 const ANIM_STAGGER = 0.05;
@@ -43,10 +39,40 @@ export default {
     },
     data() {
         return {
-            displayNavItems: this.isOpen // Initialize to the init isOpen prop
+            displayMode: "desktop",
+            displayNavItems: this.isOpen, // Initialize to the init isOpen prop
         }
     },
+    mounted() {
+        // Initial screen sizecheck
+        this.onResize(window.innerWidth, window.innerHeight);
+
+        // Watch screen width
+        this.$nextTick(() => {
+            window.addEventListener('resize', () => {
+                this.onResize(window.innerWidth);
+            });
+        });
+
+        // Initialize the nav item opacities
+        this.navLinkEls.forEach(el => {
+            el.style.opacity = (this.isOpen) ? 1 : 0;
+        });
+    },
     methods: {
+        onResize(i_nNewWidth, i_nNewHeight) {
+            this.determineDisplayModeClass(i_nNewWidth);
+        },
+        determineDisplayModeClass(i_nWidth) {
+            if (Utilities.isInBreakpoint("phone", i_nWidth)) {
+                this.displayMode = "mobile";
+            } else {
+                this.displayMode = "desktop";
+            }
+        },
+        // ---------------------------
+        // --- Nav Display Methods ---
+        // ---------------------------
         _setDisplayNavItems(i_bIsOpen) {
             this.displayNavItems = i_bIsOpen;
         },
@@ -59,7 +85,8 @@ export default {
 
             // Run the open animation
             const ANIM_OPTIONS = { opacity: 1, x: 0 };
-            TweenMax.staggerTo(this.navLinkEls, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
+            const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkElsReversed : this.navLinkEls;
+            TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
         },
         closeNavItems() {
             // Stop the open animation if it's running
@@ -69,16 +96,17 @@ export default {
             const ANIM_OPTIONS = { opacity: 0, x: 20, onComplete: () => {
                 this._setDisplayNavItems(false);
             }};
-            TweenMax.staggerTo(this.navLinkElsReversed, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
+            const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkEls : this.navLinkElsReversed;
+            TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
         }
     }, 
-    mounted() {
-        // Initialize the nav item opacities
-        this.navLinkEls.forEach(el => {
-            el.style.opacity = (this.isOpen) ? 1 : 0;
-        });
-    },
     computed: {
+        displayModeClass() {
+            return `NavLinkContainer__${this.displayMode}`;
+        },
+        // ------------------------------
+        // --- NavLink computed props ---
+        // ------------------------------
         navLinkPagesData() {
             return this.pages.slice().reverse();
         },
@@ -110,15 +138,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .NavLinkContainer {
+    .NavLinkContainer__desktop {
         display: flex;
         flex-direction: row-reverse;
-
         align-items: center;
 
-        height: 100%;
-
         margin-right: 3rem; // TODO: link with $gutter-length in navLinkItem.vue
+    }
+
+    .NavLinkContainer__mobile {
+        display: flex;
+        flex-direction: column-reverse;
+
+
     }
 
 </style>
