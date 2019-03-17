@@ -2,32 +2,39 @@
     <div class="theme-controls">
         <span class="theme-item theme-auto" 
             title="Theme: auto"
-            @click="setAutoThemeEnabled(true)"
-            :class="{ 'theme-active': autoThemeEnabled === true }"></span>
+            
+        ></span>
 
-        <span v-for="theme in this.themes" :key="theme.name" class="theme-item"
+        <span v-for="theme in themes" :key="theme.name" class="theme-item"
             :title="'Theme: ' + theme.name"
-            :style="{ backgroundColor: toRGBA(theme['--color-accent-primary']) }"
-            :class="{ 'theme-active': currentTheme === theme.name && autoThemeEnabled === false }"
-            @click="setCurrentTheme({ theme: theme['name'], forceAutoOff: true })"></span>
+            :style="{ backgroundColor: toRGBA(theme.properties['--color-accent-primary']) }"
+        ></span>
     </div>
+    <!-- @click="setAutoThemeEnabled(true)" -->
+    <!-- :class="{ 'theme-active': autoThemeEnabled === true }" -->
+
+    <!-- :class="{ 'theme-active': currentTheme === theme.name && autoThemeEnabled === false }" -->
+    <!-- @click="setCurrentTheme({ theme: theme['name'], forceAutoOff: true })"> -->
 </template>
+
 
 <script>
     import { mapActions, mapGetters } from 'vuex';
+    import * as getterTypes from '@/store/types/getterTypes';
+    import * as actionTypes from '@/store/types/actionTypes';
 
     export default {
         computed: {
             ...mapGetters({
-                themes: "getThemes",
-                currentTheme: "getCurrentTheme",
-                autoThemeEnabled: "getAutoThemeEnabled"
+                themes: getterTypes.GET_ALL_THEMES,
+                // currentTheme: "getCurrentTheme",
+                // autoThemeEnabled: "getAutoThemeEnabled"
             })
         },
         methods: {
             ...mapActions({
-                setCurrentTheme: "setCurrentTheme",
-                setAutoThemeEnabled: "setAutoThemeEnabled"
+                // setCurrentTheme: "setCurrentTheme",
+                // setAutoThemeEnabled: "setAutoThemeEnabled"
             }),
             toRGBA(themeColor) {
                 return "rgba(" + themeColor + ", 1)";
