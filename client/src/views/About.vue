@@ -57,19 +57,10 @@
 
 <script>
     import Timeline from '@/components/Timeline.vue';
-    import { mapActions } from 'vuex';
 
     export default {
         components: {
             timeline: Timeline
-        },
-        methods: {
-            ...mapActions({
-                setCurrentAutoTheme: "setCurrentAutoTheme"
-            })
-        },
-        created() {
-            this.setCurrentAutoTheme({ theme: "green" });
         }
     }
 </script>

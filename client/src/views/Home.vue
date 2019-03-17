@@ -49,21 +49,11 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
-
     import ContentContainer from "@/components/containers/ContentContainer.vue";
 
     export default {
         components: {
             contentContainer: ContentContainer
-        },
-        methods: {
-            ...mapActions({
-                setCurrentAutoTheme: "setCurrentAutoTheme"
-            })
-        },
-        created() {
-            this.setCurrentAutoTheme({ theme: "blue" });
         }
     }
 </script>

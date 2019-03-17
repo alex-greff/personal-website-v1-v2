@@ -10,6 +10,7 @@ import Vuex from 'vuex';
 // Module imports
 import theme from './modules/theme';
 import projects from './modules/projects';
+import autoTheme from './modules/autoTheme';
 
 Vue.use(Vuex);
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     },
     modules: {
         theme,
-        projects
+        projects,
+        autoTheme
     }
 });

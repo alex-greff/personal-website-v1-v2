@@ -38,7 +38,7 @@
 
 
 <style lang="scss">
-    #app {
+    #app__base {
         min-height: 100%;
         display: grid;
         grid-template-columns: 100%;

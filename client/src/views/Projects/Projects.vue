@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex';
+    import { mapGetters } from 'vuex';
     import ProjectListItem from './ProjectListItem.vue';
     import * as getterTypes from '@/store/types/getterTypes';
 
@@ -60,14 +60,6 @@
             projectIDs() {
                 return Object.entries(this.projects).map(([projectName]) => projectName);
             }
-        },
-        methods: {
-            ...mapActions({
-                setCurrentAutoTheme: "setCurrentAutoTheme"
-            })
-        },
-        created() {
-            this.setCurrentAutoTheme({ theme: "red" });
         },
         mounted() {
             // console.log(this.projectIDs);

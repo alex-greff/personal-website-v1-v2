@@ -39,7 +39,6 @@ const _namespaceDoesNotExist = (i_oState, i_sNamespaceID) => {
 // -------------------
 
 const state = {
-    autoThemeEnabled: true,
     themes: {}, // themeID: { _id: String, colors: { --color-page-bg: "XX, XX, XX" }}
     namespaces: {}
 };
@@ -62,11 +61,7 @@ const getters = {
         return (i_sNamespaceID) => {
             return i_oState.namespaces[i_sNamespaceID];
         }
-    },
-    // Auto theme getter
-    [getterTypes.IS_AUTO_THEME_ENABLED]: (i_oState) => {
-        return i_oState.autoThemeEnabled;
-    },
+    }
 };
 
 const mutations = {
@@ -133,11 +128,6 @@ const mutations = {
 
         // Edit the theme target        
         Vue.set(i_oState.namespaces, name, targetTheme);
-    },
-    // Auto theme mutation
-    [mutationTypes.SET_AUTO_THEME_ENABLED]: (i_oState, i_oPayload) => {
-        // Set the auto theme enabled state
-        Vue.set(i_oState, "autoThemeEnabled", i_oPayload.enabled);
     }
 };
 
@@ -188,16 +178,12 @@ const actions = {
     },
     [actionTypes.EDIT_NAMESPACE]: ({ commit }, i_oPayload) => {
         commit(mutationTypes.EDIT_NAMESPACE, i_oPayload);
-    },
-    // Auto theme action
-    [actionTypes.SET_AUTO_THEME_ENABLED]: ({ commit }, i_oPayload) => {
-        commit(mutationTypes.SET_AUTO_THEME_ENABLED, i_oPayload);
     }
 };
 
 export default {
     state,
+    getters,
     mutations,
-    actions,
-    getters
+    actions
 }

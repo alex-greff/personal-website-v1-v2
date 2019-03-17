@@ -31,7 +31,7 @@ export default {
             displayMode: "desktop",
             displayOverlay: true,
             pages: [
-                // TODO: I need to deal with the home icon
+                // TODO: don't hardcode this here
                 { name: "Home", path: "/", exact: true },
                 { name: "Projects", path: "/projects", exact: false },
                 { name: "Experience", path: "/experience", exact: false },
