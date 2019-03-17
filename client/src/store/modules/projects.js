@@ -1,6 +1,4 @@
 import Vue from 'vue';
-
-import { PROJECT_ITEMS } from '../../constants/projectItems'; // TODO: I dont using this for iterating
 import update from 'immutability-helper';
 
 import * as actionTypes from "@/store/types/actionTypes";
