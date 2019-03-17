@@ -110,6 +110,8 @@ export default {
         display: flex;
         flex-direction: row-reverse;
         align-items: flex-start;
+
+        pointer-events: none;
         
         // Switch column layouts when the phone breakpoint is reached
         @include respond(phone) {
@@ -124,6 +126,8 @@ export default {
             height: $menu-btn-size;
 
             z-index: 2;
+
+            pointer-events: all;
 
             & .NavBar__menu-icon {
                 @include icon-size($menu-btn-size);
@@ -174,6 +178,8 @@ export default {
 
             width: 100%;
             height: 100%;
+
+            pointer-events: all;
 
             background-color: rgba(0, 0, 0, 0.815); // TODO: theme
 
