@@ -36,8 +36,73 @@ export const injectClasses = (...i_aClassnames) => {
     return i_aSerialized.join(" ");
 };
 
+/**
+ * Returns if the given css custom properties name is valid.
+ * E.g. --my-custom-prop-name
+ * 
+ * @param {String} i_sCSSVarName The custom property.
+ */
+export const isValidCSSVar = (i_sCSSVarName) => {
+    return /^--([\w\d]+-)*([\w\d]+?)$/.test(i_sCSSVarName);
+};
+
+/**
+ * Returns if the given object is empty.
+ * 
+ * @param {Object} i_oObj The object.
+ */
+export const isObjectEmpty = (i_oObj) => {
+    return Object.entries(i_oObj).length === 0 && i_oObj.constructor === Object;
+};
+
+
+/**
+ * Saves a value to a css property.
+ * 
+ * @param {String} i_sPropertyName The name of the property.
+ * @param {String} i_sPropertyValue The value to set the property to.
+ * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ */
+export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_sElementSelector = null) => {
+    // If no element selector is given then just select root
+    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+    // Set the custom property
+    el.style.setProperty(i_sPropertyName, i_sPropertyValue);
+}
+
+/**
+ * Removes a css property.
+ * 
+ * @param {Stirng} i_sPropertyName The name of the property.
+ * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ */
+export const removeCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
+    // If no element selector is given then just select root
+    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+    // Remove the custom property
+    el.style.removeProperty(i_sPropertyName);
+}
+
+/**
+ * Gets the value of a css property.
+ * 
+ * @param {String} i_sPropertyName The name of the property.
+ * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ */
+export const getCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
+    // If no element selector is given then just select root
+    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+    // Set the custom property
+    return el.style.getPropertyValue(i_sPropertyName);
+}
+
 // Public API export
 export default {
     isInBreakpoint,
-    injectClasses
+    injectClasses,
+    isValidCSSVar,
+    isObjectEmpty,
+    saveCSSProperty,
+    removeCSSProperty,
+    getCSSProperty
 };
