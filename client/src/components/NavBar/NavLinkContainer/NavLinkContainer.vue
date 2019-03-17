@@ -10,13 +10,14 @@
             :displayMode="displayMode"
             :exact="page.exact"
         >
-            {{ page.name }}
+            {{ capitalizeNavName(page.name) }}
         </nav-link-item>
     </div>
 </template>
 
 <script>
 import { TweenMax } from "gsap/all";
+import Utilities from "@/utilities";
 
 import NavLinkItem from "@/components/NavBar/NavLinkContainer/NavLinkItem/NavLinkItem.vue";
 
@@ -77,6 +78,9 @@ export default {
             const ON_COMPLETE_ALL = () => this.displayNavItems = false;
             const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkEls : this.navLinkElsReversed;
             TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER, ON_COMPLETE_ALL);
+        },
+        capitalizeNavName(i_sName) {
+            return Utilities.capitalize(i_sName);
         }
     }, 
     computed: {

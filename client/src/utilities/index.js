@@ -101,7 +101,7 @@ export const getCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
  * 
  * @param {*} i_sStr The word.
  */
-export const capitalizeWord = (i_sWord) => {
+export const capitalize = (i_sWord) => {
     return i_sWord.charAt(0).toUpperCase() + i_sWord.slice(1);
 }
 
@@ -110,7 +110,7 @@ export const capitalizeWord = (i_sWord) => {
  * 
  * @param {*} i_sStr The word.
  */
-export const decapitalizeWord = (i_sWord) => {
+export const decapitalize = (i_sWord) => {
     return i_sWord.charAt(0).toLowerCase() + i_sWord.slice(1);
 }
 
@@ -123,6 +123,6 @@ export default {
     saveCSSProperty,
     removeCSSProperty,
     getCSSProperty,
-    capitalizeWord,
-    decapitalizeWord
+    capitalize,
+    decapitalize
 };

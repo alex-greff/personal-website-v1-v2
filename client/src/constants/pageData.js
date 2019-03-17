@@ -16,7 +16,7 @@ export const pageData = {
                 path: '/', name: 'home', component: Home
             },
             routerLink: { 
-                name: "Home", path: "/", exact: true 
+                name: 'home', path: "/", exact: true 
             },
             theme: {
                 namespace: "route_home",
@@ -32,7 +32,7 @@ export const pageData = {
                 ]
             },
             routerLink: {
-                name: "Projects", path: "/projects", exact: false
+                name: 'projects', path: "/projects", exact: false
             },
             theme: {
                 namespace: "route_project",
@@ -48,7 +48,7 @@ export const pageData = {
                 ]
             },
             routerLink: {
-                name: "Experience", path: "/experience", exact: false
+                name: 'experience', path: "/experience", exact: false
             },
             theme: {
                 namespace: "route_experience",
@@ -61,7 +61,7 @@ export const pageData = {
                 path: '/music', name: 'music', component: Music
             },
             routerLink: {
-                name: "Music", path: "/music", exact: false
+                name: 'music', path: "/music", exact: false
             },
             theme: {
                 namespace: "route_music",
@@ -74,7 +74,7 @@ export const pageData = {
                 path: '/about', name: 'about', component: About 
             },
             routerLink: {
-                name: "About", path: "/about", exact: false
+                name: 'about', path: "/about", exact: false
             },
             theme: {
                 namespace: "route_about",
@@ -87,7 +87,7 @@ export const pageData = {
                 path: '/contact', name: 'contact', component: Contact 
             },
             routerLink: {
-                name: "Contact", path: "/contact", exact: false
+                name: "contact", path: "/contact", exact: false
             },
             theme: {
                 namespace: "route_contact",
