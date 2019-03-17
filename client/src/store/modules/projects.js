@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
-import { PROJECT_ITEMS } from '../../constants/projectItems';
+import { PROJECT_ITEMS } from '../../constants/projectItems'; // TODO: I dont using this for iterating
+import update from 'immutability-helper';
 
 import * as actionTypes from "@/store/types/actionTypes";
 import * as getterTypes from "@/store/types/getterTypes";
@@ -35,20 +36,22 @@ const getters =  {
         return i_oState;
     },
     [getterTypes.GET_PROJECT]: (i_oState) => { // Getter with a parameter
-        return (projectName) => {
-            return i_oState[projectName];
+        return (i_sProjectName) => {
+            return i_oState[i_sProjectName];
         }
     }, 
 };
 
 const mutations = {
     [mutationTypes.ADD_PROJECT]: (i_oState, i_oPayload) => {
-        const { name, data } = i_oPayload;
+        const { name, data, override } = i_oPayload;
 
-        _projectDoesNotExist(i_oState, name);
+        if (!override) {
+            _projectDoesNotExist(i_oState, name);
+        }
 
         // Add the project
-        i_oState[name] = data;
+        Vue.set(i_oState, name, data);
     },
     [mutationTypes.REMOVE_PROJECT]: (i_oState, i_oPayload) => {
         const { name } = i_oPayload;
@@ -56,18 +59,20 @@ const mutations = {
         _projectExists(i_oState, name);
 
         // Remove the project
-        delete i_oState[name];
+        Vue.delete(i_oState, name);
     },
     [mutationTypes.EDIT_PROJECT]: (i_oState, i_oPayload) => {
         const { name, data } = i_oPayload;
 
         _projectExists(i_oState, name);
 
+        const oProjectData = i_oState[name];
+        const oUpdatedProjectData = update(oProjectData, {
+            $merge: data
+        });
+
         // Edit the project
-        i_oState[name] = {
-            ...i_oState[name],
-            ...data
-        };
+        Vue.set(i_oState, name, oUpdatedProjectData);
     }
 };
 
@@ -82,11 +87,19 @@ const actions = {
 
             // Construct our in-memory projects object
             res.data.projects.forEach(project => {
+                // TODO: I can probably rewrite this with reduce
                 const currData = {};
+                Object.entries(project).forEach(([field, value]) => {
+                    // We don't need the _id field
+                    if (field === "_id") {
+                        return;
+                    }
 
-                PROJECT_ITEMS.forEach(PROJECT_ITEM => {
-                    currData[PROJECT_ITEM] = project[PROJECT_ITEM];
+                    currData[field] = value;
                 });
+
+                // TODO: this parsing really shouldn't be done here
+                // ...the server should return a full, serialized URL
 
                 // Append the backend server address to the thumbnail image so the front end
                 // knows where to access it
@@ -109,7 +122,8 @@ const actions = {
                 // Add the project to the store
                 dispatch(actionTypes.ADD_PROJECT, {
                     name: project.name, 
-                    data: currData
+                    data: currData,
+                    override: true
                 });
             });
         } catch(err) {
