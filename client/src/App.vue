@@ -109,7 +109,7 @@ export default {
         this.addNamespace({ name: "default", targetTheme: "default", override: true });
 
         // Setup initial auto theme system
-        this.setAutoThemeEnabled({ enabled: true })
+        this.setAutoThemeEnabled(true);
         this.setCurrAutoThemeNamespace({ namespace: "default" });
         this.setCurrStaticThemeNamespace({ namespace: "default" });
 

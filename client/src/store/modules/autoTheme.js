@@ -34,9 +34,9 @@ const getters = {
 
 const mutations = {
     // Auto theme mutation
-    [mutationTypes.SET_AUTO_THEME_ENABLED]: (i_oState, i_oPayload) => {
+    [mutationTypes.SET_AUTO_THEME_ENABLED]: (i_oState, i_bEnabled) => {
         // Set the auto theme enabled state
-        Vue.set(i_oState, "autoThemeEnabled", i_oPayload.enabled);
+        Vue.set(i_oState, "autoThemeEnabled", i_bEnabled);
     },
     [mutationTypes.SET_CURRENT_AUTO_THEME_NAMESPACE]: (i_oState, i_oPayload) => {
         // Set the auto theme namespace
@@ -50,8 +50,8 @@ const mutations = {
 
 const actions = {
     // Auto theme action
-    [actionTypes.SET_AUTO_THEME_ENABLED]: ({ commit }, i_oPayload) => {
-        commit(mutationTypes.SET_AUTO_THEME_ENABLED, i_oPayload);
+    [actionTypes.SET_AUTO_THEME_ENABLED]: ({ commit }, i_bEnabled) => {
+        commit(mutationTypes.SET_AUTO_THEME_ENABLED, i_bEnabled);
     },
     [actionTypes.SET_CURRENT_AUTO_THEME_NAMESPACE]: ({ commit }, i_oPayload) => {
         commit(mutationTypes.SET_CURRENT_AUTO_THEME_NAMESPACE, i_oPayload);

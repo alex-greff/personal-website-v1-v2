@@ -2,19 +2,19 @@
     <div class="theme-controls">
         <span class="theme-item theme-auto" 
             title="Theme: auto"
-            
+
+            @click="setAutoThemeEnabled(true)"
+            :class="{ 'theme-active': autoThemeEnabled === true }"  
         ></span>
 
         <span v-for="theme in themes" :key="theme.name" class="theme-item"
             :title="'Theme: ' + theme.name"
             :style="{ backgroundColor: toRGBA(theme.properties['--color-accent-primary']) }"
-        ></span>
-    </div>
-    <!-- @click="setAutoThemeEnabled(true)" -->
-    <!-- :class="{ 'theme-active': autoThemeEnabled === true }" -->
 
-    <!-- :class="{ 'theme-active': currentTheme === theme.name && autoThemeEnabled === false }" -->
-    <!-- @click="setCurrentTheme({ theme: theme['name'], forceAutoOff: true })"> -->
+            :class="{ 'theme-active': currThemeName === theme.name && autoThemeEnabled === false }"
+            @click="setStaticTheme(theme.name)">
+        </span>
+    </div>
 </template>
 
 
@@ -27,17 +27,32 @@
         computed: {
             ...mapGetters({
                 themes: getterTypes.GET_ALL_THEMES,
-                // currentTheme: "getCurrentTheme",
-                // autoThemeEnabled: "getAutoThemeEnabled"
-            })
+                getTheme: getterTypes.GET_THEME,
+                getNamespace: getterTypes.GET_NAMESPACE,
+                autoThemeEnabled: getterTypes.IS_AUTO_THEME_ENABLED,
+                currentThemeNamespace: getterTypes.GET_CURRENT_THEME_NAMESPACE
+            }),
+            currThemeName() {
+                const oTheme = this.getTheme(this.getNamespace(this.currentThemeNamespace))
+                return (oTheme) ? oTheme.name : "";
+            }
         },
         methods: {
             ...mapActions({
-                // setCurrentTheme: "setCurrentTheme",
-                // setAutoThemeEnabled: "setAutoThemeEnabled"
+                setAutoThemeEnabled: actionTypes.SET_AUTO_THEME_ENABLED,
+                setCurrentStaticThemeNamespace: actionTypes.SET_CURRENT_STATIC_THEME_NAMESPACE,
+                editNamespace: actionTypes.EDIT_NAMESPACE
             }),
             toRGBA(themeColor) {
                 return "rgba(" + themeColor + ", 1)";
+            },
+            setStaticTheme(i_sThemeName) {
+                // Disable the auto theme
+                this.setAutoThemeEnabled(false);
+                // Modify the default namespace to use the given theme
+                this.editNamespace({ name: "default", targetTheme: i_sThemeName });
+                // Set the current static namespace to be the default theme
+                this.setCurrentStaticThemeNamespace({ namespace: "default" });
             }
         }
     }

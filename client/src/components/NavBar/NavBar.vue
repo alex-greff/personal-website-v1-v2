@@ -18,8 +18,9 @@
 
 <script>
 import Utilities from "@/utilities";
-
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
+
+const INIT_OPEN_STATE = false;
 
 export default {
     components: {
@@ -27,9 +28,9 @@ export default {
     }, 
     data() {
         return {
-            isOpen: true,
+            isOpen: INIT_OPEN_STATE,
             displayMode: "desktop",
-            displayOverlay: true,
+            displayOverlay: INIT_OPEN_STATE,
             pages: [
                 // TODO: don't hardcode this here
                 { name: "Home", path: "/", exact: true },
