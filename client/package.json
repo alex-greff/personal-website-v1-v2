@@ -10,6 +10,7 @@
     "dependencies": {
         "axios": "^0.18.0",
         "gsap": "^2.1.2",
+        "immutability-helper": "^3.0.0",
         "vue": "^2.6.8",
         "vue-axios": "^2.1.4",
         "vue-fragment": "^1.5.0",
