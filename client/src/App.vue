@@ -19,6 +19,7 @@
 import * as getterTypes from '@/store/types/getterTypes';
 import * as actionTypes from '@/store/types/actionTypes';
 import { mapActions, mapGetters } from 'vuex';
+import { pageData, getPageThemes } from '@/constants/pageData';
 
 import ThemeProvider from "@/components/theme/ThemeProvider.vue";
 
@@ -26,20 +27,12 @@ import ThemeProvider from "@/components/theme/ThemeProvider.vue";
 import NavBar from '@/components/NavBar/NavBar.vue';
 import Footer from '@/components/Footer.vue';
 
-const ROUTE_NAMESPACE_SUFFIX = "_page";
-
 export default {
     data() {
         return {
             lastNavBarHeight: -1,
-            // TODO: don't hardcode this here
             pageThemes: {
-                [`home${ROUTE_NAMESPACE_SUFFIX}`]: "blue",
-                [`projects${ROUTE_NAMESPACE_SUFFIX}`]: "red",
-                [`experience${ROUTE_NAMESPACE_SUFFIX}`]: "cyan",
-                [`music${ROUTE_NAMESPACE_SUFFIX}`]: "orange",
-                [`about${ROUTE_NAMESPACE_SUFFIX}`]: "green",
-                [`contact${ROUTE_NAMESPACE_SUFFIX}`]: "purple"
+                ...getPageThemes()
             },
         }
     },
@@ -73,7 +66,9 @@ export default {
             populateProjects: actionTypes.POPULATE_PROJECTS
         }),
         updateRouteTheme(i_oRoute) {
-            const currRouteNamespace = `${i_oRoute.name}${ROUTE_NAMESPACE_SUFFIX}`;
+            const sRouteName = i_oRoute.name;
+            const currRouteNamespace = pageData.pages[sRouteName].theme.namespace;
+
             // Only apply if there is a namespace mapped to the current route
             if (this.pageThemes[currRouteNamespace]) {
                 this.setCurrAutoThemeNamespace({ namespace: currRouteNamespace });
@@ -115,7 +110,7 @@ export default {
 
         // Add the page-specific namespaces
         Object.entries(this.pageThemes).forEach(([namespace, targetTheme]) => {
-            this.addNamespace({name: namespace, targetTheme });
+            this.addNamespace({name: namespace, targetTheme, override: true });
         });
     }, 
     mounted() {

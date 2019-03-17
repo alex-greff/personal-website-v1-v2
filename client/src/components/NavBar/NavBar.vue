@@ -18,6 +18,8 @@
 
 <script>
 import Utilities from "@/utilities";
+import { getRouterLinks } from "@/constants/pageData";
+
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
 const INIT_OPEN_STATE = false;
@@ -32,13 +34,7 @@ export default {
             displayMode: "desktop",
             displayOverlay: INIT_OPEN_STATE,
             pages: [
-                // TODO: don't hardcode this here
-                { name: "Home", path: "/", exact: true },
-                { name: "Projects", path: "/projects", exact: false },
-                { name: "Experience", path: "/experience", exact: false },
-                { name: "Music", path: "/music", exact: false },
-                { name: "About", path: "/about", exact: false },
-                { name: "Contact", path: "/contact", exact: false },
+                ...getRouterLinks()
             ],
         }
     },

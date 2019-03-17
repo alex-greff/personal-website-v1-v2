@@ -96,6 +96,24 @@ export const getCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
     return el.style.getPropertyValue(i_sPropertyName);
 }
 
+/**
+ * Returns a capitalized version of a given word.
+ * 
+ * @param {*} i_sStr The word.
+ */
+export const capitalizeWord = (i_sWord) => {
+    return i_sWord.charAt(0).toUpperCase() + i_sWord.slice(1);
+}
+
+/**
+ * Returns a decapitalized version of a given word.
+ * 
+ * @param {*} i_sStr The word.
+ */
+export const decapitalizeWord = (i_sWord) => {
+    return i_sWord.charAt(0).toLowerCase() + i_sWord.slice(1);
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -104,5 +122,7 @@ export default {
     isObjectEmpty,
     saveCSSProperty,
     removeCSSProperty,
-    getCSSProperty
+    getCSSProperty,
+    capitalizeWord,
+    decapitalizeWord
 };
