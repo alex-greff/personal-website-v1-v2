@@ -118,6 +118,8 @@ export default {
 
 <style lang="scss" scoped>
     .NavLinkContainer {
+        pointer-events: none;
+
         &.desktop {
             display: flex;
             flex-direction: row-reverse;

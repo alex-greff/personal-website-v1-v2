@@ -49,6 +49,8 @@ export default {
         flex-shrink: 1;
 
         cursor: pointer;
+
+        pointer-events: all;
     }
 
     // Desktop version
