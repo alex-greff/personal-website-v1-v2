@@ -21,34 +21,76 @@ export default {
         useRoot: {
             type: Boolean,
             default: false
+        },
+        useEl: {
+            type: HTMLDivElement,
+            required: false
         }
     },
+    created() {
+        this.validateProps();
+    },
     mounted() {
-        // Initial root check
-        this.updateRootStyles(this.useRoot);
+        this.updateRootStyles(this.useRoot, this.properties);
+        this.updateUseElementStyles(this.useEl, this.properties);
     },
     methods: {
-        updateRootStyles(i_bUseRoot) {
+        validateProps(i_bUseRoot, i_useEl) {
+            const bBothExist = !!i_bUseRoot && !!i_useEl;
+
+            if (bBothExist) {
+                throw `Error: only one of props 'useRoot' and 'useEl' can be specified at once`;
+            }
+        },
+        updateRootStyles(i_bUseRoot, i_oProperties) {
             if (i_bUseRoot) {
-                Object.entries(this.properties).forEach(([name, value]) => {
+                Object.entries(i_oProperties).forEach(([name, value]) => {
                     Utilities.saveCSSProperty(name, value);
                 });
             } else {
-                Object.keys(this.properties).forEach(name => {
+                Object.keys(i_oProperties).forEach(name => {
                     Utilities.removeCSSProperty(name);
+                });
+            }
+        },
+        updateUseElementStyles(i_el, i_oProperties) {
+            if (this.useRoot) {
+                return;
+            }
+
+            if (i_el) {
+                Object.entries(i_oProperties).forEach(([name, value]) => {
+                    Utilities.saveCSSProperty(name, value, i_el);
+                });
+            } else {
+                Object.keys(i_oProperties).forEach(name => {
+                    Utilities.removeCSSProperty(name, i_el);
                 });
             }
         }
     },
     computed: {
         cssStyles() {
-            return (this.useRoot) ? {} : { ...this.properties };
+            return (this.useRoot || this.useEl) ? {} : { ...this.properties };
         }
     },
     watch: {
         // Watch for when useRoot changes
-        useRoot(isUsingRoot, wasUsingRoot) {
-            this.updateRootStyles(isUsingRoot);
+        useRoot(nextUseRoot) {
+            this.validateProps(nextUseRoot, this.useEl);
+
+            this.updateRootStyles(nextUseRoot, this.properties);
+        },
+        // Watch for when useEl changes
+        useEl(nextUseEl) {
+            this.validateProps(this.useRoot, nextUseEl);
+
+            this.updateUseElementStyles(nextUseEl, this.properties);
+        },
+        // Watch for when properties changes (because of the async theme loading)
+        properties(newProperties) {
+            this.updateRootStyles(this.useRoot, newProperties);
+            this.updateUseElementStyles(this.useEl, newProperties);
         }
     }
 }

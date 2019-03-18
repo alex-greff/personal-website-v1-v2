@@ -1,12 +1,12 @@
 <template>
-    <custom-properties-applier :properties="themeProperties" :useRoot="useRoot">
+    <custom-properties-applier :properties="themeProperties" :useRoot="useRoot" :useEl="useEl">
         <slot></slot>
     </custom-properties-applier>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import * as getterTypes from '@/store/types/getterTypes';
+import { getterTypes } from '@/store/types';
 
 import CustomPropertiesApplier from '@/components/hoc/CustomPropertiesApplier.vue';
 
@@ -20,6 +20,10 @@ export default {
         useRoot: {
             type: Boolean,
             default: false
+        },
+        useEl: {
+            type: HTMLDivElement,
+            required: false
         }
     },
     created() {
@@ -54,6 +58,14 @@ export default {
             if (bNeitherExist) {
                 throw `Error: one of props 'namespace' and 'theme' must be specified`;
             }
+        }
+    },
+    watch: {
+        namespace(nextNamespace) {
+            this.validateProps(nextNamespace, this.theme);
+        },
+        theme(nextTheme) {
+            this.validateProps(this.namespace, nextTheme);
         }
     }
 }
