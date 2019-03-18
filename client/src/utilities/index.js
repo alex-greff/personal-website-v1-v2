@@ -61,11 +61,11 @@ export const isObjectEmpty = (i_oObj) => {
  * 
  * @param {String} i_sPropertyName The name of the property.
  * @param {String} i_sPropertyValue The value to set the property to.
- * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ * @param {String | HTMLElement} [i_el] (Optional) The element or selector for the element.
  */
-export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_sElementSelector = null) => {
-    // If no element selector is given then just select root
-    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_el = null) => {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
     // Set the custom property
     el.style.setProperty(i_sPropertyName, i_sPropertyValue);
 }
@@ -74,11 +74,11 @@ export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_sElementSel
  * Removes a css property.
  * 
  * @param {Stirng} i_sPropertyName The name of the property.
- * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ * @param {String | HTMLElement} [i_el] (Optional) The element or selector for the element.
  */
-export const removeCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
-    // If no element selector is given then just select root
-    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+export const removeCSSProperty = (i_sPropertyName, i_el = null) => {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
     // Remove the custom property
     el.style.removeProperty(i_sPropertyName);
 }
@@ -87,13 +87,27 @@ export const removeCSSProperty = (i_sPropertyName, i_sElementSelector = null) =>
  * Gets the value of a css property.
  * 
  * @param {String} i_sPropertyName The name of the property.
- * @param {String} [i_sElementSelector] (Optional) The selector for the element.
+ * @param {String | HTMLElement} [i_el] (Optional) The element or selector for the element.
  */
-export const getCSSProperty = (i_sPropertyName, i_sElementSelector = null) => {
-    // If no element selector is given then just select root
-    let el = (i_sElementSelector) ? document.querySelector(i_sElementSelector) : document.documentElement;
+export const getCSSProperty = (i_sPropertyName, i_el = null) => {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
     // Set the custom property
     return el.style.getPropertyValue(i_sPropertyName);
+}
+
+// Helper function for setCSSProperty, removeCSSPropery and getCSSProperty
+function serializeInputEl(i_el) {
+    if (i_el && isElement(i_el)) {
+        // Return the element since it's already one
+        return i_el;
+    } else if (i_el) {
+        // Select the element
+        return document.querySelector(i_el);
+    } else {
+        // Return root
+        return document.documentElement;
+    }
 }
 
 /**
@@ -114,6 +128,22 @@ export const decapitalize = (i_sWord) => {
     return i_sWord.charAt(0).toLowerCase() + i_sWord.slice(1);
 }
 
+//Returns true if it is a DOM node
+export function isNode(o){
+    return (
+        typeof Node === "object" ? o instanceof Node : 
+        o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+    );
+}
+  
+//Returns true if it is a DOM element    
+function isElement(o){
+    return (
+        typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+        o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+    );
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -124,5 +154,7 @@ export default {
     removeCSSProperty,
     getCSSProperty,
     capitalize,
-    decapitalize
+    decapitalize,
+    isNode,
+    isElement
 };
