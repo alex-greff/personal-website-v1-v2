@@ -38,7 +38,7 @@
 <script>
     import { mapGetters } from 'vuex';
     import ProjectListItem from './ProjectListItem.vue';
-    import * as getterTypes from '@/store/types/getterTypes';
+    import { getterTypes } from '@/store/types';
 
     import ContentList from '../../components/contentList/ContentList.vue';
 

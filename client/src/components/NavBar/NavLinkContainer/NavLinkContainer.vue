@@ -7,6 +7,7 @@
 
             :style="navLinkStyles"
             :to="page.path"
+            :name="page.name"
             :displayMode="displayMode"
             :exact="page.exact"
         >
@@ -128,6 +129,10 @@ export default {
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
+            // justify-content: flex-start;
+            // flex-wrap: nowrap;
+
+            width: 100vw;
 
             margin-right: 3rem; // TODO: link with $gutter-length in navLinkItem.vue
         }

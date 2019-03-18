@@ -20,8 +20,7 @@
 
 <script>
     import { mapActions, mapGetters } from 'vuex';
-    import * as getterTypes from '@/store/types/getterTypes';
-    import * as actionTypes from '@/store/types/actionTypes';
+    import { getterTypes, actionTypes } from '@/store/types';
 
     export default {
         computed: {

@@ -18,11 +18,11 @@
 
 <script>
 import Utilities from "@/utilities";
-import { getRouterLinks } from "@/constants/pageData";
+import { getAllRouterLinks } from "@/constants/pageData";
 
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
-const INIT_OPEN_STATE = false;
+const INIT_OPEN_STATE = true;
 
 export default {
     components: {
@@ -34,7 +34,7 @@ export default {
             displayMode: "desktop",
             displayOverlay: INIT_OPEN_STATE,
             pages: [
-                ...getRouterLinks()
+                ...getAllRouterLinks()
             ],
         }
     },
@@ -104,18 +104,8 @@ export default {
 
         z-index: 10;
 
-        display: flex;
-        flex-direction: row-reverse;
-        align-items: flex-start;
-
         pointer-events: none;
-        
-        // Switch column layouts when the phone breakpoint is reached
-        @include respond(phone) {
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
+    
         & .NavBar__menu-container {
             $menu-btn-size: 4rem;
 
@@ -132,6 +122,12 @@ export default {
         }
 
         &.desktop {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            // display: inline;
+
             & .NavBar__pages-container {
                 flex-grow: 1;
                 flex-shrink: 1;

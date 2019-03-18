@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import * as getterTypes from '@/store/types/getterTypes';
-import * as actionTypes from '@/store/types/actionTypes';
+import { getterTypes, actionTypes } from '@/store/types';
+
 import { mapActions, mapGetters } from 'vuex';
-import { pageData, getPageThemes } from '@/constants/pageData';
+import { pageData, getAllPageThemes } from '@/constants/pageData';
 
 import ThemeProvider from "@/components/theme/ThemeProvider.vue";
 
@@ -32,7 +32,7 @@ export default {
         return {
             lastNavBarHeight: -1,
             pageThemes: {
-                ...getPageThemes()
+                ...getAllPageThemes()
             },
         }
     },
