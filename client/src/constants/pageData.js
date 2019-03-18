@@ -101,10 +101,15 @@ export const pageData = {
     ]
 };
 
-export const getPageThemes = () => {
+export const getPageTheme = (i_sPageName) => {
+    // Get the current page's theme data, if any
+    return pageData.pages[i_sPageName].theme;
+};
+
+export const getAllPageThemes = () => {
     return pageData.pageOrder.reduce((i_oAccumulator, i_sCurrPageName) => {
-        // Get the current page's theme data, if any
-        const oCurrPageTheme = pageData.pages[i_sCurrPageName].theme;
+        // Get the theme item for this page
+        const oCurrPageTheme = getPageTheme(i_sCurrPageName);
         // Make sure there is associated theme data
         const oThemeItem = (oCurrPageTheme) ? { [oCurrPageTheme.namespace]: oCurrPageTheme.targetTheme } : {};
 
@@ -115,9 +120,13 @@ export const getPageThemes = () => {
     }, {});
 };
 
-export const getPageRoutes = () => {
+export const getPageRoute = (i_sPageName) => {
+    return pageData.pages[i_sPageName].route;
+};
+
+export const getAllPageRoutes = () => {
     return pageData.pageOrder.reduce((i_sAccumulator, i_sCurrPageName) => {
-        const sCurrRouteData = [{ ...pageData.pages[i_sCurrPageName].route }];
+        const sCurrRouteData = [ getPageRoute(i_sCurrPageName) ];
 
         return [
             ...i_sAccumulator,
@@ -132,12 +141,16 @@ export const getAllRoutes = () => {
             ...i_sAccumulator,
             i_oCurrRoute
         ];
-    }, [ ...getPageRoutes() ]);
+    }, [ ...getAllPageRoutes() ]);
 };
 
-export const getRouterLinks = () => {
+export const getRouterLink = (i_sPageName) => {
+    return pageData.pages[i_sPageName].routerLink;
+};
+
+export const getAllRouterLinks = () => {
     return pageData.pageOrder.reduce((i_sAccumulator, i_sCurrPageName) => {
-        const oCurrRouterLink = pageData.pages[i_sCurrPageName].routerLink;
+        const oCurrRouterLink = getRouterLink(i_sCurrPageName);
 
         return [
             ...i_sAccumulator,
@@ -148,8 +161,11 @@ export const getRouterLinks = () => {
 
 export default {
     pageData,
-    getPageThemes,
-    getPageRoutes,
+    getPageTheme,
+    getAllPageThemes,
+    getPageRoute,
+    getAllPageRoutes,
     getAllRoutes,
-    getRouterLinks
+    getRouterLink,
+    getAllRouterLinks
 };

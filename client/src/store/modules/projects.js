@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import update from 'immutability-helper';
 
-import * as actionTypes from "@/store/types/actionTypes";
-import * as getterTypes from "@/store/types/getterTypes";
-import * as mutationTypes from "@/store/types/mutationTypes";
+import { getterTypes, mutationTypes, actionTypes } from '@/store/types';
 
 // -----------------------
 // --- Check Functions ---
