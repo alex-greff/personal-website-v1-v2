@@ -12,11 +12,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { getterTypes } from '@/store/types';
 
 export default {
     computed: {
         ...mapGetters({
-            projects: 'getProjects'
+            projects: getterTypes.GET_ALL_PROJECTS
         }),
         projectName() {
             return this.$route.params.id;

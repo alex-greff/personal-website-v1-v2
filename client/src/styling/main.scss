@@ -19,19 +19,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
 
-html {
-    // Definition of 1rem
-    font-size: 62.5%;
 
     // Global font definition
     // font-family: 'Ubuntu', sans-serif;
     // font-family: 'Open Sans', sans-serif;
     // font-family: 'Montserrat', sans-serif;
+    // font-family: 'Courier New', Courier, monospace;
 
-    font-family: 'Roboto Mono', monospace;
-    // font-family: 'Raleway', sans-serif;
+    // font-family: 'Roboto Mono', monospace;
+    font-family: 'Raleway', sans-serif;
+}
+
+html {
+    // Definition of 1rem
+    font-size: 62.5%;
 }
 
 body {

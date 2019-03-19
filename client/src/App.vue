@@ -66,7 +66,17 @@ export default {
             populateProjects: actionTypes.POPULATE_PROJECTS
         }),
         updateRouteTheme(i_oRoute) {
-            const sRouteName = i_oRoute.name;
+            // TODO: this relies on the convention that all subroutes follow the format of
+            // "[parent name]_[child name]... I should probably find a way around this
+            const extractParentName = (i_sRouteName) => {
+                const nSplitIdx = i_sRouteName.indexOf("_");
+
+                return (nSplitIdx > -1) ? i_sRouteName.slice(0, nSplitIdx) : i_sRouteName;
+            }
+
+            const sRouteName = extractParentName(i_oRoute.name);
+
+            console.log(sRouteName);
             const currRouteNamespace = pageData.pages[sRouteName].theme.namespace;
 
             // Only apply if there is a namespace mapped to the current route

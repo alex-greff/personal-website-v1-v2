@@ -28,7 +28,7 @@ export const pageData = {
             route: { 
                 path: '/projects', name: 'projects', component: Projects, 
                 children: [
-                    { path: ':id', component: ProjectPage } // TODO: make dynamic???
+                    { name: 'projects_item', path: ':id', component: ProjectPage } // TODO: make dynamic???
                 ]
             },
             routerLink: {
@@ -44,7 +44,7 @@ export const pageData = {
             route: { 
                 path: '/experience', name: 'experience', component: Experience,
                 children: [
-                    { path: ':id', component: Experience } // TODO: make dynamic???
+                    { name: 'experience_item', path: ':id', component: Experience } // TODO: make dynamic???
                 ]
             },
             routerLink: {
