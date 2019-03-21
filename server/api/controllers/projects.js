@@ -47,17 +47,22 @@ exports.projects_get_all = (req, res, next) => {
 };
 
 exports.projects_create_project = (req, res, next) => {
+    const urlDomain = `${req.protocol}://${req.headers.host}`;
+
     // Construct thumbnail image path entry
     let thumbnailImagePath;
     if (req.files['thumbnailImage']) {
-        thumbnailImagePath = req.files['thumbnailImage'][0].path;
+        thumbnailImagePath = req.files['thumbnailImage'][0].path.replace("\\", "/");
+        thumbnailImagePath =  `${urlDomain}/${thumbnailImagePath}`;
     }
     
     // Construct gallery images object
     let galleryImagesPaths = {};
     if (req.files['galleryImages']) {
         req.files['galleryImages'].forEach(galleryImage => {
-            galleryImagesPaths[new mongoose.Types.ObjectId()] = galleryImage.path;
+            const id = new mongoose.Types.ObjectId();
+            galleryImagesPaths[id] = galleryImage.path.replace("\\", "/");
+            galleryImagesPaths[id] = `${urlDomain}/${galleryImagesPaths[id]}`;
         });
     }
 
