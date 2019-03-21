@@ -47,13 +47,11 @@ exports.projects_get_all = (req, res, next) => {
 };
 
 exports.projects_create_project = (req, res, next) => {
-    const urlDomain = `${req.protocol}://${req.headers.host}`;
-
     // Construct thumbnail image path entry
     let thumbnailImagePath;
     if (req.files['thumbnailImage']) {
         thumbnailImagePath = req.files['thumbnailImage'][0].path.replace("\\", "/");
-        thumbnailImagePath =  `${urlDomain}/${thumbnailImagePath}`;
+        thumbnailImagePath =  `/${thumbnailImagePath}`;
     }
     
     // Construct gallery images object
@@ -62,7 +60,7 @@ exports.projects_create_project = (req, res, next) => {
         req.files['galleryImages'].forEach(galleryImage => {
             const id = new mongoose.Types.ObjectId();
             galleryImagesPaths[id] = galleryImage.path.replace("\\", "/");
-            galleryImagesPaths[id] = `${urlDomain}/${galleryImagesPaths[id]}`;
+            galleryImagesPaths[id] = `/${galleryImagesPaths[id]}`;
         });
     }
 
