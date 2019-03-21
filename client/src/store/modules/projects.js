@@ -101,7 +101,7 @@ const actions = {
                 // knows where to access it
                 const thumbnailImage = currData['thumbnailImage'];
                 if (thumbnailImage) {
-                    currData['thumbnailImage'] = `/${thumbnailImage}`.replace('\\', '/');
+                    currData['thumbnailImage'] = `${thumbnailImage}`.replace('\\', '/');
                 }
 
                 const galleryImages = currData['galleryImages'];
