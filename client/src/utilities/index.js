@@ -144,6 +144,15 @@ function isElement(o){
     );
 }
 
+/**
+ * Converts the given number of rems into pixels/
+ * 
+ * @param {Number} i_nRem The number of rems
+ */
+function convertRemToPixels(i_nRem) {    
+    return i_nRem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -156,5 +165,6 @@ export default {
     capitalize,
     decapitalize,
     isNode,
-    isElement
+    isElement,
+    convertRemToPixels
 };
