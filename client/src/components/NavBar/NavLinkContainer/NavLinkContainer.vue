@@ -4,6 +4,7 @@
             v-for="page in navLinkPagesData" 
             :key="page.name"
             ref="navLinkRefs"
+            @click.native="navItemClick"
 
             :style="navLinkStyles"
             :to="page.path"
@@ -40,6 +41,11 @@ export default {
         },
         displayMode: {
             type: String,
+            required: true
+        },
+        // Sets the isOpen state of the navbar
+        setNavOpen: {
+            type: Function,
             required: true
         }
     },
@@ -79,6 +85,12 @@ export default {
             const ON_COMPLETE_ALL = () => this.displayNavItems = false;
             const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkEls : this.navLinkElsReversed;
             TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER, ON_COMPLETE_ALL);
+        },
+        navItemClick(i_sName) {
+            // Close the navbar if the mobile version of a nav item is clickec
+            if (this.displayMode === "mobile" && this.isOpen) {
+                this.setNavOpen(false);
+            }
         },
         capitalizeNavName(i_sName) {
             return Utilities.capitalize(i_sName);

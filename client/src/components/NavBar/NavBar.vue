@@ -12,6 +12,7 @@
             :isOpen="isOpen"
             :pages="pages"
             :displayMode="displayMode"
+            :setNavOpen="setNavOpen"
         />
     </div>
 </template>
@@ -73,6 +74,9 @@ export default {
         },
         toggleNavMenu() {
             this.isOpen = !this.isOpen;
+        },
+        setNavOpen(i_bIsOpen) {
+            this.isOpen = i_bIsOpen;
         },
         showOverlay() {
             this.displayOverlay = true;
