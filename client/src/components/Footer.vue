@@ -62,8 +62,20 @@
         mounted() {
             this.$refs.footerEl.style.bottom = 
                 (this.isOpen) ? 0 : this.computeFooterBottomOffset(this.$refs.footerEl);
+
+            // Setup resize listener 
+            this.$nextTick(() => {
+                window.addEventListener('resize', this.onResize);
+            });
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
         },
         methods: {
+            onResize() {
+                // Recompute and set the value for footer bottom
+                this.setFooterBottom();
+            },
             setIsOpen(i_sIsOpen) {
                 this.isOpen = i_sIsOpen;
             },
@@ -72,6 +84,10 @@
                 const height = i_elFooter.offsetHeight;
 
                 return (-1 * (height - FOOTER_BAR_HEIGHT)) + "px";
+            },
+            setFooterBottom() {
+                const sNewButtom = this.computeFooterBottomOffset(this.$refs.footerEl);
+                this.$refs.footerEl.style.bottom = sNewButtom;
             },
             showFooter() {
                 this.displayFooter = true;
