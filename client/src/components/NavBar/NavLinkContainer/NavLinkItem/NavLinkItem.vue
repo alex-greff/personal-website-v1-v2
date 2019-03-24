@@ -23,7 +23,7 @@
 import { getPageTheme } from "@/constants/pageData";
 import { mapGetters } from "vuex";
 import { getterTypes } from "@/store/types";
-import ThemeProvider from "@/components/theme/ThemeProvider.vue";
+import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
 export default {
     components: {

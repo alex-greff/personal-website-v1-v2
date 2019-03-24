@@ -21,7 +21,7 @@ import { getterTypes, actionTypes } from '@/store/types';
 import { mapActions, mapGetters } from 'vuex';
 import { pageData, getAllPageThemes } from '@/constants/pageData';
 
-import ThemeProvider from "@/components/theme/ThemeProvider.vue";
+import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
 // @ is an alias for /src
 import NavBar from '@/components/NavBar/NavBar.vue';
