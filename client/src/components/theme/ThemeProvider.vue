@@ -1,5 +1,10 @@
 <template>
-    <custom-properties-applier :properties="themeProperties" :useRoot="useRoot" :useEl="useEl">
+    <custom-properties-applier 
+        :properties="themeProperties"
+        :tag="tag"
+        :useRoot="useRoot"
+        :useEl="useEl"
+    >
         <slot></slot>
     </custom-properties-applier>
 </template>
@@ -17,6 +22,10 @@ export default {
     props: {
         namespace: String,
         theme: String,
+        tag: {
+            type: String,
+            default: "div"
+        },
         useRoot: {
             type: Boolean,
             default: false

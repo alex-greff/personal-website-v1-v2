@@ -1,9 +1,3 @@
-<template>
-    <div :style="cssStyles">
-        <slot></slot>
-    </div>
-</template>
-
 <script>
 import Utilities from "@/utilities";
 
@@ -17,6 +11,10 @@ export default {
                     return Utilities.isValidCSSVar(i_sCSSVarName)
                 });
             }
+        },
+        tag: {
+            type: String,
+            default: "div"
         },
         useRoot: {
             type: Boolean,
@@ -33,6 +31,9 @@ export default {
     mounted() {
         this.updateRootStyles(this.useRoot, this.properties);
         this.updateUseElementStyles(this.useEl, this.properties);
+    },
+    render(h){
+        return h(this.tag, { style: this.cssStyles }, this.$slots.default);
     },
     methods: {
         validateProps(i_bUseRoot, i_useEl) {
