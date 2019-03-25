@@ -27,7 +27,7 @@ import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
 export default {
     components: {
-        themeProvider: ThemeProvider
+        themeProvider: ThemeProvider,
     },
     props: {
         to: {

@@ -19,14 +19,14 @@
                 Loading...
             </div>
 
-            <content-list
+            <!-- <content-list
                 :contentIDs="projectIDs"
             >
                 <template v-for="(val, key, index) in projects" v-slot:[key]>
                     <h1 :key="index">{{key}}</h1>
                 </template>
 
-            </content-list>
+            </content-list> -->
 
         </div>
         
@@ -64,6 +64,7 @@
         mounted() {
             // console.log(this.projectIDs);
             // console.log(this.projects);
+            this.$emit("pageOpen", "some data");
         }
     }
 </script>

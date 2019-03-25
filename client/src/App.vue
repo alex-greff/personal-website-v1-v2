@@ -3,7 +3,9 @@
         <theme-provider id="app__base" :namespace="currThemeNamespace">
             <nav-bar ref="navBar"></nav-bar>
             <div class="content" ref="content">
-                <router-view></router-view>
+                <transition name="component-fade" mode="out-in">
+                    <router-view @pageOpen="onPageOpen"></router-view>
+                </transition>
             </div>
             <general-footer></general-footer>
             <svg class="svg-def">
@@ -49,7 +51,8 @@ export default {
     watch: {
         $route(newRoute, oldRoute) {
             // Everytime the route changes, attempt to apply the route-specific namespace
-            this.updateRouteTheme(newRoute);
+            // TODO: need to update this after the page has transitioned out in a better way
+            setTimeout(() => this.updateRouteTheme(newRoute), 300);
         }
     },
     methods: {
@@ -103,6 +106,9 @@ export default {
         // Event handlers
         onResize() {
             // this.alignContent(); // TODO: remove
+        },
+        onPageOpen(data) {
+            console.log("Caught data:", data);
         }
     },
     created() {
@@ -151,5 +157,14 @@ export default {
         top: -100%;
 
         pointer-events: none;
+    }
+
+    // TODO: remove
+    .component-fade-enter-active, .component-fade-leave-active {
+        transition: opacity .3s ease;
+    }
+    .component-fade-enter, .component-fade-leave-to
+        /* .component-fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>
