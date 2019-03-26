@@ -3,8 +3,12 @@
         <theme-provider id="app__base" :namespace="currThemeNamespace">
             <nav-bar ref="navBar"></nav-bar>
             <div class="content" ref="content">
-                <transition name="component-fade" mode="out-in">
-                    <router-view @pageOpen="onPageOpen"></router-view>
+                <transition 
+                    @enter="pageEnterAnim"
+                    @leave="pageLeaveAnim"
+                    mode="out-in"
+                >
+                    <router-view></router-view>
                 </transition>
             </div>
             <general-footer></general-footer>
@@ -29,6 +33,23 @@ import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 import NavBar from '@/components/NavBar/NavBar.vue';
 import Footer from '@/components/Footer.vue';
 
+import Home from '@/views/Home.vue';
+import Projects from '@/views/Projects/Projects.vue';
+import Experience from '@/views/Experience.vue';
+import Music from '@/views/Music.vue';
+import About from '@/views/About.vue';
+import Contact from '@/views/Contact.vue';
+
+// TODO: export this shit somewhere else
+const PAGE_ANIM_FUNCTIONS = {
+    home: { enterAnim: Home.enterAnim, leaveAnim: Home.leaveAnim },
+    projects: { enterAnim: Projects.enterAnim, leaveAnim: Projects.leaveAnim },
+    experience: { enterAnim: Experience.enterAnim, leaveAnim: Experience.leaveAnim },
+    music: { enterAnim: Music.enterAnim, leaveAnim: Music.leaveAnim },
+    about: { enterAnim: About.enterAnim, leaveAnim: About.leaveAnim },
+    contact: { enterAnim: Contact.enterAnim, leaveAnim: Contact.leaveAnim }
+}
+
 export default {
     data() {
         return {
@@ -36,6 +57,47 @@ export default {
             pageThemes: {
                 ...getAllPageThemes()
             },
+
+            // Track the previous route name
+            prevRouteName: "",
+
+            // ------------------------------------------
+            // --- Page Transition Animation Handlers ---
+            // ------------------------------------------
+            pageEnterAnim: async (el, done) => {
+                const routeName = this.$route.name;
+                const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+
+                if (!routeAnims || !routeAnims.enterAnim) {
+                    console.log(`No anim found for '${routeName}'... skipping`);
+                    // Update theme
+                    this.updateRouteTheme(routeName);
+                    return done();
+                }
+
+                // Wait for animation to finish
+                await routeAnims.enterAnim(el);
+
+                // Update theme
+                this.updateRouteTheme(routeName);
+                // Complete the animation
+                done();
+            },
+            pageLeaveAnim: async (el, done) => {
+                const routeName = this.prevRouteName;
+                const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+
+                if (!routeAnims || !routeAnims.leaveAnim) {
+                    console.log(`No anim found for '${routeName}'... skipping`);
+                    return done();
+                }
+
+                // Wait for animation to finish
+                await routeAnims.leaveAnim(el);
+
+                // Complete the animation
+                done();
+            }
         }
     },
     components: {
@@ -46,13 +108,15 @@ export default {
     computed: {
         ...mapGetters({
             currThemeNamespace: getterTypes.GET_CURRENT_THEME_NAMESPACE
-        })
+        }),
     },
     watch: {
         $route(newRoute, oldRoute) {
+            this.prevRouteName = oldRoute.name;
+            
             // Everytime the route changes, attempt to apply the route-specific namespace
             // TODO: need to update this after the page has transitioned out in a better way
-            setTimeout(() => this.updateRouteTheme(newRoute), 300);
+            // setTimeout(() => this.updateRouteTheme(newRoute.name), 300);
         }
     },
     methods: {
@@ -68,7 +132,7 @@ export default {
             // Projects store
             populateProjects: actionTypes.POPULATE_PROJECTS
         }),
-        updateRouteTheme(i_oRoute) {
+        updateRouteTheme(i_sRouteName) {
             // TODO: this relies on the convention that all subroutes follow the format of
             // "[parent name]_[child name]... I should probably find a way around this
             const extractParentName = (i_sRouteName) => {
@@ -77,9 +141,8 @@ export default {
                 return (nSplitIdx > -1) ? i_sRouteName.slice(0, nSplitIdx) : i_sRouteName;
             }
 
-            const sRouteName = extractParentName(i_oRoute.name);
+            const sRouteName = extractParentName(i_sRouteName);
 
-            console.log(sRouteName);
             const currRouteNamespace = pageData.pages[sRouteName].theme.namespace;
 
             // Only apply if there is a namespace mapped to the current route
@@ -106,9 +169,6 @@ export default {
         // Event handlers
         onResize() {
             // this.alignContent(); // TODO: remove
-        },
-        onPageOpen(data) {
-            console.log("Caught data:", data);
         }
     },
     created() {
@@ -133,7 +193,7 @@ export default {
         // this.alignContent(); // TODO: remove
         
         // Initialize the page theme
-        this.updateRouteTheme(this.$route);
+        this.updateRouteTheme(this.$route.name);
 
         // Setup resize listener 
         this.$nextTick(function() {
@@ -161,7 +221,7 @@ export default {
 
     // TODO: remove
     .component-fade-enter-active, .component-fade-leave-active {
-        transition: opacity .3s ease;
+        transition: opacity 3s ease;
     }
     .component-fade-enter, .component-fade-leave-to
         /* .component-fade-leave-active below version 2.1.8 */ {

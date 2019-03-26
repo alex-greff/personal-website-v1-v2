@@ -56,13 +56,30 @@
 </template>
 
 <script>
-    import Timeline from '@/components/Timeline.vue';
+import Timeline from '@/components/Timeline.vue';
 
-    export default {
-        components: {
-            timeline: Timeline
-        }
+export default {
+    components: {
+        timeline: Timeline
+    },
+    // ------------------
+    // --- Animations ---
+    // ------------------
+    enterAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running About enter anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 0); // TODO: remove
+        });
+    },
+    leaveAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running About leave anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 100); // TODO: remove
+        });
     }
+}
 </script>
 
 <style lang="scss" scoped>

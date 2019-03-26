@@ -36,37 +36,49 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import ProjectListItem from './ProjectListItem.vue';
-    import { getterTypes } from '@/store/types';
+import { mapGetters } from 'vuex';
+import ProjectListItem from './ProjectListItem.vue';
+import { getterTypes } from '@/store/types';
 
-    import ContentList from '../../components/contentList/ContentList.vue';
+import ContentList from '../../components/contentList/ContentList.vue';
 
-    export default {
-        components: {
-            projectListItem: ProjectListItem,
-            contentList: ContentList,
+export default {
+    components: {
+        projectListItem: ProjectListItem,
+        contentList: ContentList,
+    },
+    computed: {
+        ...mapGetters({
+            projects: getterTypes.GET_ALL_PROJECTS
+        }),
+        isSubPage() {
+            return !!(this.$route.params.id);
         },
-        computed: {
-            ...mapGetters({
-                projects: getterTypes.GET_ALL_PROJECTS
-            }),
-            isSubPage() {
-                return !!(this.$route.params.id);
-            },
-            projectDataLoaded() {
-                return !!(this.projects);
-            },
-            projectIDs() {
-                return Object.entries(this.projects).map(([projectName]) => projectName);
-            }
+        projectDataLoaded() {
+            return !!(this.projects);
         },
-        mounted() {
-            // console.log(this.projectIDs);
-            // console.log(this.projects);
-            this.$emit("pageOpen", "some data");
+        projectIDs() {
+            return Object.entries(this.projects).map(([projectName]) => projectName);
         }
+    },
+    // ------------------
+    // --- Animations ---
+    // ------------------
+    enterAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running Projects enter anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 0); // TODO: remove
+        });
+    },
+    leaveAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running Projects leave anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 100); // TODO: remove
+        });
     }
+}
 </script>
 
 <style lang="scss" scoped>    

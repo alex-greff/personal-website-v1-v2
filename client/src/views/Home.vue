@@ -49,13 +49,30 @@
 </template>
 
 <script>
-    import ContentContainer from "@/components/containers/ContentContainer.vue";
+import ContentContainer from "@/components/containers/ContentContainer.vue";
 
-    export default {
-        components: {
-            contentContainer: ContentContainer
-        }
+export default {
+    components: {
+        contentContainer: ContentContainer
+    },
+    // ------------------
+    // --- Animations ---
+    // ------------------
+    enterAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running Home enter anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 0); // TODO: remove
+        });
+    },
+    leaveAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running Home leave anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 100); // TODO: remove
+        });
     }
+}
 </script>
 
 <style lang="scss" scoped>
