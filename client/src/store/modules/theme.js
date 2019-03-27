@@ -1,8 +1,10 @@
 import Vue from 'vue';
+import Color from "color";
 import { defaultTheme } from '@/constants/defaultTheme';
 import update from 'immutability-helper';
 
 import { getterTypes, mutationTypes, actionTypes } from '@/store/types';
+import { subSections, propertyVariations, baseProperties } from "@/themes/definitions";
 
 // -----------------------
 // --- Check Functions ---
@@ -30,6 +32,122 @@ const _namespaceDoesNotExist = (i_oState, i_sNamespaceID) => {
     if (i_oState.namespaces[i_sNamespaceID]) {
         throw `Error: namespace '${i_sNamespaceID}' already exists`;
     }
+};
+
+const _validateTemplate = (i_oTemplate) => {
+    // Checks
+    if (!i_oTemplate.id) {
+        throw new Error("Error: template must have and id");
+    }
+    if (!i_oTemplate.BASE) {
+        throw new Error(`Error: template '${i_oTemplate.id}' must contain BASE`);
+    }
+
+    // Make sure all base properties are provided in the template
+    const aBaseDiff = Utilities.difference(baseProperties, Object.keys(i_oTemplate.BASE));
+    if (aBaseDiff.length > 0) {
+        const sMissingBaseStr = aBaseDiff.join(" ");
+        throw new Error(`Error: template '${i_oTemplate.id}' is missing base properties: ${sMissingBaseStr}`);
+    }
+
+    Object.entries(i_oTemplate.BASE).forEach(([i_sPropName, i_oVariations]) => {
+        const aBasePropDiff = Utilities.difference(propertyVariations, Object.keys(i_oVariations));
+        
+        if (aBasePropDiff.length > 0) {
+            const sMissingBasePropsStr = aBasePropDiff.join(" ");
+            throw new Error(`Error: template '${i_oTemplate.id}' base property '${i_sPropName}' is missing variations: ${sMissingBasePropsStr}`);
+        }
+    });
+};
+
+
+// ------------------------
+// --- Helper functions ---
+// ------------------------
+
+const _generateThemeFromTemplate = (i_oTemplate) => {
+    // Make sure the template is valid
+    _validateTemplate(i_oTemplate);
+
+    // Compute the base 
+    let oBaseProperties = _generatePropertyObject("BASE", i_oTemplate.BASE);
+
+    // Populate base properties
+    let oProperties = { ...oBaseProperties };
+
+    const oSubsections = (i_oTemplate.subSections) ? i_oTemplate.subSections : {};
+    // Populate subsection properties, if there are any
+    oProperties = Object.entries(oSubsections).reduce(
+        (i_oPropsAccumulator, [i_sSectionName, i_sSectionProps])=> {
+            return {
+                ...i_oPropsAccumulator,
+                ..._generatePropertyObject(i_sSectionName, i_oTemplate.BASE), // Apply the base properties for the section
+                ..._generatePropertyObject(i_sSectionName, i_sSectionProps, ) // Apply the custom overrides/additions for the secion
+            };
+        }, oProperties
+    );
+
+    // Populate the remaining sub sections that the theme missed
+    const aSubSectionsDiff = Utilities.difference(subSections, Object.keys(oSubsections));
+    oProperties = aSubSectionsDiff.reduce(
+        (i_oPropsAccumulator, i_sSubSection) => {
+            return {
+                ...i_oPropsAccumulator,
+                ..._generatePropertyObject(i_sSubSection, i_oTemplate.BASE)
+            };
+        }, oProperties
+    );
+    
+    // Construct theme object
+    let oTheme = {
+        id: i_oTemplate.id,
+        properties: { ...oProperties }
+    };
+
+    return oTheme;
+};
+
+const _generatePropertyObject = (i_sSectionName, i_oTemplateSection) => {
+    // Add in the new styles
+    let oProperties = Object.entries(i_oTemplateSection).reduce(
+        (i_oPropsAccumulator, [i_sPropName, i_oPropVariations]) => {
+            // Expand out the property variations
+            const oExpandedPropertyVariations = _expandPropVariations(i_sSectionName, i_sPropName, i_oPropVariations);
+
+            return {
+                ...i_oPropsAccumulator,
+                ...oExpandedPropertyVariations
+            };
+        }, 
+        {}
+    );
+
+    return oProperties;
+};
+
+const _expandPropVariations = (i_sSectionName, i_sPropName, i_oPropVariations) => {
+    const oExpanded = Object.entries(i_oPropVariations).reduce(
+        (i_oAccumulator, [i_sVariationName, i_sVariationValue]) => {
+            // Generate the entry item
+            const sPropertyKey = `--${i_sSectionName}___${i_sPropName}--${i_sVariationName}`;
+            const sPropertyVal = _convertColorToStringForm(i_sVariationValue);
+
+            return {
+                ...i_oAccumulator,
+                [sPropertyKey]: sPropertyVal
+            };
+        },
+        {}
+    );
+
+    return oExpanded;
+};
+
+const _convertColorToStringForm = (i_sColor) => {
+    const aColorRgb = Color(i_sColor).rgb().array();
+    const sColorString = aColorRgb.join(", ");
+
+    return sColorString;
 };
 
 // -------------------
@@ -65,7 +183,7 @@ const getters = {
 const mutations = {
     // Theme mutations
     [mutationTypes.ADD_THEME]: (i_oState, i_oPayload) => {
-        const { name,  properties, override } = i_oPayload;
+        const { name, properties, override } = i_oPayload;
 
         if (!override) {
             _themeDoesNotExist(i_oState, name);

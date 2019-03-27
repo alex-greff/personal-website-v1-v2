@@ -1,0 +1,4 @@
+// A helper function for generating theme links
+@function theme-link($section, $property, $variation, $opacity: 1) {
+    @return rgba(var(unquote("--" + $section + "___" + $property + "--" + $variation)), $opacity);
+}

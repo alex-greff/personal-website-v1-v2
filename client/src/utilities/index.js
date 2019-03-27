@@ -149,9 +149,46 @@ function isElement(o){
  * 
  * @param {Number} i_nRem The number of rems
  */
-function convertRemToPixels(i_nRem) {    
+export function convertRemToPixels(i_nRem) {    
     return i_nRem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
+
+// ---------------------
+// --- Array methods ---
+// ---------------------
+
+/**
+ * Returns an array containing the intersecting elements of the two arrays.
+ * Ex. [5, 7, 10] and [3, 5, 10] returns [5, 10]
+ * 
+ * @param {Array} i_aArr1 The first array.
+ * @param {Array} i_aArr2 The second array.
+ */
+export const intersection = (i_aArr1, i_aArr2) => {
+    return i_aArr1.filter(x => i_aArr2.includes(x));
+};
+
+/**
+ * Returns the difference elements of the first aray compared to the second array.
+ * Ex. [5, 7, 10] and [3, 5, 10] returns [7]
+ * 
+ * @param {Array} i_aArr1 The first array.
+ * @param {Array} i_aArr2 The second array.
+ */
+export const difference = (i_aArr1, i_aArr2) => {
+    return i_aArr1.filter(x => !i_aArr2.includes(x));
+};
+
+/**
+ * Returns the difference of elements from both arrays.
+ * Ex. [5, 7, 10] and [3, 5, 10] returns [7, 3]
+ * 
+ * @param {Array} i_aArr1 The first array.
+ * @param {Array} i_aArr2 The second array.
+ */
+export const symmetricDifference = (i_aArr1, i_aArr2) => {
+    return i_aArr1.filter(x => !i_aArr2.includes(x)).concat(i_aArr2.filter(x => !i_aArr1.includes(x)));
+};
 
 // Public API export
 export default {
@@ -166,5 +203,8 @@ export default {
     decapitalize,
     isNode,
     isElement,
-    convertRemToPixels
+    convertRemToPixels,
+    intersection, 
+    difference,
+    symmetricDifference,
 };
