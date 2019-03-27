@@ -1,10 +1,24 @@
-import basePropertiesImport from "./baseProperties";
-import propertyVariationsImport from "./propertyVariations";
-import subSectionsImport from "./subSections";
+export const baseProperties = [
+    "text-color",
+    "bg-color",
+    "accent-color",
+    "selected-color",
+    "icon-color",
+    "scrollbar-color",
+    "button-color"
+];
 
-export const baseProperties = basePropertiesImport;
-export const propertyVariations = propertyVariationsImport;
-export const subSections = subSectionsImport;
+export const propertyVariations = [
+    "primary",
+    "secondary"
+];
+
+export const subSections = [
+    "page",
+    "navBar",
+    "footer",
+    "content"
+];
 
 export default {
     baseProperties,
