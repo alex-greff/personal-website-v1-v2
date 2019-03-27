@@ -17,7 +17,9 @@
                 <!-- Some content can be put in here... -->
             </div>
             <div class="Footer__center">
-                <div class="Footer__credits">Designed and Built by Alexander Greff</div>
+                <div class="Footer__credits">
+                    Designed and Built by Alexander Greff
+                </div>
                 <div class="Footer__social-media">
                     <a title="Github" href="https://github.com/alex-greff" target="_blank" class="icon">
                         <i class="fab fa-github"></i>
@@ -36,7 +38,9 @@
             <div class="Footer__right">
                 <div class="Footer__right-container">
                     <theme-controls></theme-controls>
-                    <div class="Footer__dashboard"><a href="#">Dashboard</a></div>
+                    <div class="Footer__dashboard">
+                        <a href="#">Dashboard</a>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -44,86 +48,86 @@
 </template>
 
 <script>
-    import ThemeControls from './ThemeControls.vue';
-    import Utilities from "@/utilities";
-    import { TweenMax } from "gsap/all";
-    const INIT_IS_OPEN = false;
+import ThemeControls from './ThemeControls.vue';
+import Utilities from "@/utilities";
+import { TweenMax } from "gsap/all";
+const INIT_IS_OPEN = false;
 
-    export default {
-        components: {
-            themeControls: ThemeControls
+export default {
+    components: {
+        themeControls: ThemeControls
+    },
+    data() {
+        return {
+            isOpen: INIT_IS_OPEN,
+            displayFooter: INIT_IS_OPEN,
+        }
+    },
+    mounted() {
+        this.$refs.footerEl.style.bottom = 
+            (this.isOpen) ? 0 : this.computeFooterBottomOffset(this.$refs.footerEl);
+
+        // Setup resize listener 
+        this.$nextTick(() => {
+            window.addEventListener('resize', this.onResize);
+        });
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
+    },
+    methods: {
+        onResize() {
+            // Recompute and set the value for footer bottom
+            this.setFooterBottom();
         },
-        data() {
-            return {
-                isOpen: INIT_IS_OPEN,
-                displayFooter: INIT_IS_OPEN,
-            }
+        setIsOpen(i_sIsOpen) {
+            this.isOpen = i_sIsOpen;
         },
-        mounted() {
-            this.$refs.footerEl.style.bottom = 
-                (this.isOpen) ? 0 : this.computeFooterBottomOffset(this.$refs.footerEl);
+        computeFooterBottomOffset(i_elFooter) {
+            const FOOTER_BAR_HEIGHT = Utilities.convertRemToPixels(0.8);
+            const height = i_elFooter.offsetHeight;
 
-            // Setup resize listener 
-            this.$nextTick(() => {
-                window.addEventListener('resize', this.onResize);
-            });
+            return (-1 * (height - FOOTER_BAR_HEIGHT)) + "px";
         },
-        beforeDestroy() {
-            window.removeEventListener('resize', this.onResize);
+        setFooterBottom() {
+            const sNewButtom = this.computeFooterBottomOffset(this.$refs.footerEl);
+            this.$refs.footerEl.style.bottom = sNewButtom;
         },
-        methods: {
-            onResize() {
-                // Recompute and set the value for footer bottom
-                this.setFooterBottom();
-            },
-            setIsOpen(i_sIsOpen) {
-                this.isOpen = i_sIsOpen;
-            },
-            computeFooterBottomOffset(i_elFooter) {
-                const FOOTER_BAR_HEIGHT = Utilities.convertRemToPixels(0.8);
-                const height = i_elFooter.offsetHeight;
+        showFooter() {
+            this.displayFooter = true;
 
-                return (-1 * (height - FOOTER_BAR_HEIGHT)) + "px";
-            },
-            setFooterBottom() {
-                const sNewButtom = this.computeFooterBottomOffset(this.$refs.footerEl);
-                this.$refs.footerEl.style.bottom = sNewButtom;
-            },
-            showFooter() {
-                this.displayFooter = true;
+            TweenMax.killTweensOf(this.$refs.footerEl);
+            TweenMax.killTweensOf(this.$refs.footerBarEl);
 
-                TweenMax.killTweensOf(this.$refs.footerEl);
-                TweenMax.killTweensOf(this.$refs.footerBarEl);
+            const ANIM_DURATION = 0.2;
+            const ANIM_OPTIONS = { bottom: 0, ease: Power1.easeIn };
+            TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
+        }, 
+        hideFooter() {
+            TweenMax.killTweensOf(this.$refs.footerEl);
+            TweenMax.killTweensOf(this.$refs.footerBarEl);
 
-                const ANIM_DURATION = 0.2;
-                const ANIM_OPTIONS = { bottom: 0, ease: Power1.easeIn };
-                TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
-            }, 
-            hideFooter() {
-                TweenMax.killTweensOf(this.$refs.footerEl);
-                TweenMax.killTweensOf(this.$refs.footerBarEl);
+            const sBottomOffset = this.computeFooterBottomOffset(this.$refs.footerEl);
 
-                const sBottomOffset = this.computeFooterBottomOffset(this.$refs.footerEl);
+            const ANIM_DURATION = 0.2;
+            const ANIM_ON_COMPLETE = () => this.displayFooter = false;
+            const ANIM_OPTIONS = { bottom: sBottomOffset, ease: Power1.easeOut, onComplete: ANIM_ON_COMPLETE };
+            TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
+        }
+    },
+    computed: {
 
-                const ANIM_DURATION = 0.2;
-                const ANIM_ON_COMPLETE = () => this.displayFooter = false;
-                const ANIM_OPTIONS = { bottom: sBottomOffset, ease: Power1.easeOut, onComplete: ANIM_ON_COMPLETE };
-                TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
-            }
-        },
-        computed: {
-
-        },
-        watch: {
-            isOpen(isOpening) {
-                if (isOpening) {
-                    this.showFooter();
-                } else {
-                    this.hideFooter();
-                }
+    },
+    watch: {
+        isOpen(isOpening) {
+            if (isOpening) {
+                this.showFooter();
+            } else {
+                this.hideFooter();
             }
         }
     }
+}
 </script>
 
 

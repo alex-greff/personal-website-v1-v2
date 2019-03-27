@@ -1,16 +1,19 @@
 <template>
     <div :class="displayModeClass">
         <nav-link-item 
+            ref="navLinkRefs"
+
             v-for="page in navLinkPagesData" 
             :key="page.name"
-            ref="navLinkRefs"
-            @click.native="navItemClick"
+            
 
             :style="navLinkStyles"
             :to="page.path"
             :name="page.name"
-            :displayMode="displayMode"
+            :display-mode="displayMode"
             :exact="page.exact"
+
+            @click.native="navItemClick"
         >
             {{ capitalizeNavName(page.name) }}
         </nav-link-item>

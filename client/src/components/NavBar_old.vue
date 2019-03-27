@@ -1,9 +1,12 @@
 <template>
     <div class="nav-container">
-        <div class="sidebar" ref="sidebar" v-show="sidebarActive">
+        <div v-show="sidebarActive" ref="sidebar" class="sidebar">
             <ul class="navbar navbar-mobile">
-                <router-link v-for="page in pages" :key="page.name" 
-                    :to="page.path" tag="li" 
+                <router-link 
+                    v-for="page in pages" 
+                    :key="page.name" 
+                    :to="page.path" 
+                    tag="li" 
                     active-class="nav-item-active" 
                     class="nav-item"
                     @click.native="showSidebar(false)" 
@@ -28,13 +31,15 @@
 
         <!-- <div class="sidebar-close-area" @click="showSidebar(false)" v-show="sidebarActive"></div> -->
 
-        <nav class="header" ref="header">
+        <nav ref="header" class="header">
             <div class="logo">
-                <router-link to="/" 
+                <router-link 
+                    to="/" 
                     tag="div" 
                     active-class="" 
                     class="nav-item logo-container" 
-                    @click.native="showSidebar(false)" exact
+                    exact
+                    @click.native="showSidebar(false)" 
                 >
                     <div class="logo-1">
                         <svg viewBox="0 0 16.5 16.5">
@@ -50,7 +55,9 @@
             </div>
 
             <ul class="navbar navbar-desktop">
-                <router-link v-for="page in pages" :key="page.name" 
+                <router-link 
+                    v-for="page in pages"
+                    :key="page.name" 
                     :to="page.path" 
                     tag="li" 
                     active-class="nav-item-active" 
@@ -69,29 +76,29 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                sidebarActive: false,
-                pages: [
-                    { name: "About", path: "/about" },
-                    { name: "Projects", path: "/projects" },
-                    { name: "Experience", path: "/experience" },
-                    { name: "Music", path: "/music" },
-                    { name: "Contact", path: "/contact" },
-                ],
-                themeToggle: false
-            }
-        },
-        watch: {
-            
-        },
-        methods: {
-            showSidebar(sidebarOpen) {
-                this.sidebarActive = sidebarOpen;
-            }
+export default {
+    data() {
+        return {
+            sidebarActive: false,
+            pages: [
+                { name: "About", path: "/about" },
+                { name: "Projects", path: "/projects" },
+                { name: "Experience", path: "/experience" },
+                { name: "Music", path: "/music" },
+                { name: "Contact", path: "/contact" },
+            ],
+            themeToggle: false
+        }
+    },
+    watch: {
+        
+    },
+    methods: {
+        showSidebar(sidebarOpen) {
+            this.sidebarActive = sidebarOpen;
         }
     }
+}
 </script>
 
 

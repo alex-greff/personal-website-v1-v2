@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Color from "color";
+import Utilities from "@/utilities";
 import { defaultTheme } from '@/constants/defaultTheme';
 import update from 'immutability-helper';
 

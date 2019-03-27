@@ -1,6 +1,5 @@
 <template>
     <div class="content-list-container">
-
         <content-item v-for="(ID, index) in contentIDs" :key="index">
             <slot :name="ID"></slot>
         </content-item>
@@ -14,17 +13,18 @@ export default {
     components: {
         contentItem: ContentItem,
     },
+    props: {
+        contentIDs: {
+            type: Array, // Array of Strings
+            default: () => {[]}
+            // required: true
+        }
+    },
     data() {
         return {
 
         }
     },
-    props: {
-        contentIDs: {
-            type: Array, // Array of Strings
-            // required: true
-        }
-    }
 }
 </script>
 

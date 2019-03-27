@@ -1,16 +1,16 @@
 <template>
     <router-link
+        ref="routerRef"
         :to="to"
         tag="div"
         :class="displayModeClasses"
         active-class="active"
         :exact="exact"
-        ref="routerRef"
     >
         <theme-provider 
-            :namespace="currPageNamespace"
             class="NavLinkItem__container"
-            :useEl="routerEl"
+            :namespace="currPageNamespace"
+            :use-el="routerEl"
         >
             <div class="NavLinkItem__content">
                 <slot></slot>

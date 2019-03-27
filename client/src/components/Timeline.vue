@@ -36,22 +36,22 @@
 </template>
 
 <script>
-    export default {
-        // data: {
-        //     numYears: 5
-        // },
-        // computed: {
-        //     getNumYears() {
-        //         let bodyStyles = document.body.style;
-        //         bodyStyles.setProperty("--num-years", currTheme[THEME_ITEM]);
-        //         // return getComputedStyle(document.documentElement).getPropertyValue("--num-years");
-        //         return "";
-        //     }
-        // }, 
-        // mounted() {
-        //     console.log(this.getNumYears());
-        // }
-    }
+export default {
+    // data: {
+    //     numYears: 5
+    // },
+    // computed: {
+    //     getNumYears() {
+    //         let bodyStyles = document.body.style;
+    //         bodyStyles.setProperty("--num-years", currTheme[THEME_ITEM]);
+    //         // return getComputedStyle(document.documentElement).getPropertyValue("--num-years");
+    //         return "";
+    //     }
+    // }, 
+    // mounted() {
+    //     console.log(this.getNumYears());
+    // }
+}
 </script>
 
 <style lang="scss" scoped>

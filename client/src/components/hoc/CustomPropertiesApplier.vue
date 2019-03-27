@@ -22,7 +22,32 @@ export default {
         },
         useEl: {
             type: HTMLDivElement,
-            required: false
+            required: false,
+            default: undefined
+        }
+    },
+    computed: {
+        cssStyles() {
+            return (this.useRoot || this.useEl) ? {} : { ...this.properties };
+        }
+    },
+    watch: {
+        // Watch for when useRoot changes
+        useRoot(nextUseRoot) {
+            this.validateProps(nextUseRoot, this.useEl);
+
+            this.updateRootStyles(nextUseRoot, this.properties);
+        },
+        // Watch for when useEl changes
+        useEl(nextUseEl) {
+            this.validateProps(this.useRoot, nextUseEl);
+
+            this.updateUseElementStyles(nextUseEl, this.properties);
+        },
+        // Watch for when properties changes (because of the async theme loading)
+        properties(newProperties) {
+            this.updateRootStyles(this.useRoot, newProperties);
+            this.updateUseElementStyles(this.useEl, newProperties);
         }
     },
     created() {
@@ -31,9 +56,6 @@ export default {
     mounted() {
         this.updateRootStyles(this.useRoot, this.properties);
         this.updateUseElementStyles(this.useEl, this.properties);
-    },
-    render(h){
-        return h(this.tag, { style: this.cssStyles }, this.$slots.default);
     },
     methods: {
         validateProps(i_bUseRoot, i_useEl) {
@@ -70,29 +92,8 @@ export default {
             }
         }
     },
-    computed: {
-        cssStyles() {
-            return (this.useRoot || this.useEl) ? {} : { ...this.properties };
-        }
+    render(h){
+        return h(this.tag, { style: this.cssStyles }, this.$slots.default);
     },
-    watch: {
-        // Watch for when useRoot changes
-        useRoot(nextUseRoot) {
-            this.validateProps(nextUseRoot, this.useEl);
-
-            this.updateRootStyles(nextUseRoot, this.properties);
-        },
-        // Watch for when useEl changes
-        useEl(nextUseEl) {
-            this.validateProps(this.useRoot, nextUseEl);
-
-            this.updateUseElementStyles(nextUseEl, this.properties);
-        },
-        // Watch for when properties changes (because of the async theme loading)
-        properties(newProperties) {
-            this.updateRootStyles(this.useRoot, newProperties);
-            this.updateUseElementStyles(this.useEl, newProperties);
-        }
-    }
 }
 </script>

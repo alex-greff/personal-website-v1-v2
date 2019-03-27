@@ -20,8 +20,8 @@ export default {
         customPropertiesApplier: CustomPropertiesApplier
     },
     props: {
-        namespace: String,
-        theme: String,
+        namespace: { type: String, default: undefined },
+        theme: { type: String, default: undefined },
         tag: {
             type: String,
             default: "div"
@@ -32,7 +32,8 @@ export default {
         },
         useEl: {
             type: HTMLDivElement,
-            required: false
+            required: false,
+            default: undefined
         }
     },
     created() {

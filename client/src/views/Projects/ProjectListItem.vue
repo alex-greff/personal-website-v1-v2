@@ -25,26 +25,26 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
+export default {
+    props: {
+        projectData: { type: Object, required: true }
+    },
+    data() {
+        return {
 
-            };
+        };
+    },
+    computed: {
+        thumbnailImageStyles() {
+            return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
         },
-        computed: {
-            thumbnailImageStyles() {
-                return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
-            },
-            tagStringList() {
-                let stringList = "";
-                this.projectData.tags.forEach((tag) => stringList += tag + ', ' );
-                return stringList.trim().replace(/\,$/, "");
-            }
-        },
-        props: {
-            projectData: Object
+        tagStringList() {
+            let stringList = "";
+            this.projectData.tags.forEach((tag) => stringList += tag + ', ' );
+            return stringList.trim().replace(/,$/, "");
         }
-    }
+    },
+}
 </script>
 
 <style lang="scss" scoped>

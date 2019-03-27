@@ -4,15 +4,15 @@
 
         <!-- <md-icon class="NavBar__menu-icon">menu</md-icon> -->
         <div class="NavBar__menu-container" @click="toggleNavMenu">
-            <md-icon class="NavBar__menu-icon" v-if="isOpen">close</md-icon>
-            <md-icon class="NavBar__menu-icon" v-else>menu</md-icon>
+            <md-icon v-if="isOpen" class="NavBar__menu-icon">close</md-icon>
+            <md-icon v-else class="NavBar__menu-icon">menu</md-icon>
         </div>
         <nav-link-container 
             class="NavBar__pages-container"
-            :isOpen="isOpen"
+            :is-open="isOpen"
             :pages="pages"
-            :displayMode="displayMode"
-            :setNavOpen="setNavOpen"
+            :display-mode="displayMode"
+            :set-nav-open="setNavOpen"
         />
     </div>
 </template>
@@ -39,6 +39,24 @@ export default {
             ],
         }
     },
+    computed: {
+        navBarClasses() {
+            return `NavBar ${this.displayMode}`;
+        },
+        overlayClasses() {
+            return `NavBar__overlay ${(this.displayOverlay) ? "" : "hidden"}`.trim();
+        }
+    },
+    watch: {
+        isOpen(isOpening, isCurrentlyOpen) {
+            if (isOpening) {
+                this.showOverlay();
+            }
+            else {
+                this.hideOverlay();
+            }
+        }
+    },
     mounted() {
         // Initial screen sizecheck
         this.onResize(window.innerWidth, window.innerHeight);
@@ -52,14 +70,6 @@ export default {
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize);
-    },
-    computed: {
-        navBarClasses() {
-            return `NavBar ${this.displayMode}`;
-        },
-        overlayClasses() {
-            return `NavBar__overlay ${(this.displayOverlay) ? "" : "hidden"}`.trim();
-        }
     },
     methods: {
         onResize(i_nNewWidth, i_nNewHeight) {
@@ -85,16 +95,6 @@ export default {
             this.displayOverlay = false;
         }
     },
-    watch: {
-        isOpen(isOpening, isCurrentlyOpen) {
-            if (isOpening) {
-                this.showOverlay();
-            }
-            else {
-                this.hideOverlay();
-            }
-        }
-    }
 }
 </script>
 

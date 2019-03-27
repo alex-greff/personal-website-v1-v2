@@ -2,7 +2,7 @@
     <div>
         <!-- <div>Page: {{ projectName }}</div> -->
         <div v-if="projectDataLoaded">
-            Name: {{projectData.name}}
+            Name: {{ projectData.name }}
         </div>
         <div v-else>
             Loading...
