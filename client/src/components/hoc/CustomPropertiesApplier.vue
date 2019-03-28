@@ -8,7 +8,7 @@ export default {
             default() { return {} },
             validator(i_oProperties) {
                 return Object.keys(i_oProperties).every((i_sCSSVarName) => {
-                    return Utilities.isValidCSSVar(i_sCSSVarName)
+                    return i_sCSSVarName.startsWith("--");
                 });
             }
         },

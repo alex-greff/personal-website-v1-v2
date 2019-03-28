@@ -11,11 +11,16 @@ exports.cleanupFile = (filePath) => {
     });
 };
 
-exports.map_to_object = (i_mMap) => {
+exports.map_to_object = (i_mMap, recursive = false) => {
     const oRet = {};
 
     for (let [key, value] of i_mMap) {
-        oRet[key] = value;
+        if (recursive && value instanceof Map) {
+            oRet[key] = { ...exports.map_to_object(value, true) };
+        }
+        else {
+            oRet[key] = value;
+        }
     }
     
     return oRet;

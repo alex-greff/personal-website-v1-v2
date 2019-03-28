@@ -15,13 +15,17 @@ exports.themes_get_all = (req, res, next) => {
             const response = {
                 count: docs.length,
                 themes: docs.map(doc => {
-                    // Get the properties of the theme
-                    const theme_properties = Utilities.map_to_object(doc["properties"]);
+                    const theme_BASE = doc["BASE"];
+                    const theme_subSections = doc["subSections"];
 
                     return {
                         name: doc.name,
-                        properties: {
-                            ...theme_properties
+                        baseTheme: doc.baseTheme,
+                        BASE: {
+                            ...theme_BASE
+                        },
+                        subSections: {
+                            ...theme_subSections
                         },
                         _id: doc._id,
                         request: {
@@ -53,8 +57,9 @@ exports.themes_get_theme = (req, res, next) => {
             console.log("From database", doc);
 
             if (doc) {
-                // Get the properties of the theme
-                const theme_properties = Utilities.map_to_object(doc["properties"]);
+                // Get the template of the theme
+                const theme_BASE = Utilities.map_to_object(doc["BASE"], true);
+                const theme_subSections = Utilities.map_to_object(doc["subSections"], true);
 
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
 
@@ -63,8 +68,12 @@ exports.themes_get_theme = (req, res, next) => {
                     theme: {
                         _id: doc._id,
                         name: doc.name,
-                        properties: {
-                            ...theme_properties
+                        baseTheme: doc.baseTheme,
+                        BASE: {
+                            ...theme_BASE
+                        },
+                        subSections: {
+                            ...theme_subSections
                         }
                     }, 
                     request: {
@@ -87,15 +96,15 @@ exports.themes_get_theme = (req, res, next) => {
 };
 
 exports.themes_create_theme = (req, res, next) => {
-    const theme_properties = req.body["properties"];
+    const theme_BASE = req.body["BASE"];
+    const theme_subSections = req.body["subSections"];
 
     // Create theme mongodb doc
     const theme = new Theme({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        properties: {
-            ...theme_properties
-        }
+        BASE: theme_BASE,
+        subSections: theme_subSections
     });
 
     theme
@@ -103,7 +112,8 @@ exports.themes_create_theme = (req, res, next) => {
         .then(result => {
             console.log(result);
 
-            const theme_properties = Utilities.map_to_object(result["properties"]);
+            const theme_BASE = result["BASE"];
+            const theme_subSections = result["subSections"];
 
             let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
             // Send response 
@@ -111,8 +121,12 @@ exports.themes_create_theme = (req, res, next) => {
                 message: "Created theme sucessfully",
                 createdTheme: {
                     name: result.name,
-                    properties: {
-                        ...theme_properties
+                    baseTheme: result.baseTheme,
+                    BASE: {
+                        ...theme_BASE
+                    },
+                    subSections: {
+                        ...theme_subSections
                     },
                     _id: result._id,
                     request: {
@@ -185,7 +199,8 @@ exports.themes_delete_theme = (req, res, next) => {
                     url: url,
                     body: {
                         name: "String",
-                        properties: "Map of Strings"
+                        BASE: "Object of Objects",
+                        subSections: "Object of Objects"
                     }
                 }
             });

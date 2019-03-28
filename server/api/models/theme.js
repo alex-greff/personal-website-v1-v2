@@ -6,7 +6,13 @@ const themeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
 
     name: { type: String, required: true, unique: true },
-    properties: { type: Map, of: String, required: false, default: new Map() },
+    baseTheme: { type: Boolean, required: false, default: false },
+
+    // TODO: right now BASE and subSections accepts anything (which is essentially what an object is)
+    BASE: { type: {}, required: false, default: new Map() },
+    subSections: { type: {}, required: false, default: new Map() }
+    // BASE: { type: Map, of: Map, required: false, default: new Map() },
+    // subSections: { type: Map, of: Map, required: false, default: new Map() },   
 
     // Colors
     // "--color-page-bg": {

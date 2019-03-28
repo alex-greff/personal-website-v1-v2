@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Color from "color";
 import Utilities from "@/utilities";
-import { defaultTheme } from '@/constants/defaultTheme';
+import defaultTheme from '@/themes/presets/default';
 import update from 'immutability-helper';
 
 import { getterTypes, mutationTypes, actionTypes } from '@/store/types';
@@ -36,19 +36,28 @@ const _namespaceDoesNotExist = (i_oState, i_sNamespaceID) => {
 };
 
 const _validateTemplate = (i_oTemplate) => {
+    const BOOLEAN = "boolean";
     // Checks
-    if (!i_oTemplate.id) {
-        throw new Error("Error: template must have and id");
+    if (!i_oTemplate.name) {
+        throw new Error("Error: template must have a name");
     }
-    if (!i_oTemplate.BASE) {
-        throw new Error(`Error: template '${i_oTemplate.id}' must contain BASE`);
+    if (!i_oTemplate.BASE && !i_oTemplate.baseTheme) {
+        throw new Error(`Error: template '${i_oTemplate.name}' must contain BASE`);
+    }
+    if (typeof i_oTemplate.baseTheme !== BOOLEAN) {
+        throw new Error(`Error: template '${i_oTemplate.name}' must contain a valid boolean flag for 'baseTheme'`);
+    }
+
+    // Don't do base checks if the theme is not a base theme
+    if (!i_oTemplate.baseTheme) {
+        return;
     }
 
     // Make sure all base properties are provided in the template
     const aBaseDiff = Utilities.difference(baseProperties, Object.keys(i_oTemplate.BASE));
     if (aBaseDiff.length > 0) {
         const sMissingBaseStr = aBaseDiff.join(" ");
-        throw new Error(`Error: template '${i_oTemplate.id}' is missing base properties: ${sMissingBaseStr}`);
+        throw new Error(`Error: template '${i_oTemplate.name}' is missing base properties: ${sMissingBaseStr}`);
     }
 
     Object.entries(i_oTemplate.BASE).forEach(([i_sPropName, i_oVariations]) => {
@@ -56,7 +65,7 @@ const _validateTemplate = (i_oTemplate) => {
         
         if (aBasePropDiff.length > 0) {
             const sMissingBasePropsStr = aBasePropDiff.join(" ");
-            throw new Error(`Error: template '${i_oTemplate.id}' base property '${i_sPropName}' is missing variations: ${sMissingBasePropsStr}`);
+            throw new Error(`Error: template '${i_oTemplate.name}' base property '${i_sPropName}' is missing variations: ${sMissingBasePropsStr}`);
         }
     });
 };
@@ -101,7 +110,8 @@ const _generateThemeFromTemplate = (i_oTemplate) => {
     
     // Construct theme object
     let oTheme = {
-        id: i_oTemplate.id,
+        name: i_oTemplate.name,
+        baseTheme: i_oTemplate.baseTheme,
         properties: { ...oProperties }
     };
 
@@ -184,19 +194,18 @@ const getters = {
 const mutations = {
     // Theme mutations
     [mutationTypes.ADD_THEME]: (i_oState, i_oPayload) => {
-        const { name, properties, override } = i_oPayload;
+        const { template, override } = i_oPayload;
 
         if (!override) {
-            _themeDoesNotExist(i_oState, name);
+            _themeDoesNotExist(i_oState, template.name);
         }
 
         const oThemeData = {
-            name,
-            properties: { ...properties }
+            ..._generateThemeFromTemplate(template)
         };
 
         // Add the theme
-        Vue.set(state.themes, name, oThemeData);
+        Vue.set(i_oState.themes, oThemeData.name, { ...oThemeData });
     },
     [mutationTypes.REMOVE_THEME]: (i_oState, i_oPayload) => {
         const { name } = i_oPayload;
@@ -252,7 +261,7 @@ const actions = {
     // Retrieves tab data from the server
     [actionTypes.POPULATE_THEMES]: async ({ dispatch }) => {
         // Load the offline default theme just in case the backend server cannot be connected to
-        dispatch(actionTypes.ADD_THEME, { ...defaultTheme, override: true });
+        dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
 
         try {
             // Get themes from the database
@@ -262,19 +271,20 @@ const actions = {
 
             // Construct our in-memory themes object
             res.data.themes.forEach(theme => {
-                const currData = {
+                const template = {
                     name: theme.name,
-                    properties: {
-                        ...theme.properties
-                    }
+                    baseTheme: theme.baseTheme,
+                    BASE: theme.BASE,
+                    subSections: theme.subSections
                 };
 
                 // Add the theme
-                dispatch(actionTypes.ADD_THEME, { ...currData, override: true });
+                dispatch(actionTypes.ADD_THEME, { template: template, override: true });
             });
         } catch(err) {
             console.error("Unable to retrieve themes from server:\n", err);
         }
+        
     },
     // Theme actions
     [actionTypes.ADD_THEME]: ({ commit }, i_oPayload) => {        
