@@ -58,8 +58,8 @@ exports.themes_get_theme = (req, res, next) => {
 
             if (doc) {
                 // Get the template of the theme
-                const theme_BASE = Utilities.map_to_object(doc["BASE"], true);
-                const theme_subSections = Utilities.map_to_object(doc["subSections"], true);
+                const theme_BASE = doc["BASE"];
+                const theme_subSections = doc["subSections"];
 
                 let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
 
