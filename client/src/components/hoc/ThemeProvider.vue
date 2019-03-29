@@ -4,6 +4,7 @@
         :tag="tag"
         :use-root="useRoot"
         :use-el="useEl"
+        :el="el"
     >
         <slot></slot>
     </custom-properties-applier>
