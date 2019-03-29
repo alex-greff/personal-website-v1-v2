@@ -7,11 +7,11 @@
             v-show="!displayFooter"
         /> -->
 
-        <footer 
+        <footer
+            ref="footerEl"
             class="Footer" 
             @mouseenter="setIsOpen(true)"
             @mouseleave="setIsOpen(false)"
-            ref="footerEl"
         >
             <div class="Footer__left">
                 <!-- Some content can be put in here... -->
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+/* global Power1 */
 import ThemeControls from './ThemeControls.vue';
 import Utilities from "@/utilities";
 import { TweenMax } from "gsap/all";
@@ -61,6 +62,18 @@ export default {
         return {
             isOpen: INIT_IS_OPEN,
             displayFooter: INIT_IS_OPEN,
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+        isOpen(isOpening) {
+            if (isOpening) {
+                this.showFooter();
+            } else {
+                this.hideFooter();
+            }
         }
     },
     mounted() {
@@ -115,18 +128,6 @@ export default {
             TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
         }
     },
-    computed: {
-
-    },
-    watch: {
-        isOpen(isOpening) {
-            if (isOpening) {
-                this.showFooter();
-            } else {
-                this.hideFooter();
-            }
-        }
-    }
 }
 </script>
 
@@ -175,6 +176,7 @@ export default {
         padding: 1.3rem;
         z-index: 5;
 
+        color: theme-link("footer", "text-color", "primary");
         background-color: theme-link("footer", "bg-color", "primary", 0.8);
 
         display: flex;
