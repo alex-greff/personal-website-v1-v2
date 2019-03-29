@@ -43,7 +43,7 @@ export default {
             width: 5px;
             height: 100%;
 
-            background-color: rgba(var(--color-accent-primary), 0.7);
+            background-color: theme-link("content", "accent-color", "primary", 0.7);
 
             position: relative;
             left: 50%;

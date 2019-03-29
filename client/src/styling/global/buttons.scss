@@ -1,6 +1,6 @@
 .btn {
     // color: $btn-color;
-    color: rgba(var(--color-accent-primary), 1);
+    color: theme-link("button", "accent-color", "primary");
 
     border: 0.1rem solid;
     border-radius: 0.2rem;
@@ -10,7 +10,7 @@
     text-align: center;
 
     &:hover {
-        background-color: rgba(var(--color-accent-secondary), 0.192);
+        background-color: theme-link("button", "accent-color", "secondary", 0.192);
     }
 
     & a {

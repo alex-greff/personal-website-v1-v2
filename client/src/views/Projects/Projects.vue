@@ -97,7 +97,7 @@ export default {
             text-align: center;
 
             font-size: 3rem;
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("page", "accent-color", "primary");
         }
 
         & > .projects-list {

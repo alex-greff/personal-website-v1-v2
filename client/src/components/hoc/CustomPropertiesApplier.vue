@@ -21,9 +21,19 @@ export default {
             default: false
         },
         useEl: {
-            type: HTMLDivElement,
+            type: Boolean,
             required: false,
             default: undefined
+        },
+        el: {
+            type: HTMLDivElement,
+            required: false, 
+            default: undefined
+        }
+    },
+    data() {
+        return {
+            currentlyUsingRoot: false
         }
     },
     computed: {
@@ -34,35 +44,45 @@ export default {
     watch: {
         // Watch for when useRoot changes
         useRoot(nextUseRoot) {
-            this.validateProps(nextUseRoot, this.useEl);
-
+            this.validateProps(nextUseRoot, this.useEl, this.el);
             this.updateRootStyles(nextUseRoot, this.properties);
         },
         // Watch for when useEl changes
         useEl(nextUseEl) {
-            this.validateProps(this.useRoot, nextUseEl);
-
-            this.updateUseElementStyles(nextUseEl, this.properties);
+            this.validateProps(this.useRoot, nextUseEl, this.el);
+            this.updateUseElementStyles(nextUseEl, this.el, this.properties);
+        },
+        el(nextEl) {
+            this.validateProps(this.useRoot, this.useEl, nextEl);
+            this.updateUseElementStyles(this.useEl, nextEl, this.properties);
         },
         // Watch for when properties changes (because of the async theme loading)
         properties(newProperties) {
             this.updateRootStyles(this.useRoot, newProperties);
-            this.updateUseElementStyles(this.useEl, newProperties);
+            this.updateUseElementStyles(this.useEl, this.el, newProperties);
         }
     },
     created() {
         this.validateProps();
     },
     mounted() {
+        if (this.useRoot) {
+            this.currentlyUsingRoot = true;
+        }
+
         this.updateRootStyles(this.useRoot, this.properties);
-        this.updateUseElementStyles(this.useEl, this.properties);
+        this.updateUseElementStyles(this.useEl, this.el, this.properties);
     },
     methods: {
-        validateProps(i_bUseRoot, i_useEl) {
-            const bBothExist = !!i_bUseRoot && !!i_useEl;
+        validateProps(i_bUseRoot, i_bUseEl, i_el) {
+            const bBothExist = !!i_bUseRoot && !!i_bUseEl;
 
             if (bBothExist) {
                 throw `Error: only one of props 'useRoot' and 'useEl' can be specified at once`;
+            }
+
+            if (i_bUseEl && !i_el) {
+                throw `Error: el must be specified when useEl is 'true'`;
             }
         },
         updateRootStyles(i_bUseRoot, i_oProperties) {
@@ -70,18 +90,22 @@ export default {
                 Object.entries(i_oProperties).forEach(([name, value]) => {
                     Utilities.saveCSSProperty(name, value);
                 });
-            } else {
+                this.currentlyUsingRoot = true;
+            }
+
+            if (!i_bUseRoot && this.currentlyUsingRoot) {
                 Object.keys(i_oProperties).forEach(name => {
                     Utilities.removeCSSProperty(name);
                 });
+                this.currentlyUsingRoot = false;
             }
         },
-        updateUseElementStyles(i_el, i_oProperties) {
+        updateUseElementStyles(i_bUseEl, i_el, i_oProperties) {
             if (this.useRoot) {
                 return;
             }
 
-            if (i_el) {
+            if (i_bUseEl) {
                 Object.entries(i_oProperties).forEach(([name, value]) => {
                     Utilities.saveCSSProperty(name, value, i_el);
                 });

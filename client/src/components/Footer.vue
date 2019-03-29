@@ -153,7 +153,7 @@ export default {
         height: .8rem;
         cursor: pointer;
 
-        background-color: rgba(39, 39, 39, 0.5); // TODO: theme
+        background-color: theme-link("footer", "bg-color", "primary", 0.5);
     }
 
     .Footer {
@@ -175,9 +175,7 @@ export default {
         padding: 1.3rem;
         z-index: 5;
 
-        // background: rgba(var(--color-footer-bg), 0.5);
-        background-color: rgba(39, 39, 39, 0.8); // TODO: theme
-        color: rgba(var(--color-footer-text), 1);
+        background-color: theme-link("footer", "bg-color", "primary", 0.8);
 
         display: flex;
         justify-content: space-between;
@@ -204,7 +202,7 @@ export default {
                     color: inherit;
 
                     &:hover {
-                        color: rgba(var(--color-accent-primary), 1);
+                        color: theme-link("footer", "accent-color", "primary");
                     }
                 }
             }
@@ -225,7 +223,7 @@ export default {
 
                     &:hover {
                         text-decoration: underline;
-                        color: rgba(var(--color-accent-primary), 1);
+                        color: theme-link("footer", "accent-color", "primary");
                     }
                 }
             }

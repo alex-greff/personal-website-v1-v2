@@ -77,7 +77,7 @@ export default {
             background-color: rgba(0, 0, 0, 0.075);
 
             & .image-tint {
-                background-color: rgba(var(--color-accent-tertiary), 0);
+                background-color: theme-link("page", "selected-color", "primary", 0); // TODO: not the right selector name
             }
 
             & .thumbnail {
@@ -95,16 +95,16 @@ export default {
             }
 
             & .project-info > .project-name {
-                color: rgba(var(--color-accent-primary), 1);
+                color: theme-link("page", "accent-color", "primary");
             }
         }
 
         & .image-tint {
             @include respond(phone) {
-                background-color: rgba(var(--color-accent-tertiary), 0.6);
+                background-color: theme-link("page", "selected-color", "primary", 0.6); // TODO: not the right selector name
             };
 
-            background-color: rgba(var(--color-accent-tertiary), 1);
+            background-color: theme-link("page", "selected-color", "primary"); // TODO: not the right selector name
 
             transition: background-color 0.5s;
 
@@ -188,7 +188,7 @@ export default {
                     font-size: 1.7rem;
                     font-weight: 500;
 
-                    // color: rgba(var(--color-accent-tertiary), 1);
+                    color: theme-link("page", "accent-color", "primary");
 
                     transition: color 0.5s;
                 }
@@ -202,7 +202,7 @@ export default {
 
                     & > .tag-header {
                         font-weight: 400;
-                        color: rgba(var(--color-accent-tertiary), 1);
+                        color: theme-link("page", "selected-color", "primary"); // TODO: not the right selector name
                     }
 
                     & > * {

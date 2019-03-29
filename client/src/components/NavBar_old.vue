@@ -124,7 +124,7 @@ export default {
 
         padding: 0 1rem 0 1rem; // top right bottom left
 
-        background-color: rgba(var(--color-nav-bg), 1);
+        background-color: theme-link("navBar", "bg-color", "primary");
     }
 
     .sidebar {
@@ -139,9 +139,9 @@ export default {
 
         display: none; // By default do not show
 
-        background-color: rgba(var(--color-sidebar-bg), 1);
+        background-color: theme-link("navBar", "bg-color", "secondary");
 
-        box-shadow: -2px 0 2px rgba(var(--color-sidebar-bg), 0.466);
+        box-shadow: -2px 0 2px theme-link("navBar", "bg-color", "secondary", 0.466);
 
         padding: 1rem 7rem 1rem 7rem;
 
@@ -184,7 +184,7 @@ export default {
 
         font-size: 3rem;
 
-        color: rgba(var(--color-nav-text), 1);
+        color: theme-link("navBar", "text-color", "primary");
 
         cursor: pointer;
 
@@ -193,7 +193,7 @@ export default {
         }
 
         &:hover {
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("navBar", "accent-color", "primary");
         }
     }
 
@@ -247,12 +247,12 @@ export default {
 
         text-decoration: none;
 
-        color: rgba(var(--color-nav-text), 1);
+        color: theme-link("navBar", "text-color", "primary");
 
         &:hover {
             cursor: pointer;
 
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("navBar", "accent-color", "primary");
         }
 
         white-space: nowrap;
@@ -261,15 +261,15 @@ export default {
     .nav-item-active {
         font-weight: 400;
 
-        color: rgba(var(--color-accent-primary), 1);
+        color: theme-link("navBar", "accent-color", "primary");
 
         & > i {
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("navBar", "accent-color", "primary");
         }
     }
 
     .icon-arrow {
-        color: rgba(var(--color-accent-secondary), 1);
+        color: theme-link("navBar", "accent-color", "secondary");
 
         margin-right: 1rem;
     }
@@ -304,7 +304,7 @@ export default {
             left: 0;
 
             & svg {
-                fill: rgba(var(--color-accent-primary), 1);
+                fill: theme-link("navBar", "accent-color", "primary");
 
                 transition: transform 0.3s;
             }
@@ -319,7 +319,7 @@ export default {
             left: 0;
 
             & svg {
-                fill: rgba(var(--color-accent-tertiary), 0.7);
+                fill: theme-link("navBar", "selected-color", "primary", 0.7);
 
                 // Offset
                 transform: translate(0.2rem, 0.2rem);

@@ -2,8 +2,8 @@
     <custom-properties-applier 
         :properties="themeProperties"
         :tag="tag"
-        :useRoot="useRoot"
-        :useEl="useEl"
+        :use-root="useRoot"
+        :use-el="useEl"
     >
         <slot></slot>
     </custom-properties-applier>
@@ -31,13 +31,15 @@ export default {
             default: false
         },
         useEl: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        el: {
             type: HTMLDivElement,
             required: false,
             default: undefined
         }
-    },
-    created() {
-        this.validateProps(this.namespace, this.theme);
     },
     computed: {
         ...mapGetters({
@@ -55,9 +57,20 @@ export default {
             return (oTheme) ? oTheme["properties"] : {};
         }
     },
+    watch: {
+        namespace(nextNamespace) {
+            this.validateProps(nextNamespace, this.theme);
+        },
+        theme(nextTheme) {
+            this.validateProps(this.namespace, nextTheme);
+        }
+    },
+    created() {
+        this.validateProps(this.namespace, this.theme);
+    },
     methods: {
-        // Makes sure the 'namespace' and 'theme' props are valid in respect to each other
-        validateProps(i_sNamespace, i_sTheme) {
+        // Makes sure the props are valid
+        validateProps(i_sNamespace, i_sTheme, i_bUseEl, i_el) {
             const bBothExist = !!i_sNamespace && !!i_sTheme;
             const bNeitherExist = !i_sNamespace && !i_sTheme;
 
@@ -68,16 +81,12 @@ export default {
             if (bNeitherExist) {
                 throw `Error: one of props 'namespace' and 'theme' must be specified`;
             }
+
+            if (i_bUseEl && !i_el) {
+                throw `Error: el must be specified when useEl is 'true'`;
+            }
         }
     },
-    watch: {
-        namespace(nextNamespace) {
-            this.validateProps(nextNamespace, this.theme);
-        },
-        theme(nextTheme) {
-            this.validateProps(this.namespace, nextTheme);
-        }
-    }
 }
 </script>
 

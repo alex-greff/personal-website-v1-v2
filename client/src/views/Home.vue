@@ -141,7 +141,7 @@ export default {
             font-size: 6rem;
             font-weight: bold;
 
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("page", "accent-color", "primary");
 
             // text-shadow:
             //     -1px -1px 0 rgba(var(--color-accent-secondary), 1),
@@ -161,7 +161,7 @@ export default {
             & .uni-name {
                 font-size: inherit;
 
-                color: rgba(var(--color-accent-primary), 1);
+                color: theme-link("page", "accent-color", "primary");
             }
         }
 
@@ -216,7 +216,7 @@ export default {
             position: absolute;
 
             & svg {
-                fill: rgba(var(--color-accent-primary), 1);
+                fill: theme-link("page", "accent-color", "primary");
 
                 @include respond(tab-port) {
                     fill: rgb(77, 77, 77); // TODO: put this in the theme?
@@ -230,7 +230,7 @@ export default {
             position: absolute;
 
             & svg {
-                fill: rgba(var(--color-accent-tertiary), 0.7);
+                fill: theme-link("page", "accent-color", "primary", 0.7);
 
                 @include respond(tab-port) {
                     fill: rgb(48, 48, 48); // TODO: put this in the theme?

@@ -38,7 +38,7 @@ html {
 }
 
 body {
-    background-color: rgba(var(--color-page-bg), 1);
+    background-color: theme-link("page", "bg-color", "primary");
     color: white;
 }
 

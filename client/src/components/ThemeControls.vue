@@ -1,22 +1,23 @@
 <template>
     <div class="theme-controls">
         <span 
-            :class="{ 'theme-active': autoThemeEnabled === true }"  
+            :class="{ 'theme-active': autoThemeEnabled === true, 'theme-item': true, 'theme-auto': true }"  
             title="Theme: auto"
 
             @click="setAutoThemeEnabled(true)"
         ></span>
 
+        <!-- TODO: don't hardcode the properties selector used here -->
         <span 
             v-for="theme in themes" 
             :key="theme.name" 
             class="theme-item"
             :title="'Theme: ' + theme.name"
-            :style="{ backgroundColor: toRGBA(theme.properties['--color-accent-primary']) }"
+            :style="{ backgroundColor: toRGBA(theme.properties['--BASE___accent-color--primary']) }" 
 
             :class="{ 'theme-active': currThemeName === theme.name && autoThemeEnabled === false }"
-            @click="setStaticTheme(theme.name)">
-        </span>
+            @click="setStaticTheme(theme.name)"
+        />
     </div>
 </template>
 

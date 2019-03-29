@@ -10,7 +10,8 @@
         <theme-provider 
             class="NavLinkItem__container"
             :namespace="currPageNamespace"
-            :use-el="routerEl"
+            :use-el="true"
+            :el="routerEl"
         >
             <div class="NavLinkItem__content">
                 <slot></slot>
@@ -166,7 +167,7 @@ export default {
                 background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
                 &::before {
-                    background-color: rgba(var(--color-accent-primary), 0.8); 
+                    background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
 
                     @include compute-border-clip-path(#{$gutter-length}, #{$border-width-hover});
                 }
@@ -182,7 +183,7 @@ export default {
                 background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
                 &::before {
-                    background-color: rgba(var(--color-accent-primary), 0.8); 
+                    background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
 
                     @include compute-border-clip-path(#{$gutter-length}, #{$border-width-active});
                 }
@@ -212,7 +213,7 @@ export default {
 
         width: 100vw;
 
-        background-color: rgba(39, 39, 39, 0.8); // TODO: theme
+        background-color: theme-link("navBar__item", "bg-color", "primary", 0.8);
 
         transition: background-color 0.3s, max-width 0.3s;
 
@@ -250,7 +251,7 @@ export default {
             height: 100%;
             width: 100%;
 
-            background-color: rgba(59, 59, 59, 0.8); // TODO: theme
+            background-color: theme-link("navBar__item", "bg-color", "secondary", 0.8);
 
             @include compute-border-clip-path(#{$gutter-length}, #{$border-width});
 
@@ -271,12 +272,12 @@ export default {
 
         // Hover modifier
         &:hover {
-            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
+            background-color: theme-link("navBar__item", "bg-color", "primary", 0.8);
 
             max-width: calc(#{$item-length} + #{$hover-offset});
 
             &::before {
-                background-color: rgba(var(--color-accent-primary), 0.8); 
+                background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
 
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width-hover});
             }
@@ -288,12 +289,12 @@ export default {
 
         // Active modifer
         &.active {
-            background-color: rgba(39, 39, 39, 0.98); // TODO: theme
+            background-color: theme-link("navBar__item", "bg-color", "primary", 0.98);
 
             max-width: calc(#{$item-length} + #{$active-offset});
 
             &::before {
-                background-color: rgba(var(--color-accent-primary), 0.8); 
+                background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
 
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width-active});
             }

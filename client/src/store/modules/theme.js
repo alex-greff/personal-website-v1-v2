@@ -4,6 +4,8 @@ import Utilities from "@/utilities";
 import defaultTheme from '@/themes/presets/default';
 import update from 'immutability-helper';
 
+import themes from '@/themes/presets';
+
 import { getterTypes, mutationTypes, actionTypes } from '@/store/types';
 import { subSections, propertyVariations, baseProperties } from "@/themes/definitions";
 
@@ -260,6 +262,13 @@ const mutations = {
 const actions = {
     // Retrieves tab data from the server
     [actionTypes.POPULATE_THEMES]: async ({ dispatch }) => {
+        // TODO: Load offline themes for now
+        Object.values(themes).forEach((template) => {
+            dispatch(actionTypes.ADD_THEME, { template: template, override: true });
+        });
+
+        return; 
+
         // Load the offline default theme just in case the backend server cannot be connected to
         dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
 

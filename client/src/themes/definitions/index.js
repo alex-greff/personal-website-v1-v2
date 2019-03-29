@@ -16,8 +16,10 @@ export const propertyVariations = [
 export const subSections = [
     "page",
     "navBar",
+    "navBar__item",
     "footer",
-    "content"
+    "content",
+    "button"
 ];
 
 export default {

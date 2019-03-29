@@ -161,7 +161,7 @@ export default {
             font-size: 3rem;
             font-weight: bold;
 
-            color: rgba(var(--color-accent-primary), 1);
+            color: theme-link("page", "accent-color", "primary");
 
             margin-bottom: 1.5rem;
         }
@@ -174,8 +174,7 @@ export default {
             line-height: 1.5;
             // text-indent: 30px;
 
-            // color: rgba(var(--color-page-text), 1);
-            color: #c0c0c0;
+            color: theme-link("page", "text-color", "secondary");
 
             & p {
                 margin-bottom: 1rem;   
@@ -219,7 +218,7 @@ export default {
             width: 100%;
             height: 100%;
 
-            background-color: rgba(var(--color-accent-tertiary), 1);
+            background-color: theme-link("page", "selected-color", "primary"); // TODO: not the right selector name
 
             clip-path: polygon(0 10%, 100% 5%, 100% 90%, 0 95%);
 
@@ -230,7 +229,7 @@ export default {
             &:hover {
                 clip-path: polygon(0 0%, 100% 0%, 100% 100%, 0 100%);
 
-                background-color: rgba(var(--color-accent-tertiary), 0);
+                background-color: theme-link("page", "selected-color", "primary", 0); // TODO: not the right selector name
             }
         }
 
