@@ -1,16 +1,5 @@
 <template>
     <div class="BarBackground" :style="{zIndex: zIndex}">
-        <!-- <div 
-            v-for="(data, idx) in barData" 
-            :key="idx" 
-            ref="barRefs"
-            class="BarBackground__bar"
-            :style="{
-                transform: `translateY(${data.pos}px)`,
-                width: `calc(50% + ${data.width}rem)`,
-                height: `${data.height}px`,
-            }"
-        /> -->
         <div 
             v-for="n in 100"
             :key="n"
@@ -23,64 +12,13 @@
 </template>
 
 <script>
-/* global Sine */
-import Utilities from "@/utilities";
-import { TweenMax } from "gsap/all";
-
 export default {
     props: {
         zIndex: {
             type: Number,
             default: 0
         },
-        numBars: {
-            type: Number,
-            default: 50
-        }
     },
-    data() {
-        return {
-            barData: this.generateBarData()
-        }
-    },
-    mounted() {
-        // this.barData = this.generateBarData();
-        // console.log(this.$refs);
-        // this.runPassiveAnims();
-    },
-    methods: {
-        generateBarData() {
-            return Utilities.arrayFillRange(0, this.numBars).map(idx => {
-                const height = 15 + Utilities.getRandomFloat(-5, 5);
-                const width = Utilities.getRandomFloat(-20, 20);
-
-                const pos = ((window.innerHeight/2) - (window.innerHeight * (idx/this.numBars))) + Utilities.getRandomFloat(-20, 20);
-
-                return {
-                    width,
-                    height,
-                    pos
-                };
-            });
-        },
-        runPassiveAnims() {
-            this.$refs.barRefs.forEach(el => {
-                const amt = Utilities.getRandomFloat(5, 10);
-                const delay = Utilities.getRandomFloat(0, 0.5);
-                const duration = Utilities.getRandomFloat(2, 5);
-                const opacity = Utilities.getRandomFloat(0, 0.8);
-
-                new TweenMax(el, duration, {
-                    x: amt, 
-                    delay: delay,
-                    ease: Sine.easeInOut,
-                    opacity: opacity,
-                    repeat: -1,
-                    yoyo: true
-                });
-            });
-        }
-    }
 }
 </script>
 
