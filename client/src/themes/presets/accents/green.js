@@ -1,5 +1,5 @@
 const template = {
-    "name": "cyan",
+    "name": "green",
     "baseTheme": false,
     "BASE": {
         "accent-color": {
