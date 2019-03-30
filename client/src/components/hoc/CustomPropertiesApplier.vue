@@ -101,7 +101,7 @@ export default {
             }
         },
         updateUseElementStyles(i_bUseEl, i_el, i_oProperties) {
-            if (this.useRoot) {
+            if (this.useRoot || !i_el) {
                 return;
             }
 
