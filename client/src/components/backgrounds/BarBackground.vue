@@ -49,6 +49,20 @@ export default {
         // this.runPassiveAnims();
     },
     methods: {
+        generateBarData() {
+            return Utilities.arrayFillRange(0, this.numBars).map(idx => {
+                const height = 15 + Utilities.getRandomFloat(-5, 5);
+                const width = Utilities.getRandomFloat(-20, 20);
+
+                const pos = ((window.innerHeight/2) - (window.innerHeight * (idx/this.numBars))) + Utilities.getRandomFloat(-20, 20);
+
+                return {
+                    width,
+                    height,
+                    pos
+                };
+            });
+        },
         runPassiveAnims() {
             this.$refs.barRefs.forEach(el => {
                 const amt = Utilities.getRandomFloat(5, 10);
