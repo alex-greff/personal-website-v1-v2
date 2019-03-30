@@ -7,7 +7,7 @@ const template = {
             "secondary": "rgb(192, 192, 192)" 
         },
         "bg-color": {
-            "primary": "rgb(61, 61, 61)", // --color-page-bg
+            "primary": "rgb(30, 30, 30)", // --color-page-bg //rgb(61, 61, 61)
             "secondary": "rgba(0, 0, 0)" // TODO:
         },
         "accent-color": {

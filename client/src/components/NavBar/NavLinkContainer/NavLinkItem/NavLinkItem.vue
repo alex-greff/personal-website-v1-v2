@@ -160,6 +160,9 @@ export default {
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width});
 
                 transition: clip-path 0.5s, background-color 0.5s;
+
+                // box-shadow: 0 0 20px 20px red;
+                // filter: drop-shadow(5px 0px 5px rgb(255, 255, 255));
             }
 
             // Hover modifier

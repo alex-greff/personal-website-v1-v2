@@ -37,6 +37,16 @@ export const injectClasses = (...i_aClassnames) => {
 };
 
 /**
+ * Fills and returns an array with sequential numbers from the given start to end values.
+ * 
+ * @param {Number} i_nStart The start number (inclusive).
+ * @param {Number} i_nEnd The end number (inclusive).
+ */
+export const arrayFillRange = (i_nStart, i_nEnd) => {
+    return Array(i_nEnd - i_nStart + 1).fill().map((item, nIndex) => i_nStart + nIndex);
+};
+
+/**
  * Returns if the given css custom properties name is valid.
  * E.g. --my-custom-prop-name
  * 
@@ -190,11 +200,59 @@ export const symmetricDifference = (i_aArr1, i_aArr2) => {
     return i_aArr1.filter(x => !i_aArr2.includes(x)).concat(i_aArr2.filter(x => !i_aArr1.includes(x)));
 };
 
+/**
+ * Get a random floating point number between `min` and `max`.
+ * 
+ * @param {Number} min - min number
+ * @param {Number} max - max number
+ * @param {Number} rand - the random generator used
+ * @return {Number} a random floating point number
+ */
+function getRandomFloat(min, max, rand = Math.random) {
+    return rand() * (max - min) + min;
+}
+
+/**
+ * Get a random integer between `min` and `max`.
+ * 
+ * @param {Number} min - min number
+ * @param {Number} max - max number
+ * @param {Number} rand - the random generator used
+ * @return {Number} a random integer
+ */
+function getRandomInt(min, max, rand = Math.random) {
+    return Math.floor(rand() * (max - min + 1) + min);
+}
+
+/**
+ * Get a random boolean value.
+ * 
+ * @return {Boolean} a random true/false
+ */
+function getRandomBool() {
+    return Math.random() >= 0.5;
+}
+
+function randomNormalDist(min=0, max=1, skew=1) {
+    var u = 0, v = 0;
+    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while(v === 0) v = Math.random();
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) num = randomNormalDist(min, max, skew); // resample between 0 and 1 if out of range
+    num = Math.pow(num, skew); // Skew
+    num *= max - min; // Stretch to fill range
+    num += min; // offset to min
+    return num;
+}
+
 // Public API export
 export default {
     isInBreakpoint,
     injectClasses,
     isValidCSSVar,
+    arrayFillRange,
     isObjectEmpty,
     saveCSSProperty,
     removeCSSProperty,
@@ -207,4 +265,8 @@ export default {
     intersection, 
     difference,
     symmetricDifference,
+    getRandomFloat,
+    getRandomInt,
+    getRandomBool,
+    randomNormalDist,
 };

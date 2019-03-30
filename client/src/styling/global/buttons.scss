@@ -9,14 +9,16 @@
 
     text-align: center;
 
+
     &:hover {
+        text-decoration: none;
         background-color: theme-link("button", "accent-color", "secondary", 0.192);
     }
 
     & a {
         font-size: inherit;
 
-        text-decoration: none;
+        text-decoration: none !important;
 
         color: inherit;
 

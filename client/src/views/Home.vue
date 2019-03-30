@@ -1,35 +1,43 @@
 <template>
-    <!-- <div class="home-content">
-        <div class="welcome-container">
-            <div class="greeting-text">Hi, my name is</div>
-            <h1 class="name-text">Alexander Greff</h1>
-            <div class="info-text">
-                I am a computer science student specializing in software engineering at the 
-                <span class="uni-name">University of Toronto</span>.
-            </div>
+    <fragment>
+        <div class="home-content">
+            <div class="welcome-container">
+                <div class="greeting-text">
+                    Hi, my name is
+                </div>
+                <h1 class="name-text">
+                    Alexander Greff
+                </h1>
+                <div class="info-text">
+                    I am a computer science student specializing in software engineering at the 
+                    <span class="uni-name">University of Toronto</span>.
+                </div>
 
-            <router-link to="/contact" tag="div" class="btn contact-btn">
-                <a>Contact Me</a>
-            </router-link>
-        </div>
-        <div class="logo-container">
-            <div class="logo-1">
-                <svg viewBox="0 0 16.5 16.5" clipPath="#logo-clip">
-                    <use xlink:href="#logo-symbol" href="#logo-symbol"/>
-                </svg>
+                <router-link to="/contact" tag="div" class="btn contact-btn">
+                    <a>Contact Me</a>
+                </router-link>
             </div>
-            <div class="logo-2">
-                <svg viewBox="0 0 16.5 16.5">
-                    <use xlink:href="#logo-symbol" href="#logo-symbol"/>
-                </svg>
+            <div class="logo-container">
+                <div class="logo-1">
+                    <svg viewBox="0 0 16.5 16.5" clipPath="#logo-clip">
+                        <use xlink:href="#logo-symbol" href="#logo-symbol" />
+                    </svg>
+                </div>
+                <div class="logo-2">
+                    <svg viewBox="0 0 16.5 16.5">
+                        <use xlink:href="#logo-symbol" href="#logo-symbol" />
+                    </svg>
+                </div>
             </div>
         </div>
-    </div> -->
+        <bar-background :zIndex="0"/>
+    </fragment>
+    
 
     <!-- <div class="test-container">
         Some stuff
     </div> -->
-    <content-container>
+    <!-- <content-container>
         Some stuff
         <br>
         Some stuff
@@ -45,15 +53,17 @@
         Some stuff
         <br>
         Some stuff
-    </content-container>
+    </content-container> -->
 </template>
 
 <script>
 import ContentContainer from "@/components/containers/ContentContainer.vue";
+import BarBackground from "@/components/backgrounds/BarBackground.vue";
 
 export default {
     components: {
-        contentContainer: ContentContainer
+        contentContainer: ContentContainer,
+        barBackground: BarBackground
     },
     // ------------------
     // --- Animations ---
@@ -77,10 +87,12 @@ export default {
 
 <style lang="scss" scoped>
     * {
-        font-size: 2rem;
+        // font-size: 2rem;
     }
 
     .home-content {
+        line-height: normal;
+
         padding: 0 15rem 0 15rem;
 
         @include respond(tab-port) {
@@ -109,6 +121,8 @@ export default {
         position: relative;
         top: 50%;
         transform: translateY(-50%);
+
+        z-index: 1;
     }
 
     .welcome-container {
@@ -230,7 +244,7 @@ export default {
             position: absolute;
 
             & svg {
-                fill: theme-link("page", "accent-color", "primary", 0.7);
+                fill: theme-link("page", "selected-color", "primary", 0.7);
 
                 @include respond(tab-port) {
                     fill: rgb(48, 48, 48); // TODO: put this in the theme?

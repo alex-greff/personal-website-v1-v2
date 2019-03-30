@@ -2,3 +2,11 @@
 @function theme-link($section, $property, $variation, $opacity: 1) {
     @return rgba(var(unquote("--" + $section + "___" + $property + "--" + $variation)), $opacity);
 }
+
+
+@function random-num($min, $max) {
+    $rand: random();
+    $randomNum: $min + floor($rand * (($max - $min) + 1));
+  
+    @return $randomNum;
+}
