@@ -97,9 +97,11 @@ export default {
         // --- Desktop Version ---
         // -----------------------
         &.desktop {
-            $gutter-length: 3rem;
+            $tilt-angle: 60deg; 
             $item-length: 20rem;
             $item-height: 5rem; 
+            // $gutter-length: 3rem; // TODO: remove
+            $gutter-length: $item-height / tan($tilt-angle);
             
             position: relative;
             max-width: $item-length;
@@ -203,9 +205,11 @@ export default {
     // --- Mobile Version ---
     // ----------------------
     .NavLinkItem.mobile {
-        $gutter-length: 3rem;
+        $tilt-angle: 60deg; 
         $item-length: 25rem;
         $item-height: 5rem;
+        // $gutter-length: 3rem; // TODO: remove
+        $gutter-length: $item-height / tan($tilt-angle);
 
         $hover-offset: 1rem;
         $active-offset: 1rem;
