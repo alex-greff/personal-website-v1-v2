@@ -182,7 +182,7 @@ export default {
                     0.15
                 ), "-=0.2"
             );
-            tl.add(TweenLite.to(logoEl, 1, { x: 20, opacity: 0 }), "-=1");
+            tl.add(TweenLite.to(logoEl, 1, { x: 20, opacity: 0 }), "-=1.2");
 
             BarBackground.leaveAnim(el, 1, 0);
         });
