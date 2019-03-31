@@ -1,11 +1,18 @@
 <template>
-    <fragment>
+    <!-- <fragment> -->
+    <div class="Home">
         <div class="home-content">
             <div class="welcome-container">
                 <div class="greeting-text">
-                    Hi, my name is
+                    <span class="hi">Hi,&nbsp;</span><span class="my-name-is">my name is</span>
                 </div>
                 <h1 class="name-text">
+                    <!-- <span class="name-text__firstname">
+                        <span v-for="(char, idx) in firstname" :key="idx" class="name-text__char">{{ char }}</span>
+                    </span>
+                    <span class="name-text__lastname">
+                        <span v-for="(char, idx) in lastname" :key="idx" class="name-text__char">{{ char }}</span>
+                    </span> -->
                     Alexander Greff
                 </h1>
                 <div class="info-text">
@@ -30,8 +37,9 @@
                 </div>
             </div>
         </div>
-        <bar-background :zIndex="0"/>
-    </fragment>
+        <bar-background :z-index="0" />
+    </div>
+    <!-- </fragment> -->
     
 
     <!-- <div class="test-container">
@@ -59,35 +67,135 @@
 <script>
 import ContentContainer from "@/components/containers/ContentContainer.vue";
 import BarBackground from "@/components/backgrounds/BarBackground.vue";
+/* global Power1 */
+import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
     components: {
         contentContainer: ContentContainer,
         barBackground: BarBackground
     },
+    data() {
+        return {
+            firstname: "Alexander",
+            lastname: "Greff"
+        }
+    },
+    mounted() {
+        // console.log(this.$refs.nameRefs);
+    },
     // ------------------
     // --- Animations ---
     // ------------------
+    introAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running Home intro anim for", el); // TODO: remove
+
+            // Get DOM references
+            const hiEl = el.querySelector(".hi");
+            const myNameIsEl = el.querySelector(".my-name-is");
+            const nameEl = el.querySelector(".name-text");
+            const infoTextEl = el.querySelector(".info-text");
+            const contactBtnEl = el.querySelector(".contact-btn");
+            const logoEl = el.querySelector(".logo-container");
+
+            // Kill any running animations
+            TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
+
+            // Run animations
+            const tl = new TimelineLite({ onComplete: () => resolve() });
+            tl.add(TweenLite.fromTo(hiEl, 1, { opacity: 0 }, { opacity: 1 }));
+            tl.add(TweenLite.fromTo(myNameIsEl, 1, { opacity: 0 }, { opacity: 1 }));
+            tl.add(
+                TweenMax.staggerFromTo(
+                    [nameEl, infoTextEl, contactBtnEl], 
+                    2,
+                    { x: -20, opacity: 0},
+                    { x: 0, opacity: 1},
+                    0.5
+                ), "-=0.2"
+            );
+            tl.add(TweenLite.fromTo(logoEl, 3, { opacity: 0 }, { opacity: 1, ease: Power1.easeIn }), "-=2");
+            tl.add(TweenLite.fromTo(logoEl, 2, { x: 20 }, { x: 0 }), "-=3");
+
+            // Run BarBackground enter anim
+            BarBackground.enterAnim(el, 5, 3);
+        });
+    },
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Home enter anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 0); // TODO: remove
+            console.log("Running Home enter anim for", el); // TODO: remove
+
+            // Get DOM references
+            const hiEl = el.querySelector(".hi");
+            const myNameIsEl = el.querySelector(".my-name-is");
+            const nameEl = el.querySelector(".name-text");
+            const infoTextEl = el.querySelector(".info-text");
+            const contactBtnEl = el.querySelector(".contact-btn");
+            const logoEl = el.querySelector(".logo-container");
+
+            // Kill any running animations
+            TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
+
+            // Run animations
+            const tl = new TimelineLite({ onComplete: () => resolve() });
+            tl.add(TweenLite.fromTo(hiEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }));
+            tl.add(TweenLite.fromTo(myNameIsEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }), "-=0.5");
+            tl.add(
+                TweenMax.staggerFromTo(
+                    [nameEl, infoTextEl, contactBtnEl],
+                    0.5,
+                    { x: -20, opacity: 0 },
+                    { x: 0, opacity: 1 },
+                    0.15
+                ), "-=0.2"
+            );
+            tl.add(TweenLite.fromTo(logoEl, 1, { x: 20, opacity: 0 }, { x: 0, opacity: 1 }), "-=1");
+
+            BarBackground.enterAnim(el, 1, 0);
         });
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Home leave anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 100); // TODO: remove
+            console.log("Running Home leave anim for", el); // TODO: remove
+
+            // Get DOM references
+            const hiEl = el.querySelector(".hi");
+            const myNameIsEl = el.querySelector(".my-name-is");
+            const nameEl = el.querySelector(".name-text");
+            const infoTextEl = el.querySelector(".info-text");
+            const contactBtnEl = el.querySelector(".contact-btn");
+            const logoEl = el.querySelector(".logo-container");
+
+            // Kill any running animations
+            TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
+
+            // Run animations
+            const tl = new TimelineLite({ onComplete: () => resolve() });
+            tl.add(TweenLite.to(hiEl, 0.5, { x: 20, opacity: 0 }));
+            tl.add(TweenLite.to(myNameIsEl, 0.5, { x: 20, opacity: 0 }), "-=0.5");
+            tl.add(
+                TweenMax.staggerTo(
+                    [nameEl, infoTextEl, contactBtnEl],
+                    0.5,
+                    { x: 20, opacity: 0 },
+                    0.15
+                ), "-=0.2"
+            );
+            tl.add(TweenLite.to(logoEl, 1, { x: 20, opacity: 0 }), "-=1");
+
+            BarBackground.leaveAnim(el, 1, 0);
         });
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    * {
-        // font-size: 2rem;
+    .Home {
+        width: 100vw;
+        height: 100vh;
+
+        overflow: hidden;
     }
 
     .home-content {
@@ -150,12 +258,25 @@ export default {
             font-size: 2.5rem;
             font-weight: 400;
         }
+        
+        & .name-text__char, .hi, .my-name-is {
+            display: inline-block;
+        }
 
         & .name-text {
             font-size: 6rem;
             font-weight: bold;
 
             color: theme-link("page", "accent-color", "primary");
+
+
+            & .name-text__firstname {
+                margin-right: 1.5rem;
+            }
+
+            & .name-text__firstname, & .name-text__lastname {
+                display: inline-block;
+            }
 
             // text-shadow:
             //     -1px -1px 0 rgba(var(--color-accent-secondary), 1),

@@ -1,7 +1,7 @@
 <template>
     <div class="BarBackground" :style="{zIndex: zIndex}">
         <div 
-            v-for="n in 100"
+            v-for="n in NUM_BARS"
             :key="n"
             ref="barRefs"
             :class="`bar bar-num-${n}`"
@@ -12,6 +12,9 @@
 </template>
 
 <script>
+/* global Power1 */
+import { TweenLite } from "gsap/all";
+
 export default {
     props: {
         zIndex: {
@@ -19,6 +22,45 @@ export default {
             default: 0
         },
     },
+    data() {
+        return {
+            NUM_BARS: 100
+        }
+    },
+    // ------------------
+    // --- Animations ---
+    // ------------------
+    enterAnim(el, i_nDuration = 1.5, i_nDelay = 0) {
+        return new Promise((resolve, reject) => {
+            console.log("Running BarBackground enter anim for", el); // TODO: remove
+
+            // DOM references
+            const barBackgroundEl = el.querySelector(".BarBackground");
+
+            // Animate
+            TweenLite.fromTo(
+                barBackgroundEl, 
+                i_nDuration,
+                { opacity: 0 }, 
+                { opacity: 1, delay: i_nDelay, ease: Power1.easeIn, onComplete: () => resolve() }
+            );
+        });
+    },
+    leaveAnim(el, i_nDuration = 1.5, i_nDelay = 0) {
+        return new Promise((resolve, reject) => {
+            console.log("Running BarBackground leave anim for", el); // TODO: remove
+            
+            // DOM references
+            const barBackgroundEl = el.querySelector(".BarBackground");
+
+            // Animate
+            TweenLite.to(
+                barBackgroundEl, 
+                i_nDuration, 
+                { opacity: 0, delay: i_nDelay, ease: Power1.easeOut, onComplete: () => resolve() }
+            );
+        });
+    }
 }
 </script>
 
@@ -51,6 +93,7 @@ export default {
                 $pow-triangle-val: pow-float($triangle-val, 1.5);
 
                 // CONFIG
+                $screen-height-amount: 0.85; // O = 0% of the screen, 1 = 100% of the screen
                 $min-width: 1;
                 $max-width: 90;
                 $height-multiplier: 0.8; // Percentage: 0 = no height, 0.5 = half height, 1 = full height, >1 = grow
@@ -60,10 +103,10 @@ export default {
                 $width-rand: random-num(0, 75) * clamp($triangle-val, 0, 1); // Random size offset in px
                 $height-rand: random-num(-5, 5); // Random size offset in px
 
-                transform: translateY(calc(#{(($i - 1)/$num-bars*100 - 50)}vh + #{$transform-rand}px));
+                transform: translateY(calc(#{(($i - 1)/$num-bars*100 - 50) * $screen-height-amount}vh + #{$transform-rand}px));
 
                 width: calc(#{$min-width + $pow-triangle-val * ($max-width - $min-width)}vw + #{$width-rand}px);
-                height: calc(#{100/$num-bars * $height-multiplier}vh + #{$height-rand}px);
+                height: calc(#{100/$num-bars * $height-multiplier * $screen-height-amount}vh + #{$height-rand}px);
                 
 
                 $theme-clr: theme-link("page", "accent-color", "primary", 0.3);

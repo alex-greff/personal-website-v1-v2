@@ -23,7 +23,7 @@ import { getAllRouterLinks } from "@/constants/pageData";
 
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
-const INIT_OPEN_STATE = true;
+const INIT_OPEN_STATE = false;
 
 export default {
     components: {

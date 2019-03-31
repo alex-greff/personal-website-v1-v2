@@ -3,7 +3,13 @@
         <theme-provider id="app__base" :namespace="currThemeNamespace">
             <nav-bar ref="navBar" />
             <div ref="content" class="content">
-                <transition mode="out-in" @enter="pageEnterAnim" @leave="pageLeaveAnim">
+                <transition 
+                    mode="out-in" 
+                    appear
+                    @appear="pageAppearAnim"
+                    @enter="pageEnterAnim" 
+                    @leave="pageLeaveAnim"
+                >
                     <router-view></router-view>
                 </transition>
             </div>
@@ -40,7 +46,7 @@ import Contact from "@/views/Contact.vue";
 
 // TODO: export this shit somewhere else
 const PAGE_ANIM_FUNCTIONS = {
-    home: { enterAnim: Home.enterAnim, leaveAnim: Home.leaveAnim },
+    home: { introAnim: Home.introAnim, enterAnim: Home.enterAnim, leaveAnim: Home.leaveAnim },
     projects: { enterAnim: Projects.enterAnim, leaveAnim: Projects.leaveAnim },
     experience: {
         enterAnim: Experience.enterAnim,
@@ -70,22 +76,41 @@ export default {
             // ------------------------------------------
             // --- Page Transition Animation Handlers ---
             // ------------------------------------------
+            pageAppearAnim: async (el, done) => {
+                // TODO: run spoof loading bar animation
+
+                const routeName = this.$route.name;
+                const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+                // If the page has an intro animation then run it
+                if (routeAnims && routeAnims.introAnim) {
+                    // Update theme
+                    this.updateRouteTheme(routeName);
+
+                    await routeAnims.introAnim(el);
+
+                    done();
+                } else {
+                    // If not then run the page enter animation
+                    this.pageEnterAnim(el, done);
+                }
+
+                
+            },
             pageEnterAnim: async (el, done) => {
                 const routeName = this.$route.name;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
 
+                // Update theme
+                this.updateRouteTheme(routeName);
+
                 if (!routeAnims || !routeAnims.enterAnim) {
-                    console.log(`No anim found for '${routeName}'... skipping`);
-                    // Update theme
-                    this.updateRouteTheme(routeName);
+                    console.log(`No anim found for '${routeName}'...skipping`);
                     return done();
                 }
 
                 // Wait for animation to finish
                 await routeAnims.enterAnim(el);
 
-                // Update theme
-                this.updateRouteTheme(routeName);
                 // Complete the animation
                 done();
             },
@@ -94,7 +119,7 @@ export default {
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
 
                 if (!routeAnims || !routeAnims.leaveAnim) {
-                    console.log(`No anim found for '${routeName}'... skipping`);
+                    console.log(`No anim found for '${routeName}'...skipping`);
                     return done();
                 }
 
