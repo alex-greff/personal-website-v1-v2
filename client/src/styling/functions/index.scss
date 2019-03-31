@@ -1,8 +1,11 @@
+@import "./helpers.scss";
+
 // A helper function for generating theme links
 @function theme-link($section, $property, $variation, $opacity: 1) {
     @return rgba(var(unquote("--" + $section + "___" + $property + "--" + $variation)), $opacity);
 }
 
+// Generates a random number between $min and $max
 @function random-num($min, $max) {
     $rand: random();
     $randomNum: $min + floor($rand * (($max - $min) + 1));
@@ -10,22 +13,30 @@
     @return $randomNum;
 }
 
+// Clamps $number between $min and $max
 @function clamp($number, $min, $max) {
     @return min(max($number, $min), $max);
 }
 
-@function pow-integer($number, $exponent) {
+// Computes $number ^ $exp
+// Note: $exponent must be an integer
+@function pow-integer($number, $exp) {
     $value: 1;
-  
-    @if $exponent > 0 {
-        @for $i from 1 through $exponent {
+    @if $exp > 0 {
+        @for $i from 1 through $exp {
             $value: $value * $number;
         }
     }
-  
+    @else if $exp < 0 {
+        @for $i from 1 through -$exp {
+            $value: $value / $number;
+        }
+    }
     @return $value;
 }
 
+// Computes $number ^ $exp
+// Note: $exponent can be a float/integer
 @function pow-float($number, $exponent) {
     @if (round($exponent) != $exponent) {
       @return exp($exponent * ln($number));
@@ -46,50 +57,35 @@
     @return $value;
 }
 
-// Stuff for pow-float
-@function factorial($value) {
-    $result: 1;
-  
-    @if $value == 0 {
-        @return $result;
+// Returns a numerical approximation of sin
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function sin($angle) {
+    $sin: 0;
+    $angle: rad($angle);
+    // Iterate a bunch of times.
+    @for $i from 0 through 10 {
+      $sin: $sin + pow-integer(-1, $i) * pow-integer($angle, (2 * $i + 1)) / factorial(2 * $i + 1);
     }
-    
-    @for $index from 1 through $value {
-        $result: $result * $index;
+    @return $sin;
+}
+
+// Returns a numerical approximation of cos
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function cos($angle) {
+    $cos: 0;
+    $angle: rad($angle);
+    // Iterate a bunch of times.
+    @for $i from 0 through 10 {
+        $cos: $cos + pow-integer(-1, $i) * pow-integer($angle, 2 * $i) / factorial(2 * $i);
     }
-    
-    @return $result;
+    @return $cos;
 }
-  
-@function summation($iteratee, $input, $initial: 0, $limit: 100) {
-    $sum: 0;
-    
-    @for $index from $initial to $limit {
-        $sum: $sum + call(get-function($iteratee), $input, $index);
-    }
-    
-    @return $sum;
-}
-  
-@function exp-maclaurin($x, $n) {
-    @return (pow-float($x, $n) / factorial($n));
-}
-  
-@function exp($value) {
-    @return summation('exp-maclaurin', $value, 0, 100);
-}
-  
-@function ln-maclaurin($x, $n) {
-    @return (pow-float(-1, $n + 1) / $n) * (pow-float($x - 1, $n));
-}
-  
-@function ln($value) {
-    $ten-exp: 1;
-    $ln-ten: 2.30258509;
-    
-    @while ($value > pow-float(10, $ten-exp)) {
-      $ten-exp: $ten-exp + 1;
-    }
-    
-    @return summation(ln-maclaurin, $value / pow-float(10, $ten-exp), 1, 100) + $ten-exp * $ln-ten;
+
+// Returns a numerical approximation of tan
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function tan($angle) {
+    @return sin($angle) / cos($angle);
 }
