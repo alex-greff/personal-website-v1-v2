@@ -14,6 +14,7 @@ export const propertyVariations = [
 ];
 
 export const subSections = [
+    "loader",
     "page",
     "navBar",
     "navBar__item",

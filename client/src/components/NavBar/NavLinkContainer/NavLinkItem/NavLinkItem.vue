@@ -130,7 +130,7 @@ export default {
             }
 
             // Computes the clip-path of the spoof border
-            @mixin compute-border-clip-path($gutter-length, $border-width) {
+            @mixin compute-border-clip-path($gutter-length, $border-width: 0) {
                 // top left, top right, bottom right, bottom left
                 clip-path: polygon(
                     $gutter-length 0%,
@@ -237,7 +237,7 @@ export default {
         $offset-difference-active: $border-width-active - $border-width;
 
         // Computes the clip-path of the spoof border
-        @mixin compute-border-clip-path($gutter-length, $border-width) {
+        @mixin compute-border-clip-path($gutter-length, $border-width: 0) {
             // top left, top right, bottom right, bottom left
             clip-path: polygon(
                 $gutter-length 0%,

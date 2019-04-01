@@ -5,6 +5,15 @@
     @return rgba(var(unquote("--" + $section + "___" + $property + "--" + $variation)), $opacity);
 }
 
+// Computes the clip-path of the spoof border
+// TODO: add a border-width parameter
+@function compute-parallelogram-clip-path($item-height, $tilt-angle) {
+    $gutter-length: $item-height / tan($tilt-angle);
+
+    // top left, top right, bottom right, bottom left
+    @return polygon($gutter-length 0%, 100% 0%, calc(100% - #{$gutter-length}) 100%, 0% 100%);
+}
+
 // Generates a random number between $min and $max
 @function random-num($min, $max) {
     $rand: random();

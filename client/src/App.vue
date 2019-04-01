@@ -1,6 +1,7 @@
 <template>
     <theme-provider id="app" namespace="default" use-root>
         <theme-provider id="app__base" :namespace="currThemeNamespace">
+            <loader :z-index="100" />
             <nav-bar ref="navBar" />
             <div ref="content" class="content">
                 <transition 
@@ -36,6 +37,7 @@ import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 // @ is an alias for /src
 import NavBar from "@/components/NavBar/NavBar.vue";
 import Footer from "@/components/Footer.vue";
+import BlockLoader from "@/components/loaders/BlockLoader.vue";
 
 import Home from "@/views/Home.vue";
 import Projects from "@/views/Projects/Projects.vue";
@@ -61,7 +63,8 @@ export default {
     components: {
         themeProvider: ThemeProvider,
         navBar: NavBar,
-        generalFooter: Footer
+        generalFooter: Footer,
+        loader: BlockLoader
     },
     data() {
         return {
