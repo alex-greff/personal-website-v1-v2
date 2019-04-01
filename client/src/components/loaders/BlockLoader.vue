@@ -1,6 +1,6 @@
 <template>
-    <div ref="rootEl" :class="backgroundClasses" :style="{ zIndex }">
-        <div class="BlockLoader">
+    <div ref="rootEl" :v-if="isOpen" :class="backgroundClasses" :style="{ zIndex }">
+        <div class="BlockLoader__content">
             <div class="BlockLoader__cell-container">
                 <div 
                     v-for="n in numCells"
@@ -55,7 +55,11 @@ export default {
     },
     computed: {
         backgroundClasses() {
-            return (this.displayBackground) ? "Background display" : "Background hide";
+            let sClasses = "BlockLoader";
+            sClasses += (this.displayBackground) ? " display-bg" : "";
+            sClasses += (this.isOpen) ? " display" : " hidden";
+
+            return sClasses;
         }
     },
     watch: {
@@ -88,21 +92,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .Background {
+    .BlockLoader {
         position: fixed;
         width: 100%;
         height: 100%;
 
-        &.display {
+        // Bg display modifiers
+        &.display-bg {
             background-color: theme-link("loader", "bg-color", "primary");
         }
+        &:not(.display-bg) {
+            pointer-events: none;
+        }
 
-        &.hide {
-            background-color: theme-link("loader", "bg-color", "primary", 0);
+        // Display modifiers
+        &.display {
+            display: initial;
+        }
+        &.hidden {
+            display: none;
         }
     }
 
-    .BlockLoader {
+    .BlockLoader__content {
+        pointer-events: initial;
+
         position: absolute;
         top: 50%;
         left: 50%;

@@ -1,7 +1,7 @@
 <template>
     <theme-provider id="app" namespace="default" use-root>
         <theme-provider id="app__base" :namespace="currThemeNamespace">
-            <loader :z-index="100" />
+            <loader :is-open="true" :z-index="100" />
             <nav-bar ref="navBar" />
             <div ref="content" class="content">
                 <transition 
