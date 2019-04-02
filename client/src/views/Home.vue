@@ -89,8 +89,6 @@ export default {
     // ------------------
     introAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Home intro anim for", el); // TODO: remove
-
             // Get DOM references
             const hiEl = el.querySelector(".hi");
             const myNameIsEl = el.querySelector(".my-name-is");
@@ -124,8 +122,6 @@ export default {
     },
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Home enter anim for", el); // TODO: remove
-
             // Get DOM references
             const hiEl = el.querySelector(".hi");
             const myNameIsEl = el.querySelector(".my-name-is");

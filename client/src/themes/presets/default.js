@@ -33,7 +33,6 @@ const template = {
     },
     "subSections": {
         "page": {
-            
         },
         "navBar": {
             "text-color": {
@@ -54,6 +53,8 @@ const template = {
             "bg-color": {
                 "primary": "rgb(39, 39, 39)"
             }
+        },
+        "loader": {
         }
     }
 };

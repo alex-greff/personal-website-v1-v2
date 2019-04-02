@@ -1,5 +1,32 @@
 import { BREAKPOINT_PHONE, BREAKPOINT_TAB_PORT, BREAKPOINT_TAB_LAND, BREAKPOINT_BIG_DESKTOP } from "@/constants/breakpoints";
 
+// -----------------------------------------------
+// --- Helpers for the helpers (helperception) ---
+// -----------------------------------------------
+
+// Serializes an given element
+function serializeInputEl(i_el, i_bSelectRoot = false) {
+    if (i_el && isElement(i_el)) {
+        // Return the element since it's already one
+        return i_el;
+    } else if (i_el) {
+        // Select the element
+        return document.querySelector(i_el);
+    } else {
+        // Return root
+        if (i_bSelectRoot) {
+            return document.documentElement;
+        } else {
+            throw new Error(`Error: ${i_el} is an invalid element`);
+        }
+    }
+}
+
+
+// -----------------------
+// --- Utility methods ---
+// -----------------------
+
 /**
  * Returns if the given screen width is inside the given breakpoint.
  * 
@@ -75,7 +102,7 @@ export const isObjectEmpty = (i_oObj) => {
  */
 export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_el = null) => {
     // Serialize the input element/query selector/none
-    const el = serializeInputEl(i_el);
+    const el = serializeInputEl(i_el, true);
     // Set the custom property
     el.style.setProperty(i_sPropertyName, i_sPropertyValue);
 }
@@ -88,7 +115,7 @@ export const saveCSSProperty = (i_sPropertyName, i_sPropertyValue, i_el = null) 
  */
 export const removeCSSProperty = (i_sPropertyName, i_el = null) => {
     // Serialize the input element/query selector/none
-    const el = serializeInputEl(i_el);
+    const el = serializeInputEl(i_el, true);
     // Remove the custom property
     el.style.removeProperty(i_sPropertyName);
 }
@@ -101,24 +128,35 @@ export const removeCSSProperty = (i_sPropertyName, i_el = null) => {
  */
 export const getCSSProperty = (i_sPropertyName, i_el = null) => {
     // Serialize the input element/query selector/none
-    const el = serializeInputEl(i_el);
+    const el = serializeInputEl(i_el, true);
     // Set the custom property
     return el.style.getPropertyValue(i_sPropertyName);
 }
 
-// Helper function for setCSSProperty, removeCSSPropery and getCSSProperty
-function serializeInputEl(i_el) {
-    if (i_el && isElement(i_el)) {
-        // Return the element since it's already one
-        return i_el;
-    } else if (i_el) {
-        // Select the element
-        return document.querySelector(i_el);
-    } else {
-        // Return root
-        return document.documentElement;
-    }
+export function addClass(i_sClassname, i_el) {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
+
+    // Add the class
+    el.classList.add(i_sClassname);
 }
+
+export function removeClass(i_sClassname, i_el) {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
+
+    // Remove the class
+    el.classList.remove(i_sClassname);
+}
+
+export function toggleClass(i_sClassname, i_el) {
+    // Serialize the input element/query selector/none
+    const el = serializeInputEl(i_el);
+
+    // Remove the class
+    el.classList.toggle(i_sClassname);
+}
+
 
 /**
  * Returns a capitalized version of a given word.
@@ -208,7 +246,7 @@ export const symmetricDifference = (i_aArr1, i_aArr2) => {
  * @param {Number} rand - the random generator used
  * @return {Number} a random floating point number
  */
-function getRandomFloat(min, max, rand = Math.random) {
+export function getRandomFloat(min, max, rand = Math.random) {
     return rand() * (max - min) + min;
 }
 
@@ -220,7 +258,7 @@ function getRandomFloat(min, max, rand = Math.random) {
  * @param {Number} rand - the random generator used
  * @return {Number} a random integer
  */
-function getRandomInt(min, max, rand = Math.random) {
+export function getRandomInt(min, max, rand = Math.random) {
     return Math.floor(rand() * (max - min + 1) + min);
 }
 
@@ -229,11 +267,11 @@ function getRandomInt(min, max, rand = Math.random) {
  * 
  * @return {Boolean} a random true/false
  */
-function getRandomBool() {
+export function getRandomBool() {
     return Math.random() >= 0.5;
 }
 
-function randomNormalDist(min=0, max=1, skew=1) {
+export function randomNormalDist(min=0, max=1, skew=1) {
     var u = 0, v = 0;
     while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
     while(v === 0) v = Math.random();
@@ -247,6 +285,15 @@ function randomNormalDist(min=0, max=1, skew=1) {
     return num;
 }
 
+/**
+ * Returns a promise that resolves after a given amount of time, hence acting like a timeout function in async/await blocks.
+ * 
+ * @param {} ms The delay in milliseconds before the promise is resolved.
+ */
+export function timeout(ms) {
+    return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -257,6 +304,9 @@ export default {
     saveCSSProperty,
     removeCSSProperty,
     getCSSProperty,
+    addClass,
+    removeClass,
+    toggleClass,
     capitalize,
     decapitalize,
     isNode,
@@ -269,4 +319,5 @@ export default {
     getRandomInt,
     getRandomBool,
     randomNormalDist,
+    timeout
 };

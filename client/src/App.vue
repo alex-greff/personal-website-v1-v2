@@ -1,8 +1,8 @@
 <template>
-    <theme-provider id="app" namespace="default" use-root>
+    <theme-provider id="app" ref="baseRef" namespace="default" use-root>
         <theme-provider id="app__base" :namespace="currThemeNamespace">
-            <loader :is-open="true" :z-index="100" />
-            <nav-bar ref="navBar" />
+            <block-loader :is-open="true" :z-index="100" controlled />
+            <nav-bar ref="navBarRef" />
             <div ref="content" class="content">
                 <transition 
                     mode="out-in" 
@@ -34,6 +34,9 @@ import { pageData, getAllPageThemes } from "@/constants/pageData";
 
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
+/* global Power1 */
+import { TweenLite, TweenMax, TimelineMax, TimelineLite } from "gsap/all";
+
 // @ is an alias for /src
 import NavBar from "@/components/NavBar/NavBar.vue";
 import Footer from "@/components/Footer.vue";
@@ -64,7 +67,7 @@ export default {
         themeProvider: ThemeProvider,
         navBar: NavBar,
         generalFooter: Footer,
-        loader: BlockLoader
+        blockLoader: BlockLoader
     },
     data() {
         return {
@@ -80,7 +83,22 @@ export default {
             // --- Page Transition Animation Handlers ---
             // ------------------------------------------
             pageAppearAnim: async (el, done) => {
-                // TODO: run spoof loading bar animation
+                const navBarEl = this.$refs.navBarRef.$el;
+                
+                // Hide any visible elements
+                el.style.visibility = "hidden";
+                navBarEl.style.visibility = "hidden";
+
+                // Run spoof loading bar animation
+                await BlockLoader.spoofLoadAnim(this.$refs.baseRef.$el);
+
+                // Bring in the navbar
+                // TODO: probably will wanna move out this anim to navbar (maybe)
+                TweenLite.fromTo(navBarEl, 0.5, { x: 30, opacity: 0 }, { x: 0, opacity: 1, ease: Power1.easeOut });
+                
+                // Show the elements again
+                el.style.visibility = "initial";
+                navBarEl.style.visibility = "initial";
 
                 const routeName = this.$route.name;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
@@ -96,8 +114,6 @@ export default {
                     // If not then run the page enter animation
                     this.pageEnterAnim(el, done);
                 }
-
-                
             },
             pageEnterAnim: async (el, done) => {
                 const routeName = this.$route.name;
@@ -217,7 +233,7 @@ export default {
         },
         alignContent() {
             // TODO: remove???
-            const navBarEl = this.$refs.navBar.$el;
+            const navBarEl = this.$refs.navBarRef.$el;
             const contentRef = this.$refs.content;
             const navBarHeight = navBarEl.offsetHeight;
 
