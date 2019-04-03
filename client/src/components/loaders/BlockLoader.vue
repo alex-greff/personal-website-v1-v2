@@ -1,5 +1,5 @@
 <template>
-    <div ref="baseEl" :v-if="isOpen" :class="backgroundClasses" :style="{ zIndex }">
+    <div ref="baseEl" :v-if="isOpen" :class="blockLoaderClasses" :style="{ zIndex }">
         <div class="BlockLoader__content">
             <div class="BlockLoader__cell-container">
                 <div 
@@ -12,9 +12,10 @@
                 </div>
             </div>
             <div class="BlockLoader__loading-text">
-                Loading
+                Loading<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
             </div>
         </div>
+        <div :class="backgroundClasses" />
     </div>
 </template>
 
@@ -46,10 +47,6 @@ export default {
             type: Boolean,
             default: false
         },
-        startOnMount: { // TODO: implement (or not)
-            type: Boolean,
-            default: false
-        },
         // Only used if indefinite is false
         progress: {
             type: Number,
@@ -63,17 +60,23 @@ export default {
         }
     },
     computed: {
-        backgroundClasses() {
+        blockLoaderClasses() {
             let sClasses = "BlockLoader";
-            sClasses += (this.displayBackground) ? " display-bg" : "";
             sClasses += (this.isOpen) ? " display" : " hidden";
-
+            return sClasses;
+        },
+        backgroundClasses() {
+            let sClasses = "BlockLoader__background";
+            sClasses += (this.displayBackground) ? " display-bg" : "";
             return sClasses;
         }
     },
     watch: {
         controlled(willBeControlled) {
-            this.initializeAnims(willBeControlled);
+            this.initializeAnims(willBeControlled, this.isOpen);
+        },
+        isOpen(willBeOpen) {
+            this.initializeAnims(this.controlled, willBeOpen);
         },
         progress(nextProgress) {
             if (this.controlled) {
@@ -82,13 +85,13 @@ export default {
         },
     },
     mounted() {
-        this.initializeAnims(this.controlled);    
+        this.initializeAnims(this.controlled, this.isOpen);
     },
     methods: {
-        initializeAnims(controlled) {
+        initializeAnims(controlled, isOpen) {
             if (controlled) {
                 this.updateProgresBar(this.$refs.baseEl, this.progress, true); // Initialize progress bar
-            } else {
+            } else if (isOpen) {
                 this.runInfiniteAnim(this.$refs.baseEl); // Run infinite anim
             }
         },
@@ -228,38 +231,50 @@ const _killInfiniteTL = () => {
 const _enterAnim = (el) => {
     return new Promise((resolve) => {
         // Get DOM references
-        const baseEl = el.querySelector(".BlockLoader"); // TODO: remove
+        const baseEl = el.querySelector(".BlockLoader");
+        const backgroundEl = el.querySelector(".BlockLoader__background");
         const contentEl = el.querySelector(".BlockLoader__content");
         const loadingTextEl = el.querySelector(".BlockLoader__loading-text");
+
+        // Update modifier classes
+        Utilities.removeClass("hidden", baseEl)
+        Utilities.addClass("display", baseEl);
         
         // Clear anims
-        TweenLite.killTweensOf([baseEl, contentEl, loadingTextEl]);
+        TweenLite.killTweensOf([backgroundEl, contentEl, loadingTextEl]);
 
         // Run anims
         const tl = new TimelineLite({ onComplete: () => resolve() });
-        // tl.add(TweenLite.fromTo(baseEl, 0.2, { opacity: 0 }, { opacity: 1 })); // TODO: separate out bg into separate element and animate it here
-        tl.add(TweenLite.fromTo(contentEl, 0.5, { opacity: 0 }, { opacity: 1 }));
+        tl.add(TweenLite.fromTo(backgroundEl, 0.2, { opacity: 0 }, { opacity: 1 })); 
+        tl.add(TweenLite.fromTo(contentEl, 0.5, { opacity: 0 }, { opacity: 1 }), "-=0.2");
         tl.add(TweenLite.fromTo(loadingTextEl, 0.5, { y: 20, opacity: 0 }, { y: 0, opacity: 1 }), "-=0.5");
     });
 };
 
 const _completeAnim = (el) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         // Get DOM references
-        const baseEl = el.querySelector(".BlockLoader"); // TODO: remove
+        const baseEl = el.querySelector(".BlockLoader");
+        const backgroundEl = el.querySelector(".BlockLoader__background"); 
         const contentEl = el.querySelector(".BlockLoader__content");
         const loadingTextEl = el.querySelector(".BlockLoader__loading-text");
         
         // Clear anims
-        TweenLite.killTweensOf([baseEl, contentEl, loadingTextEl]);
+        TweenLite.killTweensOf([backgroundEl, contentEl, loadingTextEl]);
 
-        const tl = new TimelineLite({ onComplete: () => resolve() });
-        // tl.add(TweenLite.to(baseEl, 0.2, { opacity: 0 })); // TODO: separate out bg into separate element and animate it here
-        tl.add(TweenLite.to(contentEl, 0.5, { opacity: 0 }));
+        const ON_COMPLETE = () => {
+            // Update modifer classes
+            Utilities.removeClass("display", baseEl)
+            Utilities.addClass("hidden", baseEl);
+            resolve();
+        };
+
+        const tl = new TimelineLite({ onComplete: ON_COMPLETE });
+        tl.add(TweenLite.to(backgroundEl, 0.2, { opacity: 0 })); 
+        tl.add(TweenLite.to(contentEl, 0.5, { opacity: 0 }), "-=0.2");
         tl.add(TweenLite.to(loadingTextEl, 0.5, { y: 20, opacity: 0 }), "-=0.5");
     });
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -268,17 +283,11 @@ const _completeAnim = (el) => {
     $FLASH-DURATION: 2s;
 
     .BlockLoader {
+        pointer-events: none;
+
         position: fixed;
         width: 100%;
         height: 100%;
-
-        // Bg display modifiers
-        &.display-bg {
-            background-color: theme-link("loader", "bg-color", "primary");
-        }
-        &:not(.display-bg) {
-            pointer-events: none;
-        }
 
         // Display modifiers
         &.display {
@@ -289,8 +298,28 @@ const _completeAnim = (el) => {
         }
     }
 
+    .BlockLoader__background {
+        pointer-events: none;
+        z-index: 0;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        // Bg display modifiers
+        &.display-bg {
+            background-color: theme-link("loader", "bg-color", "primary");
+        }
+        &:not(.display-bg) {
+            background-color: theme-link("loader", "bg-color", "primary", 0);
+        }
+    }
+
     .BlockLoader__content {
         pointer-events: initial;
+        z-index: 1;
 
         // Center the content in the middle of the screen
         position: absolute;
@@ -420,6 +449,82 @@ const _completeAnim = (el) => {
             text-align: center;
 
             color: theme-link("loader", "accent-color", "primary");
+
+            $num-dots: 3;
+            $anim-duration: 1.3s;
+
+            // Assign anims to dots
+            @for $i from 1 through $num-dots {
+                & .dot-#{$i} {
+                    animation: dot-#{$i}-anim $anim-duration infinite;
+                }
+            }
+
+            // Dot anims
+            @keyframes dot-1-anim {
+                // Fade in
+                0% {
+                    opacity: 0;
+                }
+                20% {
+                    opacity: 1;
+                }
+                // Fade out
+                60% {
+                    opacity: 1;
+                }
+                80% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            @keyframes dot-2-anim {
+                // Reset
+                0% {
+                    opacity: 0;
+                }
+                // Fade in
+                20% {
+                    opacity: 0;
+                }
+                40% {
+                    opacity: 1;
+                }
+                // Fade out
+                60% {
+                    opacity: 1;
+                }
+                80% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            @keyframes dot-3-anim {
+                // Reset
+                0% {
+                    opacity: 0;
+                }
+                // Fade in
+                40% {
+                    opacity: 0;
+                }
+                // Fade out
+                60% {
+                    opacity: 1;
+                }
+                80% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
         }
     }
 </style>
