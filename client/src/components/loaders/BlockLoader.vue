@@ -292,16 +292,28 @@ const _completeAnim = (el) => {
     .BlockLoader__content {
         pointer-events: initial;
 
+        // Center the content in the middle of the screen
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
 
         & .BlockLoader__cell-container {
-            & .BlockLoader__cell {
-                // Cell config
-                $total-cell-length: 30rem;
+            pointer-events: none;
 
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            width: 100vw;
+
+            & .BlockLoader__cell {
+                pointer-events: initial;
+
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                // Cell config
+                $total-cell-length: 30rem;    
                 $cell-height: 0.7rem;
                 $cell-width: $total-cell-length / $NUM-CELLS;
                 $cell-tilt: 59deg;
@@ -313,7 +325,7 @@ const _completeAnim = (el) => {
                 position: relative;
                 margin-right: $space-between - $gutter-length;
 
-                width: $cell-width;
+                max-width: $cell-width;
                 height: $cell-height;
 
                 transition: filter 0.2s;
