@@ -1,6 +1,6 @@
 import Home from '../views/Home.vue'
 import Projects from '../views/Projects/Projects.vue';
-import ProjectPage from '../views/Projects/ProjectPage.vue';
+import ProjectItemDetails from '../views/Projects/ProjectItemDetails.vue';
 import Music from '../views/Music.vue';
 import Experience from '../views/Experience.vue';
 import Contact from '../views/Contact.vue';
@@ -28,7 +28,7 @@ export const pageData = {
             route: { 
                 path: '/projects', name: 'projects', component: Projects, 
                 children: [
-                    { name: 'projects_item', path: ':id', component: ProjectPage } // TODO: make dynamic???
+                    { name: 'projects_item', path: ':id', component: ProjectItemDetails } // TODO: make dynamic???
                 ]
             },
             routerLink: {

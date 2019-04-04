@@ -95,6 +95,7 @@ export default {
                 el.style.visibility = "hidden";
                 navBarEl.style.visibility = "hidden";
 
+                // TODO: this spoof loading anim should actually wait for the server content requests to finish
                 // Run spoof loading bar animation
                 await BlockLoader.spoofLoadAnim(this.$refs.baseRef.$el);
 

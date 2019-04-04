@@ -1,51 +1,47 @@
 <template>
-    <div class="projects-content">
-        <div class="projects-nav-page" v-if="!isSubPage">
+    <div class="Projects">
+        <div class="Projects__content">
             <h1>Projects</h1>
 
             <!-- TODO: old stuff -->
-            <ul class="projects-list" v-if="projectDataLoaded">
-                <router-link
+            <ul v-if="projectDataLoaded" class="Projects__list">
+                <project-item 
+                    v-for="project in projects"
+                    :key="project.name"
+                    class="Projects__item"
+
+                    :project-data="project"
+                >
+                    <router-view></router-view>
+                </project-item>
+
+                <!-- <router-link
                     v-for="project in projects"
                     :key="project.name"
                     :to="`/projects/${project.name}`"
                     tag="li"
-                    class="project-link"
+                    class="Projects__link"
                 >
-                    <project-list-item :projectData="project" />
-                </router-link>
+                    <project-item :project-data="project" />
+                </router-link> -->
             </ul>
             <div v-else>
                 Loading...
             </div>
-
-            <!-- <content-list
-                :contentIDs="projectIDs"
-            >
-                <template v-for="(val, key, index) in projects" v-slot:[key]>
-                    <h1 :key="index">{{key}}</h1>
-                </template>
-
-            </content-list> -->
-
         </div>
         
         <!-- Subpage router view -->
-        <router-view></router-view>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import ProjectListItem from './ProjectListItem.vue';
+import ProjectItem from './ProjectItem.vue';
 import { getterTypes } from '@/store/types';
-
-import ContentList from '../../components/contentList/ContentList.vue';
 
 export default {
     components: {
-        projectListItem: ProjectListItem,
-        contentList: ContentList,
+        projectItem: ProjectItem,
     },
     computed: {
         ...mapGetters({
@@ -84,40 +80,32 @@ export default {
 <style lang="scss" scoped>    
     $grid-padding: 2.5rem;
 
-    .projects-content {
-
-    }
-
-    .projects-nav-page {
-        position: relative;
+    .Projects {
+        & .Projects__content {
+            position: relative;
         
-        margin: 5rem 0 0 0;
+            margin: 5rem 0 0 0;
 
-        & > h1 {
-            text-align: center;
+            & > h1 {
+                text-align: center;
 
-            font-size: 3rem;
-            color: theme-link("page", "accent-color", "primary");
-        }
+                font-size: 3rem;
+                color: theme-link("page", "accent-color", "primary");
+            }
 
-        & > .projects-list {
-            list-style-type: none;
+            & > .Projects__list {
+                list-style-type: none;
 
-            margin-top: 2rem;
+                margin-top: 2rem;
 
-            & > .project-link {
-                text-decoration: none;
-                cursor: pointer;
-
-                & > * {
+                & > .Projects__item {
                     margin-bottom: 2rem;
-                }
 
-                &:last-child {
-                    margin-bottom: 5rem;
+                    &:last-child {
+                        margin-bottom: 5rem;
+                    }
                 }
             }
         }
     }
-
 </style>
