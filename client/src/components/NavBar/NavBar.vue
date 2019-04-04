@@ -64,7 +64,7 @@ export default {
         // Watch screen width
         this.$nextTick(() => {
             window.addEventListener('resize', () => {
-                this.onResize(window.innerWidth);
+                this.onResize(window.innerWidth, window.innerHeight);
             });
         });
     },

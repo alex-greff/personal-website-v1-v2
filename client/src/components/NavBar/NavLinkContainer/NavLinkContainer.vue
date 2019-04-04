@@ -1,13 +1,12 @@
 <template>
-    <div :class="displayModeClass">
-        <nav-link-item 
-            ref="navLinkRefs"
-
+    <div :class="navLinkClasses">
+        <nav-link-item
             v-for="page in navLinkPagesData" 
             :key="page.name"
-            
 
-            :style="navLinkStyles"
+            ref="navLinkRefs"
+
+            :is-open="isOpen"
             :to="page.path"
             :name="page.name"
             :display-mode="displayMode"
@@ -57,6 +56,44 @@ export default {
             displayNavItems: this.isOpen, // Initialize to the init isOpen prop
         }
     },
+    computed: {
+        navLinkClasses() {
+            const displayModifiers = (this.displayNavItems) ? "visible" : "hidden";
+            return `NavLinkContainer ${this.displayMode} ${displayModifiers}`;
+        },
+        // ------------------------------
+        // --- NavLink computed props ---
+        // ------------------------------
+        navLinkPagesData() {
+            return this.pages.slice().reverse();
+        },
+        navLinkStyles() {
+            return {
+                // Set the display property based on the state of the nav items
+                display: (this.displayNavItems) ? "initial" : "none",
+            }
+        },
+        // navLinkClasses() {
+        //     return (this.displayNavItems) ? "show" : "hidden";
+        // },
+        navLinkEls() {
+            return this.$refs.navLinkRefs.map(ref => ref.$el);
+        },
+        navLinkElsReversed() {
+            return this.navLinkEls.slice().reverse();
+        }
+    },
+    watch: {
+        // Watch when isOpen toggles
+        isOpen(isOpening, isCurrenlyOpen) {
+            if (isOpening) {
+                this.openNavItems();
+            }
+            else {
+                this.closeNavItems();
+            }
+        }
+    },
     mounted() {
         // Initialize the nav item opacities
         this.navLinkEls.forEach(el => {
@@ -98,41 +135,7 @@ export default {
         capitalizeNavName(i_sName) {
             return Utilities.capitalize(i_sName);
         }
-    }, 
-    computed: {
-        displayModeClass() {
-            return `NavLinkContainer ${this.displayMode}`;
-        },
-        // ------------------------------
-        // --- NavLink computed props ---
-        // ------------------------------
-        navLinkPagesData() {
-            return this.pages.slice().reverse();
-        },
-        navLinkStyles() {
-            return {
-                // Set the display property based on the state of the nav items
-                display: (this.displayNavItems) ? "initial" : "none",
-            }
-        },
-        navLinkEls() {
-            return this.$refs.navLinkRefs.map(ref => ref.$el);
-        },
-        navLinkElsReversed() {
-            return this.navLinkEls.slice().reverse();
-        }
     },
-    watch: {
-        // Watch when isOpen toggles
-        isOpen(isOpening, isCurrenlyOpen) {
-            if (isOpening) {
-                this.openNavItems();
-            }
-            else {
-                this.closeNavItems();
-            }
-        }
-    }
 }
 </script>
 

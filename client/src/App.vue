@@ -3,7 +3,7 @@
         <theme-provider id="app__base" :namespace="currThemeNamespace">
             <block-loader :is-open="true" :z-index="100" controlled />
             <nav-bar ref="navBarRef" />
-            <div ref="content" class="content">
+            <div ref="contentEl" class="content">
                 <transition 
                     mode="out-in" 
                     appear
@@ -27,8 +27,9 @@
 </template>
 
 <script>
-import { getterTypes, actionTypes } from "@/store/types";
+import Utilities from "@/utilities";
 
+import { getterTypes, actionTypes } from "@/store/types";
 import { mapActions, mapGetters } from "vuex";
 import { pageData, getAllPageThemes } from "@/constants/pageData";
 
@@ -62,6 +63,8 @@ const PAGE_ANIM_FUNCTIONS = {
     contact: { enterAnim: Contact.enterAnim, leaveAnim: Contact.leaveAnim }
 };
 
+const DEBOUNCE_RATE = 20;
+
 export default {
     components: {
         themeProvider: ThemeProvider,
@@ -78,6 +81,9 @@ export default {
 
             // Track the previous route name
             prevRouteName: "",
+
+            // Setup a debounced version of alignContent
+            alignContentDebounced: Utilities.debounce(this.alignContent, DEBOUNCE_RATE),
 
             // ------------------------------------------
             // --- Page Transition Animation Handlers ---
@@ -187,7 +193,7 @@ export default {
         });
     },
     mounted() {
-        // this.alignContent(); // TODO: remove
+        this.alignContentDebounced();
 
         // Initialize the page theme
         this.updateRouteTheme(this.$route.name);
@@ -232,25 +238,29 @@ export default {
             }
         },
         alignContent() {
-            // TODO: remove???
             const navBarEl = this.$refs.navBarRef.$el;
-            const contentRef = this.$refs.content;
-            const navBarHeight = navBarEl.offsetHeight;
+            const contentEl = this.$refs.contentEl;
+            let navBarHeight = navBarEl.offsetHeight;
 
             // If no change occurs
             if (navBarHeight === this.lastNavBarHeight) {
-                // return;
+                return;
+            }
+
+            // If the navbar is in phone mode then remove any offset
+            if (Utilities.isInBreakpoint("phone", window.innerWidth)) {
+                navBarHeight = 0;   
             }
 
             // Align the content so that it is under the nav bar
-            contentRef.style.marginTop = navBarHeight + "px";
+            contentEl.style.marginTop = navBarHeight + "px";
 
             // Record change
             this.lastNavBarHeight = navBarHeight;
         },
         // Event handlers
         onResize() {
-            // this.alignContent(); // TODO: remove
+            this.alignContentDebounced(); 
         }
     },
 };

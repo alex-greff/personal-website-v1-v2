@@ -3,7 +3,7 @@
         ref="routerRef"
         :to="to"
         tag="div"
-        :class="displayModeClasses"
+        :class="navLinkItemClasses"
         active-class="active"
         :exact="exact"
     >
@@ -31,6 +31,10 @@ export default {
         themeProvider: ThemeProvider,
     },
     props: {
+        isOpen: {
+            type: Boolean,
+            required: true
+        },
         to: {
             type: String,
             required: true
@@ -59,8 +63,9 @@ export default {
             isAutoThemeEnabled: getterTypes.IS_AUTO_THEME_ENABLED,
             currentStaticThemeNamespace: getterTypes.GET_CURRENT_STATIC_THEME_NAMESPACE 
         }),
-        displayModeClasses() {
-            return `NavLinkItem ${this.displayMode}`;
+        navLinkItemClasses() {
+            const sModifierClasses = (this.isOpen) ? "visible" : "hidden";
+            return `NavLinkItem ${this.displayMode} ${sModifierClasses}`;
         },
         currPageNamespace() {
             if(!this.isAutoThemeEnabled) {
@@ -92,6 +97,14 @@ export default {
 
         cursor: pointer;
         pointer-events: all;
+
+        &.visible {
+            pointer-events: all;
+        }
+
+        &.hidden {
+            pointer-events: none;
+        }
 
         // -----------------------
         // --- Desktop Version ---
