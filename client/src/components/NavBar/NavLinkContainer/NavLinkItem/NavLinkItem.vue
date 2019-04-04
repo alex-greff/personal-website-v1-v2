@@ -113,7 +113,6 @@ export default {
             $tilt-angle: 60deg; 
             $item-length: 20rem;
             $item-height: 5rem; 
-            // $gutter-length: 3rem; // TODO: remove
             $gutter-length: $item-height / tan($tilt-angle);
             
             position: relative;
@@ -175,9 +174,6 @@ export default {
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width});
 
                 transition: clip-path 0.5s, background-color 0.5s;
-
-                // box-shadow: 0 0 20px 20px red;
-                // filter: drop-shadow(5px 0px 5px rgb(255, 255, 255));
             }
 
             // Hover modifier
@@ -191,7 +187,6 @@ export default {
                 }
 
                 & .NavLinkItem__container .NavLinkItem__content {
-                    // padding-left: #{$offset-difference-hover};
                     transform: translateX(#{$offset-difference-hover});
                 }
             }
@@ -207,7 +202,6 @@ export default {
                 }
 
                 & .NavLinkItem__container .NavLinkItem__content {
-                    // padding-left: #{$offset-difference-active};
                     transform: translateX(#{$offset-difference-active});
                 }
             }
@@ -221,7 +215,6 @@ export default {
         $tilt-angle: 60deg; 
         $item-length: 25rem;
         $item-height: 5rem;
-        // $gutter-length: 3rem; // TODO: remove
         $gutter-length: $item-height / tan($tilt-angle);
 
         $hover-offset: 1rem;

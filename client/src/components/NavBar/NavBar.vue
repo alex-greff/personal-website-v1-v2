@@ -48,7 +48,7 @@ export default {
         }
     },
     watch: {
-        isOpen(isOpening, isCurrentlyOpen) {
+        isOpen(isOpening) {
             if (isOpening) {
                 this.showOverlay();
             }
@@ -130,7 +130,6 @@ export default {
             flex-direction: row-reverse;
             align-items: flex-start;
             flex-wrap: nowrap;
-            // display: inline;
 
             & .NavBar__pages-container {
                 flex-grow: 1;

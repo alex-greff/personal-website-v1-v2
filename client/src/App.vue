@@ -164,10 +164,6 @@ export default {
     watch: {
         $route(newRoute, oldRoute) {
             this.prevRouteName = oldRoute.name;
-
-            // Everytime the route changes, attempt to apply the route-specific namespace
-            // TODO: need to update this after the page has transitioned out in a better way
-            // setTimeout(() => this.updateRouteTheme(newRoute.name), 300);
         }
     },
     created() {

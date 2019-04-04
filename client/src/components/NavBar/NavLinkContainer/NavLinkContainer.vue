@@ -85,7 +85,7 @@ export default {
     },
     watch: {
         // Watch when isOpen toggles
-        isOpen(isOpening, isCurrenlyOpen) {
+        isOpen(isOpening) {
             if (isOpening) {
                 this.openNavItems();
             }
@@ -147,8 +147,6 @@ export default {
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
-            // justify-content: flex-start;
-            // flex-wrap: nowrap;
 
             width: 100vw;
 
