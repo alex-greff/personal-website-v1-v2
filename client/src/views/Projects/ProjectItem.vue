@@ -1,47 +1,4 @@
 <template>
-    <!-- <div class="project-list-item">
-        <div class="thumbnail">
-            <div class="image-tint">
-                <div class="thumbnail-image" :style="thumbnailImageStyles"></div>
-            </div>
-        </div>
-        <div class="project-info">
-            <div class="project-info-container">
-                <div class="project-name">
-                    {{ projectData.name }}
-                </div>
-                <div class="project-summary">
-                    {{ projectData.summary }}
-                </div>
-                <div class="project-tags">
-                    <div class="tag-header">
-                        Tags:
-                    </div>
-                    <div class="tag">
-                        {{ tagStringList }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="ProjectItem">
-        <div class="ProjectItem__title"> 
-            {{ projectData.name }}
-        </div> 
-
-        <router-link
-            :to="detailsRouterPath"
-            tag="div"
-            class="ProjectItem__details-btn"
-            @click.native="toggleIsExpanded"
-        >
-            <md-icon v-if="!isExpanded" class="ProjectItem__details-icon">keyboard_arrow_down</md-icon>
-            <md-icon v-else class="ProjectItem__details-icon">keyboard_arrow_up</md-icon>
-        </router-link>
-
-        <slot v-if="isExpanded && isOnCurrDetailsPage"></slot>
-    </div> -->
-
     <div :class="projectItemClassList">
         <router-link
             :to="detailsRouterPath"
@@ -55,7 +12,7 @@
                             {{ projectData.name }}
                         </div>
 
-                        <div class="ProjectItem__links">
+                        <div v-if="hasLinks" class="ProjectItem__links">
                             <a 
                                 v-for="(link, linkType, index) in links"
                                 :key="index"
@@ -64,6 +21,14 @@
                             >
                                 <fa-icon :name="getIconMapping(linkType)" />
                             </a>
+                        </div>
+                        <div v-if="hasTags" class="ProjectItem__tags" :style="tagAlignment">
+                            <tag-item
+                                v-for="(tag, index) in tags"
+                                :key="index"
+                            >
+                                {{ tag }}
+                            </tag-item>
                         </div>
                     </div>
                 </div>
@@ -78,14 +43,21 @@
 </template>
 
 <script>
+import TagItem from "@/components/tags/TagItem.vue";
 import ICON_MAPPINGS from "@/constants/iconMappings";
 
 export default {
+    components: {
+        tagItem: TagItem
+    },
     props: {
         projectData: { type: Object, required: true }
     },
     data() {
         return {
+            tagHeight: 3, //rem
+            tagTilt: 59, //deg
+            spaceBetween: 0.5, //rem
         };
     },
     computed: {
@@ -106,18 +78,26 @@ export default {
         links() {
             const links = this.projectData.links;
             return (links) ? links : {};
+        },
+        tags() {
+            const tags = this.projectData.tags;
+            return (tags) ? tags : [];
+        },
+        hasLinks() {
+            return Object.keys(this.links).length > 0;
+        },
+        hasTags() {
+            return this.tags.length > 0;
+        },
+        tagAlignment() {
+            const gutterLength = this.tagHeight / Math.tan(this.tagTilt * Math.PI/180);
+            const spaceBetween = 0.5; // rem
+            const numCells = this.tags.length;
+
+            return {
+                marginLeft: (spaceBetween - gutterLength) * numCells + "rem"
+            }
         }
-        // linksEntries() {
-        //     const links = this.projectData.links;
-        //     return (links) ? Object.entries(links) : [];
-        // },
-        // linksIconClasses() {
-        //     const links = this.linksEntries;
-        //     return links.map(([linkType]) => {
-        //         const iconClasses = ICON_MAPPINGS[linkType];
-        //         return (iconClasses) ? iconClasses : ICON_MAPPINGS["default"];
-        //     });
-        // },
     },
     watch: {
     },
@@ -167,7 +147,7 @@ export default {
                 width: 100%;
                 height: 100%;
 
-                background-color: theme-link("page", "selected-color", "primary", 0);
+                background-color: theme-link("page", "bg-color", "secondary", 0);
 
                 transition: background-color $transition-time;
             }
@@ -206,44 +186,56 @@ export default {
                     // This is needed in order for the margins to be setup properly
                     width: calc(100% -  #{$margin-amount * 2});
                     margin: 0 $margin-amount 0 $margin-amount;
-                }
 
-                & .ProjectItem__title {
-                    text-align: center;
-                }
+                    & > div:not(:last-child) {
+                        margin-bottom: 0.5rem;
+                    }
 
-                & .ProjectItem__links {
-                    display: flex;
-                    justify-content: center;
-                    z-index: 5;
+                    & .ProjectItem__title {
+                        text-align: center;
 
-                    & .ProjectItem__link-item {
-                        $icon-size: 2rem;
+                        font-weight: 500;
+                    }
 
-                        position: relative;
-                        width: $icon-size;
-                        height: $icon-size;
+                    & .ProjectItem__links {
+                        display: flex;
+                        justify-content: center;
+                        z-index: 5;
 
-                        margin-right: 0.3rem;
-                        margin-left: 0.3rem;
+                        & .ProjectItem__link-item {
+                            $icon-size: 2rem;
 
-                        text-decoration: none;
-                        color: theme-link("projects-item", "text-color", "primary");
+                            position: relative;
+                            width: $icon-size;
+                            height: $icon-size;
 
-                        transition: color 0.5s;
+                            margin-right: 0.3rem;
+                            margin-left: 0.3rem;
 
-                        & > svg {
-                            width: 100%;
-                            height: 100%;
-                            
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
+                            text-decoration: none;
+                            color: theme-link("projects-item", "text-color", "primary");
+
+                            transition: color 0.5s;
+
+                            & > svg {
+                                width: 100%;
+                                height: 100%;
+                                
+                                position: absolute;
+                                top: 50%;
+                                transform: translateY(-50%);
+                            }
+
+                            &:hover {
+                                color: theme-link("projects-item", "accent-color", "primary");
+                            }
                         }
+                    }
 
-                        &:hover {
-                            color: theme-link("projects-item", "accent-color", "primary");
-                        }
+                    & .ProjectItem__tags {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
                     }
                 }
             }
@@ -261,7 +253,7 @@ export default {
                 }
                 
                 & .ProjectItem__tint {
-                    background-color: theme-link("page", "selected-color", "primary", 0.3);
+                    background-color: theme-link("page", "bg-color", "secondary", 0.3);
                 }
 
                 & .ProjectItem__project-info-container {

@@ -93,6 +93,9 @@ export default {
 
                 $item-width: 30rem;
 
+                // ---------------------
+                // --- Media Queries ---
+                // ---------------------
                 @include respond(big-desktop) {
                     margin-right: 20rem;
                     margin-left: 20rem;
@@ -128,20 +131,6 @@ export default {
                     grid-template-columns: 1fr;
                 }
             }
-
-            // & > .Projects__list {
-            //     list-style-type: none;
-
-            //     margin-top: 2rem;
-
-            //     & > .Projects__item {
-            //         margin-bottom: 2rem;
-
-            //         &:last-child {
-            //             margin-bottom: 5rem;
-            //         }
-            //     }
-            // }
         }
     }
 </style>
