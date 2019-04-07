@@ -15,6 +15,7 @@ Breakpoint argument choices:
     - phone
     - tab-port
     - tab-land
+    - normal
     - big-desktop
 
 Usage:
@@ -37,5 +38,8 @@ Recall, 1em = 16px
     }
     @if $breakpoint == big-desktop {
         @media (min-width: 112.5em) { @content }; // 1800px / 16px = 112.5em
+    }
+    @if $breakpoint == normal {
+        @content
     }
 }
