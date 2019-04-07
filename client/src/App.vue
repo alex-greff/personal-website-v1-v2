@@ -45,6 +45,7 @@ import BlockLoader from "@/components/loaders/BlockLoader.vue";
 
 import Home from "@/views/Home.vue";
 import Projects from "@/views/Projects/Projects.vue";
+import ProjectDetails from "@/views/Projects/ProjectDetails.vue";
 import Experience from "@/views/Experience.vue";
 import Music from "@/views/Music.vue";
 import About from "@/views/About.vue";
@@ -54,10 +55,8 @@ import Contact from "@/views/Contact.vue";
 const PAGE_ANIM_FUNCTIONS = {
     home: { introAnim: Home.introAnim, enterAnim: Home.enterAnim, leaveAnim: Home.leaveAnim },
     projects: { enterAnim: Projects.enterAnim, leaveAnim: Projects.leaveAnim },
-    experience: {
-        enterAnim: Experience.enterAnim,
-        leaveAnim: Experience.leaveAnim
-    },
+    projectDetails: { enterAnim: ProjectDetails.enterAnim, leaveAnim: ProjectDetails.leaveAnim },
+    experience: { enterAnim: Experience.enterAnim, leaveAnim: Experience.leaveAnim },
     music: { enterAnim: Music.enterAnim, leaveAnim: Music.leaveAnim },
     about: { enterAnim: About.enterAnim, leaveAnim: About.leaveAnim },
     contact: { enterAnim: Contact.enterAnim, leaveAnim: Contact.leaveAnim }

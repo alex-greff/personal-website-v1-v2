@@ -28,6 +28,23 @@ export default {
         projectDataLoaded() {
             return !!(this.projects[this.projectName]);
         }
+    },
+    // ------------------
+    // --- Animations ---
+    // ------------------
+    enterAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running ProjectDetails enter anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 0); // TODO: remove
+        });
+    },
+    leaveAnim(el) {
+        return new Promise((resolve, reject) => {
+            console.log("Running ProjectDetails leave anim"); 
+            // TODO: animate here
+            setTimeout(() => resolve(), 100); // TODO: remove
+        });
     }
 }
 </script>

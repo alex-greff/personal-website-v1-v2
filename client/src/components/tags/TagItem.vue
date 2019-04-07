@@ -57,6 +57,8 @@ export default {
 
             text-align: center;
             margin: auto;
+            
+            padding: 0 0.5rem 0 0.5rem;
         }
     }
 </style>

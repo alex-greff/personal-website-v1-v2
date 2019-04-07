@@ -1,6 +1,6 @@
 import Home from '../views/Home.vue'
 import Projects from '../views/Projects/Projects.vue';
-import ProjectItemDetails from '../views/Projects/ProjectItemDetails.vue';
+import ProjectDetails from '../views/Projects/ProjectDetails.vue';
 import Music from '../views/Music.vue';
 import Experience from '../views/Experience.vue';
 import Contact from '../views/Contact.vue';
@@ -39,10 +39,10 @@ export const pageData = {
                 targetTheme: "red"
             }
         },
-        projectsInfo: {
-            name: "projects-info",
+        projectDetails: {
+            name: "projectDetails",
             route: {
-                path: '/projects/:id', name: 'projectsInfo', component: ProjectItemDetails
+                path: '/projects/:id', name: 'projectDetails', component: ProjectDetails
             },
             routerLink: {
                 name: 'projects:id', path: "/projects:id", exact: false
