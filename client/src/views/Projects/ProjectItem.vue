@@ -174,7 +174,7 @@ export default {
                 width: 100%;
                 height: 100%;
 
-                opacity: 0; // TODO: 0
+                opacity: 0; 
 
                 transition: opacity $transition-time;
 
@@ -188,7 +188,7 @@ export default {
                     margin: 0 $margin-amount 0 $margin-amount;
 
                     & > div:not(:last-child) {
-                        margin-bottom: 0.5rem;
+                        margin-bottom: 0.7rem;
                     }
 
                     & .ProjectItem__title {

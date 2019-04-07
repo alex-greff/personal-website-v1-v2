@@ -13,7 +13,7 @@ export default {
     props: {
         height: { // rem
             type: Number,
-            default: 3
+            default: 2.5
         },
         tilt: { // deg
             type: Number,
