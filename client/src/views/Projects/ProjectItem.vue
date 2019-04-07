@@ -24,7 +24,7 @@
             </div>
         </div>
     </div> -->
-    <div class="ProjectItem">
+    <!-- <div class="ProjectItem">
         <div class="ProjectItem__title"> 
             {{ projectData.name }}
         </div> 
@@ -40,6 +40,25 @@
         </router-link>
 
         <slot v-if="isExpanded && isOnCurrDetailsPage"></slot>
+    </div> -->
+
+    <div :class="projectItemClassList">
+        <router-link
+            :to="detailsRouterPath"
+            tag="div"
+            class="ProjectItem__content"
+        >
+            <div class="ProjectItem__project-info">
+                <div class="ProjectItem__title"> 
+                    {{ projectData.name }}
+                </div>
+            </div>
+
+            <div class="ProjectItem__tint">
+                <div class="ProjectItem__thumbnail-image" :style="thumbnailImageLinkStyles">
+                </div>
+            </div>
+        </router-link>
     </div>
 </template>
 
@@ -50,12 +69,13 @@ export default {
     },
     data() {
         return {
-            isExpanded: false,
-            isOnCurrDetailsPage: false,
         };
     },
     computed: {
-        thumbnailImageStyles() {
+        projectItemClassList() {
+            return `ProjectItem ${(this.hover ? "hover" :  "")}`.trim();
+        },
+        thumbnailImageLinkStyles() {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
         },
         tagStringList() {
@@ -68,40 +88,103 @@ export default {
         }
     },
     watch: {
-        $route(newRoute) {
-            this.updateIsOnCurrDetailsPage(newRoute);
-        }
     },
     mounted() {
-        this.updateIsOnCurrDetailsPage(this.$route);
-
-        if (this.isOnCurrDetailsPage) {
-            this.isExpanded = true;
-        }
     },
     methods: {
-        toggleIsExpanded() {
-            this.isExpanded = !this.isExpanded;
-        },
-        updateIsOnCurrDetailsPage(route) {
-            this.isOnCurrDetailsPage = route.path === this.detailsRouterPath;
-        }
+        
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .ProjectItem {
-        background-color: red;
+        // background-color: red;
 
-        & .ProjectItem__details-btn {
-            cursor: pointer;
+        // Force 16:9 aspect ratio
+        width: 100%;
+        padding-bottom: 56.25%;
 
-            $details-btn-size: 4rem;
+        position: relative;
 
-            & .ProjectItem__details-icon {
+        cursor: pointer;
+
+        $transition-time: 0.4s;
+
+        & .ProjectItem__content {
+            // Strech content container to fit and not stretch the aspect ratio
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            overflow: hidden;
+
+            & .ProjectItem__tint {
+                z-index: 2;
+                // Note: this can't have position: absolute on it or it will dissapear behind the thumbnail image
+                width: 100%;
+                height: 100%;
+
+                background-color: theme-link("page", "selected-color", "primary", 0);
+
+                transition: background-color $transition-time;
+            }
+
+            & .ProjectItem__thumbnail-image {
+                z-index: -1;
+
+                position: relative;
+                width: 100%;
+                height: 100%;
+
+                background-size: cover;
+                background-position: center center;
+
+                transition: transform $transition-time, filter $transition-time;
+            }
+
+            & .ProjectItem__project-info {
+                z-index: 3;
+
+                position: absolute;
+                width: 100%;
+                height: 100%;
+
+                opacity: 0;
+
+                transition: opacity $transition-time;
+            }
+
+            // & .ProjectItem__details-btn {
+            //     cursor: pointer;
+            //     $details-btn-size: 4rem;
+
+            //     & .ProjectItem__details-icon {
+                    
+            //         @include icon-size($details-btn-size);
+            //     }
+            // }
+        }
+
+        // -----------------
+        // --- Modifiers ---
+        // -----------------
+        &:hover {
+            & .ProjectItem__content {
+                & .ProjectItem__thumbnail-image {
+                    transform: scale(1.2);
+                    filter: grayscale(100%) brightness(10%);
+                }
                 
-                @include icon-size($details-btn-size);
+                & .ProjectItem__tint {
+                    background-color: theme-link("page", "selected-color", "primary", 0.3);
+                }
+
+                & .ProjectItem__project-info {
+                    opacity: 1;
+                }
             }
         }
     }

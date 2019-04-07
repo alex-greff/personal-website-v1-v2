@@ -1,36 +1,26 @@
 <template>
     <div class="Projects">
-        <div class="Projects__content">
+        <div v-if="!isSubPage" class="Projects__content">
             <h1>Projects</h1>
 
             <!-- TODO: old stuff -->
-            <ul v-if="projectDataLoaded" class="Projects__list">
+            <div v-if="projectDataLoaded" class="Projects__grid">
                 <project-item 
                     v-for="project in projects"
                     :key="project.name"
                     class="Projects__item"
 
                     :project-data="project"
-                >
-                    <router-view></router-view>
-                </project-item>
-
-                <!-- <router-link
-                    v-for="project in projects"
-                    :key="project.name"
-                    :to="`/projects/${project.name}`"
-                    tag="li"
-                    class="Projects__link"
-                >
-                    <project-item :project-data="project" />
-                </router-link> -->
-            </ul>
+                />
+            </div>
             <div v-else>
                 Loading...
             </div>
         </div>
         
         <!-- Subpage router view -->
+        <!-- TODO: figure out how to view the page in a separate component??? -->
+        <router-view v-else></router-view>
     </div>
 </template>
 
@@ -93,19 +83,55 @@ export default {
                 color: theme-link("page", "accent-color", "primary");
             }
 
-            & > .Projects__list {
-                list-style-type: none;
+            & .Projects__grid {
+                margin-top: 3rem;
+                margin-bottom: 3rem;
+                margin-right: 20rem;
+                margin-left: 20rem;
 
-                margin-top: 2rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-column-gap: 2rem;
+                grid-row-gap: 2rem;
 
-                & > .Projects__item {
-                    margin-bottom: 2rem;
+                @include respond(big-desktop) {
+                    margin-right: 20rem;
+                    margin-left: 20rem;
 
-                    &:last-child {
-                        margin-bottom: 5rem;
-                    }
+                    grid-template-columns: 1fr 1fr 1fr;
+                }
+
+                @include respond(tab-land) {
+                    margin-right: 10rem;
+                    margin-left: 10rem;
+                }
+
+                @include respond(tab-port) {
+                    margin-right: 7rem;
+                    margin-left: 7rem;
+
+                    grid-template-columns: 1fr;
+                }
+
+                @include respond(phone) {
+                    margin-right: 3rem;
+                    margin-left: 3rem;
                 }
             }
+
+            // & > .Projects__list {
+            //     list-style-type: none;
+
+            //     margin-top: 2rem;
+
+            //     & > .Projects__item {
+            //         margin-bottom: 2rem;
+
+            //         &:last-child {
+            //             margin-bottom: 5rem;
+            //         }
+            //     }
+            // }
         }
     }
 </style>
