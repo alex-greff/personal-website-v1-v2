@@ -8,7 +8,7 @@ import About from '../views/About.vue';
 import NotFound from '../views/404.vue';
 
 export const pageData = {
-    pageOrder: ["home", "projects", "experience", "music", "about", "contact"],
+    navPageOrder: ["home", "projects", "experience", "music", "about", "contact"],
     pages: {
         home: {
             name: "home",
@@ -27,15 +27,28 @@ export const pageData = {
             name: "projects",
             route: { 
                 path: '/projects', name: 'projects', component: Projects, 
-                children: [
-                    { name: 'projects_item', path: ':id', component: ProjectItemDetails } // TODO: make dynamic???
-                ]
+                // children: [
+                //     { name: 'projects_item', path: ':id', component: ProjectItemDetails } // TODO: make dynamic???
+                // ]
             },
             routerLink: {
-                name: 'projects', path: "/projects", exact: false
+                name: 'projects', path: "/projects", exact: true
             },
             theme: {
                 namespace: "route_project",
+                targetTheme: "red"
+            }
+        },
+        projectsInfo: {
+            name: "projects-info",
+            route: {
+                path: '/projects/:id', name: 'projectsInfo', component: ProjectItemDetails
+            },
+            routerLink: {
+                name: 'projects:id', path: "/projects:id", exact: false
+            },
+            theme: {
+                namespace: "route_projectItem",
                 targetTheme: "red"
             }
         },
@@ -101,13 +114,8 @@ export const pageData = {
     ]
 };
 
-export const getPageTheme = (i_sPageName) => {
-    // Get the current page's theme data, if any
-    return pageData.pages[i_sPageName].theme;
-};
-
-export const getAllPageThemes = () => {
-    return pageData.pageOrder.reduce((i_oAccumulator, i_sCurrPageName) => {
+const _getPageThemes = (i_sPageList) => {
+    return i_sPageList.reduce((i_oAccumulator, i_sCurrPageName) => {
         // Get the theme item for this page
         const oCurrPageTheme = getPageTheme(i_sCurrPageName);
         // Make sure there is associated theme data
@@ -120,12 +128,8 @@ export const getAllPageThemes = () => {
     }, {});
 };
 
-export const getPageRoute = (i_sPageName) => {
-    return pageData.pages[i_sPageName].route;
-};
-
-export const getAllPageRoutes = () => {
-    return pageData.pageOrder.reduce((i_sAccumulator, i_sCurrPageName) => {
+const _getPageRoutes = (i_sPageList) => {
+    return i_sPageList.reduce((i_sAccumulator, i_sCurrPageName) => {
         const sCurrRouteData = [ getPageRoute(i_sCurrPageName) ];
 
         return [
@@ -135,21 +139,8 @@ export const getAllPageRoutes = () => {
     }, []);
 };
 
-export const getAllRoutes = () => {
-    return pageData.miscRoutes.reduce((i_sAccumulator, i_oCurrRoute) => {
-        return [
-            ...i_sAccumulator,
-            i_oCurrRoute
-        ];
-    }, [ ...getAllPageRoutes() ]);
-};
-
-export const getRouterLink = (i_sPageName) => {
-    return pageData.pages[i_sPageName].routerLink;
-};
-
-export const getAllRouterLinks = () => {
-    return pageData.pageOrder.reduce((i_sAccumulator, i_sCurrPageName) => {
+const _getRouterRoutes = (i_sPageList) => {
+    return i_sPageList.reduce((i_sAccumulator, i_sCurrPageName) => {
         const oCurrRouterLink = getRouterLink(i_sCurrPageName);
 
         return [
@@ -159,13 +150,70 @@ export const getAllRouterLinks = () => {
     }, []);
 };
 
+// ------------------
+// --- Page theme ---
+// ------------------
+
+export const getPageTheme = (i_sPageName) => {
+    // Get the current page's theme data, if any
+    return pageData.pages[i_sPageName].theme;
+};
+
+export const getAllPageThemes = () => {
+    return _getPageThemes(Object.keys(pageData.pages));
+};
+
+export const getAllNavPageThemes = () => {
+    return _getPageThemes(pageData.navPageOrder);
+}
+
+// -------------------
+// --- Page routes ---
+// -------------------
+
+export const getPageRoute = (i_sPageName) => {
+    console.log(i_sPageName);
+    return pageData.pages[i_sPageName].route;
+};
+
+export const getAllPageRoutes = () => {
+    return pageData.miscRoutes.reduce((i_sAccumulator, i_oCurrRoute) => {
+        return [
+            ...i_sAccumulator,
+            i_oCurrRoute
+        ];
+    }, [ ..._getPageRoutes(Object.keys(pageData.pages)) ]);
+};
+
+export const getAllNavPageRoutes = () => {
+    return _getPageRoutes(this.navPageOrder);
+};
+
+// --------------------
+// --- Router links ---
+// --------------------
+
+export const getRouterLink = (i_sPageName) => {
+    return pageData.pages[i_sPageName].routerLink;
+};
+
+export const getAllRouterLinks = () => {
+    return _getRouterRoutes(Object.keys(pageData.pages));
+};
+
+export const getAllNavRouterLinks = () => {
+    return _getRouterRoutes(pageData.navPageOrder)
+};
+
 export default {
     pageData,
     getPageTheme,
     getAllPageThemes,
+    getAllNavPageThemes,
     getPageRoute,
     getAllPageRoutes,
-    getAllRoutes,
+    getAllNavPageRoutes,
     getRouterLink,
-    getAllRouterLinks
+    getAllRouterLinks,
+    getAllNavRouterLinks,
 };

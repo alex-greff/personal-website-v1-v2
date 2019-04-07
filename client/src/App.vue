@@ -36,7 +36,7 @@ import { pageData, getAllPageThemes } from "@/constants/pageData";
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
 /* global Power1 */
-import { TweenLite, TweenMax, TimelineMax, TimelineLite } from "gsap/all";
+import { TweenLite } from "gsap/all";
 
 // @ is an alias for /src
 import NavBar from "@/components/NavBar/NavBar.vue";
@@ -217,17 +217,14 @@ export default {
             populateProjects: actionTypes.POPULATE_PROJECTS
         }),
         updateRouteTheme(i_sRouteName) {
-            // TODO: this relies on the convention that all subroutes follow the format of
-            // "[parent name]_[child name]... I should probably find a way around this
-            const extractParentName = i_sRouteName => {
-                const nSplitIdx = i_sRouteName.indexOf("_");
+            const currPageData = pageData.pages[i_sRouteName];
 
-                return nSplitIdx > -1 ? i_sRouteName.slice(0, nSplitIdx) : i_sRouteName;
-            };
+            if (!currPageData) {
+                console.warn(`Warning: route '${i_sRouteName}' does not contain any data`); // TODO: remove
+                return;
+            }
 
-            const sRouteName = extractParentName(i_sRouteName);
-
-            const currRouteNamespace = pageData.pages[sRouteName].theme.namespace;
+            const currRouteNamespace = currPageData.theme.namespace;
 
             // Only apply if there is a namespace mapped to the current route
             if (this.pageThemes[currRouteNamespace]) {

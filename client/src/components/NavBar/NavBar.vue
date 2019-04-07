@@ -19,7 +19,7 @@
 
 <script>
 import Utilities from "@/utilities";
-import { getAllRouterLinks } from "@/constants/pageData";
+import { getAllNavRouterLinks } from "@/constants/pageData";
 
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
@@ -35,7 +35,7 @@ export default {
             displayMode: "desktop",
             displayOverlay: INIT_OPEN_STATE,
             pages: [
-                ...getAllRouterLinks()
+                ...getAllNavRouterLinks()
             ],
         }
     },

@@ -248,7 +248,7 @@ export default {
             & .ProjectItem__content {
 
                 & .ProjectItem__thumbnail-image {
-                    transform: scale(1.1);
+                    transform: scale(1.05);
                     filter: grayscale(100%) brightness(10%);
                 }
                 
