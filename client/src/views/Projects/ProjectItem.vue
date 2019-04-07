@@ -48,21 +48,38 @@
             tag="div"
             class="ProjectItem__content"
         >
-            <div class="ProjectItem__project-info">
-                <div class="ProjectItem__title"> 
-                    {{ projectData.name }}
-                </div>
-            </div>
+            <a>
+                <div class="ProjectItem__project-info-container">
+                    <div class="ProjectItem__project-info">
+                        <div class="ProjectItem__title"> 
+                            {{ projectData.name }}
+                        </div>
 
-            <div class="ProjectItem__tint">
-                <div class="ProjectItem__thumbnail-image" :style="thumbnailImageLinkStyles">
+                        <div class="ProjectItem__links">
+                            <a 
+                                v-for="(link, linkType, index) in links"
+                                :key="index"
+                                class="ProjectItem__link-item"
+                                :title="linkType"
+                            >
+                                <fa-icon :name="getIconMapping(linkType)" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="ProjectItem__tint">
+                    <div class="ProjectItem__thumbnail-image" :style="thumbnailImageLinkStyles">
+                    </div>
+                </div>
+            </a>
         </router-link>
     </div>
 </template>
 
 <script>
+import ICON_MAPPINGS from "@/constants/iconMappings";
+
 export default {
     props: {
         projectData: { type: Object, required: true }
@@ -85,33 +102,56 @@ export default {
         },
         detailsRouterPath() {
             return `/projects/${this.projectData.name}`;
+        },
+        links() {
+            const links = this.projectData.links;
+            return (links) ? links : {};
         }
+        // linksEntries() {
+        //     const links = this.projectData.links;
+        //     return (links) ? Object.entries(links) : [];
+        // },
+        // linksIconClasses() {
+        //     const links = this.linksEntries;
+        //     return links.map(([linkType]) => {
+        //         const iconClasses = ICON_MAPPINGS[linkType];
+        //         return (iconClasses) ? iconClasses : ICON_MAPPINGS["default"];
+        //     });
+        // },
     },
     watch: {
     },
     mounted() {
     },
     methods: {
-        
+        getIconMapping(i_sIconType) {
+            const iconMapping = ICON_MAPPINGS[i_sIconType];
+            return (iconMapping) ? iconMapping : ICON_MAPPINGS["default"];
+        }
     }
 }
 </script>
 
+
 <style lang="scss" scoped>
+// TODO: i need to convert this back to scoped
     .ProjectItem {
-        // background-color: red;
+        $transition-time: 0.4s;
+        position: relative;
 
         // Force 16:9 aspect ratio
         width: 100%;
         padding-bottom: 56.25%;
 
-        position: relative;
-
         cursor: pointer;
 
-        $transition-time: 0.4s;
-
         & .ProjectItem__content {
+            // Remove stylings from anchor tag
+            & > a {
+                color: inherit;
+                text-decoration: none;
+            }
+
             // Strech content container to fit and not stretch the aspect ratio
             position: absolute;
             top: 0;
@@ -132,6 +172,8 @@ export default {
                 transition: background-color $transition-time;
             }
 
+            $margin-amount: 2rem;
+
             & .ProjectItem__thumbnail-image {
                 z-index: -1;
 
@@ -145,27 +187,66 @@ export default {
                 transition: transform $transition-time, filter $transition-time;
             }
 
-            & .ProjectItem__project-info {
+            & .ProjectItem__project-info-container {
                 z-index: 3;
 
                 position: absolute;
                 width: 100%;
                 height: 100%;
 
-                opacity: 0;
+                opacity: 0; // TODO: 0
 
                 transition: opacity $transition-time;
+
+                & .ProjectItem__project-info {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    // This is needed in order for the margins to be setup properly
+                    width: calc(100% -  #{$margin-amount * 2});
+                    margin: 0 $margin-amount 0 $margin-amount;
+                }
+
+                & .ProjectItem__title {
+                    text-align: center;
+                }
+
+                & .ProjectItem__links {
+                    display: flex;
+                    justify-content: center;
+                    z-index: 5;
+
+                    & .ProjectItem__link-item {
+                        $icon-size: 2rem;
+
+                        position: relative;
+                        width: $icon-size;
+                        height: $icon-size;
+
+                        margin-right: 0.3rem;
+                        margin-left: 0.3rem;
+
+                        text-decoration: none;
+                        color: theme-link("projects-item", "text-color", "primary");
+
+                        transition: color 0.5s;
+
+                        & > svg {
+                            width: 100%;
+                            height: 100%;
+                            
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+
+                        &:hover {
+                            color: theme-link("projects-item", "accent-color", "primary");
+                        }
+                    }
+                }
             }
-
-            // & .ProjectItem__details-btn {
-            //     cursor: pointer;
-            //     $details-btn-size: 4rem;
-
-            //     & .ProjectItem__details-icon {
-                    
-            //         @include icon-size($details-btn-size);
-            //     }
-            // }
         }
 
         // -----------------
@@ -173,8 +254,9 @@ export default {
         // -----------------
         &:hover {
             & .ProjectItem__content {
+
                 & .ProjectItem__thumbnail-image {
-                    transform: scale(1.2);
+                    transform: scale(1.1);
                     filter: grayscale(100%) brightness(10%);
                 }
                 
@@ -182,7 +264,7 @@ export default {
                     background-color: theme-link("page", "selected-color", "primary", 0.3);
                 }
 
-                & .ProjectItem__project-info {
+                & .ProjectItem__project-info-container {
                     opacity: 1;
                 }
             }

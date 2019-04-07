@@ -86,17 +86,23 @@ export default {
             & .Projects__grid {
                 margin-top: 3rem;
                 margin-bottom: 3rem;
-                margin-right: 20rem;
-                margin-left: 20rem;
 
                 display: grid;
-                grid-template-columns: 1fr 1fr;
                 grid-column-gap: 2rem;
                 grid-row-gap: 2rem;
+
+                $item-width: 30rem;
 
                 @include respond(big-desktop) {
                     margin-right: 20rem;
                     margin-left: 20rem;
+
+                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                }
+
+                @include respond(normal) {
+                    margin-right: 15rem;
+                    margin-left: 15rem;
 
                     grid-template-columns: 1fr 1fr 1fr;
                 }
@@ -104,18 +110,22 @@ export default {
                 @include respond(tab-land) {
                     margin-right: 10rem;
                     margin-left: 10rem;
+
+                    grid-template-columns: 1fr 1fr;
                 }
 
                 @include respond(tab-port) {
-                    margin-right: 7rem;
-                    margin-left: 7rem;
+                    margin-right: 5rem;
+                    margin-left: 5rem;
 
-                    grid-template-columns: 1fr;
+                    grid-template-columns: 1fr 1fr;
                 }
 
                 @include respond(phone) {
                     margin-right: 3rem;
                     margin-left: 3rem;
+
+                    grid-template-columns: 1fr;
                 }
             }
 

@@ -20,7 +20,9 @@ export const subSections = [
     "navBar__item",
     "footer",
     "content",
-    "button"
+    "button",
+    "projects",
+    "projects-item",
 ];
 
 export default {
