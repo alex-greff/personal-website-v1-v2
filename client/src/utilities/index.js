@@ -310,6 +310,14 @@ function debounce(func, wait, immediate) {
     };
 }
 
+// The JS version of the SCSS function
+function computeParallelogramClipPath(itemHeight, tiltAngle) {
+    const gutterLength = itemHeight / Math.tan(tiltAngle * Math.PI/180);
+
+    // top left, top right, bottom right, bottom left
+    return `polygon(${gutterLength}rem 0%, 100% 0%, calc(100% - ${gutterLength}rem) 100%, 0% 100%)`
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -337,4 +345,5 @@ export default {
     randomNormalDist,
     timeout,
     debounce,
+    computeParallelogramClipPath,
 };
