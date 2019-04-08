@@ -1,12 +1,17 @@
 <template>
     <div class="Projects">
-        <div v-if="!isSubPage" class="Projects__content">
+        <div class="Projects__content">
             <h1>Projects</h1>
 
-            <!-- TODO: old stuff -->
+            <project-filter
+                class="Projects__filter"
+                :all-filters="allTags"
+                :filter-updated="filterUpdated"
+            />
+
             <div v-if="projectDataLoaded" class="Projects__grid">
                 <project-item 
-                    v-for="project in projects"
+                    v-for="project in projectsFiltered"
                     :key="project.name"
                     class="Projects__item"
 
@@ -17,34 +22,68 @@
                 Loading...
             </div>
         </div>
-        
-        <!-- Subpage router view -->
-        <!-- TODO: figure out how to view the page in a separate component??? -->
-        <router-view v-else></router-view>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import ProjectItem from './ProjectItem.vue';
+import ProjectItem from '@/views/Projects/ProjectItem.vue';
+import ProjectFilter from '@/views/Projects/ProjectFilter.vue';
 import { getterTypes } from '@/store/types';
+import Vue from 'vue';
 
 export default {
     components: {
         projectItem: ProjectItem,
+        projectFilter: ProjectFilter,
+    },
+    data() {
+        return {
+            projectsFiltered: this.projects,
+        }
     },
     computed: {
         ...mapGetters({
             projects: getterTypes.GET_ALL_PROJECTS
         }),
-        isSubPage() {
-            return !!(this.$route.params.id);
-        },
         projectDataLoaded() {
             return !!(this.projects);
         },
         projectIDs() {
             return Object.entries(this.projects).map(([projectName]) => projectName);
+        },
+        allTags() {
+            const tagsSet = new Set();
+
+            Object.values(this.projects).forEach(project => {
+                const tagsRaw = (project.tags) ? project.tags : [];
+                tagsRaw.forEach(tag => tagsSet.add(tag));
+            });
+
+            return [...tagsSet];
+        }
+    },
+    methods: {
+        filterUpdated(i_bShowAll, i_filterSet) {
+            const newProjectsFiltered = Object.values(this.projects).reduce((acc, project) => {
+
+                const currProj = {};
+                // const bHasFilter = project.tags.some(tag => i_filterSet.has(tag));
+                const bMatchesFilter = Array.from(i_filterSet).every(filterItem => {
+                    return project.tags.some(tag => tag === filterItem);
+                });
+
+                if (i_bShowAll || bMatchesFilter) {
+                    currProj[project.name] = { ...project };
+                }
+
+                return {
+                    ...acc,
+                    ...currProj
+                };
+            }, {});
+
+            Vue.set(this, "projectsFiltered", newProjectsFiltered);
         }
     },
     // ------------------
@@ -83,6 +122,10 @@ export default {
                 color: theme-link("page", "accent-color", "primary");
             }
 
+            & .Projects__filter {
+                margin-top: 3rem;
+            }
+
             & .Projects__grid {
                 margin-top: 3rem;
                 margin-bottom: 3rem;
@@ -97,39 +140,52 @@ export default {
                 // --- Media Queries ---
                 // ---------------------
                 @include respond(big-desktop) {
-                    margin-right: 20rem;
-                    margin-left: 20rem;
-
                     grid-template-columns: 1fr 1fr 1fr 1fr;
                 }
 
                 @include respond(normal) {
-                    margin-right: 15rem;
-                    margin-left: 15rem;
-
                     grid-template-columns: 1fr 1fr 1fr;
                 }
 
                 @include respond(tab-land) {
-                    margin-right: 10rem;
-                    margin-left: 10rem;
-
                     grid-template-columns: 1fr 1fr;
                 }
 
                 @include respond(tab-port) {
-                    margin-right: 5rem;
-                    margin-left: 5rem;
-
                     grid-template-columns: 1fr 1fr;
                 }
 
                 @include respond(phone) {
-                    margin-right: 3rem;
-                    margin-left: 3rem;
-
                     grid-template-columns: 1fr;
                 }
+            }
+
+            // ---------------------
+            // --- Media Queries ---
+            // ---------------------
+            @include respond(big-desktop) {
+                margin-right: 20rem;
+                margin-left: 20rem;
+            }
+
+            @include respond(normal) {
+                margin-right: 15rem;
+                margin-left: 15rem;
+            }
+
+            @include respond(tab-land) {
+                margin-right: 10rem;
+                margin-left: 10rem;
+            }
+
+            @include respond(tab-port) {
+                margin-right: 5rem;
+                margin-left: 5rem;
+            }
+
+            @include respond(phone) {
+                margin-right: 3rem;
+                margin-left: 3rem;
             }
         }
     }

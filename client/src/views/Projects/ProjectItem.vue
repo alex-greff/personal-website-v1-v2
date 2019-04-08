@@ -5,39 +5,43 @@
             tag="div"
             class="ProjectItem__content"
         >
+            <!-- This first anchor tag is used by router-link -->
             <a>
-                <div class="ProjectItem__project-info-container">
-                    <div class="ProjectItem__project-info">
-                        <div class="ProjectItem__title"> 
-                            {{ projectData.name }}
-                        </div>
-
-                        <div v-if="hasLinks" class="ProjectItem__links">
-                            <a 
-                                v-for="(link, linkType, index) in links"
-                                :key="index"
-                                class="ProjectItem__link-item"
-                                :title="linkType"
-                            >
-                                <fa-icon :name="getIconMapping(linkType)" />
-                            </a>
-                        </div>
-                        <div v-if="hasTags" class="ProjectItem__tags" :style="tagAlignment">
-                            <tag-item
-                                v-for="(tag, index) in tags"
-                                :key="index"
-                            >
-                                {{ tag }}
-                            </tag-item>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="ProjectItem__tint">
                     <div class="ProjectItem__thumbnail-image" :style="thumbnailImageLinkStyles">
                     </div>
                 </div>
             </a>
+
+            <div class="ProjectItem__project-info-container">
+                <div class="ProjectItem__project-info">
+                    <div class="ProjectItem__title"> 
+                        {{ projectData.name }}
+                    </div>
+
+                    <div v-if="hasLinks" class="ProjectItem__links">
+                        <a 
+                            v-for="(link, linkType, index) in links"
+                            :key="index"
+                            class="ProjectItem__link-item"
+                            :title="linkType"
+                            :href="`//${link}`"
+                            target="__blank"
+                        >
+                            <fa-icon :name="getIconMapping(linkType)" />
+                        </a>
+                    </div>
+                    <div v-if="hasTags" class="ProjectItem__tags" :style="tagAlignment">
+                        <tag-item
+                            v-for="(tag, index) in tags"
+                            :key="index"
+                            class="ProjectItem__tag-item"
+                        >
+                            {{ tag }}
+                        </tag-item>
+                    </div>
+                </div>
+            </div>
         </router-link>
     </div>
 </template>
@@ -92,10 +96,9 @@ export default {
         tagAlignment() {
             const gutterLength = this.tagHeight / Math.tan(this.tagTilt * Math.PI/180);
             const spaceBetween = 0.5; // rem
-            const numCells = this.tags.length;
 
             return {
-                marginLeft: (spaceBetween - gutterLength) * numCells + "rem"
+                marginLeft: (spaceBetween - gutterLength) + "rem"
             }
         }
     },
@@ -114,7 +117,6 @@ export default {
 
 
 <style lang="scss" scoped>
-// TODO: i need to convert this back to scoped
     .ProjectItem {
         $transition-time: 0.4s;
         position: relative;
@@ -155,7 +157,7 @@ export default {
             $margin-amount: 2rem;
 
             & .ProjectItem__thumbnail-image {
-                z-index: -1;
+                z-index: 1;
 
                 position: relative;
                 width: 100%;
@@ -168,11 +170,13 @@ export default {
             }
 
             & .ProjectItem__project-info-container {
+                pointer-events: none;
                 z-index: 3;
 
                 position: absolute;
                 width: 100%;
                 height: 100%;
+                top: 0;
 
                 opacity: 0; 
 
@@ -200,9 +204,10 @@ export default {
                     & .ProjectItem__links {
                         display: flex;
                         justify-content: center;
-                        z-index: 5;
 
                         & .ProjectItem__link-item {
+                            pointer-events: all;
+
                             $icon-size: 2rem;
 
                             position: relative;
@@ -236,6 +241,11 @@ export default {
                         display: flex;
                         flex-direction: row;
                         justify-content: center;
+                        flex-wrap: wrap;
+
+                        & .ProjectItem__tag-item {
+                            margin-top: 0.3rem;
+                        }
                     }
                 }
             }

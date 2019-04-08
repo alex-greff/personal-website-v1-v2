@@ -1,5 +1,8 @@
 <template>
-    <div class="TagItem" :style="tagStyles">
+    <div 
+        :class="tagClasses" 
+        :style="tagStyles"
+    >
         <span class="TagItem__content">
             <slot></slot>
         </span>
@@ -26,7 +29,15 @@ export default {
         spaceBetween: { // rem
             type: Number,
             default: 0.5
-        }
+        },
+        selectable: {
+            type: Boolean,
+            default: false
+        },
+        selected: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         tagStyles() {
@@ -40,8 +51,19 @@ export default {
                 height: `${this.height}rem`,
                 maxWidth: `${this.maxWidth}rem`
             };
+        },
+        tagClasses() {
+            let sClasses = "TagItem";
+            if (this.selectable) {
+                sClasses += " selectable";
+
+                if (this.selected) {
+                    sClasses += " selected";
+                }
+            }
+            return sClasses;
         }
-    }
+    },
 }
 </script>
 
@@ -52,13 +74,28 @@ export default {
 
         display: inline-flex; 
 
+        transition: background-color 0.4s;
+
         & .TagItem__content {
             width: 100%;
 
             text-align: center;
             margin: auto;
-            
+
             padding: 0 0.5rem 0 0.5rem;
+        }
+
+        // Modifiers
+        &.selectable {
+            cursor: pointer;
+
+            &.selected {
+                background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
+            }
+
+            &:hover {
+                // background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
+            }
         }
     }
 </style>
