@@ -11,6 +11,7 @@
         <tag-item 
             v-for="(filterState, filterName, index) in filters"
             :key="index"
+            class="ProjectFilter__item"
             :selectable="true"
             :selected="filterState.selected"
             @click.native="selectFilter(filterName)"
@@ -105,7 +106,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .ProjectFilter {
+        & .ProjectFilter__item {
+            margin-top: 0.3rem;
+        }
+    }
 </style>
 
 
