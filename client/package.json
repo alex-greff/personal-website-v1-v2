@@ -8,6 +8,7 @@
         "build": "vue-cli-service build"
     },
     "dependencies": {
+        "animate-css-grid": "^1.4.0",
         "axios": "^0.18.0",
         "color": "^3.1.0",
         "gsap": "^2.1.2",

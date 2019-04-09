@@ -9,7 +9,15 @@
                 :filter-updated="filterUpdated"
             />
 
-            <div v-if="projectDataLoaded" class="Projects__grid">
+            <transition-group
+                v-if="projectDataLoaded"
+                ref="gridRef"
+                class="Projects__grid"
+                tag="div"
+
+                @enter="projectItemEnterAnim"
+                @leave="projectItemLeaveAnim"
+            >
                 <project-item 
                     v-for="project in projectsFiltered"
                     :key="project.name"
@@ -17,7 +25,8 @@
 
                     :project-data="project"
                 />
-            </div>
+            </transition-group>
+
             <div v-else>
                 Loading...
             </div>
@@ -31,6 +40,10 @@ import ProjectItem from '@/views/Projects/ProjectItem.vue';
 import ProjectFilter from '@/views/Projects/ProjectFilter.vue';
 import { getterTypes } from '@/store/types';
 import Vue from 'vue';
+import { wrapGrid } from "animate-css-grid";
+
+/* global Power1 */
+import { TweenLite } from "gsap/all";
 
 export default {
     components: {
@@ -63,7 +76,15 @@ export default {
             return [...tagsSet];
         }
     },
+    mounted() {
+        this.initializeGridAnimations();
+    },
     methods: {
+        initializeGridAnimations() {
+            const gridEl = this.$refs["gridRef"].$el;
+            // Wrap with animate-css-grid
+            wrapGrid(gridEl);
+        },
         filterUpdated(i_bShowAll, i_filterSet) {
             const newProjectsFiltered = Object.values(this.projects).reduce((acc, project) => {
 
@@ -84,6 +105,19 @@ export default {
             }, {});
 
             Vue.set(this, "projectsFiltered", newProjectsFiltered);
+        },
+        // -------------------------------
+        // --- Project Item Animations ---
+        // -------------------------------
+        projectItemEnterAnim(el, done) {
+            const ON_COMPLETE = () => done();
+            const DURATION = 0.4;
+            TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });
+        }, 
+        projectItemLeaveAnim(el, done) {
+            const ON_COMPLETE = () => done();
+            const DURATION = 0.2;
+            TweenLite.to(el, DURATION, { opacity: 0, ease: Power1.easeIn, onComplete: ON_COMPLETE });
         }
     },
     // ------------------

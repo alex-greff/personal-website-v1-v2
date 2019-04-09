@@ -110,7 +110,7 @@ export default {
         getIconMapping(i_sIconType) {
             const iconMapping = ICON_MAPPINGS[i_sIconType];
             return (iconMapping) ? iconMapping : ICON_MAPPINGS["default"];
-        }
+        },
     }
 }
 </script>
@@ -149,7 +149,8 @@ export default {
                 width: 100%;
                 height: 100%;
 
-                background-color: theme-link("page", "bg-color", "secondary", 0);
+                // background-color: theme-link("page", "bg-color", "primary", 0);
+                background-color: rgba(0, 0, 0, 0);
 
                 transition: background-color $transition-time;
             }
@@ -157,7 +158,10 @@ export default {
             $margin-amount: 2rem;
 
             & .ProjectItem__thumbnail-image {
-                z-index: 1;
+                will-change: filter, transform;
+                // -webkit-backface-visibility: hidden;
+
+                z-index: -1;
 
                 position: relative;
                 width: 100%;
@@ -258,12 +262,13 @@ export default {
             & .ProjectItem__content {
 
                 & .ProjectItem__thumbnail-image {
-                    transform: scale(1.05);
-                    filter: grayscale(100%) brightness(10%);
+                    // transform: scale(1.05);
+                    // filter: grayscale(100%) brightness(10%);
                 }
                 
                 & .ProjectItem__tint {
-                    background-color: theme-link("page", "bg-color", "secondary", 0.3);
+                    // background-color: theme-link("page", "bg-color", "primary", 0.9);
+                    background-color: rgba(0, 0, 0, 0.85);
                 }
 
                 & .ProjectItem__project-info-container {
