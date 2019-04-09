@@ -295,7 +295,7 @@ export function timeout(ms) {
 }
 
 // Taken from: https://davidwalsh.name/javascript-debounce-function
-function debounce(func, wait, immediate) {
+export function debounce(func, wait, immediate) {
     var timeout;
     return function() {
         var context = this, args = arguments;
@@ -311,11 +311,26 @@ function debounce(func, wait, immediate) {
 }
 
 // The JS version of the SCSS function
-function computeParallelogramClipPath(itemHeight, tiltAngle) {
+export function computeParallelogramClipPath(itemHeight, tiltAngle) {
     const gutterLength = itemHeight / Math.tan(tiltAngle * Math.PI/180);
 
     // top left, top right, bottom right, bottom left
     return `polygon(${gutterLength}rem 0%, 100% 0%, calc(100% - ${gutterLength}rem) 100%, 0% 100%)`
+}
+
+/**
+ * Calculates the total running time of a stagger animation with the provided values.
+ * 
+ * @param {Number} i_nLength The length of each animation.
+ * @param {Number} i_nStagger The stagger time.
+ * @param {Number} i_nNumItems The number of items being staggered.
+ */
+export function totalStaggerTime(i_nLength, i_nStagger, i_nNumItems) {
+    if (i_nLength <= 0) {
+        return 0;
+    }
+
+    return i_nLength + (i_nNumItems - 1) * i_nStagger;
 }
 
 // Public API export
@@ -346,4 +361,5 @@ export default {
     timeout,
     debounce,
     computeParallelogramClipPath,
+    totalStaggerTime,
 };

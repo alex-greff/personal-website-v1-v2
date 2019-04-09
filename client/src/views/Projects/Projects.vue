@@ -1,5 +1,5 @@
 <template>
-    <div class="Projects">
+    <div ref="baseRef" class="Projects">
         <div class="Projects__content">
             <h1 class="Projects__title">
                 Projects
@@ -7,6 +7,7 @@
 
             <project-filter
                 class="Projects__filter"
+                tag-class="Projects__filter-item"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
             />
@@ -43,9 +44,10 @@ import ProjectFilter from '@/views/Projects/ProjectFilter.vue';
 import { getterTypes } from '@/store/types';
 import Vue from 'vue';
 import { wrapGrid } from "animate-css-grid";
+import Utilities from "@/utilities";
 
 /* global Power1 */
-import { TweenLite } from "gsap/all";
+import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
     components: {
@@ -62,7 +64,7 @@ export default {
             projects: getterTypes.GET_ALL_PROJECTS
         }),
         projectDataLoaded() {
-            return !!(this.projects);
+            return Object.keys(this.projects).length > 0;
         },
         projectIDs() {
             return Object.entries(this.projects).map(([projectName]) => projectName);
@@ -76,10 +78,26 @@ export default {
             });
 
             return [...tagsSet];
+        },
+    },
+    watch: {
+        projectDataLoaded(isLoaded, wasLoaded) {
+            // TODO: if this was fast and the spoof loader is still running, this runs anyways... I should probably fix this eventually
+            if (isLoaded && !wasLoaded) {
+                this.$nextTick(() => {
+                    this.animateInProjectEls(this.$refs.baseRef);
+                    this.initializeGridAnimations();
+                });
+            }
         }
     },
     mounted() {
-        this.initializeGridAnimations();
+        if (this.projectDataLoaded) {
+            this.$nextTick(() => {
+                this.animateInProjectEls(this.$refs.baseRef)
+                this.initializeGridAnimations();
+            });
+        }
     },
     methods: {
         initializeGridAnimations() {
@@ -120,25 +138,139 @@ export default {
             const ON_COMPLETE = () => done();
             const DURATION = 0.2;
             TweenLite.to(el, DURATION, { opacity: 0, ease: Power1.easeIn, onComplete: ON_COMPLETE });
+        },
+        animateInProjectEls(el) {
+            _animateInProjectEls(el);
         }
     },
     // ------------------
     // --- Animations ---
     // ------------------
     enterAnim(el) {
-        return new Promise((resolve, reject) => {
-            console.log("Running Projects enter anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 0); // TODO: remove
-        });
+        return _enterAnim(el);
     },
     leaveAnim(el) {
-        return new Promise((resolve, reject) => {
-            console.log("Running Projects leave anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 100); // TODO: remove
-        });
+        return _leaveAnim(el);
     }
+}
+
+const _animateInProjectEls = (el) => {
+    return new Promise((resolve, reject) => {
+        const filterItemEls = el.querySelectorAll(".Projects__filter-item");
+        const projectItemEls = el.querySelectorAll(".Projects__item");
+
+        // Kill any running animations
+        TweenLite.killTweensOf([...filterItemEls, ...projectItemEls]);
+
+        // TODO: consolidate these animations with the same ones that are in _enterAnim
+        const tl = new TimelineLite({ onComplete: () => resolve() });
+        tl.add(
+            TweenMax.staggerFromTo(
+                filterItemEls,
+                0.3,
+                { x: -20, opacity: 0 },
+                { x: 0, opacity: 1 },
+                0.1
+            ),
+        );
+        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+        tl.add(
+            TweenMax.staggerFromTo(
+                projectItemEls,
+                0.3,
+                { x: -20, opacity: 0 },
+                { x: 0, opacity: 1 },
+                0.1
+            ),
+            `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
+        );
+    })
+};
+
+const _enterAnim = (el) => {
+    return new Promise((resolve, reject) => {
+        console.log("Running Projects enter anim for", el);
+
+        // Get DOM references
+        const titleEl = el.querySelector(".Projects__title");
+        const filterItemEls = el.querySelectorAll(".Projects__filter-item");
+        const projectItemEls = el.querySelectorAll(".Projects__item");
+
+        // Kill any running animations (that we know are for sure there)
+        TweenLite.killTweensOf(titleEl);
+
+        // Run animations
+        const tl = new TimelineLite({ onComplete: () => resolve() });
+        tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}));
+
+        // Only run the following animations if their items exist...
+        let totalFilterAnimTime = 0;
+
+        if (filterItemEls) {
+            TweenLite.killTweensOf(filterItemEls);
+            tl.add(
+                TweenMax.staggerFromTo(
+                    filterItemEls,
+                    0.3,
+                    { x: -20, opacity: 0 },
+                    { x: 0, opacity: 1 },
+                    0.1
+                ), 
+                "-=0.25"
+            );
+            totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+        }
+        if (projectItemEls) {
+            TweenLite.killTweensOf(projectItemEls);
+            tl.add(
+                TweenMax.staggerFromTo(
+                    projectItemEls,
+                    0.3,
+                    { x: -20, opacity: 0 },
+                    { x: 0, opacity: 1 },
+                    0.1
+                ),
+                `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
+            );
+        }
+    });
+};
+
+const _leaveAnim = (el) => {
+    return new Promise((resolve, reject) => {
+        console.log("Running Projects leave anim for", el); 
+
+        // Get DOM references
+        const titleEl = el.querySelector(".Projects__title");
+        const filterItemEls = el.querySelectorAll(".Projects__filter-item");
+        const projectItemEls = el.querySelectorAll(".Projects__item");
+
+        // Kill any running animations
+        TweenLite.killTweensOf([titleEl, ...filterItemEls, ...projectItemEls]);
+
+        // Run animations
+        const tl = new TimelineLite({ onComplete: () => resolve() });
+        tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
+        tl.add(
+            TweenMax.staggerTo(
+                filterItemEls,
+                0.3,
+                { x: 20, opacity: 0 },
+                0.1
+            ), 
+            "-=0.25"
+        );
+        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+        tl.add(
+            TweenMax.staggerTo(
+                projectItemEls,
+                0.3,
+                { x: 20, opacity: 0},
+                0.1
+            ),
+            `-=${totalFilterAnimTime}`
+        );
+    });
 }
 </script>
 

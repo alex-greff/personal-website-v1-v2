@@ -1,6 +1,7 @@
 <template>
     <div class="ProjectFilter">
         <tag-item
+            :class="tagItemClasses"
             :selectable="true"
             :selected="showAll"
             @click.native="selectShowAll"
@@ -11,7 +12,7 @@
         <tag-item 
             v-for="(filterState, filterName, index) in filters"
             :key="index"
-            class="ProjectFilter__item"
+            :class="tagItemClasses"
             :selectable="true"
             :selected="filterState.selected"
             @click.native="selectFilter(filterName)"
@@ -41,6 +42,10 @@ export default {
         filterUpdated: {
             type: Function, // (i_bShowAll, i_aFilterList)
             default: () => {}
+        },
+        tagClass: {
+            type: String,
+            default: ""
         }
     },
     data() {
@@ -49,6 +54,11 @@ export default {
             currFilters: new Set(),
             filterChangeTracker: 0,
             filters: {}
+        }
+    },
+    computed: {
+        tagItemClasses() {
+            return `ProjectFilter__item ${this.tagClass}`.trim();
         }
     },
     watch: {
