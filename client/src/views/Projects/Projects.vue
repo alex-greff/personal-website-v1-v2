@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             projectsFiltered: this.projects,
+            animateCssGridApplied: false,
         }
     },
     computed: {
@@ -101,9 +102,14 @@ export default {
     },
     methods: {
         initializeGridAnimations() {
+            if (this.animateCssGridApplied) {
+                return;
+            }
+
             const gridEl = this.$refs["gridRef"].$el;
             // Wrap with animate-css-grid
             wrapGrid(gridEl);
+            this.animateCssGridApplied = true;
         },
         filterUpdated(i_bShowAll, i_filterSet) {
             const newProjectsFiltered = Object.values(this.projects).reduce((acc, project) => {
@@ -157,7 +163,7 @@ export default {
 const _animateInProjectEls = (el) => {
     return new Promise((resolve, reject) => {
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
-        const projectItemEls = el.querySelectorAll(".Projects__item");
+        const projectItemEls = el.querySelectorAll(".ProjectItem__item");
 
         // Kill any running animations
         TweenLite.killTweensOf([...filterItemEls, ...projectItemEls]);
@@ -179,7 +185,7 @@ const _animateInProjectEls = (el) => {
                 projectItemEls,
                 0.3,
                 { x: -20, opacity: 0 },
-                { x: 0, opacity: 1 },
+                { x: 0, opacity: 1, clearProps: "x" },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -227,7 +233,7 @@ const _enterAnim = (el) => {
                     projectItemEls,
                     0.3,
                     { x: -20, opacity: 0 },
-                    { x: 0, opacity: 1 },
+                    { x: 0, opacity: 1, clearProps: "x" },
                     0.1
                 ),
                 `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -265,7 +271,7 @@ const _leaveAnim = (el) => {
             TweenMax.staggerTo(
                 projectItemEls,
                 0.3,
-                { x: 20, opacity: 0},
+                { x: 20, opacity: 0, clearProps: "x" },
                 0.1
             ),
             `-=${totalFilterAnimTime}`
