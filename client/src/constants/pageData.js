@@ -1,11 +1,11 @@
-import Home from '../views/Home.vue'
-import Projects from '../views/Projects/Projects.vue';
-import ProjectDetails from '../views/Projects/ProjectDetails.vue';
-import Music from '../views/Music.vue';
-import Experience from '../views/Experience.vue';
-import Contact from '../views/Contact.vue';
-import About from '../views/About.vue';
-import NotFound from '../views/404.vue';
+import Home from '@/views/Home.vue'
+import Projects from '@/views/Projects/Projects.vue';
+import ProjectDetails from '@/views/ProjectDetails/ProjectDetails.vue';
+import Music from '@/views/Music.vue';
+import Experience from '@/views/Experience.vue';
+import Contact from '@/views/Contact.vue';
+import About from '@/views/About.vue';
+import NotFound from '@/views/404.vue';
 
 export const pageData = {
     navPageOrder: ["home", "projects", "experience", "music", "about", "contact"],
@@ -27,9 +27,6 @@ export const pageData = {
             name: "projects",
             route: { 
                 path: '/projects', name: 'projects', component: Projects, 
-                // children: [
-                //     { name: 'projects_item', path: ':id', component: ProjectItemDetails } // TODO: make dynamic???
-                // ]
             },
             routerLink: {
                 name: 'projects', path: "/projects", exact: true

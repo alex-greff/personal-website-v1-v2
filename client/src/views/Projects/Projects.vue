@@ -1,7 +1,9 @@
 <template>
     <div class="Projects">
         <div class="Projects__content">
-            <h1>Projects</h1>
+            <h1 class="Projects__title">
+                Projects
+            </h1>
 
             <project-filter
                 class="Projects__filter"
@@ -149,10 +151,10 @@ export default {
         
             margin: 5rem 0 0 0;
 
-            & > h1 {
+            & .Projects__title {
                 text-align: center;
 
-                font-size: 3rem;
+                font-size: 4rem;
                 color: theme-link("page", "accent-color", "primary");
             }
 

@@ -45,7 +45,7 @@ import BlockLoader from "@/components/loaders/BlockLoader.vue";
 
 import Home from "@/views/Home.vue";
 import Projects from "@/views/Projects/Projects.vue";
-import ProjectDetails from "@/views/Projects/ProjectDetails.vue";
+import ProjectDetails from "@/views/ProjectDetails/ProjectDetails.vue";
 import Experience from "@/views/Experience.vue";
 import Music from "@/views/Music.vue";
 import About from "@/views/About.vue";
