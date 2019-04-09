@@ -169,7 +169,6 @@ export const getAllNavPageThemes = () => {
 // -------------------
 
 export const getPageRoute = (i_sPageName) => {
-    console.log(i_sPageName);
     return pageData.pages[i_sPageName].route;
 };
 
