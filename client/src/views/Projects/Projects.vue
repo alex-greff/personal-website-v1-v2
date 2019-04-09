@@ -185,7 +185,7 @@ const _animateInProjectEls = (el) => {
                 projectItemEls,
                 0.3,
                 { x: -20, opacity: 0 },
-                { x: 0, opacity: 1, clearProps: "x" },
+                { x: 0, opacity: 1,  },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -233,7 +233,7 @@ const _enterAnim = (el) => {
                     projectItemEls,
                     0.3,
                     { x: -20, opacity: 0 },
-                    { x: 0, opacity: 1, clearProps: "x" },
+                    { x: 0, opacity: 1 },
                     0.1
                 ),
                 `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -271,7 +271,7 @@ const _leaveAnim = (el) => {
             TweenMax.staggerTo(
                 projectItemEls,
                 0.3,
-                { x: 20, opacity: 0, clearProps: "x" },
+                { x: 20, opacity: 0 },
                 0.1
             ),
             `-=${totalFilterAnimTime}`
