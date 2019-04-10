@@ -1,5 +1,5 @@
 <template>
-    <div ref="baseRef" class="Projects">
+    <div ref="baseEl" class="Projects">
         <div class="Projects__content">
             <h1 class="Projects__title">
                 Projects
@@ -49,6 +49,9 @@ import Utilities from "@/utilities";
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
+let pageAnimatedIn = false;
+let forceRunProjectElsAnims = false;
+
 export default {
     components: {
         projectItem: ProjectItem,
@@ -86,7 +89,7 @@ export default {
             // TODO: if this was fast and the spoof loader is still running, this runs anyways... I should probably fix this eventually
             if (isLoaded && !wasLoaded) {
                 this.$nextTick(() => {
-                    this.animateInProjectEls(this.$refs.baseRef);
+                    this.animateInProjectEls(this.$refs.baseEl);
                     this.initializeGridAnimations();
                 });
             }
@@ -95,7 +98,7 @@ export default {
     mounted() {
         if (this.projectDataLoaded) {
             this.$nextTick(() => {
-                this.animateInProjectEls(this.$refs.baseRef)
+                this.animateInProjectEls(this.$refs.baseEl);
                 this.initializeGridAnimations();
             });
         }
@@ -136,6 +139,13 @@ export default {
         // --- Project Item Animations ---
         // -------------------------------
         projectItemEnterAnim(el, done) {
+            // Do not run the enter animation if the page has not been animated in yet
+            if (!pageAnimatedIn) {
+                done();
+                return;
+            }
+
+            console.log("running project item enter anim for", el);
             const ON_COMPLETE = () => done();
             const DURATION = 0.4;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });
@@ -160,10 +170,17 @@ export default {
     }
 }
 
-const _animateInProjectEls = (el) => {
+const _animateInProjectEls = (el, ignoreFlags = false) => {
     return new Promise((resolve, reject) => {
+        // Dont run the project els animation if the page hasn't been animated in yet, unless the force flag is active
+        if (!ignoreFlags && !forceRunProjectElsAnims && !pageAnimatedIn) {
+            resolve();
+            return;
+        }
+
+        console.log("Running project els animation", el);
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
-        const projectItemEls = el.querySelectorAll(".ProjectItem__item");
+        const projectItemEls = el.querySelectorAll(".Projects__item");
 
         // Kill any running animations
         TweenLite.killTweensOf([...filterItemEls, ...projectItemEls]);
@@ -206,45 +223,28 @@ const _enterAnim = (el) => {
         TweenLite.killTweensOf(titleEl);
 
         // Run animations
-        const tl = new TimelineLite({ onComplete: () => resolve() });
+        const tl = new TimelineLite({ onComplete: () => { pageAnimatedIn = true; resolve(); }});
         tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}));
 
-        // Only run the following animations if their items exist...
-        let totalFilterAnimTime = 0;
+        // Activate the force flag if there are no filter project els present
+        // This combats the issue where projectItemEls does not get rendered right away
+        if (filterItemEls.length <= 0 || projectItemEls.length <= 0) {
+            forceRunProjectElsAnims = true;
+            return;
+        }
 
-        if (filterItemEls) {
-            TweenLite.killTweensOf(filterItemEls);
-            tl.add(
-                TweenMax.staggerFromTo(
-                    filterItemEls,
-                    0.3,
-                    { x: -20, opacity: 0 },
-                    { x: 0, opacity: 1 },
-                    0.1
-                ), 
-                "-=0.25"
-            );
-            totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
-        }
-        if (projectItemEls) {
-            TweenLite.killTweensOf(projectItemEls);
-            tl.add(
-                TweenMax.staggerFromTo(
-                    projectItemEls,
-                    0.3,
-                    { x: -20, opacity: 0 },
-                    { x: 0, opacity: 1 },
-                    0.1
-                ),
-                `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
-            );
-        }
+        // Run the project els animations, ignoring any flags
+        _animateInProjectEls(el, true);
     });
 };
 
 const _leaveAnim = (el) => {
     return new Promise((resolve, reject) => {
         console.log("Running Projects leave anim for", el); 
+
+        // Reset
+        pageAnimatedIn = false;
+        forceRunProjectElsAnims = false;
 
         // Get DOM references
         const titleEl = el.querySelector(".Projects__title");
