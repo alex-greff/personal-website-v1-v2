@@ -29,7 +29,7 @@ export const pageData = {
                 path: '/projects', name: 'projects', component: Projects, 
             },
             routerLink: {
-                name: 'projects', path: "/projects", exact: true
+                name: 'projects', path: "/projects", exact: false
             },
             theme: {
                 namespace: "route_project",
