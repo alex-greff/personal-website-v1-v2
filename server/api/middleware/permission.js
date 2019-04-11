@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const canDoAllOperations = require("../roles/role-check");
 
-module.exports = function(checkSelf, ...operations) {
+module.exports = (checkSelf, ...operations) => {
     return (req, res, next) => {
         try {
             // Validate token

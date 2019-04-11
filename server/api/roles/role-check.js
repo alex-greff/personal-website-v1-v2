@@ -1,6 +1,6 @@
 const roles = require("./roles");
 
-module.exports = function(role, ...operations) {
+module.exports = (role, ...operations) => {
     // Function checking if the permissions are allowed
     const canDoOperation = (role, operation) => {
         // Check if role exists
