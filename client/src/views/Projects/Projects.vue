@@ -202,7 +202,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
                 projectItemEls,
                 0.3,
                 { x: -20, opacity: 0 },
-                { x: 0, opacity: 1,  },
+                { x: 0, opacity: 1, clearProps: "transform" },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
