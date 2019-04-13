@@ -16,15 +16,11 @@
                     </div>
                 </div>
                 <div class="ProjectDetails__sub-heading">
-                    <div class="ProjectDetails__tags">
-                        <!-- Generate tags -->
-                        <tag-item
-                            v-for="(tag, index) in projectData.tags"
-                            :key="index"
-                            class="ProjectDetails__tag-item"
-                        >
-                            {{ tag }}
-                        </tag-item>
+                    <div class="ProjectDetails__tint">
+                        <div 
+                            class="ProjectDetails__thumbnail-image" 
+                            :style="thumbnailImageLinkStyles"
+                        />
                     </div>
                     <div class="ProjectDetails__links">
                         <!-- Generate links -->
@@ -35,23 +31,28 @@
                             :link-type="linkType"
                             :title="linkType"
                             :href="`//${link}`"
+                            :size="2"
                         />
                     </div>
-                </div>
-                <div class="ProjectDetails__synopsis">
-                    <div class="ProjectDetails__tint">
-                        <div 
-                            class="ProjectDetails__thumbnail-image" 
-                            :style="thumbnailImageLinkStyles"
-                        />
-                    </div>
-                    <div class="ProjectDetails__summary-container">
-                        <div class="ProjectDetails__summary">
-                            <div class="ProjectDetails__summary-text">
-                                {{ projectData.summary }}
-                            </div>
+                    <div class="ProjectDetails__summary">
+                        <div class="ProjectDetails__summary-text">
+                            {{ projectData.summary }}
                         </div>
                     </div>
+                    <div class="ProjectDetails__tags">
+                        <!-- Generate tags -->
+                        <tag-item
+                            v-for="(tag, index) in projectData.tags"
+                            :key="index"
+                            class="ProjectDetails__tag-item"
+                            :height="2.5"
+                        >
+                            {{ tag }}
+                        </tag-item>
+                    </div>
+                    <!-- <div class="ProjectDetails__synopsis">
+                    
+                    </div> -->
                 </div>
             </div>
             <div v-else>
@@ -174,46 +175,22 @@ export default {
             }
 
             & .ProjectDetails__sub-heading {
+                // Define default grid
                 display: grid;
-                grid-template-columns: 7fr 2fr;
-                margin-top: 0.7rem;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto auto;
+                grid-template-areas: 
+                    "thumbnail links"
+                    "thumbnail summary"
+                    "thumbnail tags";
+                grid-column-gap: 2rem;
+                grid-row-gap: 1rem;
 
-                & .ProjectDetails__tags {
-                    display: flex;
-                    flex-wrap: wrap;
-
-                    & .ProjectDetails__tag-item {
-                        margin-top: 0.3rem;
-                    }
-                }
-
-                & .ProjectDetails__links {
-                    display: flex;
-                    justify-content: flex-end;
-                    flex-wrap: wrap;
-
-                    & .ProjectDetails__link-item {
-                        margin-top: 0.3rem;
-                    }
-                }
-
-                // ---------------------
-                // --- Media Queries ---
-                // ---------------------
-                @include respond(tab-port) {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            & .ProjectDetails__synopsis {
-                display: grid;
-                grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
-                grid-column-gap: 0.7rem;
-                margin-top: 1.5rem;
+                margin-top: 1rem;
 
                 & .ProjectDetails__tint {
-                    grid-column: thumbnail-start / thumbnail-end;
-                    grid-row: 1 / 1;
+                    grid-area: thumbnail;
+                    align-self: center;
 
                     background-color: rgba(0, 0, 0, 0.5);
 
@@ -237,115 +214,164 @@ export default {
                     }
                 }
 
-                & .ProjectDetails__summary-container {
-                    grid-column: summary-start / summary-end;
-                    grid-row: 1 / 1;
+                & .ProjectDetails__links {
+                    grid-area: links;
+                    align-self: end;
+
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+
+                    & .ProjectDetails__link-item {
+                        margin-top: 0.3rem;
+                    }
+                }
+
+                & .ProjectDetails__tags {
+                    grid-area: tags;
+                    align-self: start;
+
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                    margin-right: 1rem;
+
+                    & .ProjectDetails__tag-item {
+                        margin-top: 0.3rem;
+                    }
+                }
+
+                & .ProjectDetails__summary {
+                    grid-area: summary;
+                    align-self: center;
 
                     position: relative;
 
-                    transition: opacity $transition-time;
+                    $padding-sides: 3rem;
+                    $padding-top: 1rem;
 
-                    & .ProjectDetails__summary {
+                    width: 100%;
+                    height: 100%;
+                    min-height: 15rem;
+                    padding: $padding-top $padding-sides;
+
+                    background-color: theme-link("page", "bg-color", "secondary");
+
+                    transition: border-left $transition-time;
+
+                    &::before {
+                        content: "";
+                        will-change: width, background-color;
+
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 5px;
+                        background-color: theme-link("page", "accent-color", "secondary", 1);
+
+                        transition: width $transition-time, background-color $transition-time;
+                    }
+
+                    & .ProjectDetails__summary-text {
                         @include V_Align(absolute);
 
-                        $padding-sides: 3rem;
-                        $padding-top: 1rem;
+                        width: calc(100% - #{$padding-sides * 2});
+                        max-height: calc(100% - #{$padding-top * 2});
 
-                        width: 100%;
-                        min-height: 16rem;
-                        padding: $padding-top $padding-sides;
-
-                        background-color: theme-link("page", "bg-color", "secondary");
-
-                        transition: border-left $transition-time;
-
-                        // ---------------------
-                        // --- Media Queries ---
-                        // ---------------------
-                        @include respond(big-desktop) {
-                            min-height: 17rem;
-                        }
-                        @include respond(normal) {
-                            min-height: 16rem;
-                        }
-                        @include respond(tab-land) {
-                            min-height: 15rem;
-                        }
-                        @include respond(tab-port) {
-                            min-height: 14rem;
-                        }
-                        @include respond(phone) {
-                            min-height: 16rem;
-                        }
-
-                        &::before {
-                            content: "";
-                            will-change: width, background-color;
-
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            height: 100%;
-                            width: 5px;
-                            background-color: theme-link("page", "accent-color", "secondary", 0.7);
-
-                            transition: width $transition-time, background-color $transition-time;
-                        }
-
-                        &:hover {
-                            &::before {
-                                width: 7px;
-                                background-color: theme-link("page", "accent-color", "secondary", 1);
-                            }
-                        }
-
-                        & .ProjectDetails__summary-text {
-                            @include V_Align(absolute);
-
-                            width: calc(100% - #{$padding-sides * 2});
-                            max-height: calc(100% - #{$padding-top * 2});
-
-
-                            // NOTE: because the summary is more than 1 line we can't use the ellipsis when it overflows
-                            // text-overflow: ellipsis;
-                            // white-space: nowrap;
-                            // overflow: hidden;
-                            
-                            // So giving a scrollbar is the only way to (nicely) deal with the text overflow
-                            // Either way the summary shouldn't be that long in the first place
-                            overflow: auto;
-                        }
+                        // NOTE: because the summary is more than 1 line we can't use this code to show ellipsis on overflow:
+                        // text-overflow: ellipsis;
+                        // white-space: nowrap;
+                        // overflow: hidden;
+                        
+                        // So giving a scrollbar is the only way to (nicely) deal with the text overflow
+                        // Either way the summary shouldn't be that long in the first place
+                        overflow: auto;
                     }
+
+                & .ProjectDetails__synopsis {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    // grid-column: summary-start / summary-end;
+                    // grid-row: 1 / 1;
+
+                    // display: grid;
+                    // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
+                    // grid-column-gap: 0.7rem;
+                    $margin-amount: 1.5rem;
+                    margin-top: $margin-amount;
+                    margin-bottom: $margin-amount;
+
+                    
+
+                    
+                    }
+
+                    // ---------------------
+                    // --- Media Queries ---
+                    // ---------------------
+                    // @include respond(big-desktop) {
+                    //     // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
+                    //     // grid-template-columns: 4fr 3fr;
+                    // }
+
+                    // @include respond(tab-port) {
+                    //     // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr [summary-end];
+                    // }
+
+                    // @include respond(phone) {
+                    //     // grid-template-columns: [thumbnail-start summary-start] 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end thumbnail-end];
+
+                    //     // & .ProjectDetails__tint {
+                    //     //     background-color: rgba(0, 0, 0, 0.8);
+                    //     // }
+
+                    //     // &:hover {
+                    //     //     & .ProjectDetails__tint {
+                    //     //         background-color: rgba(0, 0, 0, 0);
+                    //     //     }
+
+                    //     //     & .ProjectDetails__summary-container {
+                    //     //         pointer-events: none;
+                    //     //         opacity: 0;
+                    //     //     }
+                    //     // }
+                    // }
                 }
 
                 // ---------------------
                 // --- Media Queries ---
                 // ---------------------
                 @include respond(big-desktop) {
-                    grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
+                    grid-template-columns: 3fr 4fr;
                 }
 
                 @include respond(tab-port) {
-                    grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr [summary-end];
+                    // NOTE: this is anothe possible breakpoint config
+                    // The only problem is that it gets a little too small just before the phone breakpoint
+                    // grid-template-areas: 
+                    //     "links links"
+                    //     "thumbnail summary"
+                    //     "tags tags";
+
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto auto auto auto;
+                    grid-template-areas: 
+                        "links"
+                        "tags"
+                        "thumbnail"
+                        "summary";
                 }
 
                 @include respond(phone) {
-                    grid-template-columns: [thumbnail-start summary-start] 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end thumbnail-end];
-
-                    & .ProjectDetails__tint {
-                        background-color: rgba(0, 0, 0, 0.8);
-                    }
-
-                    &:hover {
-                        & .ProjectDetails__tint {
-                            background-color: rgba(0, 0, 0, 0);
-                        }
-
-                        & .ProjectDetails__summary-container {
-                            pointer-events: none;
-                            opacity: 0;
-                        }
-                    }
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto auto auto auto;
+                    grid-template-areas: 
+                        "links"
+                        "tags"
+                        "thumbnail"
+                        "summary";
                 }
             }
 
@@ -358,8 +384,8 @@ export default {
             }
 
             @include respond(normal) {
-                margin-right: 20rem;
-                margin-left: 20rem;
+                margin-right: 18rem;
+                margin-left: 18rem;
             }
 
             @include respond(tab-land) {
