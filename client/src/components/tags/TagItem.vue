@@ -20,7 +20,7 @@ export default {
         },
         tilt: { // deg
             type: Number,
-            default: 59
+            default: 60
         },
         maxWidth: { // rem
             type: Number,

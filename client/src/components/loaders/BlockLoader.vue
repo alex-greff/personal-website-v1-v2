@@ -345,7 +345,7 @@ const _completeAnim = (el) => {
                 $total-cell-length: 30rem;    
                 $cell-height: 0.7rem;
                 $cell-width: $total-cell-length / $NUM-CELLS;
-                $cell-tilt: 59deg;
+                $cell-tilt: 60deg;
                 $space-between: 0rem;
 
                 $gutter-length: $cell-height / tan($cell-tilt);

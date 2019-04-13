@@ -202,7 +202,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
                 projectItemEls,
                 0.3,
                 { x: -20, opacity: 0 },
-                { x: 0, opacity: 1, clearProps: "transform" },
+                { x: 0, opacity: 1, clearProps: "all" },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -291,13 +291,15 @@ const _leaveAnim = (el) => {
 
             & .Projects__title {
                 text-align: center;
+                font-weight: 600; // h1 sets this by default
 
                 font-size: 4rem;
+                line-height: 4rem;
                 color: theme-link("page", "accent-color", "primary");
             }
 
             & .Projects__filter {
-                margin-top: 3rem;
+                margin-top: 2rem;
             }
 
             & .Projects__grid {

@@ -333,6 +333,24 @@ export function totalStaggerTime(i_nLength, i_nStagger, i_nNumItems) {
     return i_nLength + (i_nNumItems - 1) * i_nStagger;
 }
 
+/**
+ * Returns a formatted version of the given date.
+ * 
+ * @param {Date} i_dDate The date object.
+ */
+export function getFormattedDate(i_dDate) {
+    const month_names = ["January", "Feburary", "March", "April", 
+        "May", "June", "July" ,"August","September", "October",
+        "November", "December"];
+    
+    const day = i_dDate.getDate();
+    const month_index = i_dDate.getMonth();
+    const month = month_names[month_index];
+    const year = i_dDate.getFullYear();
+    
+    return `${month} ${day}, ${year}`;
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -362,4 +380,5 @@ export default {
     debounce,
     computeParallelogramClipPath,
     totalStaggerTime,
+    getFormattedDate,
 };

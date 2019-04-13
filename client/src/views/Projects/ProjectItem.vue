@@ -5,11 +5,13 @@
             tag="div"
             class="ProjectItem__content"
         >
-            <!-- This first anchor tag is used by router-link -->
+            <!-- Note: this first anchor tag is used by router-link -->
             <a>
                 <div class="ProjectItem__tint">
-                    <div class="ProjectItem__thumbnail-image" :style="thumbnailImageLinkStyles">
-                    </div>
+                    <div 
+                        class="ProjectItem__thumbnail-image" 
+                        :style="thumbnailImageLinkStyles" 
+                    />
                 </div>
             </a>
 
@@ -20,16 +22,14 @@
                     </div>
 
                     <div v-if="hasLinks" class="ProjectItem__links">
-                        <a 
+                        <link-item
                             v-for="(link, linkType, index) in links"
                             :key="index"
                             class="ProjectItem__link-item"
+                            :link-type="linkType"
                             :title="linkType"
                             :href="`//${link}`"
-                            target="__blank"
-                        >
-                            <fa-icon :name="getIconMapping(linkType)" />
-                        </a>
+                        />
                     </div>
                     <div v-if="hasTags" class="ProjectItem__tags" :style="tagAlignment">
                         <tag-item
@@ -48,11 +48,12 @@
 
 <script>
 import TagItem from "@/components/tags/TagItem.vue";
-import ICON_MAPPINGS from "@/constants/iconMappings";
+import LinkItem from "@/components/links/LinkItem.vue";
 
 export default {
     components: {
-        tagItem: TagItem
+        tagItem: TagItem,
+        linkItem: LinkItem,
     },
     props: {
         projectData: { type: Object, required: true }
@@ -60,7 +61,7 @@ export default {
     data() {
         return {
             tagHeight: 3, //rem
-            tagTilt: 59, //deg
+            tagTilt: 60, //deg
             spaceBetween: 0.5, //rem
         };
     },
@@ -102,16 +103,6 @@ export default {
             }
         }
     },
-    watch: {
-    },
-    mounted() {
-    },
-    methods: {
-        getIconMapping(i_sIconType) {
-            const iconMapping = ICON_MAPPINGS[i_sIconType];
-            return (iconMapping) ? iconMapping : ICON_MAPPINGS["default"];
-        },
-    }
 }
 </script>
 
@@ -208,37 +199,6 @@ export default {
                     & .ProjectItem__links {
                         display: flex;
                         justify-content: center;
-
-                        & .ProjectItem__link-item {
-                            pointer-events: all;
-
-                            $icon-size: 2rem;
-
-                            position: relative;
-                            width: $icon-size;
-                            height: $icon-size;
-
-                            margin-right: 0.3rem;
-                            margin-left: 0.3rem;
-
-                            text-decoration: none;
-                            color: theme-link("projects-item", "text-color", "primary");
-
-                            transition: color 0.5s;
-
-                            & > svg {
-                                width: 100%;
-                                height: 100%;
-                                
-                                position: absolute;
-                                top: 50%;
-                                transform: translateY(-50%);
-                            }
-
-                            &:hover {
-                                color: theme-link("projects-item", "accent-color", "primary");
-                            }
-                        }
                     }
 
                     & .ProjectItem__tags {
