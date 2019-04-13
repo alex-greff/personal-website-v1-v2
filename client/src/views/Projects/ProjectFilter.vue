@@ -119,6 +119,7 @@ export default {
     .ProjectFilter {
         & .ProjectFilter__item {
             margin-top: 0.3rem;
+            font-size: inherit;
         }
     }
 </style>

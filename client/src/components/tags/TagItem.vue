@@ -69,10 +69,12 @@ export default {
 
 <style lang="scss" scoped>
     .TagItem {
+        display: inline-flex; 
+
         position: relative;
         background-color: theme-link("projects-item", "selected-color", "primary", 0.5);
 
-        display: inline-flex; 
+        font-size: 1.3rem;
 
         transition: background-color 0.4s;
 
@@ -93,9 +95,9 @@ export default {
                 background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
             }
 
-            &:hover {
-                // background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
-            }
+            // &:hover {
+            //     background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
+            // }
         }
     }
 </style>
