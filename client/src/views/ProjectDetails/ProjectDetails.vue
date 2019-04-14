@@ -1,8 +1,6 @@
 <template>
     <div>
-        <div 
-            class="ProjectDetails"
-        >
+        <div class="ProjectDetails">
             <div 
                 v-if="projectDataLoaded" 
                 class="ProjectDetails__content"
@@ -316,56 +314,6 @@ export default {
                         // Either way the summary shouldn't be that long in the first place
                         overflow: auto;
                     }
-
-                & .ProjectDetails__synopsis {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    // grid-column: summary-start / summary-end;
-                    // grid-row: 1 / 1;
-
-                    // display: grid;
-                    // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
-                    // grid-column-gap: 0.7rem;
-                    $margin-amount: 1.5rem;
-                    margin-top: $margin-amount;
-                    margin-bottom: $margin-amount;
-
-                    
-
-                    
-                    }
-
-                    // ---------------------
-                    // --- Media Queries ---
-                    // ---------------------
-                    // @include respond(big-desktop) {
-                    //     // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr [summary-start] 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end];
-                    //     // grid-template-columns: 4fr 3fr;
-                    // }
-
-                    // @include respond(tab-port) {
-                    //     // grid-template-columns: [thumbnail-start] 1fr 1fr 1fr 1fr 1fr [summary-start] 1fr 1fr [thumbnail-end] 1fr 1fr 1fr 1fr 1fr [summary-end];
-                    // }
-
-                    // @include respond(phone) {
-                    //     // grid-template-columns: [thumbnail-start summary-start] 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr [summary-end thumbnail-end];
-
-                    //     // & .ProjectDetails__tint {
-                    //     //     background-color: rgba(0, 0, 0, 0.8);
-                    //     // }
-
-                    //     // &:hover {
-                    //     //     & .ProjectDetails__tint {
-                    //     //         background-color: rgba(0, 0, 0, 0);
-                    //     //     }
-
-                    //     //     & .ProjectDetails__summary-container {
-                    //     //         pointer-events: none;
-                    //     //         opacity: 0;
-                    //     //     }
-                    //     // }
-                    // }
                 }
 
                 // ---------------------
