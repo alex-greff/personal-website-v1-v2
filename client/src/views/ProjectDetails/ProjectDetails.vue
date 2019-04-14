@@ -50,9 +50,32 @@
                             {{ tag }}
                         </tag-item>
                     </div>
-                    <!-- <div class="ProjectDetails__synopsis">
-                    
-                    </div> -->
+                    <tabs
+                        :tab-names="['test1', 'test2']"
+                        selected-tab-name="test1"
+                    >
+                        <template v-slot:test1_selector>
+                            <tab-selector name="test1">
+                                Selector 1
+                            </tab-selector>
+                        </template>
+                        <template v-slot:test1>
+                            <tab name="test1">
+                                Testing 1
+                            </tab>
+                        </template>
+
+                        <template v-slot:test2_selector>
+                            <tab-selector name="test2">
+                                Selector 2
+                            </tab-selector>
+                        </template>
+                        <template v-slot:test2>
+                            <tab name="test2">
+                                Testing 2
+                            </tab>
+                        </template>
+                    </tabs>
                 </div>
             </div>
             <div v-else>
@@ -63,7 +86,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters } from 'vuex';
 import { getterTypes } from '@/store/types';
 import Utilities from "@/utilities";
@@ -71,11 +93,17 @@ import Utilities from "@/utilities";
 import TagItem from "@/components/tags/TagItem.vue";
 import LinkItem from "@/components/links/LinkItem.vue";
 
+import Tabs from "@/components/tabs/Tabs.vue";
+import Tab from "@/components/tabs/Tab.vue";
+import TabSelector from "@/components/tabs/TabSelector.vue";
 
 export default {
     components: {
         tagItem: TagItem,
         linkItem: LinkItem,
+        tabs: Tabs,
+        tab: Tab,
+        tabSelector: TabSelector,
     },
     computed: {
         ...mapGetters({
