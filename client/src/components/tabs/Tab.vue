@@ -25,7 +25,7 @@ export default {
     },
     data() {
         return {
-            selected: false,
+            selected: true,
         }
     },
     computed: {

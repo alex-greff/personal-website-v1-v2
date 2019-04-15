@@ -10,7 +10,7 @@
                 :disabled="tab.isDisabled"
                 @click.native="selectTab(tab)"
             /> -->
-            <div 
+            <span 
                 v-for="(tabName, index) in tabNames"
                 :key="index"
                 @click="selectTab(tabName)"
@@ -18,15 +18,22 @@
                 <slot 
                     :name="`${tabName}${selectorSuffix}`"
                 ></slot>
-            </div>
+            </span>
         </div>
         <div class="Tabs__tab-view">
             <div
                 v-for="(tabName, index) in tabNames"
                 :key="index"
             >
+                <!-- <transition name="fade" mode="out-in"> -->
                 <slot :name="`${tabName}`"></slot>
+                <!-- </transition> -->
             </div>
+            <!-- This runs on leave only and runs from the css in ProjectDetails... -->
+            <!-- Also the transition enter anim doesn't run if this is not attached... -->
+            <!-- <transition name="fade" mode="out-in">
+                <slot :name="`${selectedTabName}`"></slot>
+            </transition> -->
         </div>
     </div>
 </template>
@@ -41,7 +48,7 @@ export default {
             type: Array,
             required: true,
         },
-        selectedTabName: {
+        initialSelectedTabName: {
             type: String,
             required: true,
         },
@@ -52,8 +59,8 @@ export default {
     },
     data() {
         return {
-            // tabs: [],
             hashListener: () => this.selectTab(window.location.hash),
+            selectedTabName: null,
             TAB_TAG_NAME: "tab",
             TAB_SELECTOR_TAG_NAME: `tab-selector`
         }
@@ -68,7 +75,7 @@ export default {
             return this.$children.filter((child) => (
                 child.$options._componentTag === this.TAB_SELECTOR_TAG_NAME
             ))
-        }
+        },
     },
     created() {
         // console.log(this.$children);
@@ -84,7 +91,7 @@ export default {
         // })
 
         this.$nextTick(() => {
-            this.selectTab(this.selectedTabName);
+            this.selectTab(this.initialSelectedTabName);
         });
     },
     destroyed() {
@@ -92,6 +99,8 @@ export default {
     },
     methods: {
         selectTab(selectedName) {
+            // this.selectedTabName = selectedName;
+
             this.tabs.forEach(tab => {
                 tab.selected = (tab.name == selectedName);
             });
@@ -99,6 +108,8 @@ export default {
             this.tabSelectors.forEach(selector => {
                 selector.selected = (selector.name == selectedName);
             });
+
+            // console.log(this.$refs);
         },
         findTab(tabName) {
             return this.tabs.find((tab) => tab.name === tabName);
@@ -131,3 +142,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    // .fade-enter-active, .fade-leave-active {
+    //     transition: opacity 5s;
+    // }
+    // .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    //     opacity: 0;
+    // }
+</style>

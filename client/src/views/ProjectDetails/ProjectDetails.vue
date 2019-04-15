@@ -50,17 +50,21 @@
                     </div>
                     <tabs
                         :tab-names="['test1', 'test2']"
-                        selected-tab-name="test1"
+                        initial-selected-tab-name="test1"
                     >
                         <template v-slot:test1_selector>
                             <tab-selector name="test1">
                                 Selector 1
                             </tab-selector>
                         </template>
+
                         <template v-slot:test1>
+                            <!-- <transition name="fade" mode="out-in"> -->
+                            <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
                             <tab name="test1">
                                 Testing 1
                             </tab>
+                            <!-- </transition> -->
                         </template>
 
                         <template v-slot:test2_selector>
@@ -68,10 +72,14 @@
                                 Selector 2
                             </tab-selector>
                         </template>
+
                         <template v-slot:test2>
+                            <!-- <transition name="fade" mode="out-in"> -->
+                            <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
                             <tab name="test2">
                                 Testing 2
                             </tab>
+                            <!-- </transition> -->
                         </template>
                     </tabs>
                 </div>
@@ -138,6 +146,22 @@ export default {
     mounted() {
         
     },
+    methods: {
+        testEnter(el, done) {
+            console.log("test enter for", el);
+            setTimeout(() => {
+                console.log("done");
+                done();
+            }, 2000);
+        },
+        testLeave(el, done) {
+            console.log("test leave for", el);
+            setTimeout(() => {
+                console.log("done");
+                done();
+            }, 2000);
+        }
+    },
     // ------------------
     // --- Animations ---
     // ------------------
@@ -159,6 +183,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .2s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+
     .ProjectDetails {
         $transition-time: 0.4s;
 

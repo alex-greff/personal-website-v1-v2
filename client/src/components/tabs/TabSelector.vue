@@ -1,7 +1,7 @@
 <template>
-    <div :class="rootClasses">
+    <span :class="rootClasses">
         <slot></slot>
-    </div>
+    </span>
 </template>
 
 <script>
