@@ -77,18 +77,8 @@ export default {
             ))
         },
     },
-    created() {
-        // console.log(this.$children);
-        // this.tabs = this.$children;
-        // this.generateTabsList();
-    },
     mounted() {
         window.addEventListener("hashchange", this.hashListener);
-
-        // this.$nextTick(() => {
-        //     console.log(this.$children);
-        //     this.tabs = this.$children;
-        // })
 
         this.$nextTick(() => {
             this.selectTab(this.initialSelectedTabName);
@@ -108,8 +98,6 @@ export default {
             this.tabSelectors.forEach(selector => {
                 selector.selected = (selector.name == selectedName);
             });
-
-            // console.log(this.$refs);
         },
         findTab(tabName) {
             return this.tabs.find((tab) => tab.name === tabName);
@@ -125,20 +113,6 @@ export default {
 
         //     return tab.disabled;
         // },
-        generateTabsList() {
-            // console.log("generating tabs", childrenList);
-
-            // this.tabs = childrenList.reduce((acc, currChild) => {
-            //     console.log(currChild.$options._componentTag);
-            //     const bIsTab = currChild.$options._componentTag === TAB_TAG_NAME;
-            //     const tab = (bIsTab) ? [currChild] : [];
-
-            //     return {
-            //         ...acc,
-            //         ...tab
-            //     };
-            // }, []);
-        }
     }
 }
 </script>
