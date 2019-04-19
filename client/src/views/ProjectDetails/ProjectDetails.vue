@@ -51,6 +51,20 @@
                     <tabs
                         :tab-names="['test1', 'test2']"
                         initial-selected-tab-name="test1"
+                        :transition-attrs="{
+                            'mode': 'out-in',
+                            '@enter': testEnter,
+                            '@leave': testLeave
+                        }"
+                        :transition-v-bind="{
+                            mode: 'out-in'
+                        }"
+                        :transition-v-on="{
+                            enter: testEnter,
+                            leave: testLeave
+                        }"
+                        :enter-anim="testEnter"
+                        :leave-anim="testLeave"
                     >
                         <template v-slot:test1_selector>
                             <tab-selector name="test1">
@@ -61,9 +75,10 @@
                         <template v-slot:test1>
                             <!-- <transition name="fade" mode="out-in"> -->
                             <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
-                            <tab name="test1">
-                                Testing 1
-                            </tab>
+                                <!-- <tab name="test1" :enter-anim="testEnter" :leave-anim="testLeave"> -->
+                                <tab name="test1">
+                                    Testing 1
+                                </tab>
                             <!-- </transition> -->
                         </template>
 
@@ -76,12 +91,17 @@
                         <template v-slot:test2>
                             <!-- <transition name="fade" mode="out-in"> -->
                             <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
-                            <tab name="test2">
-                                Testing 2
-                            </tab>
+                                <!-- <tab name="test2" :enter-anim="testEnter" :leave-anim="testLeave"> -->
+                                <tab name="test2">
+                                    Testing 2
+                                </tab>
                             <!-- </transition> -->
                         </template>
                     </tabs>
+
+                    <!-- <component :is="tab" v-props="transitionAttrs" name="wtf"></component> -->
+                    <!-- <tab v-bind="test1" v-on="test2">Uhhhhh</tab> -->
+                    <!-- <button v-on="{ mousedown() { console.log('hi') }, mouseup(){ console.log('bye') }}"></button> -->
                 </div>
             </div>
             <div v-else>
@@ -103,6 +123,8 @@ import Tabs from "@/components/tabs/Tabs.vue";
 import Tab from "@/components/tabs/Tab.vue";
 import TabSelector from "@/components/tabs/TabSelector.vue";
 
+import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
+
 export default {
     components: {
         tagItem: TagItem,
@@ -110,6 +132,21 @@ export default {
         tabs: Tabs,
         tab: Tab,
         tabSelector: TabSelector,
+    },
+    data() {
+        return {
+            // transitionAttrs: {
+            //     'mode': 'out-in',
+            //     '@enter': this.testEnter,
+            //     '@leave': this.testLeave
+            // }
+            test1: {
+                name: "wtf"
+            },
+            test2: {
+                mousedown: () => console.log('hi')
+            }
+        }
     },
     computed: {
         ...mapGetters({
@@ -144,22 +181,24 @@ export default {
         },
     },
     mounted() {
-        
+        // console.log(this);
     },
     methods: {
         testEnter(el, done) {
             console.log("test enter for", el);
-            setTimeout(() => {
-                console.log("done");
-                done();
-            }, 2000);
+            // setTimeout(() => {
+            //     console.log("done");
+            //     done();
+            // }, 2000);
+            TweenLite.fromTo(el, 1, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
         },
         testLeave(el, done) {
             console.log("test leave for", el);
-            setTimeout(() => {
-                console.log("done");
-                done();
-            }, 2000);
+            // setTimeout(() => {
+            //     console.log("done");
+            //     done();
+            // }, 2000);
+            TweenLite.to(el, 0.5, { opacity: 0, onComplete: () => done() });
         }
     },
     // ------------------
@@ -183,12 +222,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .2s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
-    }
+    // .fade-enter-active, .fade-leave-active {
+    //     transition: opacity .2s;
+    // }
+    // .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    //     opacity: 0;
+    // }
 
     .ProjectDetails {
         $transition-time: 0.4s;

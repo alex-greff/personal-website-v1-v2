@@ -21,19 +21,38 @@
             </span>
         </div>
         <div class="Tabs__tab-view">
-            <div
+            <!-- <div
                 v-for="(tabName, index) in tabNames"
                 :key="index"
             >
-                <!-- <transition name="fade" mode="out-in"> -->
-                <slot :name="`${tabName}`"></slot>
-                <!-- </transition> -->
-            </div>
+                <transition name="fade" mode="out-in">
+                    <slot :name="`${tabName}`"></slot>
+                </transition>
+            </div> -->
             <!-- This runs on leave only and runs from the css in ProjectDetails... -->
             <!-- Also the transition enter anim doesn't run if this is not attached... -->
-            <!-- <transition name="fade" mode="out-in">
-                <slot :name="`${selectedTabName}`"></slot>
-            </transition> -->
+            <!-- <transition name="fade" mode="out-in"> -->
+            <!-- <transition mode="out-in" @enter="enterAnim" @leave="leaveAnim"> -->
+            <!-- <transition v-props="transitionAttrs"> -->
+            <transition v-bind="transitionVBind" v-on="transitionVOn">
+                <transition v-bind="transitionVBind" v-on="transitionVOn">
+                    <slot :name="`${selectedTabName}`"></slot>
+                </transition>
+            </transition>
+
+            <!-- <transition-group
+                name="fade" 
+                mode="out-in"
+            > -->
+                <!-- <slot :name="`${tabName}`"></slot> -->
+                <!-- <div
+                    v-for="(tabName, index) in tabNames"
+                    :key="index"
+                >
+                    <slot :name="`${tabName}`"></slot>
+                </div> -->
+                <!-- <slot :key="selectedTabName" :name="`${selectedTabName}`"></slot> -->
+            <!-- </transition-group> -->
         </div>
     </div>
 </template>
@@ -55,6 +74,26 @@ export default {
         selectorSuffix: {
             type: String,
             default: "_selector"
+        },
+        enterAnim: {
+            type: Function,
+            required: true,
+        },
+        leaveAnim: {
+            type: Function,
+            required: true,
+        },
+        transitionAttrs: {
+            type: Object,
+            default: () => { return {}}
+        },
+        transitionVBind: {
+            type: Object,
+            default: () => { return {}}
+        },
+        transitionVOn: {
+            type: Object,
+            default: () => { return {}}
         }
     },
     data() {
@@ -89,7 +128,7 @@ export default {
     },
     methods: {
         selectTab(selectedName) {
-            // this.selectedTabName = selectedName;
+            this.selectedTabName = selectedName;
 
             this.tabs.forEach(tab => {
                 tab.selected = (tab.name == selectedName);
@@ -105,6 +144,9 @@ export default {
         findTabSelector(selectorName) {
             return this.tabSelectors.find((selector) => selector.name === selectorName);
         },
+        tabSelected(tabName) {
+            return this.findTab(tabName).selected;
+        }
         // tabDisabled(tabName) {
         //     const tab = this.findTab(tabName);
         //     if (!tab) {
