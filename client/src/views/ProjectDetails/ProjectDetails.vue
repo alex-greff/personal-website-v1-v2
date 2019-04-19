@@ -49,22 +49,8 @@
                         </tag-item>
                     </div>
                     <tabs
-                        :tab-names="['test1', 'test2']"
-                        initial-selected-tab-name="test1"
-                        :transition-attrs="{
-                            'mode': 'out-in',
-                            '@enter': testEnter,
-                            '@leave': testLeave
-                        }"
-                        :transition-v-bind="{
-                            mode: 'out-in'
-                        }"
-                        :transition-v-on="{
-                            enter: testEnter,
-                            leave: testLeave
-                        }"
-                        :enter-anim="testEnter"
-                        :leave-anim="testLeave"
+                        :tabs="tabs"
+                        :initial-selected-tab="initialTab"
                     >
                         <template v-slot:test1_selector>
                             <tab-selector name="test1">
@@ -73,13 +59,9 @@
                         </template>
 
                         <template v-slot:test1>
-                            <!-- <transition name="fade" mode="out-in"> -->
-                            <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
-                                <!-- <tab name="test1" :enter-anim="testEnter" :leave-anim="testLeave"> -->
-                                <tab name="test1">
-                                    Testing 1
-                                </tab>
-                            <!-- </transition> -->
+                            <tab name="test1">
+                                Testing 1
+                            </tab>
                         </template>
 
                         <template v-slot:test2_selector>
@@ -89,19 +71,11 @@
                         </template>
 
                         <template v-slot:test2>
-                            <!-- <transition name="fade" mode="out-in"> -->
-                            <!-- <transition mode="out-in" @enter="testEnter" @leave="testLeave"> -->
-                                <!-- <tab name="test2" :enter-anim="testEnter" :leave-anim="testLeave"> -->
-                                <tab name="test2">
-                                    Testing 2
-                                </tab>
-                            <!-- </transition> -->
+                            <tab name="test2">
+                                Testing 2
+                            </tab>
                         </template>
                     </tabs>
-
-                    <!-- <component :is="tab" v-props="transitionAttrs" name="wtf"></component> -->
-                    <!-- <tab v-bind="test1" v-on="test2">Uhhhhh</tab> -->
-                    <!-- <button v-on="{ mousedown() { console.log('hi') }, mouseup(){ console.log('bye') }}"></button> -->
                 </div>
             </div>
             <div v-else>
@@ -135,17 +109,36 @@ export default {
     },
     data() {
         return {
-            // transitionAttrs: {
-            //     'mode': 'out-in',
-            //     '@enter': this.testEnter,
-            //     '@leave': this.testLeave
-            // }
-            test1: {
-                name: "wtf"
-            },
-            test2: {
-                mousedown: () => console.log('hi')
-            }
+            // Tab configuration
+            tabs: [
+                {
+                    name: "test1",
+                    selector: "test2_selector",
+                    transition: {
+                        "v-bind": {
+                            mode: "out-in"
+                        },
+                        "v-on": {
+                            enter: this.test1Enter,
+                            leave: this.test1Leave
+                        }
+                    }
+                },
+                {
+                    name: "test2",
+                    selector: "test2_selector",
+                    transition: {
+                        "v-bind": {
+                            mode: "out-in"
+                        },
+                        "v-on": {
+                            enter: this.test2Enter,
+                            leave: this.test2Leave
+                        }
+                    }
+                }
+            ],
+            initialTab: "test1",
         }
     },
     computed: {
@@ -180,25 +173,22 @@ export default {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
         },
     },
-    mounted() {
-        // console.log(this);
-    },
     methods: {
-        testEnter(el, done) {
-            console.log("test enter for", el);
-            // setTimeout(() => {
-            //     console.log("done");
-            //     done();
-            // }, 2000);
-            TweenLite.fromTo(el, 1, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
+        test1Enter(el, done) {
+            console.log("test1 enter for", el);
+            TweenLite.fromTo(el, 0.5, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
         },
-        testLeave(el, done) {
-            console.log("test leave for", el);
-            // setTimeout(() => {
-            //     console.log("done");
-            //     done();
-            // }, 2000);
+        test1Leave(el, done) {
+            console.log("test1 leave for", el);
             TweenLite.to(el, 0.5, { opacity: 0, onComplete: () => done() });
+        },
+        test2Enter(el, done) {
+            console.log("test2 enter for", el);
+            TweenLite.fromTo(el, 0.5, { x: 20 }, { x: 0, onComplete: () => done()});
+        },
+        test2Leave(el, done) {
+            console.log("test2 leave for", el);
+            TweenLite.to(el, 0.5, { x: 20, onComplete: () => done() });
         }
     },
     // ------------------

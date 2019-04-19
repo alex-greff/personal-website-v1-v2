@@ -1,58 +1,25 @@
 <template>
     <div class="Tabs">
-        <div class="Tabs__tab-list">
-            <!-- <component 
-                :is="tabSelectorComponent"
+        <div class="Tabs__selectors">
+            <a 
                 v-for="(tab, index) in tabs"
                 :key="index"
-                :name="tab.name"    
-                :selected="tab.isActive"
-                :disabled="tab.isDisabled"
-                @click.native="selectTab(tab)"
-            /> -->
-            <span 
-                v-for="(tabName, index) in tabNames"
-                :key="index"
-                @click="selectTab(tabName)"
+                class="Tabs__anchor-reset"
+                :href="`#${tab.name}`"
             >
                 <slot 
-                    :name="`${tabName}${selectorSuffix}`"
+                    :name="tab.selector"
                 ></slot>
-            </span>
+            </a>
         </div>
         <div class="Tabs__tab-view">
-            <!-- <div
-                v-for="(tabName, index) in tabNames"
-                :key="index"
-            >
-                <transition name="fade" mode="out-in">
-                    <slot :name="`${tabName}`"></slot>
-                </transition>
-            </div> -->
-            <!-- This runs on leave only and runs from the css in ProjectDetails... -->
-            <!-- Also the transition enter anim doesn't run if this is not attached... -->
-            <!-- <transition name="fade" mode="out-in"> -->
-            <!-- <transition mode="out-in" @enter="enterAnim" @leave="leaveAnim"> -->
-            <!-- <transition v-props="transitionAttrs"> -->
-            <transition v-bind="transitionVBind" v-on="transitionVOn">
-                <transition v-bind="transitionVBind" v-on="transitionVOn">
-                    <slot :name="`${selectedTabName}`"></slot>
+            <!-- @leave is ran here -->
+            <transition v-bind="prevTabTransitions['v-bind']" v-on="prevTabTransitions['v-on']">
+                <!-- @enter is ran here -->
+                <transition v-bind="currTabTransitions['v-bind']" v-on="currTabTransitions['v-on']">
+                    <slot :name="`${currSelectedTab}`"></slot>
                 </transition>
             </transition>
-
-            <!-- <transition-group
-                name="fade" 
-                mode="out-in"
-            > -->
-                <!-- <slot :name="`${tabName}`"></slot> -->
-                <!-- <div
-                    v-for="(tabName, index) in tabNames"
-                    :key="index"
-                >
-                    <slot :name="`${tabName}`"></slot>
-                </div> -->
-                <!-- <slot :key="selectedTabName" :name="`${selectedTabName}`"></slot> -->
-            <!-- </transition-group> -->
         </div>
     </div>
 </template>
@@ -63,107 +30,118 @@ export default {
         
     },
     props: {
-        tabNames: {
+        tabs: {
             type: Array,
             required: true,
+            validator(tabs) {
+                tabs.forEach(tab => {
+                    // Check tab is object
+                    if (typeof tab !== "object") {
+                        return false;
+                    }
+                    // Check required values are present
+                    if (!tab.name || !tab.selector) {
+                        return false;
+                    }
+                })
+                return true;
+            }
         },
-        initialSelectedTabName: {
+        initialSelectedTab: {
             type: String,
             required: true,
         },
-        selectorSuffix: {
+        tabSelectorTagName: {
             type: String,
-            default: "_selector"
-        },
-        enterAnim: {
-            type: Function,
-            required: true,
-        },
-        leaveAnim: {
-            type: Function,
-            required: true,
-        },
-        transitionAttrs: {
-            type: Object,
-            default: () => { return {}}
-        },
-        transitionVBind: {
-            type: Object,
-            default: () => { return {}}
-        },
-        transitionVOn: {
-            type: Object,
-            default: () => { return {}}
+            default: "tab-selector"
         }
     },
     data() {
         return {
-            hashListener: () => this.selectTab(window.location.hash),
-            selectedTabName: null,
-            TAB_TAG_NAME: "tab",
-            TAB_SELECTOR_TAG_NAME: `tab-selector`
+            hashListener: () => {
+                const windowHash = window.location.hash.substring(1);
+                const validHash = !!this.getTabConfig(windowHash);
+
+                // Only change the tab if the hash points to a tab
+                if (validHash) {
+                    this.selectTab(windowHash);
+                }
+            },
+            prevSelectedTab: null,
+            currSelectedTab: null,
         }
     },
     computed: {
-        tabs() {
-            return this.$children.filter((child) => (
-                child.$options._componentTag === this.TAB_TAG_NAME
-            ));
-        },
         tabSelectors() {
-            return this.$children.filter((child) => (
-                child.$options._componentTag === this.TAB_SELECTOR_TAG_NAME
-            ))
+            return this.$children.filter((child) => {
+                return child.$options._componentTag === this.tabSelectorTagName
+            })
         },
+        prevTab() {
+            return this.tabs.find(tab => tab.name === this.prevSelectedTab);
+        },
+        currTab() {
+            return this.tabs.find(tab => tab.name === this.currSelectedTab);
+        },
+        prevTabTransitions() {
+            return this.getTabTransitions(this.prevTab);
+        },
+        currTabTransitions() {
+            return this.getTabTransitions(this.currTab);
+        }
     },
     mounted() {
         window.addEventListener("hashchange", this.hashListener);
 
         this.$nextTick(() => {
-            this.selectTab(this.initialSelectedTabName);
+            const windowHash = window.location.hash.substring(1);
+            const validHash = !!this.getTabConfig(windowHash);
+
+            // Only use the hash if it points to a tab, if not use the initial selected tab
+            const selectedTab = (validHash) ? windowHash : this.initialSelectedTab;
+            this.selectTab(selectedTab);
         });
     },
     destroyed() {
         window.removeEventListener("hashchange", this.hashListener);
     },
     methods: {
-        selectTab(selectedName) {
-            this.selectedTabName = selectedName;
+        selectTab(selectedTab) {
+            this.prevSelectedTab = (!this.prevSelectedTab) ? selectedTab : this.currSelectedTab;
 
-            this.tabs.forEach(tab => {
-                tab.selected = (tab.name == selectedName);
-            });
+            this.currSelectedTab = selectedTab;
 
             this.tabSelectors.forEach(selector => {
-                selector.selected = (selector.name == selectedName);
+                selector.selected = (selector.name == selectedTab);
             });
-        },
-        findTab(tabName) {
-            return this.tabs.find((tab) => tab.name === tabName);
         },
         findTabSelector(selectorName) {
             return this.tabSelectors.find((selector) => selector.name === selectorName);
         },
-        tabSelected(tabName) {
-            return this.findTab(tabName).selected;
-        }
-        // tabDisabled(tabName) {
-        //     const tab = this.findTab(tabName);
-        //     if (!tab) {
-        //         return null;
-        //     }
+        getTabConfig(tabName) {
+            return this.tabs.find(tab => tab.name === tabName);
+        },
+        getTabTransitions(tab) {
+            const oRet = { "v-bind": {}, "v-on": {} };
 
-        //     return tab.disabled;
-        // },
+            if (tab && tab.transition) {
+                const transition = tab.transition;
+                oRet["v-bind"] = transition["v-bind"] ? transition["v-bind"] : {};
+                oRet["v-on"] = transition["v-on"] ? transition["v-on"] : {};
+            }
+
+            return oRet;
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    // .fade-enter-active, .fade-leave-active {
-    //     transition: opacity 5s;
-    // }
-    // .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    //     opacity: 0;
-    // }
+    .Tabs {
+        & .Tabs__anchor-reset {
+            color: inherit;
+            text-decoration: inherit;
+            cursor: inherit;
+        }
+    }
 </style>
