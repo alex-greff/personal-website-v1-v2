@@ -3,13 +3,14 @@
         <div :class="overlayClasses" @click="toggleNavMenu"></div>
 
         <!-- <md-icon class="NavBar__menu-icon">menu</md-icon> -->
-        <div class="NavBar__menu-container" @click="toggleNavMenu">
+        <div ref="menuEl" class="NavBar__menu-container" @click="toggleNavMenu">
             <md-icon v-if="isOpen" class="NavBar__menu-icon">close</md-icon>
             <md-icon v-else class="NavBar__menu-icon">menu</md-icon>
         </div>
         <nav-link-container 
             class="NavBar__pages-container"
             :is-open="isOpen"
+            :animate-in="animateIn"
             :pages="pages"
             :display-mode="displayMode"
             :set-nav-open="setNavOpen"
@@ -21,19 +22,30 @@
 import Utilities from "@/utilities";
 import { getAllNavRouterLinks } from "@/constants/pageData";
 
-import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
+/* global Power1 */
+import { TweenLite } from "gsap/all";
 
-const INIT_OPEN_STATE = false;
+import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
 export default {
     components: {
         navLinkContainer: NavLinkContainer
     }, 
+    props: {
+        animateIn: {
+            type: Boolean,
+            default: false
+        },
+        initOpen: {
+            type: Boolean,
+            default: false,
+        }
+    },
     data() {
         return {
-            isOpen: INIT_OPEN_STATE,
+            isOpen: this.initOpen,
             displayMode: "desktop",
-            displayOverlay: INIT_OPEN_STATE,
+            displayOverlay: this.initOpen,
             pages: [
                 ...getAllNavRouterLinks()
             ],
@@ -63,17 +75,21 @@ export default {
 
         // Watch screen width
         this.$nextTick(() => {
-            window.addEventListener('resize', () => {
-                this.onResize(window.innerWidth, window.innerHeight);
-            });
+            // Add resize event listener
+            window.addEventListener('resize', this.onResize);
+
+            if (this.animateIn) {
+                this.appearAnim();
+            }
         });
+
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize);
     },
     methods: {
-        onResize(i_nNewWidth, i_nNewHeight) {
-            this.determineDisplayMode(i_nNewWidth);
+        onResize() {
+            this.determineDisplayMode(window.innerWidth);
         },
         determineDisplayMode(i_nWidth) {
             if (Utilities.isInBreakpoint("phone", i_nWidth)) {
@@ -93,6 +109,16 @@ export default {
         },
         hideOverlay() {
             this.displayOverlay = false;
+        },
+        appearAnim() {
+            const menuEl = this.$refs.menuEl;
+
+            TweenLite.fromTo(
+                menuEl, 
+                0.3, 
+                { opacity: 0 }, 
+                { opacity: 1, ease: Power1.easeIn }
+            );
         }
     },
 }

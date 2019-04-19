@@ -1,12 +1,5 @@
 <template>
     <fragment>
-        <!-- <div 
-            class="FooterBar" 
-            @mouseover="setIsOpen(true)" 
-            ref="footerBarEl"
-            v-show="!displayFooter"
-        /> -->
-
         <footer
             ref="footerEl"
             class="Footer" 
@@ -51,21 +44,24 @@
 /* global Power1 */
 import ThemeControls from './ThemeControls.vue';
 import Utilities from "@/utilities";
-import { TweenMax } from "gsap/all";
+import { TweenLite } from "gsap/all";
 const INIT_IS_OPEN = false;
 
 export default {
     components: {
         themeControls: ThemeControls
     },
+    props: {
+        animateIn: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             isOpen: INIT_IS_OPEN,
             displayFooter: INIT_IS_OPEN,
         }
-    },
-    computed: {
-
     },
     watch: {
         isOpen(isOpening) {
@@ -83,6 +79,10 @@ export default {
         // Setup resize listener 
         this.$nextTick(() => {
             window.addEventListener('resize', this.onResize);
+
+            if (this.animateIn) {
+                this.appearAnim();
+            }
         });
     },
     beforeDestroy() {
@@ -109,23 +109,37 @@ export default {
         showFooter() {
             this.displayFooter = true;
 
-            TweenMax.killTweensOf(this.$refs.footerEl);
-            TweenMax.killTweensOf(this.$refs.footerBarEl);
+            const footerEl = this.$refs.footerEl;
+
+            TweenLite.killTweensOf(footerEl);
 
             const ANIM_DURATION = 0.2;
             const ANIM_OPTIONS = { bottom: 0, ease: Power1.easeIn };
-            TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
+            TweenLite.to(footerEl, ANIM_DURATION, ANIM_OPTIONS);
         }, 
         hideFooter() {
-            TweenMax.killTweensOf(this.$refs.footerEl);
-            TweenMax.killTweensOf(this.$refs.footerBarEl);
+            const footerEl = this.$refs.footerEl;
 
-            const sBottomOffset = this.computeFooterBottomOffset(this.$refs.footerEl);
+            TweenLite.killTweensOf(footerEl);
+
+            const sBottomOffset = this.computeFooterBottomOffset(footerEl);
 
             const ANIM_DURATION = 0.2;
             const ANIM_ON_COMPLETE = () => this.displayFooter = false;
             const ANIM_OPTIONS = { bottom: sBottomOffset, ease: Power1.easeOut, onComplete: ANIM_ON_COMPLETE };
-            TweenMax.to(this.$refs.footerEl, ANIM_DURATION, ANIM_OPTIONS);
+            TweenLite.to(footerEl, ANIM_DURATION, ANIM_OPTIONS);
+        },
+        appearAnim() {
+            const footerEl = this.$refs.footerEl;
+            const sBottomStart = ( -1 * footerEl.offsetHeight) + "px";
+            const sBottomEnd = this.computeFooterBottomOffset(footerEl);
+
+            TweenLite.fromTo(
+                footerEl, 
+                0.5,
+                { bottom: sBottomStart },
+                { bottom: sBottomEnd, ease: Power1.easeIn }
+            );
         }
     },
 }

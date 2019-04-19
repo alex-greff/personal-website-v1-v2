@@ -1,20 +1,20 @@
 <template>
     <theme-provider id="app" ref="baseRef" namespace="default" use-root>
         <theme-provider id="app__base" :namespace="currThemeNamespace">
-            <block-loader :is-open="true" :z-index="100" controlled />
-            <nav-bar ref="navBarRef" />
-            <div ref="contentEl" class="content">
+            <block-loader v-if="loading" :is-open="true" :z-index="100" controlled />
+            <nav-bar v-if="!loading" ref="navBarRef" animate-in />
+            <div v-if="!loading" ref="contentEl" class="content">
                 <transition 
                     mode="out-in" 
                     appear
-                    @appear="pageAppearAnim"
-                    @enter="pageEnterAnim" 
-                    @leave="pageLeaveAnim"
+                    @appear="contentAppearAnim"
+                    @enter="contentEnterAnim" 
+                    @leave="contentLeaveAnim"
                 >
                     <router-view></router-view>
                 </transition>
             </div>
-            <general-footer></general-footer>
+            <general-footer v-if="!loading" ref="footerRef" animate-in></general-footer>
             <svg class="svg-def">
                 <symbol id="logo-symbol">
                     <path
@@ -34,9 +34,6 @@ import { mapActions, mapGetters } from "vuex";
 import { pageData, getAllPageThemes } from "@/constants/pageData";
 
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
-
-/* global Power1 */
-import { TweenLite } from "gsap/all";
 
 // @ is an alias for /src
 import NavBar from "@/components/NavBar/NavBar.vue";
@@ -78,6 +75,8 @@ export default {
                 ...getAllPageThemes()
             },
 
+            loading: true,
+
             // Track the previous route name
             prevRouteName: "",
 
@@ -87,25 +86,13 @@ export default {
             // ------------------------------------------
             // --- Page Transition Animation Handlers ---
             // ------------------------------------------
-            pageAppearAnim: async (el, done) => {
-                const navBarEl = this.$refs.navBarRef.$el;
-                
-                // Hide any visible elements
-                el.style.visibility = "hidden";
-                navBarEl.style.visibility = "hidden";
-
-                // TODO: this spoof loading anim should actually wait for the server content requests to finish
-                // Run spoof loading bar animation
+            pageLoadAnim: async () => {
+                // Run spoof anim
                 await BlockLoader.spoofLoadAnim(this.$refs.baseRef.$el);
 
-                // Bring in the navbar
-                // TODO: probably will wanna move out this anim to navbar (maybe)
-                TweenLite.fromTo(navBarEl, 0.5, { x: 30, opacity: 0 }, { x: 0, opacity: 1, ease: Power1.easeOut });
-                
-                // Show the elements again
-                el.style.visibility = "initial";
-                navBarEl.style.visibility = "initial";
-
+                this.loading = false;
+            },
+            contentAppearAnim: async (el, done) => {
                 const routeName = this.$route.name;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
                 // If the page has an intro animation then run it
@@ -118,10 +105,10 @@ export default {
                     done();
                 } else {
                     // If not then run the page enter animation
-                    this.pageEnterAnim(el, done);
+                    this.contentEnterAnim(el, done);
                 }
             },
-            pageEnterAnim: async (el, done) => {
+            contentEnterAnim: async (el, done) => {
                 const routeName = this.$route.name;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
 
@@ -139,7 +126,7 @@ export default {
                 // Complete the animation
                 done();
             },
-            pageLeaveAnim: async (el, done) => {
+            contentLeaveAnim: async (el, done) => {
                 const routeName = this.prevRouteName;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
 
@@ -164,6 +151,14 @@ export default {
     watch: {
         $route(newRoute, oldRoute) {
             this.prevRouteName = oldRoute.name;
+        },
+        loading(isLoading) {
+            // When loading toggles off
+            if (!isLoading) {
+                // Align the content 
+                // NOTE: I'm using the debounce method here b/c it allows for time for the refs to be set
+                this.alignContentDebounced();
+            }
         }
     },
     created() {
@@ -189,14 +184,14 @@ export default {
         });
     },
     mounted() {
-        this.alignContentDebounced();
-
         // Initialize the page theme
         this.updateRouteTheme(this.$route.name);
 
         // Setup resize listener
         this.$nextTick(function() {
             window.addEventListener("resize", this.onResize);
+
+            this.pageLoadAnim();
         });
     },
     beforeDestroy() {
@@ -234,6 +229,8 @@ export default {
             const navBarEl = this.$refs.navBarRef.$el;
             const contentEl = this.$refs.contentEl;
             let navBarHeight = navBarEl.offsetHeight;
+
+            console.log(navBarEl);
 
             // If no change occurs
             if (navBarHeight === this.lastNavBarHeight) {

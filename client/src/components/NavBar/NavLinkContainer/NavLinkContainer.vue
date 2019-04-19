@@ -49,6 +49,10 @@ export default {
         setNavOpen: {
             type: Function,
             required: true
+        },
+        animateIn: {
+            type: Boolean,
+            default: false,
         }
     },
     data() {
@@ -99,6 +103,12 @@ export default {
         this.navLinkEls.forEach(el => {
             el.style.opacity = (this.isOpen) ? 1 : 0;
         });
+
+        this.$nextTick(() => {
+            if (this.isOpen && this.animateIn) {
+                this.openNavItems();
+            }
+        });
     },
     methods: {
         // ---------------------------
@@ -112,9 +122,10 @@ export default {
             TweenMax.killTweensOf(this.navLinkElsReversed);
 
             // Run the open animation
-            const ANIM_OPTIONS = { opacity: 1, x: 0 };
+            const ANIM_OPTIONS_START = { opacity: 0, x: 30 };
+            const ANIM_OPTIONS_END = { opacity: 1, x: 0 };
             const NAV_LINK_ELS = (this.displayMode === "mobile") ? this.navLinkElsReversed : this.navLinkEls;
-            TweenMax.staggerTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS, ANIM_STAGGER);
+            TweenMax.staggerFromTo(NAV_LINK_ELS, ANIM_DURATION, ANIM_OPTIONS_START, ANIM_OPTIONS_END, ANIM_STAGGER);
         },
         closeNavItems() {
             // Stop the open animation if it's running
