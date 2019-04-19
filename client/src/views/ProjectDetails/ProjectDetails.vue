@@ -115,26 +115,18 @@ export default {
                     name: "test1",
                     selector: "test2_selector",
                     transition: {
-                        "v-bind": {
-                            mode: "out-in"
-                        },
-                        "v-on": {
-                            enter: this.test1Enter,
-                            leave: this.test1Leave
-                        }
+                        "mode": "out-in",
+                        "@enter": this.test1Enter,
+                        "@leave": this.test1Leave
                     }
                 },
                 {
                     name: "test2",
                     selector: "test2_selector",
                     transition: {
-                        "v-bind": {
-                            mode: "out-in"
-                        },
-                        "v-on": {
-                            enter: this.test2Enter,
-                            leave: this.test2Leave
-                        }
+                        "mode": "out-in",
+                        "@enter": this.test2Enter,
+                        "@leave": this.test2Leave
                     }
                 }
             ],

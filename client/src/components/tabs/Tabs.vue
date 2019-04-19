@@ -122,12 +122,26 @@ export default {
             return this.tabs.find(tab => tab.name === tabName);
         },
         getTabTransitions(tab) {
-            const oRet = { "v-bind": {}, "v-on": {} };
+            const oRet = { "v-bind": {}, "v-on": {}, "v-model": {} };
 
             if (tab && tab.transition) {
                 const transition = tab.transition;
-                oRet["v-bind"] = transition["v-bind"] ? transition["v-bind"] : {};
-                oRet["v-on"] = transition["v-on"] ? transition["v-on"] : {};
+                // Generate directive mappings
+                Object.entries(transition).forEach(([attribute, value]) => {
+                    const bVOn = attribute.startsWith("@") || attribute.startsWith("v-on:");
+                    const bVModel = attribute.startsWith("v-model:");
+
+                    if (bVOn) { // v-on
+                        const attributeSerialized = attribute.replace("@", "").replace("v-on:", "");
+                        oRet["v-on"][attributeSerialized] = value;
+                    } else if(bVModel) { // v-model
+                        const attributeSerialized = attribute.replace("v-model:", "");
+                        oRet["v-model"][attributeSerialized] = value;
+                    } else { // v-bind or default
+                        const attributeSerialized = attribute.replace("v-bind:", "").replace(":", "");
+                        oRet["v-bind"][attributeSerialized] = value;
+                    }
+                })
             }
 
             return oRet;
