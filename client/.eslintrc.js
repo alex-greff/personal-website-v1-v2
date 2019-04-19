@@ -43,7 +43,7 @@ module.exports = {
             "ignoreWhenNoAttributes": true,
             "ignoreWhenEmpty": true,
             "ignores": ["pre", "textarea", "md-icon", ...INLINE_ELEMENTS]
-          }]
+        }]
     },
     globals: {
         $nuxt: true

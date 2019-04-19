@@ -1,6 +1,6 @@
 <template>
     <div class="Tabs">
-        <div class="Tabs__selectors">
+        <div class="Tabs__tab-selectors">
             <a 
                 v-for="(tab, index) in tabs"
                 :key="index"

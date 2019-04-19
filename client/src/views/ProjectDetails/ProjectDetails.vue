@@ -48,35 +48,42 @@
                             {{ tag }}
                         </tag-item>
                     </div>
-                    <tabs
-                        :tabs="tabs"
-                        :initial-selected-tab="initialTab"
-                    >
-                        <template v-slot:test1_selector>
-                            <tab-selector name="test1">
-                                Selector 1
-                            </tab-selector>
-                        </template>
-
-                        <template v-slot:test1>
-                            <tab name="test1">
-                                Testing 1
-                            </tab>
-                        </template>
-
-                        <template v-slot:test2_selector>
-                            <tab-selector name="test2">
-                                Selector 2
-                            </tab-selector>
-                        </template>
-
-                        <template v-slot:test2>
-                            <tab name="test2">
-                                Testing 2
-                            </tab>
-                        </template>
-                    </tabs>
                 </div>
+
+                <!-- Tabs -->
+                <tabs
+                    class="ProjectDetails__tabs"
+                    :tabs="tabs"
+                    :initial-selected-tab="initialTab"
+                >
+                    <template v-slot:description_selector>
+                        <tab-selector name="test1">
+                            Description
+                        </tab-selector>
+                    </template>
+
+                    <template v-slot:description>
+                        <!-- <tab name="test1">
+                            Some description stuff here
+                        </tab> -->
+                        <description 
+                            :description-markdown="projectData.description"    
+                        />
+                        <!-- :description-markdown="temp" -->
+                    </template>
+
+                    <template v-slot:gallery_selector>
+                        <tab-selector name="test2">
+                            Gallery
+                        </tab-selector>
+                    </template>
+
+                    <template v-slot:gallery>
+                        <tab name="test2">
+                            Gallery component here
+                        </tab>
+                    </template>
+                </tabs>
             </div>
             <div v-else>
                 Loading...
@@ -89,6 +96,7 @@
 import { mapGetters } from 'vuex';
 import { getterTypes } from '@/store/types';
 import Utilities from "@/utilities";
+import ProjectDetailsDescription from "@/views/ProjectDetails/ProjectDetailsDescription.vue";
 
 import TagItem from "@/components/tags/TagItem.vue";
 import LinkItem from "@/components/links/LinkItem.vue";
@@ -101,6 +109,7 @@ import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
     components: {
+        description: ProjectDetailsDescription,
         tagItem: TagItem,
         linkItem: LinkItem,
         tabs: Tabs,
@@ -112,25 +121,26 @@ export default {
             // Tab configuration
             tabs: [
                 {
-                    name: "test1",
-                    selector: "test2_selector",
+                    name: "description",
+                    selector: "description_selector",
                     transition: {
                         "mode": "out-in",
-                        "@enter": this.test1Enter,
-                        "@leave": this.test1Leave
+                        "@enter": this.descriptionTabEnter,
+                        "@leave": this.descriptionTabLeave
                     }
                 },
                 {
-                    name: "test2",
-                    selector: "test2_selector",
+                    name: "gallery",
+                    selector: "gallery_selector",
                     transition: {
                         "mode": "out-in",
-                        "@enter": this.test2Enter,
-                        "@leave": this.test2Leave
+                        "@enter": this.galleryTabEnter,
+                        "@leave": this.galleryTabLeave
                     }
                 }
             ],
-            initialTab: "test1",
+            initialTab: "description",
+            temp: `# Hi there\n\nThis is my markdown **description**\n\nIt is *super* __cool__\n\n## Some more stuff\n\nHere's some more stuff about something:\n\n* Cool!\n* Awesome\n* Excellent\n\nEnjoy my cool markdown!`
         }
     },
     computed: {
@@ -166,19 +176,19 @@ export default {
         },
     },
     methods: {
-        test1Enter(el, done) {
+        descriptionTabEnter(el, done) {
             console.log("test1 enter for", el);
             TweenLite.fromTo(el, 0.5, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
         },
-        test1Leave(el, done) {
+        descriptionTabLeave(el, done) {
             console.log("test1 leave for", el);
             TweenLite.to(el, 0.5, { opacity: 0, onComplete: () => done() });
         },
-        test2Enter(el, done) {
+        galleryTabEnter(el, done) {
             console.log("test2 enter for", el);
             TweenLite.fromTo(el, 0.5, { x: 20 }, { x: 0, onComplete: () => done()});
         },
-        test2Leave(el, done) {
+        galleryTabLeave(el, done) {
             console.log("test2 leave for", el);
             TweenLite.to(el, 0.5, { x: 20, onComplete: () => done() });
         }
@@ -204,13 +214,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    // .fade-enter-active, .fade-leave-active {
-    //     transition: opacity .2s;
-    // }
-    // .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    //     opacity: 0;
-    // }
-
     .ProjectDetails {
         $transition-time: 0.4s;
 
