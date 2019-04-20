@@ -69,7 +69,6 @@
                         <description 
                             :description-markdown="projectData.description"    
                         />
-                        <!-- :description-markdown="temp" -->
                     </template>
 
                     <template v-slot:gallery_selector>
@@ -84,6 +83,9 @@
                         </tab>
                     </template>
                 </tabs>
+            </div>
+            <div v-else-if="projectNotFound">
+                Not found
             </div>
             <div v-else>
                 Loading...
@@ -140,7 +142,6 @@ export default {
                 }
             ],
             initialTab: "description",
-            temp: `# Hi there\n\nThis is my markdown **description**\n\nIt is *super* __cool__\n\n## Some more stuff\n\nHere's some more stuff about something:\n\n* Cool!\n* Awesome\n* Excellent\n\nEnjoy my cool markdown!`
         }
     },
     computed: {
@@ -156,6 +157,9 @@ export default {
         },
         projectDataLoaded() {
             return !!(this.projects[this.projectName]);
+        },
+        projectNotFound() {
+            return !this.projectDataLoaded && Object.keys(this.projects).length > 0;
         },
         // Date properties
         startDate() {
