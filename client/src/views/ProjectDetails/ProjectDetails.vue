@@ -181,19 +181,19 @@ export default {
     },
     methods: {
         descriptionTabEnter(el, done) {
-            console.log("test1 enter for", el);
+            console.log("description tab enter");
             TweenLite.fromTo(el, 0.5, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
         },
         descriptionTabLeave(el, done) {
-            console.log("test1 leave for", el);
+            console.log("description tab leave");
             TweenLite.to(el, 0.5, { opacity: 0, onComplete: () => done() });
         },
         galleryTabEnter(el, done) {
-            console.log("test2 enter for", el);
+            console.log("gallery tab enter");
             TweenLite.fromTo(el, 0.5, { x: 20 }, { x: 0, onComplete: () => done()});
         },
         galleryTabLeave(el, done) {
-            console.log("test2 leave for", el);
+            console.log("gallery tab leave");
             TweenLite.to(el, 0.5, { x: 20, onComplete: () => done() });
         }
     },

@@ -14,7 +14,7 @@
                     <router-view></router-view>
                 </transition>
             </div>
-            <general-footer v-if="!loading" ref="footerRef" animate-in></general-footer>
+            <general-footer v-if="!loading" animate-in></general-footer>
             <svg class="svg-def">
                 <symbol id="logo-symbol">
                     <path
@@ -229,8 +229,6 @@ export default {
             const navBarEl = this.$refs.navBarRef.$el;
             const contentEl = this.$refs.contentEl;
             let navBarHeight = navBarEl.offsetHeight;
-
-            console.log(navBarEl);
 
             // If no change occurs
             if (navBarHeight === this.lastNavBarHeight) {

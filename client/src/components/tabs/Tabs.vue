@@ -14,9 +14,11 @@
         </div>
         <div class="Tabs__tab-view">
             <!-- @leave is ran here -->
-            <transition v-bind="prevTabTransitions['v-bind']" v-on="prevTabTransitions['v-on']">
+            <!-- <transition v-bind="prevTabTransitions['v-bind']" v-on="prevTabTransitions['v-on']"> -->
+            <transition v-bind="firstTransitionAttrs['v-bind']" v-on="firstTransitionAttrs['v-on']">
                 <!-- @enter is ran here -->
-                <transition v-bind="currTabTransitions['v-bind']" v-on="currTabTransitions['v-on']">
+                <!-- <transition v-bind="currTabTransitions['v-bind']" v-on="currTabTransitions['v-on']"> -->
+                <transition v-bind="secondTrabsitionAttrs['v-bind']" v-on="secondTrabsitionAttrs['v-on']">
                     <slot :name="`${currSelectedTab}`"></slot>
                 </transition>
             </transition>
@@ -69,6 +71,7 @@ export default {
             },
             prevSelectedTab: null,
             currSelectedTab: null,
+            counter: 0,
         }
     },
     computed: {
@@ -84,10 +87,74 @@ export default {
             return this.tabs.find(tab => tab.name === this.currSelectedTab);
         },
         prevTabTransitions() {
-            return this.getTabTransitions(this.prevTab);
+            const temp = this.getTabTransitions(this.prevTab);
+            console.log("Updated prev tab transitions", temp);
+            return temp;
         },
         currTabTransitions() {
-            return this.getTabTransitions(this.currTab);
+            const temp = this.getTabTransitions(this.currTab);
+            console.log("Updated curr tab transitions", temp);
+            return temp;
+        },
+        firstTransitionAttrs() {
+            // if (this.counter % 2 === 0) {
+            //     // return {
+            //     //     "v-bind": {
+            //     //         ...this.currTabTransitions["v-bind"]
+            //     //     },
+            //     //     "v-on": {
+            //     //         "enter": this.currTabTransitions["v-on"]["enter"],
+            //     //         "leave": this.prevTabTransitions["v-on"]["leave"]
+            //     //     }
+            //     // }
+            //     return this.currTabTransitions;
+            //     // return this.prevTabTransitions;
+            // }
+            // // return {
+            // //     "v-bind": {
+            // //         ...this.prevTabTransitions["v-bind"]
+            // //     },
+            // //     "v-on": {
+            // //         "enter": this.prevTabTransitions["v-on"]["enter"],
+            // //         "leave": this.currTabTransitions["v-on"]["leave"]
+            // //     }
+            // // }
+            // return this.prevTabTransitions;
+            // // return this.currTabTransitions;
+
+            return this.prevTabTransitions;
+
+            // return (this.counter % 2 === 1) ? this.prevTabTransitions : this.currTabTransitions;
+        },
+        secondTrabsitionAttrs() {
+            // if (this.counter % 2 === 0) {
+            //     // return {
+            //     //     "v-bind": {
+            //     //         ...this.prevTabTransitions["v-bind"]
+            //     //     },
+            //     //     "v-on": {
+            //     //         "enter": this.prevTabTransitions["v-on"]["enter"],
+            //     //         "leave": this.currTabTransitions["v-on"]["leave"]
+            //     //     }
+            //     // }
+
+            //     return this.prevTabTransitions;
+            //     // return this.currTabTransitions; 
+            // }
+            // // return {
+            // //     "v-bind": {
+            // //         ...this.currTabTransitions["v-bind"]
+            // //     },
+            // //     "v-on": {
+            // //         "enter": this.currTabTransitions["v-on"]["enter"],
+            // //         "leave": this.prevTabTransitions["v-on"]["leave"]
+            // //     }
+            // // }
+            // return this.currTabTransitions; 
+            // // return this.prevTabTransitions;
+            
+            return this.currTabTransitions;
+            // return (this.counter % 2 === 0) ? this.prevTabTransitions : this.currTabTransitions;
         }
     },
     mounted() {
@@ -108,6 +175,8 @@ export default {
     methods: {
         selectTab(selectedTab) {
             this.prevSelectedTab = (!this.prevSelectedTab) ? selectedTab : this.currSelectedTab;
+
+            this.counter += 1;
 
             this.currSelectedTab = selectedTab;
 
