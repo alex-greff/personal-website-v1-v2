@@ -351,6 +351,33 @@ export function getFormattedDate(i_dDate) {
     return `${month} ${day}, ${year}`;
 }
 
+/**
+ * Runs the given functions, if they are defined.
+ * 
+ * @param {...Function} i_fnFuncs All the functions.
+ */
+export function runFunctions(...i_fnFuncs) {
+    i_fnFuncs.forEach(fnFunc => {
+        if (fnFunc) {
+            fnFunc();
+        }
+    });
+}
+
+/**
+ * Runs the given functions, if they are defined with the given parameters inputted to each.
+ * 
+ * @param {Array} i_aParams 
+ * @param  {...Function} i_fnFuncs 
+ */
+export function runFunctionsWithParams(i_aParams, ...i_fnFuncs) {
+    i_fnFuncs.forEach(fnFunc => {
+        if (fnFunc) {
+            fnFunc(...i_aParams);
+        }
+    });
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -381,4 +408,6 @@ export default {
     computeParallelogramClipPath,
     totalStaggerTime,
     getFormattedDate,
+    runFunctions,
+    runFunctionsWithParams,
 };

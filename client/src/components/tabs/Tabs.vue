@@ -14,11 +14,9 @@
         </div>
         <div class="Tabs__tab-view">
             <!-- @leave is ran here -->
-            <!-- <transition v-bind="prevTabTransitions['v-bind']" v-on="prevTabTransitions['v-on']"> -->
-            <transition v-bind="firstTransitionAttrs['v-bind']" v-on="firstTransitionAttrs['v-on']">
+            <transition v-bind="tabTransitionAttrs['v-bind']" v-on="tabTransitionAttrs['v-on']">
                 <!-- @enter is ran here -->
-                <!-- <transition v-bind="currTabTransitions['v-bind']" v-on="currTabTransitions['v-on']"> -->
-                <transition v-bind="secondTrabsitionAttrs['v-bind']" v-on="secondTrabsitionAttrs['v-on']">
+                <transition v-bind="tabTransitionAttrs['v-bind']" v-on="tabTransitionAttrs['v-on']">
                     <slot :name="`${currSelectedTab}`"></slot>
                 </transition>
             </transition>
@@ -27,10 +25,11 @@
 </template>
 
 <script>
+import Utilities from "@/utilities";
+
+const INIT_TRANSITION_OBJECT = { "v-on": {}, "v-bind": {}, "v-model": {} };
+
 export default {
-    components: {
-        
-    },
     props: {
         tabs: {
             type: Array,
@@ -69,11 +68,8 @@ export default {
                     this.selectTab(windowHash);
                 }
             },
-            prevSelectedTab: null,
             currSelectedTab: null,
-            counter: 0,
-            firstTransitionAttrs: { "v-on": {}, "v-bind": {} },
-            secondTrabsitionAttrs: { "v-on": {}, "v-bind": {} },
+            tabTransitionAttrs: { ...INIT_TRANSITION_OBJECT },
         }
     },
     computed: {
@@ -81,22 +77,6 @@ export default {
             return this.$children.filter((child) => {
                 return child.$options._componentTag === this.tabSelectorTagName
             })
-        },
-        prevTab() {
-            return this.tabs.find(tab => tab.name === this.prevSelectedTab);
-        },
-        currTab() {
-            return this.tabs.find(tab => tab.name === this.currSelectedTab);
-        },
-        prevTabTransitions() {
-            const temp = this.getTabTransitions(this.prevTab);
-            // console.log("Updated prev tab transitions", temp);
-            return temp;
-        },
-        currTabTransitions() {
-            const temp = this.getTabTransitions(this.currTab);
-            // console.log("Updated curr tab transitions", temp);
-            return temp;
         },
     },
     mounted() {
@@ -110,7 +90,7 @@ export default {
             const selectedTab = (validHash) ? windowHash : this.initialSelectedTab;
             this.selectTab(selectedTab);
 
-            this.setTabTransitions(this.prevSelectedTab, this.currSelectedTab);
+            this.setupTabTransitions(this.currSelectedTab);
         });
     },
     destroyed() {
@@ -118,14 +98,11 @@ export default {
     },
     methods: {
         selectTab(selectedTab) {
-            this.prevSelectedTab = (!this.prevSelectedTab) ? selectedTab : this.currSelectedTab;
             this.currSelectedTab = selectedTab;
 
             this.tabSelectors.forEach(selector => {
                 selector.selected = (selector.name == selectedTab);
             });
-
-            this.counter += 1;
         },
         findTabSelector(selectorName) {
             return this.tabSelectors.find((selector) => selector.name === selectorName);
@@ -134,7 +111,7 @@ export default {
             return this.tabs.find(tab => tab.name === tabName);
         },
         getTabTransitions(tab) {
-            const oRet = { "v-bind": {}, "v-on": {}, "v-model": {} };
+            const oRet = { ...INIT_TRANSITION_OBJECT };
 
             if (tab && tab.transition) {
                 const transition = tab.transition;
@@ -158,61 +135,23 @@ export default {
 
             return oRet;
         },
-        setTabTransitions(prevTabName, currTabName) {
-            console.log("Setting tab transitions", prevTabName, currTabName);
-            this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(prevTabName));
-            this.firstTransitionAttrs["v-on"] = { 
-                ...this.firstTransitionAttrs["v-on"], 
-                "leave": (el) => {
-                    // console.log("running");
+        setupTabTransitions(currTabName) {
+            // Get the original inputted tab transitions
+            const transitionAttrs = this.getTabTransitions(this.getTabConfig(currTabName));
 
-                    // const temp = this.firstTransitionAttrs;
-                    // this.firstTransitionAttrs = this.secondTrabsitionAttrs;
-                    // this.secondTrabsitionAttrs = temp;
-
-                    // TODO: run existing func
-                    // this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-                    // this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-                    console.log("> @leave", this.currSelectedTab, "@enter", this.prevSelectedTab);
-                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-
-                    // this.firstTrabsitionAttrs["v-on"]["enter"](el, done);
-                },
-                "leave": (el) => {
-                    console.log("> @leave", this.prevSelectedTab, "@enter", this.currSelectedTab);
-                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-
-                    // this.firstTrabsitionAttrs["v-on"]["leave"](el, done);
-                }
-            };
-            this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(currTabName));
-            this.secondTrabsitionAttrs["v-on"] = {
-                ...this.secondTrabsitionAttrs["v-on"],
+            this.tabTransitionAttrs = { ...transitionAttrs };
+            this.tabTransitionAttrs["v-on"] = { 
+                ...transitionAttrs["v-on"],
+                // Override leave
                 "leave": (el, done) => {
-                    // console.log("running 2");
+                    // Setup the done hijack
+                    const doneHijack = () => {
+                        this.setupTabTransitions(this.currSelectedTab);
+                        done();
+                    }
 
-                    // const temp = this.firstTransitionAttrs;
-                    // this.firstTransitionAttrs = this.secondTrabsitionAttrs;
-                    // this.secondTrabsitionAttrs = temp;
-
-                    // TODO: run existing func
-
-                    // this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-                    // this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-                    console.log("> @leave", this.currSelectedTab, "@enter", this.prevSelectedTab);
-                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-
-                    // this.secondTrabsitionAttrs["v-on"]["enter"](el, done);
-                },
-                "leave": (el) => {
-                    console.log("> @leave", this.prevSelectedTab, "@enter", this.currSelectedTab);
-                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
-                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
-
-                    // this.secondTrabsitionAttrs["v-on"]["leave"](el, done);
+                    // Run the inputted leave transition function 
+                    Utilities.runFunctionsWithParams([el, doneHijack], transitionAttrs["v-on"]["leave"]);
                 }
             };
         }
