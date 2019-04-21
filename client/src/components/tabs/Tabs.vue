@@ -1,18 +1,17 @@
 <template>
     <div class="Tabs">
-        <div class="Tabs__tab-selectors">
-            <a 
+        <div :class="tabSelectorListClasses">
+            <span 
                 v-for="(tab, index) in tabs"
                 :key="index"
-                class="Tabs__anchor-reset"
-                :href="`#${tab.name}`"
+                :class="tabSelectorClasses"
             >
                 <slot 
                     :name="tab.selector"
                 ></slot>
-            </a>
+            </span>
         </div>
-        <div class="Tabs__tab-view">
+        <div :class="tabViewClasses">
             <!-- @leave is ran here -->
             <transition v-bind="tabTransitionAttrs['v-bind']" v-on="tabTransitionAttrs['v-on']">
                 <!-- @enter is ran here -->
@@ -55,6 +54,18 @@ export default {
         tabSelectorTagName: {
             type: String,
             default: "tab-selector"
+        },
+        tabSelectorListClass: {
+            type: String,
+            default: ""
+        },
+        tabSelectorClass: {
+            type: String,
+            default: ""
+        },
+        tabViewClass: {
+            type: String,
+            default: ""
         }
     },
     data() {
@@ -75,9 +86,18 @@ export default {
     computed: {
         tabSelectors() {
             return this.$children.filter((child) => {
-                return child.$options._componentTag === this.tabSelectorTagName
+                return child.$options._componentTag === this.tabSelectorTagName;
             })
         },
+        tabSelectorListClasses() {
+            return `Tabs__tab-selectors ${this.tabSelectorListClass}`.trim();
+        },
+        tabSelectorClasses() {
+            return `Tabs__tab-selector ${this.tabSelectorClass}`.trim();
+        },
+        tabViewClasses() {
+            return `Tabs__tab-view ${this.tabViewClass}`.trim();
+        }
     },
     mounted() {
         window.addEventListener("hashchange", this.hashListener);
@@ -100,12 +120,13 @@ export default {
         selectTab(selectedTab) {
             this.currSelectedTab = selectedTab;
 
+            // Set selected property
             this.tabSelectors.forEach(selector => {
-                selector.selected = (selector.name == selectedTab);
+                selector.selected = (selector.tabName === selectedTab);
             });
         },
         findTabSelector(selectorName) {
-            return this.tabSelectors.find((selector) => selector.name === selectorName);
+            return this.tabSelectors.find(selector => selector.name === selectorName);
         },
         getTabConfig(tabName) {
             return this.tabs.find(tab => tab.name === tabName);
@@ -158,13 +179,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    .Tabs {
-        & .Tabs__anchor-reset {
-            color: inherit;
-            text-decoration: inherit;
-            cursor: inherit;
-        }
-    }
-</style>

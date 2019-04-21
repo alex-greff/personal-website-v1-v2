@@ -226,6 +226,10 @@ export default {
             }
         },
         alignContent() {
+            if (!this.$refs.navBarRef) {
+                return;
+            }
+
             const navBarEl = this.$refs.navBarRef.$el;
             const contentEl = this.$refs.contentEl;
             let navBarHeight = navBarEl.offsetHeight;

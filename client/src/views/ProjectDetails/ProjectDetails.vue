@@ -57,28 +57,27 @@
                     :initial-selected-tab="initialTab"
                 >
                     <template v-slot:description_selector>
-                        <tab-selector name="test1">
+                        <tab-selector tab-name="description">
                             Description
                         </tab-selector>
                     </template>
 
                     <template v-slot:description>
-                        <!-- <tab name="test1">
-                            Some description stuff here
-                        </tab> -->
-                        <description 
-                            :description-markdown="projectData.description"    
-                        />
+                        <tab>
+                            <description 
+                                :description-markdown="projectData.description"    
+                            />
+                        </tab>
                     </template>
 
                     <template v-slot:gallery_selector>
-                        <tab-selector name="test2">
+                        <tab-selector tab-name="gallery">
                             Gallery
                         </tab-selector>
                     </template>
 
                     <template v-slot:gallery>
-                        <tab name="test2">
+                        <tab>
                             Gallery component here
                         </tab>
                     </template>

@@ -1,37 +1,7 @@
 <template>
-    <div v-if="selected">
+    <!-- NOTE: this component is really empty right now but I am implementing it b/c 
+    there may be something in the future that needs to select the tab component -->
+    <div>
         <slot></slot>
     </div>
 </template>
-
-<script>
-export default {
-    props: {
-        name: { 
-            type: String,
-            required: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        customHash: {
-            type: String, 
-            default: null,
-            validator(hash) {
-                return hash.startsWith("#");
-            }
-        }
-    },
-    data() {
-        return {
-            selected: true,
-        }
-    },
-    computed: {
-        hash() {
-            return (this.customHash) ? this.customHash : `#${this.name.toLowerCase().replace(/ /g, "-")}`;
-        }
-    },
-}
-</script>
