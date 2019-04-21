@@ -39,6 +39,9 @@
                         >
                             {{ tag }}
                         </tag-item>
+                        <div v-if="tagsOverflow" class="ProjectItem__tag-ellipis">
+                            <span>...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,7 +59,11 @@ export default {
         linkItem: LinkItem,
     },
     props: {
-        projectData: { type: Object, required: true }
+        projectData: { type: Object, required: true },
+        maxTags: {
+            type: Number,
+            default: 10, // TODO: this might need some adjusting
+        }
     },
     data() {
         return {
@@ -86,7 +93,12 @@ export default {
         },
         tags() {
             const tags = this.projectData.tags;
-            return (tags) ? tags : [];
+            const tagsCleaned = (tags) ? tags : [];
+            return tagsCleaned.length > this.maxTags ? tagsCleaned.slice(0, this.maxTags) : tagsCleaned;
+        },
+        tagsOverflow() {
+            const tags = this.projectData.tags;
+            return (tags) ? tags.length > this.maxTags : false;
         },
         hasLinks() {
             return Object.keys(this.links).length > 0;
@@ -209,6 +221,19 @@ export default {
 
                         & .ProjectItem__tag-item {
                             margin-top: 0.3rem;
+                        }
+
+                        & .ProjectItem__tag-ellipis {
+                            position: relative;
+
+                            font-size: 1.5rem;
+                            letter-spacing: 0.2rem;
+
+                            & > span {
+                                position: absolute;
+                                bottom: 0;
+                                vertical-align: text-bottom;
+                            }
                         }
                     }
                 }

@@ -94,10 +94,6 @@ export default {
             &.selected {
                 background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
             }
-
-            // &:hover {
-            //     background-color: theme-link("projects-item", "accent-color", "secondary", 0.5);
-            // }
         }
     }
 </style>
