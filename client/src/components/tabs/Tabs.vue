@@ -72,6 +72,8 @@ export default {
             prevSelectedTab: null,
             currSelectedTab: null,
             counter: 0,
+            firstTransitionAttrs: { "v-on": {}, "v-bind": {} },
+            secondTrabsitionAttrs: { "v-on": {}, "v-bind": {} },
         }
     },
     computed: {
@@ -88,74 +90,14 @@ export default {
         },
         prevTabTransitions() {
             const temp = this.getTabTransitions(this.prevTab);
-            console.log("Updated prev tab transitions", temp);
+            // console.log("Updated prev tab transitions", temp);
             return temp;
         },
         currTabTransitions() {
             const temp = this.getTabTransitions(this.currTab);
-            console.log("Updated curr tab transitions", temp);
+            // console.log("Updated curr tab transitions", temp);
             return temp;
         },
-        firstTransitionAttrs() {
-            // if (this.counter % 2 === 0) {
-            //     // return {
-            //     //     "v-bind": {
-            //     //         ...this.currTabTransitions["v-bind"]
-            //     //     },
-            //     //     "v-on": {
-            //     //         "enter": this.currTabTransitions["v-on"]["enter"],
-            //     //         "leave": this.prevTabTransitions["v-on"]["leave"]
-            //     //     }
-            //     // }
-            //     return this.currTabTransitions;
-            //     // return this.prevTabTransitions;
-            // }
-            // // return {
-            // //     "v-bind": {
-            // //         ...this.prevTabTransitions["v-bind"]
-            // //     },
-            // //     "v-on": {
-            // //         "enter": this.prevTabTransitions["v-on"]["enter"],
-            // //         "leave": this.currTabTransitions["v-on"]["leave"]
-            // //     }
-            // // }
-            // return this.prevTabTransitions;
-            // // return this.currTabTransitions;
-
-            return this.prevTabTransitions;
-
-            // return (this.counter % 2 === 1) ? this.prevTabTransitions : this.currTabTransitions;
-        },
-        secondTrabsitionAttrs() {
-            // if (this.counter % 2 === 0) {
-            //     // return {
-            //     //     "v-bind": {
-            //     //         ...this.prevTabTransitions["v-bind"]
-            //     //     },
-            //     //     "v-on": {
-            //     //         "enter": this.prevTabTransitions["v-on"]["enter"],
-            //     //         "leave": this.currTabTransitions["v-on"]["leave"]
-            //     //     }
-            //     // }
-
-            //     return this.prevTabTransitions;
-            //     // return this.currTabTransitions; 
-            // }
-            // // return {
-            // //     "v-bind": {
-            // //         ...this.currTabTransitions["v-bind"]
-            // //     },
-            // //     "v-on": {
-            // //         "enter": this.currTabTransitions["v-on"]["enter"],
-            // //         "leave": this.prevTabTransitions["v-on"]["leave"]
-            // //     }
-            // // }
-            // return this.currTabTransitions; 
-            // // return this.prevTabTransitions;
-            
-            return this.currTabTransitions;
-            // return (this.counter % 2 === 0) ? this.prevTabTransitions : this.currTabTransitions;
-        }
     },
     mounted() {
         window.addEventListener("hashchange", this.hashListener);
@@ -167,6 +109,8 @@ export default {
             // Only use the hash if it points to a tab, if not use the initial selected tab
             const selectedTab = (validHash) ? windowHash : this.initialSelectedTab;
             this.selectTab(selectedTab);
+
+            this.setTabTransitions(this.prevSelectedTab, this.currSelectedTab);
         });
     },
     destroyed() {
@@ -175,14 +119,13 @@ export default {
     methods: {
         selectTab(selectedTab) {
             this.prevSelectedTab = (!this.prevSelectedTab) ? selectedTab : this.currSelectedTab;
-
-            this.counter += 1;
-
             this.currSelectedTab = selectedTab;
 
             this.tabSelectors.forEach(selector => {
                 selector.selected = (selector.name == selectedTab);
             });
+
+            this.counter += 1;
         },
         findTabSelector(selectorName) {
             return this.tabSelectors.find((selector) => selector.name === selectorName);
@@ -214,6 +157,64 @@ export default {
             }
 
             return oRet;
+        },
+        setTabTransitions(prevTabName, currTabName) {
+            console.log("Setting tab transitions", prevTabName, currTabName);
+            this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(prevTabName));
+            this.firstTransitionAttrs["v-on"] = { 
+                ...this.firstTransitionAttrs["v-on"], 
+                "leave": (el) => {
+                    // console.log("running");
+
+                    // const temp = this.firstTransitionAttrs;
+                    // this.firstTransitionAttrs = this.secondTrabsitionAttrs;
+                    // this.secondTrabsitionAttrs = temp;
+
+                    // TODO: run existing func
+                    // this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+                    // this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+                    console.log("> @leave", this.currSelectedTab, "@enter", this.prevSelectedTab);
+                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+
+                    // this.firstTrabsitionAttrs["v-on"]["enter"](el, done);
+                },
+                "leave": (el) => {
+                    console.log("> @leave", this.prevSelectedTab, "@enter", this.currSelectedTab);
+                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+
+                    // this.firstTrabsitionAttrs["v-on"]["leave"](el, done);
+                }
+            };
+            this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(currTabName));
+            this.secondTrabsitionAttrs["v-on"] = {
+                ...this.secondTrabsitionAttrs["v-on"],
+                "leave": (el, done) => {
+                    // console.log("running 2");
+
+                    // const temp = this.firstTransitionAttrs;
+                    // this.firstTransitionAttrs = this.secondTrabsitionAttrs;
+                    // this.secondTrabsitionAttrs = temp;
+
+                    // TODO: run existing func
+
+                    // this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+                    // this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+                    console.log("> @leave", this.currSelectedTab, "@enter", this.prevSelectedTab);
+                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+
+                    // this.secondTrabsitionAttrs["v-on"]["enter"](el, done);
+                },
+                "leave": (el) => {
+                    console.log("> @leave", this.prevSelectedTab, "@enter", this.currSelectedTab);
+                    this.firstTransitionAttrs = this.getTabTransitions(this.getTabConfig(this.prevSelectedTab));
+                    this.secondTrabsitionAttrs = this.getTabTransitions(this.getTabConfig(this.currSelectedTab));
+
+                    // this.secondTrabsitionAttrs["v-on"]["leave"](el, done);
+                }
+            };
         }
     }
 }
