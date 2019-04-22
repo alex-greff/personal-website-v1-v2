@@ -1,7 +1,11 @@
 <template>
-    <div class="ParallelogramContainer" :style="parallelogramStyles">
+    <component 
+        :is="tag"
+        class="ParallelogramContainer"
+        :style="parallelogramStyles"
+    >
         <slot></slot>
-    </div>
+    </component>
 </template>
 
 <script>
@@ -25,6 +29,10 @@ export default {
             type: Number,
             default: 0.5
         },
+        tag: {
+            type: String,
+            default: "div"
+        }
     },
     computed: {
         parallelogramStyles() {

@@ -57,23 +57,23 @@
                     :initial-selected-tab="initialTab"
                 >
                     <template v-slot:description_selector>
-                        <tab-selector tab-name="description">
+                        <pd-tab-selector tab-name="description">
                             Description
-                        </tab-selector>
+                        </pd-tab-selector>
                     </template>
 
                     <template v-slot:description>
                         <tab>
-                            <description 
+                            <pd-description 
                                 :description-markdown="projectData.description"    
                             />
                         </tab>
                     </template>
 
                     <template v-slot:gallery_selector>
-                        <tab-selector tab-name="gallery">
+                        <pd-tab-selector tab-name="gallery">
                             Gallery
-                        </tab-selector>
+                        </pd-tab-selector>
                     </template>
 
                     <template v-slot:gallery>
@@ -98,24 +98,24 @@ import { mapGetters } from 'vuex';
 import { getterTypes } from '@/store/types';
 import Utilities from "@/utilities";
 import ProjectDetailsDescription from "@/views/ProjectDetails/ProjectDetailsDescription.vue";
+import ProjectDetailsTabSelector from "@/views/ProjectDetails/ProjectDetailsTabSelector.vue";
 
 import TagItem from "@/components/tags/TagItem.vue";
 import LinkItem from "@/components/links/LinkItem.vue";
 
 import Tabs from "@/components/tabs/Tabs.vue";
 import Tab from "@/components/tabs/Tab.vue";
-import TabSelector from "@/components/tabs/TabSelector.vue";
 
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
     components: {
-        description: ProjectDetailsDescription,
+        pdDescription: ProjectDetailsDescription,
         tagItem: TagItem,
         linkItem: LinkItem,
         tabs: Tabs,
         tab: Tab,
-        tabSelector: TabSelector,
+        pdTabSelector: ProjectDetailsTabSelector,
     },
     data() {
         return {
