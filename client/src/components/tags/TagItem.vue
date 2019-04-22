@@ -1,35 +1,19 @@
 <template>
-    <div 
-        :class="tagClasses" 
-        :style="tagStyles"
-    >
+    <parallelogram-container :class="tagClasses" v-bind="$attrs">
         <span class="TagItem__content">
             <slot></slot>
         </span>
-    </div>
+    </parallelogram-container>
 </template>
 
 <script>
-import Utilities from "@/utilities";
+import ParallelogramContainer from "@/components/containers/ParallelogramContainer.vue";
 
 export default {
+    components: {
+        parallelogramContainer: ParallelogramContainer
+    },
     props: {
-        height: { // rem
-            type: Number,
-            default: 2.5
-        },
-        tilt: { // deg
-            type: Number,
-            default: 60
-        },
-        maxWidth: { // rem
-            type: Number,
-            default: 15
-        },
-        spaceBetween: { // rem
-            type: Number,
-            default: 0.5
-        },
         selectable: {
             type: Boolean,
             default: false
@@ -40,18 +24,6 @@ export default {
         },
     },
     computed: {
-        tagStyles() {
-            const gutterLength = this.height / Math.tan(this.tilt * Math.PI/180)
-
-            return {
-                clipPath: Utilities.computeParallelogramClipPath(this.height, this.tilt),
-                marginRight: `${this.spaceBetween - gutterLength}rem`,
-                paddingRight: `${gutterLength}rem`,
-                paddingLeft: `${gutterLength}rem`,
-                height: `${this.height}rem`,
-                maxWidth: `${this.maxWidth}rem`
-            };
-        },
         tagClasses() {
             let sClasses = "TagItem";
             if (this.selectable) {

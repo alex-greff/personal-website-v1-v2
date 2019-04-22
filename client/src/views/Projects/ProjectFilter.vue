@@ -4,6 +4,7 @@
             :class="tagItemClasses"
             :selectable="true"
             :selected="showAll"
+            :height="height"
             @click.native="selectShowAll"
         >
             {{ mainFilterName }}
@@ -15,6 +16,7 @@
             :class="tagItemClasses"
             :selectable="true"
             :selected="filterState.selected"
+            :height="height"
             @click.native="selectFilter(filterName)"
         >
             {{ filterName }}
@@ -46,6 +48,10 @@ export default {
         tagClass: {
             type: String,
             default: ""
+        },
+        height: { // rem
+            type: Number,
+            default: 2.8,
         }
     },
     data() {
