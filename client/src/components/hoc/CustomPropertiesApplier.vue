@@ -1,3 +1,10 @@
+<template>
+    <component :is="tag" :style="cssStyles">
+        <slot></slot>
+    </component>
+</template>
+
+
 <script>
 import Utilities from "@/utilities";
 
@@ -115,9 +122,6 @@ export default {
                 });
             }
         }
-    },
-    render(h){
-        return h(this.tag, { style: this.cssStyles }, this.$slots.default);
-    },
+    }
 }
 </script>
