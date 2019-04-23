@@ -3,6 +3,7 @@
         :is="tag"
         class="ParallelogramContainer"
         :style="parallelogramStyles"
+        v-bind="$attrs" 
     >
         <slot></slot>
     </component>
@@ -32,7 +33,15 @@ export default {
         tag: {
             type: String,
             default: "div"
-        }
+        },
+        overflowPadding: {
+            type: Boolean,
+            default: true
+        },
+        // hash: {
+        //     type: String,
+        //     default: null
+        // }
     },
     computed: {
         parallelogramStyles() {
@@ -41,8 +50,8 @@ export default {
             return {
                 clipPath: Utilities.computeParallelogramClipPath(this.height, this.tilt),
                 marginRight: `${this.spaceBetween - gutterLength}rem`,
-                paddingRight: `${gutterLength}rem`,
-                paddingLeft: `${gutterLength}rem`,
+                paddingRight: (this.overflowPadding) ? `${gutterLength}rem` : 0,
+                paddingLeft: (this.overflowPadding) ? `${gutterLength}rem` : 0,
                 height: `${this.height}rem`,
                 maxWidth: `${this.maxWidth}rem`
             };

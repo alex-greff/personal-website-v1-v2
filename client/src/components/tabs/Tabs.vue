@@ -86,8 +86,13 @@ export default {
     computed: {
         tabSelectors() {
             return this.$children.filter((child) => {
-                return child.$options._componentTag === this.tabSelectorTagName;
+                // return child.$options._componentTag === this.tabSelectorTagName;
+                // TODO: this is really whack... need to fix
+                return child.$options._componentTag.includes("selector") && child.$refs.tabSelectorRef; 
+            }).map(child => {
+                return child.$refs.tabSelectorRef;
             })
+            // return this.$children;
         },
         tabSelectorListClasses() {
             return `Tabs__tab-selectors ${this.tabSelectorListClass}`.trim();
@@ -179,3 +184,13 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.Tabs {
+    & .Tabs__tab-selectors {
+        & .Tabs__tab-selector {
+            display: inline-block;
+        }
+    }
+}
+</style>

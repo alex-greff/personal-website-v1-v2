@@ -1,10 +1,18 @@
 <template>
     <a 
+        v-if="useLink"
         :class="rootClasses"
         :href="hash"
     >
         <slot></slot>
     </a>
+    <component
+        :is="tag"
+        v-else
+        :class="rootClasses"
+    >
+        <slot></slot>
+    </component>
 </template>
 
 <script>
@@ -32,6 +40,14 @@ export default {
             validator(hash) {
                 return hash.startsWith("#");
             }
+        },
+        useLink: {
+            type: Boolean,
+            default: true
+        },
+        tag: {
+            type: String,
+            default: "div"
         }
     },
     data() {
@@ -40,10 +56,15 @@ export default {
         }
     },
     computed: {
-        rootClasses() {
-            let sClasses = "TabSelector";
+        modifierClasses() {
+            let sClasses = "";
             sClasses += (this.selected) ? ` ${this.selectedClass}` : "";
             sClasses += (this.disabled) ? ` ${this.disabledClass}` : "";
+            return sClasses;
+        },
+        rootClasses() {
+            let sClasses = "TabSelector";
+            sClasses += this.modifierClasses;
             return sClasses;
         },
         hash() {

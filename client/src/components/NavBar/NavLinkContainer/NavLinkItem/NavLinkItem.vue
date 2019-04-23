@@ -57,7 +57,7 @@ export default {
             // TODO: For the trick
             isMounted: false
         }
-    }, 
+    },
     computed: {
         ...mapGetters({
             isAutoThemeEnabled: getterTypes.IS_AUTO_THEME_ENABLED,
