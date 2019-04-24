@@ -95,7 +95,7 @@ export default {
             background-color: theme-link("page", "bg-color", "secondary");
 
             & .ProjectDetailsTabSelector__content {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
         }
 

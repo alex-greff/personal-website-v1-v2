@@ -34,7 +34,10 @@
                     </div>
                     <div class="ProjectDetails__summary">
                         <div class="ProjectDetails__summary-text">
-                            {{ projectData.summary }}
+                            <!-- {{ projectData.summary }} -->
+                            <pd-description 
+                                :description-markdown="projectData.summary"
+                            />
                         </div>
                     </div>
                     <div class="ProjectDetails__tags">
@@ -64,6 +67,7 @@
                         <pd-tab-selector 
                             tab-name="description"
                             :height="tabSelectorHeight"
+                            :width="tabSelectorWidth"
                             :tilt="tabSelectorTilt"
                             :space-between="tabSelectorSpaceBetween"
                         >
@@ -83,6 +87,7 @@
                         <pd-tab-selector 
                             tab-name="gallery"
                             :height="tabSelectorHeight"
+                            :width="tabSelectorWidth"
                             :tilt="tabSelectorTilt"
                             :space-between="tabSelectorSpaceBetween"
                         >
@@ -155,7 +160,9 @@ export default {
                 }
             ],
             initialTab: "description",
-            tabSelectorHeight: 4, // rem
+            // Tab selector config
+            tabSelectorHeight: 3.7, // rem
+            tabSelectorWidth: 18, // rem
             tabSelectorTilt: 60, // rem
             tabSelectorSpaceBetween: 0.5, // rem
         }
