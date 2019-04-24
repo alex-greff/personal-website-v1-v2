@@ -138,6 +138,8 @@ export default {
 
                 & .NavLinkItem__content {
                     transition: transform 0.5s;
+
+                    margin-left: 0.5rem;
                 }
             }
 
