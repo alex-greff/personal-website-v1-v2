@@ -441,26 +441,18 @@ export default {
             }
 
             & .ProjectDetails__tabs {
-                margin-top: 2rem;
+                margin-top: 4rem;
+                margin-bottom: 4rem;
 
                 // TODO: /deep/ is getting depricated soon... I gotta figure out an alternative to it
                 & /deep/ .ProjectDetails__tab-selectors {
                     display: flex;
                     justify-content: center;
                     flex-wrap: wrap;
-                    // background-color: blueviolet;
-
-                    & .ProjectDetails__tab-selector {
-                        // background-color: pink;
-                        // flex-grow: 1;
-                        // flex-shrink: 1;
-                    }
                 }
 
                 & /deep/ .ProjectDetails__tab-view {
-                    margin-top: 1rem;
-
-                    // background-color: theme-link("page", "bg-color", "secondary");
+                    margin-top: 0.7rem;
                 }
             }
 
