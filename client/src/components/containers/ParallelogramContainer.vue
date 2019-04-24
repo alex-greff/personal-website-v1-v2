@@ -38,10 +38,6 @@ export default {
             type: Boolean,
             default: true
         },
-        // hash: {
-        //     type: String,
-        //     default: null
-        // }
     },
     computed: {
         parallelogramStyles() {

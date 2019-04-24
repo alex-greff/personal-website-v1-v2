@@ -11,6 +11,10 @@
             class="ProjectDetailsTabSelector__container"
             v-bind="$attrs" 
             tag="a"
+            :height="height"
+            :tilt="tilt"
+            :space-between="spaceBetween"
+            :max-width="width"
             :href="passThroughHref"
         >
             <div class="ProjectDetailsTabSelector__content">
@@ -29,10 +33,28 @@ export default {
         tabSelector: TabSelector,
         parallelogramContainer: ParallelogramContainer
     },
+    props: {
+        height: { // rem
+            type: Number,
+            default: 3.5,
+        },
+        width: {
+            type: Number,
+            default: 20,
+        },
+        spaceBetween: { // rem
+            type: Number,
+            default: 0.5,
+        },
+        tilt: { // deg
+            type: Number,
+            default: 60,
+        }
+    },
     data() {
         return {
             // TODO: For the trick
-            isMounted: false
+            isMounted: false,
         }
     },
     computed: {
@@ -58,9 +80,11 @@ export default {
         display: inline-block;
 
         & .ProjectDetailsTabSelector__container {
-            // TODO: complete stylings
-            background-color: red; 
+            width: 100vw;
+
             display: inline-flex;
+            justify-content: center;
+            align-items: center;
 
             cursor: pointer;
 
@@ -68,8 +92,10 @@ export default {
             color: inherit;
             text-decoration: inherit;
 
+            background-color: theme-link("page", "bg-color", "secondary");
+
             & .ProjectDetailsTabSelector__content {
-                align-self: center;
+                font-size: 2rem;
             }
         }
 
@@ -79,6 +105,11 @@ export default {
 
         &.selected { 
             // TODO: complete
+            
+
+            & .ProjectDetailsTabSelector__container {
+                background-color: theme-link("project-details", "accent-color", "secondary", 0.5);
+            }
         }
 
         &.disabled {

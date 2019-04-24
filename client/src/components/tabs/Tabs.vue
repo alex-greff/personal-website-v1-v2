@@ -1,17 +1,18 @@
 <template>
     <div class="Tabs">
-        <div :class="tabSelectorListClasses">
+        <div ref="selectorListEl" :class="tabSelectorListClasses" :style="tabSelectorListStyles">
             <span 
                 v-for="(tab, index) in tabs"
                 :key="index"
                 :class="tabSelectorClasses"
+                :style="tabSelectorStyles"
             >
                 <slot 
                     :name="tab.selector"
                 ></slot>
             </span>
         </div>
-        <div :class="tabViewClasses">
+        <div ref="tabViewEl" :class="tabViewClasses" :style="tabViewStyles">
             <!-- @leave is ran here -->
             <transition v-bind="tabTransitionAttrs['v-bind']" v-on="tabTransitionAttrs['v-on']">
                 <!-- @enter is ran here -->
@@ -55,6 +56,7 @@ export default {
             type: String,
             default: "tab-selector"
         },
+        // Custom class names
         tabSelectorListClass: {
             type: String,
             default: ""
@@ -66,6 +68,19 @@ export default {
         tabViewClass: {
             type: String,
             default: ""
+        },
+        // Custom styles
+        tabSelectorListStyles: {
+            type: Object,
+            default: () => { return {} }
+        },
+        tabSelectorStyles: {
+            type: Object,
+            default: () => { return {} }
+        },
+        tabViewStyles: {
+            type: Object,
+            default: () => { return {} }
         }
     },
     data() {

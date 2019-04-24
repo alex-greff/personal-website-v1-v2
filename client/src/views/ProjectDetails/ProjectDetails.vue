@@ -53,11 +53,20 @@
                 <!-- Tabs -->
                 <tabs
                     class="ProjectDetails__tabs"
+                    tab-selector-list-class="ProjectDetails__tab-selectors"
+                    tab-selector-class="ProjectDetails__tab-selector"
+                    tab-view-class="ProjectDetails__tab-view"
+                    :tab-selector-list-styles="tabSelectorAlignment"
                     :tabs="tabs"
                     :initial-selected-tab="initialTab"
                 >
                     <template v-slot:description_selector>
-                        <pd-tab-selector tab-name="description">
+                        <pd-tab-selector 
+                            tab-name="description"
+                            :height="tabSelectorHeight"
+                            :tilt="tabSelectorTilt"
+                            :space-between="tabSelectorSpaceBetween"
+                        >
                             Description
                         </pd-tab-selector>
                     </template>
@@ -71,7 +80,12 @@
                     </template>
 
                     <template v-slot:gallery_selector>
-                        <pd-tab-selector tab-name="gallery">
+                        <pd-tab-selector 
+                            tab-name="gallery"
+                            :height="tabSelectorHeight"
+                            :tilt="tabSelectorTilt"
+                            :space-between="tabSelectorSpaceBetween"
+                        >
                             Gallery
                         </pd-tab-selector>
                     </template>
@@ -141,6 +155,9 @@ export default {
                 }
             ],
             initialTab: "description",
+            tabSelectorHeight: 4, // rem
+            tabSelectorTilt: 60, // rem
+            tabSelectorSpaceBetween: 0.5, // rem
         }
     },
     computed: {
@@ -177,6 +194,13 @@ export default {
         thumbnailImageLinkStyles() {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
         },
+        tabSelectorAlignment() {
+            const gutterLength = this.tabSelectorHeight / Math.tan(this.tabSelectorTilt * Math.PI/180);
+
+            return {
+                marginLeft: (this.tabSelectorSpaceBetween - gutterLength) + "rem"
+            }
+        }
     },
     methods: {
         descriptionTabEnter(el, done) {
@@ -406,6 +430,30 @@ export default {
                         "tags"
                         "thumbnail"
                         "summary";
+                }
+            }
+
+            & .ProjectDetails__tabs {
+                margin-top: 2rem;
+
+                // TODO: /deep/ is getting depricated soon... I gotta figure out an alternative to it
+                & /deep/ .ProjectDetails__tab-selectors {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    // background-color: blueviolet;
+
+                    & .ProjectDetails__tab-selector {
+                        // background-color: pink;
+                        // flex-grow: 1;
+                        // flex-shrink: 1;
+                    }
+                }
+
+                & /deep/ .ProjectDetails__tab-view {
+                    margin-top: 1rem;
+
+                    // background-color: theme-link("page", "bg-color", "secondary");
                 }
             }
 

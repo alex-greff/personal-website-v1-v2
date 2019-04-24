@@ -69,7 +69,7 @@ export default {
         return {
             tagHeight: 3, //rem
             tagTilt: 60, //deg
-            spaceBetween: 0.5, //rem
+            tagSpaceBetween: 0.5, //rem
         };
     },
     computed: {
@@ -108,10 +108,9 @@ export default {
         },
         tagAlignment() {
             const gutterLength = this.tagHeight / Math.tan(this.tagTilt * Math.PI/180);
-            const spaceBetween = 0.5; // rem
 
             return {
-                marginLeft: (spaceBetween - gutterLength) + "rem"
+                marginLeft: (this.tagSpaceBetween - gutterLength) + "rem"
             }
         }
     },

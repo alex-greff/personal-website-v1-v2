@@ -23,6 +23,7 @@ export const subSections = [
     "button",
     "projects",
     "projects-item",
+    "project-details",
 ];
 
 export default {
