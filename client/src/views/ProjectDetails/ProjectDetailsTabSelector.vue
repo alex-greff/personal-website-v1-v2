@@ -89,10 +89,10 @@ export default {
             cursor: pointer;
 
             // Anchor reset
-            color: inherit;
             text-decoration: inherit;
 
-            background-color: theme-link("page", "bg-color", "secondary");
+            color: theme-link("project-details", "text-color", "primary");
+            background-color: theme-link("project-details", "bg-color", "secondary");
 
             & .ProjectDetailsTabSelector__content {
                 font-size: 1.8rem;
@@ -104,16 +104,18 @@ export default {
         // -----------------
 
         &.selected { 
-            // TODO: complete
-            
-
-            & .ProjectDetailsTabSelector__container {
-                background-color: theme-link("project-details", "accent-color", "secondary", 0.5);
+            // NOTE: this should never happen anyways
+            &:not(.disabled) {
+                & .ProjectDetailsTabSelector__container {
+                    background-color: theme-link("project-details", "accent-color", "secondary", 0.5);
+                }
             }
         }
 
         &.disabled {
-            // TODO: complete
+            & .ProjectDetailsTabSelector__container {
+                color: theme-link("project-details", "text-color", "secondary");
+            }
         }
     }
 </style>
