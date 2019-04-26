@@ -97,7 +97,10 @@
 
                     <template v-slot:gallery>
                         <tab>
-                            Gallery component here
+                            <gallery 
+                                class="ProjectDetails__gallery"
+                                :images="galleryImageList"
+                            />
                         </tab>
                     </template>
                 </tabs>
@@ -125,6 +128,8 @@ import LinkItem from "@/components/links/LinkItem.vue";
 import Tabs from "@/components/tabs/Tabs.vue";
 import Tab from "@/components/tabs/Tab.vue";
 
+import ImageCarousel from "@/components/carousel/ImageCarousel.vue";
+
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
@@ -136,6 +141,7 @@ export default {
         tabs: Tabs,
         tab: Tab,
         pdTabSelector: ProjectDetailsTabSelector,
+        gallery: ImageCarousel,
     },
     data() {
         return {
@@ -198,6 +204,10 @@ export default {
         endDateFormatted() {
             return Utilities.getFormattedDate(this.endDate);
         },
+        galleryImageList() {
+            const oGalleryImages = this.projectData.galleryImages;
+            return Object.values(oGalleryImages);
+        },
         // Other properties
         thumbnailImageLinkStyles() {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
@@ -257,7 +267,7 @@ export default {
             const tl = new TimelineLite({ onComplete: () => { resolve(); }});
             tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
             tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
-            tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.25");
+            tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
             tl.add(TweenLite.fromTo(summaryEl, summaryDuration, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
             tl.add(
                 TweenMax.staggerFromTo(
@@ -322,7 +332,7 @@ export default {
             const tl = new TimelineLite({ onComplete: () => { resolve(); }});
             tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
             tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
-            tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.25");
+            tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.75");
             tl.add(TweenLite.to(summaryEl, summaryDuration, { ...REG_ANIM_END_RIGHT }), "-=0.5");
             tl.add(
                 TweenMax.staggerTo(
