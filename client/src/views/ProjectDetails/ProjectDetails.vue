@@ -125,6 +125,7 @@ import LinkItem from "@/components/links/LinkItem.vue";
 import Tabs from "@/components/tabs/Tabs.vue";
 import Tab from "@/components/tabs/Tab.vue";
 
+/* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
@@ -211,20 +212,16 @@ export default {
     },
     methods: {
         descriptionTabEnter(el, done) {
-            console.log("description tab enter");
-            TweenLite.fromTo(el, 0.5, { opacity: 0 }, { opacity: 1, onComplete: () => done()});
+            TweenLite.fromTo(el, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1, onComplete: () => done() });
         },
         descriptionTabLeave(el, done) {
-            console.log("description tab leave");
-            TweenLite.to(el, 0.5, { opacity: 0, onComplete: () => done() });
+            TweenLite.to(el, 0.5, { x: 20, opacity: 0, onComplete: () => done() });
         },
         galleryTabEnter(el, done) {
-            console.log("gallery tab enter");
-            TweenLite.fromTo(el, 0.5, { x: 20 }, { x: 0, onComplete: () => done()});
+            TweenLite.fromTo(el, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1, onComplete: () => done() });
         },
         galleryTabLeave(el, done) {
-            console.log("gallery tab leave");
-            TweenLite.to(el, 0.5, { x: 20, onComplete: () => done() });
+            TweenLite.to(el, 0.5, { x: 20, opacity: 0, onComplete: () => done() });
         }
     },
     // ------------------
@@ -232,16 +229,130 @@ export default {
     // ------------------
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running ProjectDetails enter anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 0); // TODO: remove
+            console.log("Running ProjectDetails enter anim for", el); 
+
+            // Get DOM references
+            const titleEl = el.querySelector(".ProjectDetails__title");
+            const thumbnailImageEl = el.querySelector(".ProjectDetails__tint");
+            const dateEl = el.querySelector(".ProjectDetails__date");
+            const summaryEl = el.querySelector(".ProjectDetails__summary");
+            const linkItemEls = el.querySelectorAll(".ProjectDetails__link-item");
+            const tagItemEls = el.querySelectorAll(".ProjectDetails__tag-item");
+
+            const tabSelectorEls = el.querySelectorAll(".ProjectDetails__tab-selector");
+            const tabViewEl = el.querySelector(".ProjectDetails__tab-view");
+
+            // Kill anims
+            TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
+
+            const REG_ANIM_START_LEFT = { x: -30, opacity: 0 };
+            const REG_ANIM_START_RIGHT = { x: 30, opacity: 0 };
+            const REG_ANIM_END = { x: 0, opacity: 1, ease: Power1.easeOut };
+
+            // Run animations
+            const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
+            const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
+            const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
+
+            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
+            tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
+            tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
+            tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.25");
+            tl.add(TweenLite.fromTo(summaryEl, summaryDuration, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
+            tl.add(
+                TweenMax.staggerFromTo(
+                    linkItemEls,
+                    0.5, 
+                    { ...REG_ANIM_START_RIGHT },
+                    { ...REG_ANIM_END },
+                    0.1
+                ),
+                `-=${summaryDuration}`
+            );
+            tl.add(
+                TweenMax.staggerFromTo(
+                    tagItemEls,
+                    0.5, 
+                    { ...REG_ANIM_START_RIGHT },
+                    { ...REG_ANIM_END },
+                    0.1
+                ),
+                `-=${totalLinkItemsAnimTime}`
+            );
+            const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
+            tl.add(
+                TweenMax.staggerFromTo(
+                    tabSelectorEls,
+                    0.5, 
+                    { ...REG_ANIM_START_RIGHT },
+                    { ...REG_ANIM_END },
+                    0.1
+                ),
+                "-=0.25"
+            );
+            tl.add(TweenLite.fromTo(tabViewEl, 1, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
         });
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running ProjectDetails leave anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 100); // TODO: remove
+            console.log("Running ProjectDetails leave anim for", el); 
+
+            // Get DOM references
+            const titleEl = el.querySelector(".ProjectDetails__title");
+            const thumbnailImageEl = el.querySelector(".ProjectDetails__tint");
+            const dateEl = el.querySelector(".ProjectDetails__date");
+            const summaryEl = el.querySelector(".ProjectDetails__summary");
+            const linkItemEls = Array.from(el.querySelectorAll(".ProjectDetails__link-item")).reverse();
+            const tagItemEls = Array.from(el.querySelectorAll(".ProjectDetails__tag-item")).reverse();
+
+            const tabSelectorEls = Array.from(el.querySelectorAll(".ProjectDetails__tab-selector")).reverse();
+            const tabViewEl = el.querySelector(".ProjectDetails__tab-view");
+
+            // Kill anims
+            TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
+
+            const REG_ANIM_END_LEFT = { x: -30, opacity: 0, ease: Power1.easeOut };
+            const REG_ANIM_END_RIGHT = { x: 30, opacity: 0, ease: Power1.easeOut };
+
+            // Run animations
+            const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
+            const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
+            const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
+
+            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
+            tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
+            tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
+            tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.25");
+            tl.add(TweenLite.to(summaryEl, summaryDuration, { ...REG_ANIM_END_RIGHT }), "-=0.5");
+            tl.add(
+                TweenMax.staggerTo(
+                    linkItemEls,
+                    0.3, 
+                    { ...REG_ANIM_END_RIGHT },
+                    0.1
+                ),
+                `-=${summaryDuration}`
+            );
+            tl.add(
+                TweenMax.staggerTo(
+                    tagItemEls,
+                    0.3, 
+                    { ...REG_ANIM_END_RIGHT },
+                    0.1
+                ),
+                `-=${totalLinkItemsAnimTime}`
+            );
+            const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
+            tl.add(
+                TweenMax.staggerTo(
+                    tabSelectorEls,
+                    0.3, 
+                    { ...REG_ANIM_END_RIGHT },
+                    0.1
+                ),
+                "-=0.25"
+            );
+            tl.add(TweenLite.to(tabViewEl, 1, { ...REG_ANIM_END_RIGHT }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
         });
     }
 }
