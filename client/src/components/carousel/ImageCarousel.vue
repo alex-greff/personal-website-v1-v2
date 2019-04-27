@@ -4,13 +4,19 @@
         @mouseover="onMouseOverHandler"
         @mouseleave="onMouseLeaveHandler"
     >
-        <transition name="fade" mode="out-in">
-            <div 
-                :key="index"
-                class="ImageCarousel__image"
-                :style="currImageLinkStyles"
-            />
-        </transition>
+        <div class="ImageCarousel__content">
+            <transition name="fade" mode="out-in">
+                <div 
+                    :key="index"
+                    class="ImageCarousel__image"
+                    :style="currImageLinkStyles"
+                />
+            </transition>
+            
+            <div class="ImageCarousel__controls">
+                <!-- TODO: add controls here -->
+            </div>
+        </div>
         <div 
             v-if="displayCountdownTimer && enableCountdown"
             class="ImageCarousel__timer-display-container"
@@ -37,7 +43,7 @@ export default {
                 return value.length > 0;
             }
         },
-        displayNav: {
+        showNavigationItems: {
             type: Boolean,
             default: true    
         },
@@ -201,23 +207,42 @@ export default {
     }
 
     .ImageCarousel {
-        position: relative;
+        z-index: -2;
 
-        background-color: rgba(0, 0, 0, 0);
-
-        transition: background-color 0.4s;
-
-        & > .ImageCarousel__image {
-            // Force 16:9 aspect ratio
-            width: 100%;
-            padding-bottom: 56.25%;
-
-            z-index: -1;
-
+        & > .ImageCarousel__content {
             position: relative;
 
-            background-size: cover;
-            background-position: center center;
+            background-color: rgba(0, 0, 0, 0);
+            transition: background-color 0.4s;
+
+            & > .ImageCarousel__image {
+                z-index: -1;
+
+                position: relative;
+
+                // Force 16:9 aspect ratio
+                width: 100%;
+                padding-bottom: 56.25%;
+
+                background-size: cover;
+                background-position: center center;
+            }
+
+            & > .ImageCarousel__controls {
+                // Initialize as hidden
+                opacity: 0;
+                pointer-events: none;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                transition: opacity 0.4s;
+
+
+            }
         }
 
         & > .ImageCarousel__timer-display-container {
@@ -254,8 +279,15 @@ export default {
         // --- Modifiers ---
         // -----------------
         &:hover {
-            // Tint
-            background-color: rgba(0, 0, 0, 0.8);
+            & > .ImageCarousel__content {
+                background-color: rgba(0, 0, 0, 0.8);
+
+                & > .ImageCarousel__controls {
+                    // Show controls
+                    opacity: 1;
+                    pointer-events: initial;
+                } 
+            }
         }
     }
 </style>
