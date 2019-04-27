@@ -18,7 +18,7 @@
             </div>
         </div>
         <div 
-            v-if="displayCountdownTimer && enableCountdown"
+            v-if="displayCountdownTimer"
             class="ImageCarousel__timer-display-container"
         >
             <div
@@ -51,6 +51,10 @@ export default {
             type: Boolean,
             default: true
         },
+        showCountdownTimer: {
+            type: Boolean,
+            default: true,
+        },
         enableCountdown: {
             type: Boolean,
             default: true,
@@ -63,10 +67,6 @@ export default {
             type: Number,
             default: 500
         },
-        displayCountdownTimer: {
-            type: Boolean,
-            default: true,
-        }, 
         countdownHoverPause: {
             type: Boolean,
             default: true, 
@@ -87,6 +87,9 @@ export default {
         currImageLinkStyles() {
             const sCurrImageLink = this.images[this.index];
             return { backgroundImage: `url('${sCurrImageLink}')` }
+        },
+        displayCountdownTimer() {
+            return showCountdownTimer && enableCountdown;
         }
     },
     watch: {
