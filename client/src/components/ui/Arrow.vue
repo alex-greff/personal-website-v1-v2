@@ -1,13 +1,17 @@
 <template>
     <div :class="rootClasses">
-        <md-icon v-if="isArrowLeft" class="Arrow__icon">keyboard_arrow_left</md-icon>
-        <md-icon v-if="isArrowRight" class="Arrow__icon">keyboard_arrow_right</md-icon>
-        <md-icon v-if="isArrowUp" class="Arrow__icon">keyboard_arrow_up</md-icon>
-        <md-icon v-if="isArrowDown" class="Arrow__icon">keyboard_arrow_down</md-icon>
+        <md-icon :key="currIconID" class="Arrow__icon">{{ currIconID }}</md-icon>
     </div>
 </template>
 
 <script>
+const DIRECTION_TO_ICON_NAME = {
+    "left": "keyboard_arrow_left",
+    "right": "keyboard_arrow_right",
+    "up": "keyboard_arrow_up",
+    "down": "keyboard_arrow_down"
+};
+
 export default {
     props: {
         direction: {
@@ -30,23 +34,19 @@ export default {
         }
     },
     computed: {
-        isArrowRight() {
-            return this.direction === "right";
-        },
-        isArrowLeft() {
-            return this.direction === "left";
-        },
-        isArrowUp() {
-            return this.direction === "up";
-        },
-        isArrowDown() {
-            return this.direction === "down";
+        currIconID() {
+            return this.getIconID(this.direction);
         },
         sizeModifierClass() {
             return this.size;
         },
         rootClasses() {
             return `Arrow ${this.sizeModifierClass}`.trim();
+        }
+    },
+    methods: {
+        getIconID(direction) {
+            return DIRECTION_TO_ICON_NAME[direction];
         }
     }
 }
