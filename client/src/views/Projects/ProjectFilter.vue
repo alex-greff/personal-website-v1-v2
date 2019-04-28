@@ -21,6 +21,10 @@
         >
             {{ filterName }}
         </tag-item>
+
+        <div class="ProjectFilter__sub-script">
+            Filter Projects
+        </div>
     </div>
 </template>
 
@@ -126,6 +130,20 @@ export default {
         & .ProjectFilter__item {
             margin-top: 0.3rem;
             font-size: inherit;
+        }
+
+        & .ProjectFilter__sub-script {
+            $tilt-angle: 60deg;
+            $font-size: 1.3rem;
+
+            margin-top: 0.3rem;
+            margin-left: 0.7rem;
+            color: theme-link("page", "text-color", "secondary", 0.3);
+            font-size: $font-size;
+            line-height: $font-size;
+            letter-spacing: 0.2rem;
+        
+            transform: skewX(calc(#{$tilt-angle} - 90deg));
         }
     }
 </style>

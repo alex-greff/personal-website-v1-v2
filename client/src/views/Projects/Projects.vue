@@ -26,7 +26,6 @@
                     :key="project.name"
                     class="Projects__item"
                     content-class="Projects__item-content"
-
                     :project-data="project"
                 />
             </transition-group>
@@ -305,7 +304,7 @@ const _leaveAnim = (el) => {
             }
 
             & .Projects__grid {
-                margin-top: 3rem;
+                margin-top: 2.5rem;
                 margin-bottom: 3rem;
 
                 display: grid;
