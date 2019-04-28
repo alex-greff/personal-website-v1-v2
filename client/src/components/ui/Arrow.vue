@@ -54,6 +54,8 @@ export default {
 
 <style lang="scss" scoped>
     .Arrow {
+        color: theme-link("page", "text-color", "primary");
+
         & .Arrow__icon {
             color: theme-link("page", "text-color", "primary");
 

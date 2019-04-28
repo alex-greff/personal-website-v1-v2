@@ -13,8 +13,7 @@
                 />
             </transition>
             
-            <div class="ImageCarousel__controls">
-                <!-- TODO: add controls here -->
+            <div class="ImageCarousel__container">
                 <arrow 
                     class="ImageCarousel__nav-left" 
                     direction="left"
@@ -29,6 +28,18 @@
                 >
                     Right arrow
                 </arrow>
+
+                <div
+                    v-if="displayInfoContainer"
+                    class="ImageCarousel__info-container"
+                >
+                    <fractional-progress-display 
+                        v-if="showProgressDisplay"
+                        class="ImageCarousel__progress-display"
+                        :curr-item="index"
+                        :total-items="imageCount"
+                    />
+                </div>
             </div>
         </div>
         <div 
@@ -48,10 +59,12 @@ import Timer from "tiny-timer";
 import { TweenLite } from "gsap/all";
 
 import Arrow from "@/components/ui/Arrow.vue";
+import FractionalProgressDisplay from "@/components/progressDisplays/FractionalProgressDisplay.vue";
 
 export default {
     components: {
         arrow: Arrow,
+        fractionalProgressDisplay: FractionalProgressDisplay,
     },
     props: {
         images: {
@@ -61,13 +74,13 @@ export default {
                 return value.length > 0;
             }
         },
-        showNavigationItems: {
-            type: Boolean,
-            default: true    
-        },
         showNavigationArrows: {
             type: Boolean,
             default: true
+        },
+        showProgressDisplay: {
+            type: Boolean,
+            default: true,
         },
         showCountdownTimer: {
             type: Boolean,
@@ -79,7 +92,7 @@ export default {
         },
         countdownTime: {
             type: Number, // millisections
-            default: 6000
+            default: 8000
         },
         countdownUpdateInterval: {
             type: Number,
@@ -108,6 +121,13 @@ export default {
         },
         displayCountdownTimer() {
             return this.showCountdownTimer && this.enableCountdown;
+        },
+        imageCount() {
+            return this.images.length;
+        }, 
+        displayInfoContainer() {
+            // Note: tge info container is here just in case I want to add another item at the bottom
+            return this.showProgressDisplay; 
         }
     },
     watch: {
@@ -131,14 +151,14 @@ export default {
             } else {
                 this.forceDisableDisplayTimer();
             }
-        }
+        },
     },
     mounted() {
         if (this.enableCountdown) {
             this.startTimer();
         }
     },
-    beforeDestroy() {
+    destroyed() {
         this.stopTimer();
     },
     methods: {
@@ -263,7 +283,7 @@ export default {
                 background-position: center center;
             }
 
-            & > .ImageCarousel__controls {
+            & > .ImageCarousel__container {
                 // Initialize as hidden
                 opacity: 0;
                 pointer-events: none;
@@ -288,6 +308,17 @@ export default {
 
                 & > .ImageCarousel__nav-right {
                     right: 0;
+                }
+
+                & > .ImageCarousel__info-container {
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    & > .ImageCarousel__progress-display {
+                        margin-bottom: 0.5rem;
+                    }
                 }
             }
         }
@@ -327,10 +358,10 @@ export default {
         // -----------------
         &:hover {
             & > .ImageCarousel__content {
-                background-color: rgba(0, 0, 0, 0.8);
+                background-color: rgba(0, 0, 0, 0.6);
 
-                & > .ImageCarousel__controls {
-                    // Show controls
+                & > .ImageCarousel__container {
+                    // Show container
                     opacity: 1;
                     pointer-events: initial;
                 } 
