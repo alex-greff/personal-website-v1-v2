@@ -8,6 +8,7 @@
             <project-filter
                 class="Projects__filter"
                 tag-class="Projects__filter-item"
+                sub-script-class="Projects__filter-sub-script"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
             />
@@ -180,6 +181,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
 
         console.log("Running project els animation", el);
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
+        const filterSubScriptEl = el.querySelector(".Projects__filter-sub-script");
         const projectItemEls = el.querySelectorAll(".Projects__item-content");
 
         // Kill any running animations
@@ -187,6 +189,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
 
         // TODO: consolidate these animations with the same ones that are in _enterAnim
         const tl = new TimelineLite({ onComplete: () => resolve() });
+        tl.add(TweenLite.fromTo(filterSubScriptEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }));
         tl.add(
             TweenMax.staggerFromTo(
                 filterItemEls,
@@ -195,6 +198,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
                 { x: 0, opacity: 1 },
                 0.1
             ),
+            "-=0.5"
         );
         const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
         tl.add(
@@ -250,6 +254,7 @@ const _leaveAnim = (el) => {
         // Get DOM references
         const titleEl = el.querySelector(".Projects__title");
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
+        const filterSubScriptEl = el.querySelector(".Projects__filter-sub-script");
         const projectItemEls = el.querySelectorAll(".Projects__item-content");
 
         // Kill any running animations
@@ -258,6 +263,7 @@ const _leaveAnim = (el) => {
         // Run animations
         const tl = new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
+        tl.add(TweenLite.to(filterSubScriptEl, 0.5, { x: 20, opacity: 0}), "-=0.25");
         tl.add(
             TweenMax.staggerTo(
                 filterItemEls,
@@ -265,7 +271,7 @@ const _leaveAnim = (el) => {
                 { x: 20, opacity: 0 },
                 0.1
             ), 
-            "-=0.25"
+            "-=0.5"
         );
         const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
         tl.add(

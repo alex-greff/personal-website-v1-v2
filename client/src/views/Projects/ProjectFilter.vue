@@ -22,7 +22,7 @@
             {{ filterName }}
         </tag-item>
 
-        <div class="ProjectFilter__sub-script">
+        <div :class="subScriptClasses">
             Filter Projects
         </div>
     </div>
@@ -53,6 +53,10 @@ export default {
             type: String,
             default: ""
         },
+        subScriptClass: {
+            type: String,
+            default: ""
+        },
         height: { // rem
             type: Number,
             default: 2.8,
@@ -69,6 +73,9 @@ export default {
     computed: {
         tagItemClasses() {
             return `ProjectFilter__item ${this.tagClass}`.trim();
+        },
+        subScriptClasses() {
+            return `ProjectFilter__sub-script ${this.subScriptClass}`.trim();
         }
     },
     watch: {

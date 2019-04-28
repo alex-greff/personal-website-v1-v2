@@ -132,7 +132,7 @@ export default {
 
         // Force 16:9 aspect ratio
         width: 100%;
-        padding-bottom: 56.25%;
+        @include aspect-ratio("16:9");
 
         cursor: pointer;
 
