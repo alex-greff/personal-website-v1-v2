@@ -3,7 +3,7 @@
         <router-link
             :to="detailsRouterPath"
             tag="div"
-            class="ProjectItem__content"
+            :class="contentClassList"
         >
             <!-- Note: this first anchor tag is used by router-link -->
             <a>
@@ -63,7 +63,11 @@ export default {
         maxTags: {
             type: Number,
             default: 10, // TODO: this might need some adjusting
-        }
+        },
+        contentClass: {
+            type: String,
+            default: ""
+        },
     },
     data() {
         return {
@@ -75,6 +79,9 @@ export default {
     computed: {
         projectItemClassList() {
             return `ProjectItem ${(this.hover ? "hover" :  "")}`.trim();
+        },
+        contentClassList() {
+            return `ProjectItem__content ${this.contentClass}`.trim();
         },
         thumbnailImageLinkStyles() {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };

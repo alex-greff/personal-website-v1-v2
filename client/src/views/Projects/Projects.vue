@@ -25,6 +25,7 @@
                     v-for="project in projectsFiltered"
                     :key="project.name"
                     class="Projects__item"
+                    content-class="Projects__item-content"
 
                     :project-data="project"
                 />
@@ -180,7 +181,7 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
 
         console.log("Running project els animation", el);
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
-        const projectItemEls = el.querySelectorAll(".Projects__item");
+        const projectItemEls = el.querySelectorAll(".Projects__item-content");
 
         // Kill any running animations
         TweenLite.killTweensOf([...filterItemEls, ...projectItemEls]);
@@ -202,7 +203,8 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
                 projectItemEls,
                 0.3,
                 { x: -20, opacity: 0 },
-                { x: 0, opacity: 1, clearProps: "all" },
+                { x: 0, opacity: 1 },
+                // { x: 0, opacity: 1, clearProps: "all" },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
@@ -217,7 +219,7 @@ const _enterAnim = (el) => {
         // Get DOM references
         const titleEl = el.querySelector(".Projects__title");
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
-        const projectItemEls = el.querySelectorAll(".Projects__item");
+        const projectItemEls = el.querySelectorAll(".Projects__item-content");
 
         // Kill any running animations (that we know are for sure there)
         TweenLite.killTweensOf(titleEl);
@@ -249,7 +251,7 @@ const _leaveAnim = (el) => {
         // Get DOM references
         const titleEl = el.querySelector(".Projects__title");
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
-        const projectItemEls = el.querySelectorAll(".Projects__item");
+        const projectItemEls = el.querySelectorAll(".Projects__item-content");
 
         // Kill any running animations
         TweenLite.killTweensOf([titleEl, ...filterItemEls, ...projectItemEls]);
@@ -311,6 +313,12 @@ const _leaveAnim = (el) => {
                 grid-row-gap: 2rem;
 
                 $item-width: 30rem;
+
+                & /deep/ .Projects__item {
+                    & /deep/ .Projects__item-content {
+                        will-change: transform, opacity;
+                    }
+                }
 
                 // ---------------------
                 // --- Media Queries ---
