@@ -83,7 +83,7 @@
                         </tab>
                     </template>
 
-                    <template v-slot:gallery_selector>
+                    <template v-if="hasGalleryImages" v-slot:gallery_selector>
                         <pd-tab-selector 
                             tab-name="gallery"
                             :height="tabSelectorHeight"
@@ -95,7 +95,7 @@
                         </pd-tab-selector>
                     </template>
 
-                    <template v-slot:gallery>
+                    <template v-if="hasGalleryImages" v-slot:gallery>
                         <tab>
                             <gallery 
                                 class="ProjectDetails__gallery"
@@ -145,27 +145,6 @@ export default {
     },
     data() {
         return {
-            // Tab configuration
-            tabs: [
-                {
-                    name: "description",
-                    selector: "description_selector",
-                    transition: {
-                        "mode": "out-in",
-                        "@enter": this.descriptionTabEnter,
-                        "@leave": this.descriptionTabLeave
-                    }
-                },
-                {
-                    name: "gallery",
-                    selector: "gallery_selector",
-                    transition: {
-                        "mode": "out-in",
-                        "@enter": this.galleryTabEnter,
-                        "@leave": this.galleryTabLeave
-                    }
-                }
-            ],
             initialTab: "description",
             // Tab selector config
             tabSelectorHeight: 3.7, // rem
@@ -178,6 +157,35 @@ export default {
         ...mapGetters({
             projects: getterTypes.GET_ALL_PROJECTS
         }),
+        tabs() { // Tab configuration
+            const aTabs = [];
+
+            // Add description tab config
+            aTabs.push({
+                name: "description",
+                selector: "description_selector",
+                transition: {
+                    "mode": "out-in",
+                    "@enter": this.descriptionTabEnter,
+                    "@leave": this.descriptionTabLeave
+                }
+            });
+
+            // Add gallery tab config if this project has gallery images
+            if (this.hasGalleryImages) {
+                aTabs.push({
+                    name: "gallery",
+                    selector: "gallery_selector",
+                    transition: {
+                        "mode": "out-in",
+                        "@enter": this.galleryTabEnter,
+                        "@leave": this.galleryTabLeave
+                    }
+                });
+            }
+
+            return aTabs;
+        },
         // Project properties
         projectName() {
             return this.$route.params.id;
@@ -203,6 +211,10 @@ export default {
         },
         endDateFormatted() {
             return Utilities.getFormattedDate(this.endDate);
+        },
+        hasGalleryImages() {
+            const oGalleryImages = this.projectData.galleryImages;
+            return Object.values(oGalleryImages).length > 0;
         },
         galleryImageList() {
             const oGalleryImages = this.projectData.galleryImages;
