@@ -378,6 +378,16 @@ export function runFunctionsWithParams(i_aParams, ...i_fnFuncs) {
     });
 }
 
+/**
+ * Preloads the given image into the site.
+ * 
+ * @param {String} i_sImageSrc The source path to the image.
+ */
+export function preloadImage(i_sImageSrc) {
+    // Preload the image
+    new Image().src = i_sImageSrc;
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -410,4 +420,5 @@ export default {
     getFormattedDate,
     runFunctions,
     runFunctionsWithParams,
+    preloadImage,
 };

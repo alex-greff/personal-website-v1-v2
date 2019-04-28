@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import update from 'immutability-helper';
+import Utilities from "@/utilities";
 
 import { getterTypes, mutationTypes, actionTypes } from '@/store/types';
 
@@ -101,7 +102,10 @@ const actions = {
                 // knows where to access it
                 const thumbnailImage = currData['thumbnailImage'];
                 if (thumbnailImage) {
-                    currData['thumbnailImage'] = `${thumbnailImage}`.replace('\\', '/');
+                    const sThumbnailPath = `${thumbnailImage}`.replace('\\', '/')
+                    currData['thumbnailImage'] = sThumbnailPath;
+                    // Preload the thumbnail
+                    Utilities.preloadImage(sThumbnailPath);
                 }
 
                 const galleryImages = currData['galleryImages'];
@@ -109,7 +113,10 @@ const actions = {
                     const newGalleryImages = {};
 
                     Object.entries(galleryImages).forEach(([ID, path]) => {
-                        newGalleryImages[ID] = `/${path}`.replace('\\', '/');
+                        const sCurrGalleryImagePath = `/${path}`.replace('\\', '/');
+                        newGalleryImages[ID] = sCurrGalleryImagePath;
+                        // Preload the current gallery image
+                        Utilities.preloadImage(sCurrGalleryImagePath);
                     });
 
                     currData['galleryImages'] = newGalleryImages;
