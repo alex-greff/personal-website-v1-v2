@@ -24,12 +24,15 @@ export default {
         },
         totalItems: {
             type: Number,
-            required: true
+            required: true,
+            validator(val) { 
+                return val >= 0;
+            }
         }
     },
     computed: {
         currItemDisplay() {
-            return this.currItem + 1;
+            return (this.currItem % this.totalItems) + 1;
         }
     }
 }
