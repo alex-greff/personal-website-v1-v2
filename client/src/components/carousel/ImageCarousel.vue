@@ -15,6 +15,20 @@
             
             <div class="ImageCarousel__controls">
                 <!-- TODO: add controls here -->
+                <arrow 
+                    class="ImageCarousel__nav-left" 
+                    direction="left"
+                    @click.native="nextImage(-1, false)"
+                >
+                    Left arrow
+                </arrow>
+                <arrow 
+                    class="ImageCarousel__nav-right" 
+                    direction="right"
+                    @click.native="nextImage(1, false)"
+                >
+                    Right arrow
+                </arrow>
             </div>
         </div>
         <div 
@@ -31,10 +45,14 @@
 
 <script>
 import Timer from "tiny-timer";
-
 import { TweenLite } from "gsap/all";
 
+import Arrow from "@/components/ui/Arrow.vue";
+
 export default {
+    components: {
+        arrow: Arrow,
+    },
     props: {
         images: {
             type: Array,
@@ -89,7 +107,7 @@ export default {
             return { backgroundImage: `url('${sCurrImageLink}')` }
         },
         displayCountdownTimer() {
-            return showCountdownTimer && enableCountdown;
+            return this.showCountdownTimer && this.enableCountdown;
         }
     },
     watch: {
@@ -145,6 +163,12 @@ export default {
 
             if (this.timerTween) {
                 this.timerTween.kill();
+
+                // Reset timer display element
+                const timerDisplayEl = this.$refs.timerDisplayEl;
+                if (timerDisplayEl) {
+                    TweenLite.to(timerDisplayEl, 0, { width: "0%" });
+                }
             }
         },
         pauseTimer() {
@@ -161,12 +185,16 @@ export default {
                 this.timerTween.play();
             }
         },
-        nextImage() {
+        nextImage(increment = 1, restartTimer = true) {
             // Update index of the current image
-            this.index = (this.index + 1) % this.images.length;
+            this.index = (this.index + increment) % this.images.length;
 
-            // Restart the timer
-            this.startTimer();
+            this.stopTimer();
+
+            if (restartTimer || !this.countdownHoverPause) {
+                // Restart the timer
+                this.startTimer();
+            }
         },
         forceEnableDisplayTimer() {
             const timerDisplayEl = this.$refs.timerDisplayEl;
@@ -195,7 +223,11 @@ export default {
             }
         },
         onMouseLeaveHandler() {
-            this.resumeTimer();
+            if (this.timer.status === "paused") {
+                this.resumeTimer();
+            } else if (this.timer.status === "stopped") {
+                this.startTimer();
+            }
         }
     },
 }
@@ -244,7 +276,19 @@ export default {
 
                 transition: opacity 0.4s;
 
+                & > .ImageCarousel__nav-right, & > .ImageCarousel__nav-left {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
 
+                & > .ImageCarousel__nav-left {
+                    left: 0;
+                }
+
+                & > .ImageCarousel__nav-right {
+                    right: 0;
+                }
             }
         }
 

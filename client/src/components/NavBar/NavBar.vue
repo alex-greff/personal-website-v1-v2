@@ -6,7 +6,7 @@
         <div ref="menuEl" class="NavBar__menu-container" @click="toggleNavMenu">
             <md-icon v-if="isOpen" class="NavBar__menu-icon">close</md-icon>
             <md-icon v-else class="NavBar__menu-icon">menu</md-icon>
-        </div>
+        </div>  
         <nav-link-container 
             class="NavBar__pages-container"
             :is-open="isOpen"
