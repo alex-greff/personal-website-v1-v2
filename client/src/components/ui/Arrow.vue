@@ -1,7 +1,9 @@
 <template>
     <div :class="rootClasses">
-        <md-icon v-if="isLeft" class="Arrow__icon">keyboard_arrow_left</md-icon>
-        <md-icon v-if="isRight" class="Arrow__icon">keyboard_arrow_right</md-icon>
+        <md-icon v-if="isArrowLeft" class="Arrow__icon">keyboard_arrow_left</md-icon>
+        <md-icon v-if="isArrowRight" class="Arrow__icon">keyboard_arrow_right</md-icon>
+        <md-icon v-if="isArrowUp" class="Arrow__icon">keyboard_arrow_up</md-icon>
+        <md-icon v-if="isArrowDown" class="Arrow__icon">keyboard_arrow_down</md-icon>
     </div>
 </template>
 
@@ -12,7 +14,7 @@ export default {
             type: String,
             default: "right",
             validator(val) {
-                return ["right", "left"].indexOf(val) !== -1;
+                return ["right", "left", "up", "down"].indexOf(val) !== -1;
             }
         },
         disabled: {
@@ -28,11 +30,17 @@ export default {
         }
     },
     computed: {
-        isRight() {
+        isArrowRight() {
             return this.direction === "right";
         },
-        isLeft() {
+        isArrowLeft() {
             return this.direction === "left";
+        },
+        isArrowUp() {
+            return this.direction === "up";
+        },
+        isArrowDown() {
+            return this.direction === "down";
         },
         sizeModifierClass() {
             return this.size;
