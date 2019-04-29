@@ -201,16 +201,18 @@ export default {
         },
         // Date properties
         startDate() {
-            return new Date(this.projectData.startDate);
+            const sStartDate = this.projectData.startDate;
+            return (sStartDate) ? new Date(sStartDate) : null;
         },
         endDate() {
-            return new Date(this.projectData.endDate);
+            const sEndDate = this.projectData.endDate;
+            return (sEndDate) ? new Date(sEndDate) : null;
         },
         startDateFormatted() {
-            return Utilities.getFormattedDate(this.startDate);
+            return (this.startDate) ? Utilities.getFormattedDate(this.startDate) : "Unknown";
         },
         endDateFormatted() {
-            return Utilities.getFormattedDate(this.endDate);
+            return (this.endDate) ? Utilities.getFormattedDate(this.endDate) : "Present";
         },
         hasGalleryImages() {
             const oGalleryImages = this.projectData.galleryImages;
