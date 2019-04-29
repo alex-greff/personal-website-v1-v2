@@ -18,7 +18,7 @@ const projectSchema = mongoose.Schema({
     galleryImages: { type: Map, of: String, required: false },
 
     // Dates
-    startDate: { type: Date, required: true },
+    startDate: { type: Date, required: false, default: null }, // Null implies unknown start date
     endDate: { type: Date, required: false, default: null } // Null implies ongoing
 });
 
