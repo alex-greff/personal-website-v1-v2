@@ -59,7 +59,10 @@ export default {
         linkItem: LinkItem,
     },
     props: {
-        projectData: { type: Object, required: true },
+        projectData: { 
+            type: Object, 
+            required: true 
+        },
         maxTags: {
             type: Number,
             default: 10, // TODO: this might need some adjusting
