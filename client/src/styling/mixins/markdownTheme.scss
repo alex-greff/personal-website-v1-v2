@@ -1,0 +1,109 @@
+@mixin markdown-theme() {
+    font-size: 1.5rem;
+    font-weight: 300;
+
+    & /deep/ {
+        // -------------------------
+        // --- Markdown stylings ---
+        // -------------------------
+        & h1, & h2, & h3, & h4, & h5 {
+            font-weight: 500;
+            &:not(:last-child) {
+                margin-bottom: 0.3rem;
+            }
+
+            color: theme-link("project-details", "accent-color", "primary");
+
+            // Section spacing
+            &:not(:first-child) {
+                margin-top: 1.3rem;
+            }
+        }
+        
+        & h1 {
+            font-size: 3rem;
+            line-height: 3rem;
+        }
+
+        & h2 {
+            font-size: 2.3rem;
+            line-height: 2.3rem;
+        }
+
+        & h3 {
+            font-size: 2.1rem;
+            line-height: 2.1rem;
+        }
+
+        & h4 {
+            font-size: 1.8rem;
+            line-height: 1.8rem;
+        }
+
+        & h5 {
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        & p {
+            &:not(:last-child) {
+                margin-bottom: 0.3rem;
+            }
+        }
+
+        & strong {
+            font-weight: 500;
+        }
+
+        & em {
+            font-style: italic;
+        }
+
+        & ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+
+            & li {
+                $indentation: 0.7rem;
+                $dot-size: 5px;
+                $dot-spacing: 1rem;
+
+                position: relative;
+
+                padding-left: calc(#{$dot-size} + #{$dot-spacing});
+                margin-left: $indentation;
+
+                &::before {
+                    content: "";
+
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+
+                    transform: translateY(-50%);
+
+                    width: $dot-size;
+                    height: $dot-size;
+
+                    border-radius: 50%;
+
+                    background-color: theme-link("project-details", "selected-color", "primary");
+                }
+            }
+        }
+
+        & a {
+            color: inherit;
+            text-decoration: none !important;
+
+            color: theme-link("project-details", "accent-color", "primary");
+
+            transition: color 0.3s;
+
+            &:hover {
+                color: theme-link("project-details", "selected-color", "primary");
+            }
+        }
+    }
+}
