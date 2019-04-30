@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import VueFragment from "vue-fragment"
+import VueFragment from 'vue-fragment';
+import VeeValidate from 'vee-validate';
 
 import App from './App.vue';
 import router from './router/router';
@@ -36,6 +37,9 @@ Vue.component('fa-icon', Icon);
 
 // Vue Fragment
 Vue.use(VueFragment.Plugin);
+
+// Vee-Validate
+Vue.use(VeeValidate);
 
 // Bind axios to vue
 // Note: the default request url can be set with axios.defaults.baseURL = <some url>;
