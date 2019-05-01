@@ -1,24 +1,24 @@
 <template>
     <field-base
         :id="name"
-        class="TextField"
+        class="TextAreaField"
         :title="title"
         :error="error"
     >
-        <input 
+        <textarea
             :id="name"
             v-bind="$attrs"
             :class="[
-                'TextField__input',
+                'TextAreaField__text-area',
                 { 'error': hasErrors} 
             ]"
-            :type="type"
             :value="value"
             :disabled="disabled"
             @input="updateValue"
             @change="updateValue"
             @blur="$emit('blur')"
         >
+        </textarea>
     </field-base>
 </template>
 
@@ -55,14 +55,6 @@ export default {
             type: Boolean,
             default: false
         },
-        type: {
-            type: String,
-            default: "text",
-            validator(val) {
-                const validTypes = ["url", "text", "password", "email", "search"];
-                return validTypes.indexOf(val) > -1;
-            }
-        },
         // v-model stuff
         value: String,
     },
@@ -81,12 +73,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .TextField {
-        & .TextField__input {
-            display: inline-block;
+    .TextAreaField {
+        & .TextAreaField__text-area {
             width: 100%;
+            min-height: 20rem;
+            max-height: 50rem;
+            resize: vertical;
 
             @include standard-field-styles("contact");
         }
     }
 </style>
+

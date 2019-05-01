@@ -1,4 +1,4 @@
-@mixin buttonStyles($base: "button", $component-based: true) {
+@mixin standard-button-styles($base: "button", $component-based: true) {
     display: inline-block;
     font-size: 2rem;
 

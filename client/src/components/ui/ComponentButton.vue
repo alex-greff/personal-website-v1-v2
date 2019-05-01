@@ -9,7 +9,11 @@
             <slot></slot>
         </a>
     </router-link>
-    <component :is="tag" v-else>
+    <component 
+        :is="tag" 
+        v-else
+        class="Button"
+    >
         <a :href="href">
             <slot></slot>
         </a>
@@ -42,6 +46,6 @@ export default {
 
 <style lang="scss" scoped>
     .Button {
-        @include buttonStyles();
+        @include standard-button-styles();
     }
 </style>
