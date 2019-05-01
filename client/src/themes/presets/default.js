@@ -29,6 +29,10 @@ const template = {
         "button-color": {
             "primary": "rgb(0, 0, 0)", // TODO:
             "secondary": "rgb(0, 0, 0)" // TODO:
+        },
+        "error-color": {
+            "primary": "rgb(250, 74, 74)",
+            "secondary": "rgb(255, 0, 0)",
         }
     },
     "subSections": {

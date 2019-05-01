@@ -388,6 +388,16 @@ export function preloadImage(i_sImageSrc) {
     new Image().src = i_sImageSrc;
 }
 
+/**
+ * Generates a unique ID.
+ * 
+ * @param {String} [i_sPrefix] (Optional) A prefix attached to the unique ID.
+ */
+export const generateUniqueID = (i_sPrefix = null) => {
+    const sPrefixCleaned = (i_sPrefix) ? `${i_sPrefix}-` : "";
+    return `${sPrefixCleaned}${(Math.random().toString(36) + Date.now().toString(36)).substr(2, 10)}`;
+};
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -421,4 +431,5 @@ export default {
     runFunctions,
     runFunctionsWithParams,
     preloadImage,
+    generateUniqueID,
 };

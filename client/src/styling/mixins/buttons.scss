@@ -1,0 +1,35 @@
+@mixin buttonStyles($base: "button", $component-based: true) {
+    display: inline-block;
+    font-size: 2rem;
+
+    color: theme-link($base, "accent-color", "primary");
+
+    border: 0.1rem solid;
+    border-radius: 0.2rem;
+
+    cursor: pointer;
+    text-align: center;
+
+    background-color: theme-link($base, "accent-color", "secondary", 0);
+
+    transition: background-color 0.4s;
+
+    &:hover {
+        text-decoration: none;
+        background-color: theme-link($base, "accent-color", "secondary", 0.192);
+    }
+
+    @if $component-based == true {
+        & a {
+            display: inline-block;
+    
+            font-size: inherit;
+            text-decoration: none !important;
+            color: inherit;
+    
+            padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        }
+    } @else {
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    }
+}

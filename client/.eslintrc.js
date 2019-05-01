@@ -17,6 +17,7 @@ module.exports = {
         // "plugin:prettier/recommended"
     ],
     rules: {
+        "vue/require-default-prop": ["ignore"],
         "vue/component-name-in-template-casing": ["error", "PascalCase"],
         "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
         "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",

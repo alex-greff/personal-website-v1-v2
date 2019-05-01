@@ -5,7 +5,8 @@ export const baseProperties = [
     "selected-color",
     "icon-color",
     "scrollbar-color",
-    "button-color"
+    "button-color",
+    "error-color",
 ];
 
 export const propertyVariations = [
@@ -24,6 +25,7 @@ export const subSections = [
     "projects",
     "projects-item",
     "project-details",
+    "contact"
 ];
 
 export default {

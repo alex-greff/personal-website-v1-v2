@@ -8,7 +8,15 @@
                 class="Contact__form"
                 @submit.prevent="submit"
             >
-                <input-field v-model="someVal" />
+                <text-field 
+                    v-model="someVal"
+                    v-validate="'required'"
+                    title="Name"
+                    name="name"
+                    :error="errors.first('name')"
+                />
+
+                <!-- v-model="someVal" -->
 
                 <button type="submit">Send</button>
             </form>
@@ -17,15 +25,16 @@
 </template>
 
 <script>
-import InputField from "@/components/ui/forms/InputField.vue";
+import TextField from "@/components/ui/forms/TextField.vue";
 
 export default {
     components: {
-        inputField: InputField,
+        textField: TextField,
     },
     data() {
         return {
-            someVal: "hi"
+            someVal: "hi",
+            test: "testy"
         }
     },
     methods: {

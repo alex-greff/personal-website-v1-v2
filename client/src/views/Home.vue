@@ -7,12 +7,6 @@
                     <span class="hi">Hi,&nbsp;</span><span class="my-name-is">my name is</span>
                 </div>
                 <h1 class="name-text">
-                    <!-- <span class="name-text__firstname">
-                        <span v-for="(char, idx) in firstname" :key="idx" class="name-text__char">{{ char }}</span>
-                    </span>
-                    <span class="name-text__lastname">
-                        <span v-for="(char, idx) in lastname" :key="idx" class="name-text__char">{{ char }}</span>
-                    </span> -->
                     Alexander Greff
                 </h1>
                 <div class="info-text">
@@ -20,9 +14,12 @@
                     <span class="uni-name">University of Toronto</span>.
                 </div>
 
-                <router-link to="/contact" tag="div" class="btn contact-btn">
-                    <a>Contact Me</a>
-                </router-link>
+                <component-button 
+                    to="/contact"
+                    class="contact-button"
+                >
+                    Contact Me
+                </component-button>
             </div>
             <div class="logo-container">
                 <div class="logo-1">
@@ -40,40 +37,18 @@
         <bar-background :z-index="0" />
     </div>
     <!-- </fragment> -->
-    
-
-    <!-- <div class="test-container">
-        Some stuff
-    </div> -->
-    <!-- <content-container>
-        Some stuff
-        <br>
-        Some stuff
-        Some stuff
-        <br>
-        Some stuff
-        Some stuff
-        <br>
-        Some stuff
-        Some stuff
-        <br>
-        Some stuff
-        Some stuff
-        <br>
-        Some stuff
-    </content-container> -->
 </template>
 
 <script>
-import ContentContainer from "@/components/containers/ContentContainer.vue";
 import BarBackground from "@/components/backgrounds/BarBackground.vue";
+import ComponentButton from "@/components/ui/ComponentButton.vue";
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 export default {
     components: {
-        contentContainer: ContentContainer,
-        barBackground: BarBackground
+        barBackground: BarBackground,
+        componentButton: ComponentButton,
     },
     data() {
         return {
@@ -94,7 +69,7 @@ export default {
             const myNameIsEl = el.querySelector(".my-name-is");
             const nameEl = el.querySelector(".name-text");
             const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-btn");
+            const contactBtnEl = el.querySelector(".contact-button");
             const logoEl = el.querySelector(".logo-container");
 
             // Kill any running animations
@@ -127,7 +102,7 @@ export default {
             const myNameIsEl = el.querySelector(".my-name-is");
             const nameEl = el.querySelector(".name-text");
             const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-btn");
+            const contactBtnEl = el.querySelector(".contact-button");
             const logoEl = el.querySelector(".logo-container");
 
             // Kill any running animations
@@ -160,7 +135,7 @@ export default {
             const myNameIsEl = el.querySelector(".my-name-is");
             const nameEl = el.querySelector(".name-text");
             const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-btn");
+            const contactBtnEl = el.querySelector(".contact-button");
             const logoEl = el.querySelector(".logo-container");
 
             // Kill any running animations
@@ -296,12 +271,8 @@ export default {
             }
         }
 
-        & .contact-btn {
-            font-size: 2rem;
-
+        & .contact-button {
             margin-top: 2.5rem;
-
-            display: inline-block;
         }
     }
 
