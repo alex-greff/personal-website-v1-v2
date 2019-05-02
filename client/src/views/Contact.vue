@@ -107,9 +107,6 @@ export default {
         flex-direction: column;
         align-items: center;
 
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
-
         & .Contact__content {
             position: relative;
         
@@ -118,7 +115,8 @@ export default {
             max-width: 70rem;
             width: 100vw;
 
-            flex-shrink: 1;
+            padding-left: 1rem;
+            padding-right: 1rem;
 
             & .Contact__title {
                 text-align: center;
