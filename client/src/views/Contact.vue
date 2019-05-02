@@ -103,14 +103,22 @@ export default {
 
 <style lang="scss" scoped>
     .Contact {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+
         & .Contact__content {
             position: relative;
         
             margin-top: 4.5rem;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 70rem;
+            width: 100vw;
+
+            flex-shrink: 1;
 
             & .Contact__title {
                 text-align: center;
@@ -153,34 +161,6 @@ export default {
                 display: flex;
                 flex-direction: row-reverse;
             }
-
-            // ---------------------
-            // --- Media Queries ---
-            // ---------------------
-            // @include respond(big-desktop) {
-            //     margin-right: 20rem;
-            //     margin-left: 20rem;
-            // }
-
-            // @include respond(normal) {
-            //     margin-right: 15rem;
-            //     margin-left: 15rem;
-            // }
-
-            // @include respond(tab-land) {
-            //     margin-right: 10rem;
-            //     margin-left: 10rem;
-            // }
-
-            // @include respond(tab-port) {
-            //     margin-right: 5rem;
-            //     margin-left: 5rem;
-            // }
-
-            // @include respond(phone) {
-            //     margin-right: 3rem;
-            //     margin-left: 3rem;
-            // }
         }
     }
 </style>
