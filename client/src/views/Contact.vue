@@ -108,15 +108,17 @@ export default {
         align-items: center;
 
         & .Contact__content {
+            $padding-amount: 2rem;
+
             position: relative;
         
             margin-top: 4.5rem;
 
-            max-width: 70rem;
+            max-width: 80rem;
             width: 100vw;
 
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: $padding-amount;
+            padding-right: $padding-amount;
 
             & .Contact__title {
                 text-align: center;
@@ -140,7 +142,7 @@ export default {
                 grid-row-gap: $gap;
                 grid-column-gap: $gap;
 
-                margin-top: 3rem;
+                margin-top: 4.5rem;
 
                 & .Contact__name-input {
                     grid-area: name;
@@ -152,6 +154,18 @@ export default {
 
                 & .Contact__message-input {
                     grid-area: message;
+                }
+
+                @include respond(phone) {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto auto auto auto;
+                    grid-template-areas: 
+                        "name"
+                        "email"
+                        "message"
+                        "submit";
+
+                    margin-top: 3rem;
                 }
             }
 
