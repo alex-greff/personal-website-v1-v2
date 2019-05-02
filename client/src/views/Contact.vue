@@ -108,6 +108,10 @@ export default {
         
             margin-top: 4.5rem;
 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
             & .Contact__title {
                 text-align: center;
                 font-weight: 600; // h1 sets this by default
@@ -153,30 +157,30 @@ export default {
             // ---------------------
             // --- Media Queries ---
             // ---------------------
-            @include respond(big-desktop) {
-                margin-right: 20rem;
-                margin-left: 20rem;
-            }
+            // @include respond(big-desktop) {
+            //     margin-right: 20rem;
+            //     margin-left: 20rem;
+            // }
 
-            @include respond(normal) {
-                margin-right: 15rem;
-                margin-left: 15rem;
-            }
+            // @include respond(normal) {
+            //     margin-right: 15rem;
+            //     margin-left: 15rem;
+            // }
 
-            @include respond(tab-land) {
-                margin-right: 10rem;
-                margin-left: 10rem;
-            }
+            // @include respond(tab-land) {
+            //     margin-right: 10rem;
+            //     margin-left: 10rem;
+            // }
 
-            @include respond(tab-port) {
-                margin-right: 5rem;
-                margin-left: 5rem;
-            }
+            // @include respond(tab-port) {
+            //     margin-right: 5rem;
+            //     margin-left: 5rem;
+            // }
 
-            @include respond(phone) {
-                margin-right: 3rem;
-                margin-left: 3rem;
-            }
+            // @include respond(phone) {
+            //     margin-right: 3rem;
+            //     margin-left: 3rem;
+            // }
         }
     }
 </style>
