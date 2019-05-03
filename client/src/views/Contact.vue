@@ -81,7 +81,7 @@
                 <button-field
                     class="Contact__complete-form-button"
                     type="button"
-                    @click.native="openForm(true)"
+                    @click="openForm(true)"
                 >
                     Send Another
                 </button-field>
@@ -97,7 +97,7 @@
                 <button-field
                     class="Contact__error-retry-button"
                     type="button"
-                    @click.native="openForm(false)"
+                    @click="openForm(false)"
                 >
                     Retry
                 </button-field>

@@ -14,11 +14,6 @@
 
     transition: background-color 0.4s;
 
-    &:hover {
-        text-decoration: none;
-        background-color: theme-link($base, "accent-color", "secondary", 0.192);
-    }
-
     @if $component-based == true {
         & a {
             display: inline-block;
@@ -31,5 +26,23 @@
         }
     } @else {
         padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    }
+
+    // -----------------
+    // --- Modifiers ---
+    // -----------------
+
+    &:hover {
+        text-decoration: none;
+        background-color: theme-link($base, "accent-color", "secondary", 0.192);
+    }
+
+    &.disabled, &:disabled {
+        cursor: initial;
+        color: theme-link($base, "text-color", "secondary");
+
+        &:hover {
+            background-color: theme-link($base, "accent-color", "secondary", 0);
+        }
     }
 }
