@@ -1,3 +1,5 @@
+// var pathToBourbon = require('node-bourbon').includePaths;
+
 module.exports = {
     devServer: {
         disableHostCheck: true,
@@ -17,8 +19,10 @@ module.exports = {
             sass: {
                 data: `
                     @import "@/styling/main.scss";
+                    @import "./node_modules/bourbon/app/assets/stylesheets/_bourbon.scss"; // TODO: this is whack... fix later maybe
                 `,
+                // includePaths: [pathToBourbon]
             }
         }
-    }
+    },
 };
