@@ -169,6 +169,10 @@ export default {
     },
     methods: {
         async submit() {
+            // TODO: remove
+            this.requestSending = !this.requestSending;
+            return;
+
             // Validate form
             // Note: this happens almost instantly since there are no async validators
             const bValid = await this.$validator.validate();

@@ -1,5 +1,6 @@
 <template>
     <button-field
+        class="ButtonLoaderField"
         v-bind="$attrs"
     >
         <div 
@@ -42,12 +43,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .ButtonLoaderField__loading {
-        display: flex;
-        align-items: center;
+    .ButtonLoaderField {
+        & .ButtonLoaderField__loading {
+            display: flex;
+            align-items: center;
 
-        & .ButtonLoaderField__loading-text {
-            margin-left: 0.8rem;  
+            & .ButtonLoaderField__loading-text {
+                margin-left: 0.8rem;  
+            }
         }
     }
 </style>
