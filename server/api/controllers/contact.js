@@ -4,7 +4,7 @@ const EMAIL_INFO = require('../constants/contact');
 exports.send_contact_message = (req, res, next) => {
     const { email, name, subject, message } = req.body;
 
-    const email_subject = `Contact API: ${subject}`;
+    const email_subject = `Personal Website Contact: ${subject}`;
     const email_message = `From: ${name}\n\nEmail:\n${email}\n\nMessage:\n${message}`;
 
     const transporter = nodemailer.createTransport(EMAIL_INFO);
