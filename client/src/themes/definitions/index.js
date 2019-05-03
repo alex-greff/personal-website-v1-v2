@@ -25,7 +25,8 @@ export const subSections = [
     "projects",
     "projects-item",
     "project-details",
-    "contact"
+    "contact",
+    "spinner",
 ];
 
 export default {

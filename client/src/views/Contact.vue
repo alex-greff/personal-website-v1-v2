@@ -5,6 +5,7 @@
                 Contact
             </h1>
             <form
+                v-if="displayFormView"
                 :id="formID"
                 class="Contact__form"
                 @submit.prevent="submit"
@@ -55,14 +56,50 @@
                 />
             </form>
 
-            <div class="Contact__submit-container">
-                <!-- TODO: update this with a loadable button -->
-                <button-field 
+            <div 
+                v-if="displayFormView"
+                class="Contact__submit-container"
+            >
+                <button-loader-field
                     class="Contact__submit-button"
                     type="submit"
                     :form="formID"
+                    :loading="requestSending"
+                    loading-text="Loading"
                 >
                     Send
+                </button-loader-field>
+            </div>
+
+            <div 
+                v-if="displayCompleteSendView"
+                class="Contact__complete"
+            >
+                <div>
+                    Message sent!
+                </div>
+                <button-field
+                    class="Contact__complete-form-button"
+                    type="button"
+                    @click.native="openForm(true)"
+                >
+                    Send Another
+                </button-field>
+            </div>
+
+            <div
+                v-if="displayErrorSendView"
+                class="Contact__error"
+            >
+                <div class="Contact__error-message">
+                    An error occurred when attempting to send!
+                </div>
+                <button-field
+                    class="Contact__error-retry-button"
+                    type="button"
+                    @click.native="openForm(false)"
+                >
+                    Retry
                 </button-field>
             </div>
         </div>
@@ -76,23 +113,58 @@ import Utilites from "@/utilities";
 import TextField from "@/components/ui/forms/TextField.vue";
 import TextAreaField from "@/components/ui/forms/TextAreaField.vue";
 import ButtonField from "@/components/ui/forms/ButtonField.vue";
+import ButtonLoaderField from "@/components/ui/forms/ButtonLoaderField.vue"
+
+const PHASE_TYPES = {
+    COMPOSE_MESSAGE: "COMPOSE_MESSAGE",
+    MESSAGE_SENT: "MESSAGE_SENT",
+    MESSAGE_FAILED: "MESSAGE_FAILED"
+}
+
+const INIT_FORM_DATA = {
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+}
 
 export default {
     components: {
         textField: TextField,
         textAreaField: TextAreaField,
         buttonField: ButtonField,
+        buttonLoaderField: ButtonLoaderField,
     },
     data() {
         return {
             formData: {
-                name: "",
-                email: "",
-                subject: "",
-                message: ""
+                ...INIT_FORM_DATA
             },
             formID: "contact-form",
+
+            // State
             formDisabled: false,
+            requestSending: false,
+            phase: PHASE_TYPES.COMPOSE_MESSAGE,
+        }
+    },
+    computed: {
+        displayFormView() {
+            return this.phase === PHASE_TYPES.COMPOSE_MESSAGE;
+        },
+        displayCompleteSendView() {
+            return this.phase === PHASE_TYPES.MESSAGE_SENT;
+        },
+        displayErrorSendView() {
+            return this.phase === PHASE_TYPES.MESSAGE_FAILED;
+        }
+    },
+    watch: {
+        phase(nextPhase) {
+            if (nextPhase === PHASE_TYPES.COMPOSE_MESSAGE) {
+                this.enableForm();
+                this.setRequestSending(false);
+            }
         }
     },
     methods: {
@@ -106,17 +178,34 @@ export default {
                 this.disableForm();
 
                 try {
+                    this.setRequestSending(true);
+
                     // Send the contact message
                     await this.sendMessage();
 
-                    // TODO: display message sent state
-                    console.log("Message sent!");
+                    this.setRequestSending(false);
+                    this.setPhase(PHASE_TYPES.MESSAGE_SENT);
 
-                } catch (err) {
-                    // TODO: message failed to send state
-                    console.error("Message failed to send:", err);
+                } catch (err) { // Message failed to send
+                    this.setPhase(PHASE_TYPES.MESSAGE_FAILED);
                 }
             }
+        },
+        clearForm() {
+            this.formData = { ...INIT_FORM_DATA };
+        },
+        openForm(i_bClearData = true) {
+            if (i_bClearData) {
+                this.clearForm();   
+            }
+
+            this.setPhase(PHASE_TYPES.COMPOSE_MESSAGE);
+        },
+        setPhase(i_sPhaseType) {
+            this.phase = i_sPhaseType;
+        },
+        setRequestSending(i_bRequestSending) {
+            this.requestSending = i_bRequestSending;
         },
         disableForm() {
             this.formDisabled = true;
@@ -133,7 +222,8 @@ export default {
                 message: this.formData.message
             };
 
-            const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
+            // const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
+            const fnServerCall = () => new Promise((res) => res()); // TODO: remove
 
             // Send contact request to the server
             return Utilites.runSpoofedAsyncFunc(fnServerCall, 1000);
