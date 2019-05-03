@@ -398,6 +398,65 @@ export const generateUniqueID = (i_sPrefix = null) => {
     return `${sPrefixCleaned}${(Math.random().toString(36) + Date.now().toString(36)).substr(2, 10)}`;
 };
 
+/**
+ * Resolves an async call with a minimum loading time. This is to simulate a long(er)
+ * loading time even if the server responds quickly. Returns a promise.
+ * 
+ * @param {Function} i_fnAsyncCall The async function call. Must return a promise.
+ * @param {Number} i_nMinDuration The minimum loading duration (ms).
+ */
+export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1000) => {
+    return new Promise(async (resolve, reject) => {
+        // State
+        let resolveVal;
+        let bAsyncCompleted = false;
+        let rejectVal;
+        let bAsyncRejected = false;
+        let bTimeoutCompleted = false;
+
+        // Run async call
+        i_fnAsyncCall()
+            .then(i_resolveVal => {
+                // If async call took longer than the timeout then resolve immediately
+                if (bTimeoutCompleted) {
+                    resolve(i_resolveVal);
+                } 
+                // If the timer is still running then store the resolve state
+                else {
+                    bAsyncCompleted = true;
+                    resolveVal = i_resolveVal;
+                }
+            })
+            .catch(i_rejectVal => {
+                // If the async call got rejected in a longer time than the timeout then
+                // reject immediately
+                if (bTimeoutCompleted) {
+                    reject(i_rejectVal);
+                } 
+                // If the timer is still running then store the reject state
+                else {
+                    bAsyncRejected = true;
+                    rejectVal = i_rejectVal;
+                }
+            });
+
+        // Wait for the timeout to finish
+        await timeout(i_nMinDuration);
+
+        // Set timeout state
+        bTimeoutCompleted = true;
+
+        // If the async call has been completed then resolve
+        if (bAsyncCompleted) {
+            resolve(resolveVal);
+        } 
+        // If the async call has been rejected alreayd then reject accordingly
+        else if (bAsyncRejected) {
+            reject(rejectVal);
+        }
+    });
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -432,4 +491,5 @@ export default {
     runFunctionsWithParams,
     preloadImage,
     generateUniqueID,
+    runSpoofedAsyncFunc,
 };

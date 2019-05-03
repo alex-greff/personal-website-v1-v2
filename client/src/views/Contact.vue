@@ -15,6 +15,7 @@
                     class="Contact__name-input"
                     title="Name"
                     name="name"
+                    :disabled="formDisabled"
                     :error="errors.first('name')"
                     placeholder="John Doe"
                     autofocus
@@ -26,6 +27,7 @@
                     class="Contact__email-input"
                     title="Email"
                     name="email"
+                    :disabled="formDisabled"
                     :error="errors.first('email')"
                     placeholder="john.doe@email.com"
                 />
@@ -36,6 +38,7 @@
                     class="Contact__subject-input"
                     title="Subject"
                     name="subject"
+                    :disabled="formDisabled"
                     :error="errors.first('subject')"
                     placeholder="Enter subject here..."
                 />
@@ -46,6 +49,7 @@
                     class="Contact__message-input"
                     title="Message"
                     name="message"
+                    :disabled="formDisabled"
                     :error="errors.first('message')"
                     placeholder="Enter message here..."
                 />
@@ -66,6 +70,9 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Utilites from "@/utilities";
+
 import TextField from "@/components/ui/forms/TextField.vue";
 import TextAreaField from "@/components/ui/forms/TextAreaField.vue";
 import ButtonField from "@/components/ui/forms/ButtonField.vue";
@@ -84,12 +91,52 @@ export default {
                 subject: "",
                 message: ""
             },
-            formID: "contact-form"
+            formID: "contact-form",
+            formDisabled: false,
         }
     },
     methods: {
-        submit() {
-            console.log("Submitting form");
+        async submit() {
+            // Validate form
+            // Note: this happens almost instantly since there are no async validators
+            const bValid = await this.$validator.validate();
+
+            if (bValid) {
+                // Disable the form
+                this.disableForm();
+
+                try {
+                    // Send the contact message
+                    await this.sendMessage();
+
+                    // TODO: display message sent state
+                    console.log("Message sent!");
+
+                } catch (err) {
+                    // TODO: message failed to send state
+                    console.error("Message failed to send:", err);
+                }
+            }
+        },
+        disableForm() {
+            this.formDisabled = true;
+        },
+        enableForm() {
+            this.formDisabled = false;
+        },
+        sendMessage() {
+            // Construct the request body
+            const oReqBody = {
+                name: this.formData.name,
+                email: this.formData.email,
+                subject: this.formData.subject,
+                message: this.formData.message
+            };
+
+            const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
+
+            // Send contact request to the server
+            return Utilites.runSpoofedAsyncFunc(fnServerCall, 1000);
         }
     },
     // ------------------
