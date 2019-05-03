@@ -30,6 +30,16 @@
                     placeholder="john.doe@email.com"
                 />
 
+                <text-field 
+                    v-model="formData.subject"
+                    v-validate="'required'"
+                    class="Contact__subject-input"
+                    title="Subject"
+                    name="subject"
+                    :error="errors.first('subject')"
+                    placeholder="Enter subject here..."
+                />
+
                 <text-area-field 
                     v-model="formData.message"
                     v-validate="'required'"
@@ -71,6 +81,7 @@ export default {
             formData: {
                 name: "",
                 email: "",
+                subject: "",
                 message: ""
             },
             formID: "contact-form"
@@ -130,13 +141,14 @@ export default {
             }
 
             & .Contact__form {
-                $gap: 1rem;
+                $gap: 1.1rem;
 
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto;
+                grid-template-rows: auto auto auto auto;
                 grid-template-areas: 
                     "name email"
+                    "subject subject"
                     "message message"
                     "submit submit";
                 grid-row-gap: $gap;
@@ -152,16 +164,21 @@ export default {
                     grid-area: email;
                 }
 
+                & .Contact__subject-input {
+                    grid-area: subject;
+                }
+
                 & .Contact__message-input {
                     grid-area: message;
                 }
 
                 @include respond(phone) {
                     grid-template-columns: 1fr;
-                    grid-template-rows: auto auto auto auto;
+                    grid-template-rows: auto auto auto auto auto;
                     grid-template-areas: 
                         "name"
                         "email"
+                        "subject"
                         "message"
                         "submit";
 

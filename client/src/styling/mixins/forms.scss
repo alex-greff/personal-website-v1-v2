@@ -1,6 +1,6 @@
 @mixin standard-field-styles($base: "page") {
-    font-size: 2rem;
-    padding: 0.7rem;
+    font-size: 1.6rem;
+    padding: .8rem;
     outline: none;
 
     color: theme-link($base, "text-color", "primary");
