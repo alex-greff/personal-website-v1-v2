@@ -271,7 +271,7 @@ export default {
     // ------------------
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Contact enter anim"); 
+            console.log("Running Contact enter anim for", el); 
 
             const tl = new TimelineLite({ onComplete: () => resolve() });
             const titleEl = el.querySelector(".Contact__title");
@@ -283,22 +283,24 @@ export default {
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Contact leave anim"); 
+            console.log("Running Contact leave anim for", el); 
 
             const tl = new TimelineLite({ onComplete: () => resolve() });
             const titleEl = el.querySelector(".Contact__title");
             TweenLite.killTweensOf([ titleEl ]);
 
+            tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
+
+            const START_OFFSET = 0.25;
+
             // Determine which leave anim to run
             if (el.querySelector(".Contact__form-container")) {
-                _composeMessageLeaveAnim(el, tl);
+                _composeMessageLeaveAnim(el, tl, START_OFFSET, false);
             } else if (el.querySelector(".Contact__status.complete")) {
-                _messageSentLeaveAnim(el, tl);
+                _messageSentLeaveAnim(el, tl, START_OFFSET, false);
             } else if (el.querySelector(".Contact__status.error")) {
-                _messageFailedLeaveAnim(el, tl);
+                _messageFailedLeaveAnim(el, tl, START_OFFSET, false);
             }
-
-            tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
         });
     }
 }
@@ -309,11 +311,7 @@ export default {
 
 // => Specific phase anims
 
-const _composeMessageEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
-    if (!tl) {
-        tl = new TimelineLite();
-    }
-
+const _composeMessageEnterAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = false) => {
     const nameInputEl = el.querySelector(".Contact__name-input");
     const emailInputEl = el.querySelector(".Contact__email-input");
     const subjectInputEl = el.querySelector(".Contact__subject-input");
@@ -321,69 +319,78 @@ const _composeMessageEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
     const submitButtonEl = el.querySelector(".Contact__submit-button");
 
     const elementList = [nameInputEl, emailInputEl, subjectInputEl, messageInputEl, submitButtonEl];
-
-    __phaseEnterAnim(elementList, tl, i_nStartOffset);
-};
-
-const _composeMessageLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
-    if (!tl) {
-        tl = new TimelineLite();
+    if (i_bReveresed) {
+        elementList.reverse();
     }
 
+    __phaseEnterAnim(elementList, i_tl, i_nStartOffset, i_bReveresed);
+};
+
+const _composeMessageLeaveAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = true) => {
     const nameInputEl = el.querySelector(".Contact__name-input");
     const emailInputEl = el.querySelector(".Contact__email-input");
     const subjectInputEl = el.querySelector(".Contact__subject-input");
     const messageInputEl = el.querySelector(".Contact__message-input");
     const submitButtonEl = el.querySelector(".Contact__submit-button");
 
-    const elementList = [nameInputEl, emailInputEl, subjectInputEl, messageInputEl, submitButtonEl].reverse();
+    const elementList = [nameInputEl, emailInputEl, subjectInputEl, messageInputEl, submitButtonEl];
+    if (i_bReveresed) {
+        elementList.reverse();
+    }
 
-    __phaseLeaveAnim(elementList, tl, i_nStartOffset);
+    __phaseLeaveAnim(elementList, i_tl, i_nStartOffset, i_bReveresed);
 };
 
-const _messageSentEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
-    __statusEnterAnim("complete", el, tl, i_nStartOffset);
+const _messageSentEnterAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = false) => {
+    __statusEnterAnim("complete", el, i_tl, i_nStartOffset, i_bReveresed);
 };
 
-const _messageSentLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
-    __statusLeaveAnim("complete", el, tl, i_nStartOffset);
+const _messageSentLeaveAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = true) => {
+    __statusLeaveAnim("complete", el, i_tl, i_nStartOffset, i_bReveresed);
 };
 
-const _messaageFailedEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
-    __statusEnterAnim("error", el, tl, i_nStartOffset);
+const _messaageFailedEnterAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = false) => {
+    __statusEnterAnim("error", el, i_tl, i_nStartOffset, i_bReveresed);
 };
 
-const _messageFailedLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
-    __statusLeaveAnim("error", el, tl, i_nStartOffset);
+const _messageFailedLeaveAnim = (el, i_tl = null, i_nStartOffset = 0, i_bReveresed = true) => {
+    __statusLeaveAnim("error", el, i_tl, i_nStartOffset, i_bReveresed);
 };
 
 // => Status anims
 
-const __statusEnterAnim = (i_sModifier, el, tl = null, i_nStartOffset = 0) => {
+const __statusEnterAnim = (i_sModifier, el, i_tl = null, i_nStartOffset = 0, i_bReveresed = false) => {
     const PARENT_SELECTOR = ".Contact__status";
     const iconEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-icon`);
     const messageEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-message`);
     const formButtonEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-form-button`);
     
     const elementList = [ iconEl, messageEl, formButtonEl ];
+    if (i_bReveresed) {
+        elementList.reverse();
+    }
 
-    __phaseEnterAnim(elementList, tl, i_nStartOffset);
+    __phaseEnterAnim(elementList, i_tl, i_nStartOffset);
 };
 
-const __statusLeaveAnim = (i_sModifier, el, tl = null, i_nStartOffset = 0) => {
+const __statusLeaveAnim = (i_sModifier, el, i_tl = null, i_nStartOffset = 0, i_bReveresed = true) => {
     const PARENT_SELECTOR = ".Contact__status";
     const iconEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-icon`);
     const messageEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-message`);
     const formButtonEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-form-button`);
     
-    const elementList = [ iconEl, messageEl, formButtonEl ].reverse();
+    const elementList = [ iconEl, messageEl, formButtonEl ];
+    if (i_bReveresed) {
+        elementList.reverse();
+    }
 
-    __phaseLeaveAnim(elementList, tl, i_nStartOffset);
+    __phaseLeaveAnim(elementList, i_tl, i_nStartOffset);
 };
 
 // => Base phase anims
 
-const __phaseEnterAnim = (i_aElements, tl = null, i_nStartOffset = 0) => {
+const __phaseEnterAnim = (i_aElements, i_tl = null, i_nStartOffset = 0) => {
+    let tl = i_tl;
     if (!tl) {
         tl = new TimelineLite();
     }
@@ -405,7 +412,8 @@ const __phaseEnterAnim = (i_aElements, tl = null, i_nStartOffset = 0) => {
     );
 }
 
-const __phaseLeaveAnim = (i_aElements, tl = null, i_nStartOffset = 0) => {
+const __phaseLeaveAnim = (i_aElements, i_tl = null, i_nStartOffset = 0) => {
+    let tl = i_tl;
     if (!tl) {
         tl = new TimelineLite();
     }
