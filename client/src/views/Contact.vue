@@ -4,106 +4,117 @@
             <h1 class="Contact__title">
                 Contact
             </h1>
-            <form
-                v-if="displayFormView"
-                :id="formID"
-                class="Contact__form"
-                @submit.prevent="submit"
+
+            <transition
+                mode="out-in"
+                @enter="phaseEnterAnim"
+                @leave="phaseLeaveAnim"
             >
-                <text-field 
-                    v-model="formData.name"
-                    v-validate="'required'"
-                    class="Contact__name-input"
-                    title="Name"
-                    name="name"
-                    :disabled="formDisabled"
-                    :error="errors.first('name')"
-                    placeholder="John Doe"
-                    autofocus
-                />
-
-                <text-field 
-                    v-model="formData.email"
-                    v-validate="'required|email'"
-                    class="Contact__email-input"
-                    title="Email"
-                    name="email"
-                    :disabled="formDisabled"
-                    :error="errors.first('email')"
-                    placeholder="john.doe@email.com"
-                />
-
-                <text-field 
-                    v-model="formData.subject"
-                    v-validate="'required'"
-                    class="Contact__subject-input"
-                    title="Subject"
-                    name="subject"
-                    :disabled="formDisabled"
-                    :error="errors.first('subject')"
-                    placeholder="Enter subject here..."
-                />
-
-                <text-area-field 
-                    v-model="formData.message"
-                    v-validate="'required'"
-                    class="Contact__message-input"
-                    title="Message"
-                    name="message"
-                    :disabled="formDisabled"
-                    :error="errors.first('message')"
-                    placeholder="Enter message here..."
-                />
-            </form>
-
-            <div 
-                v-if="displayFormView"
-                class="Contact__submit-container"
-            >
-                <button-loader-field
-                    class="Contact__submit-button"
-                    type="submit"
-                    :form="formID"
-                    :loading="requestSending"
-                    loading-text="Loading"
+                <div 
+                    v-if="displayFormView"
+                    key="compose-message"
+                    class="Contact__form-container"
                 >
-                    Send
-                </button-loader-field>
-            </div>
+                    <form
+                        :id="formID"
+                        class="Contact__form"
+                        @submit.prevent="submit"
+                    >
+                        <text-field 
+                            v-model="formData.name"
+                            v-validate="'required'"
+                            class="Contact__name-input"
+                            title="Name"
+                            name="name"
+                            :disabled="formDisabled"
+                            :error="errors.first('name')"
+                            placeholder="John Doe"
+                            autofocus
+                        />
 
-            <div 
-                v-if="displayCompleteSendView"
-                class="Contact__status complete"
-            >
-                <md-icon class="Contact__status-icon">done_outline</md-icon>
-                <div class="Contact__status-message">
-                    Message sent successfully!
+                        <text-field 
+                            v-model="formData.email"
+                            v-validate="'required|email'"
+                            class="Contact__email-input"
+                            title="Email"
+                            name="email"
+                            :disabled="formDisabled"
+                            :error="errors.first('email')"
+                            placeholder="john.doe@email.com"
+                        />
+
+                        <text-field 
+                            v-model="formData.subject"
+                            v-validate="'required'"
+                            class="Contact__subject-input"
+                            title="Subject"
+                            name="subject"
+                            :disabled="formDisabled"
+                            :error="errors.first('subject')"
+                            placeholder="Enter subject here..."
+                        />
+
+                        <text-area-field 
+                            v-model="formData.message"
+                            v-validate="'required'"
+                            class="Contact__message-input"
+                            title="Message"
+                            name="message"
+                            :disabled="formDisabled"
+                            :error="errors.first('message')"
+                            placeholder="Enter message here..."
+                        />
+                    </form>
+
+                    <div class="Contact__submit-container">
+                        <button-loader-field
+                            class="Contact__submit-button"
+                            type="submit"
+                            :form="formID"
+                            :loading="requestSending"
+                            loading-text="Loading"
+                        >
+                            Send
+                        </button-loader-field>
+                    </div>
                 </div>
-                <button-field
-                    class="Contact__status-form-button"
-                    type="button"
-                    @click="openForm(true)"
-                >
-                    Send Another
-                </button-field>
-            </div>
 
-            <div
-                v-if="displayErrorSendView"
-                class="Contact__status error"
-            >
-                <md-icon class="Contact__status-icon">error_outline</md-icon>
-                <div class="Contact__status-message">
-                    An error occurred when attempting to send!
-                </div>
-                <button-field
-                    class="Contact__status-form-button"
-                    type="button"
-                    @click="openForm(false)"
+                <div 
+                    v-if="displayCompleteSendView"
+                    key="message-sent"
+                    class="Contact__status complete"
                 >
-                    Retry
-                </button-field>
-            </div>
+                    <md-icon class="Contact__status-icon">done_outline</md-icon>
+                    <div class="Contact__status-message">
+                        Message sent successfully!
+                    </div>
+                    <button-field
+                        class="Contact__status-form-button"
+                        type="button"
+                        @click="openForm(true)"
+                    >
+                        Send Another
+                    </button-field>
+                </div>
+
+                <div
+                    v-if="displayErrorSendView"
+                    key="message-failed"
+                    class="Contact__status error"
+                >
+                    <md-icon class="Contact__status-icon">error_outline</md-icon>
+                    <div class="Contact__status-message">
+                        An error occurred when attempting to send!
+                    </div>
+                    <button-field
+                        class="Contact__status-form-button"
+                        type="button"
+                        @click="openForm(false)"
+                    >
+                        Retry
+                    </button-field>
+                </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -115,20 +126,23 @@ import Utilites from "@/utilities";
 import TextField from "@/components/ui/forms/TextField.vue";
 import TextAreaField from "@/components/ui/forms/TextAreaField.vue";
 import ButtonField from "@/components/ui/forms/ButtonField.vue";
-import ButtonLoaderField from "@/components/ui/forms/ButtonLoaderField.vue"
+import ButtonLoaderField from "@/components/ui/forms/ButtonLoaderField.vue";
+
+/* global Power1 */
+import { TimelineLite, TweenMax, TweenLite } from "gsap/all";
 
 const PHASE_TYPES = {
     COMPOSE_MESSAGE: "COMPOSE_MESSAGE",
     MESSAGE_SENT: "MESSAGE_SENT",
     MESSAGE_FAILED: "MESSAGE_FAILED"
-}
+};
 
 const INIT_FORM_DATA = {
-    name: "Alex",
-    email: "alex@greff.com",
-    subject: "hi",
-    message: "sup"
-}
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+};
 
 export default {
     components: {
@@ -148,6 +162,7 @@ export default {
             formDisabled: false,
             requestSending: false,
             phase: PHASE_TYPES.COMPOSE_MESSAGE,
+            prevPhase: "idk"
         }
     },
     computed: {
@@ -162,7 +177,9 @@ export default {
         }
     },
     watch: {
-        phase(nextPhase) {
+        phase(nextPhase, prevPhase) {
+            this.prevPhase = prevPhase;
+
             if (nextPhase === PHASE_TYPES.COMPOSE_MESSAGE) {
                 this.enableForm();
                 this.setRequestSending(false);
@@ -171,11 +188,6 @@ export default {
     },
     methods: {
         async submit() {
-            console.log("Submitting");
-            // // TODO: remove
-            // this.requestSending = !this.requestSending;
-            // return;
-
             // Validate form
             // Note: this happens almost instantly since there are no async validators
             const bValid = await this.$validator.validate();
@@ -229,12 +241,30 @@ export default {
                 message: this.formData.message
             };
 
-            // const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
-            const fnServerCall = () => new Promise((res, rej) => res()); // TODO: remove
+            const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
+
+            // Server call spoofs, for testing purposes
+            // const fnServerCall = () => new Promise((res, rej) => res()); // TODO: remove
+            // const fnServerCall = () => new Promise((res, rej) => rej()); // TODO: remove
 
             // Send contact request to the server
-            return Utilites.runSpoofedAsyncFunc(fnServerCall, 1000);
-        }
+            return Utilites.runSpoofedAsyncFunc(fnServerCall, 1500); // Wait for 1.5 seconds no matter what
+        },
+        // -----------------------------------
+        // --- Phase transition animations ---
+        // -----------------------------------
+        phaseEnterAnim(el, done){
+            const tl = new TimelineLite({ onComplete: () => done() });
+            const enterAnimFunc = PHASE_ANIM_MAPPINGS.enter[this.phase];
+
+            enterAnimFunc(el, tl);
+        },
+        phaseLeaveAnim(el, done) {
+            const tl = new TimelineLite({ onComplete: () => done() });
+            const leaveAnimFunc = PHASE_ANIM_MAPPINGS.leave[this.prevPhase];
+
+            leaveAnimFunc(el, tl);
+        },
     },
     // ------------------
     // --- Animations ---
@@ -242,18 +272,172 @@ export default {
     enterAnim(el) {
         return new Promise((resolve, reject) => {
             console.log("Running Contact enter anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 0); // TODO: remove
+
+            const tl = new TimelineLite({ onComplete: () => resolve() });
+            const titleEl = el.querySelector(".Contact__title");
+            TweenLite.killTweensOf([ titleEl ]);
+            tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0}, { x: 0, opacity: 1 }));
+
+            _composeMessageEnterAnim(el, tl, 0.25);
         });
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
             console.log("Running Contact leave anim"); 
-            // TODO: animate here
-            setTimeout(() => resolve(), 100); // TODO: remove
+
+            const tl = new TimelineLite({ onComplete: () => resolve() });
+            const titleEl = el.querySelector(".Contact__title");
+            TweenLite.killTweensOf([ titleEl ]);
+
+            // Determine which leave anim to run
+            if (el.querySelector(".Contact__form-container")) {
+                _composeMessageLeaveAnim(el, tl);
+            } else if (el.querySelector(".Contact__status.complete")) {
+                _messageSentLeaveAnim(el, tl);
+            } else if (el.querySelector(".Contact__status.error")) {
+                _messageFailedLeaveAnim(el, tl);
+            }
+
+            tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
         });
     }
 }
+
+// ------------------------
+// --- Phase Animations ---
+// ------------------------
+
+// => Specific phase anims
+
+const _composeMessageEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
+    if (!tl) {
+        tl = new TimelineLite();
+    }
+
+    const nameInputEl = el.querySelector(".Contact__name-input");
+    const emailInputEl = el.querySelector(".Contact__email-input");
+    const subjectInputEl = el.querySelector(".Contact__subject-input");
+    const messageInputEl = el.querySelector(".Contact__message-input");
+    const submitButtonEl = el.querySelector(".Contact__submit-button");
+
+    const elementList = [nameInputEl, emailInputEl, subjectInputEl, messageInputEl, submitButtonEl];
+
+    __phaseEnterAnim(elementList, tl, i_nStartOffset);
+};
+
+const _composeMessageLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
+    if (!tl) {
+        tl = new TimelineLite();
+    }
+
+    const nameInputEl = el.querySelector(".Contact__name-input");
+    const emailInputEl = el.querySelector(".Contact__email-input");
+    const subjectInputEl = el.querySelector(".Contact__subject-input");
+    const messageInputEl = el.querySelector(".Contact__message-input");
+    const submitButtonEl = el.querySelector(".Contact__submit-button");
+
+    const elementList = [nameInputEl, emailInputEl, subjectInputEl, messageInputEl, submitButtonEl].reverse();
+
+    __phaseLeaveAnim(elementList, tl, i_nStartOffset);
+};
+
+const _messageSentEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
+    __statusEnterAnim("complete", el, tl, i_nStartOffset);
+};
+
+const _messageSentLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
+    __statusLeaveAnim("complete", el, tl, i_nStartOffset);
+};
+
+const _messaageFailedEnterAnim = (el, tl = null, i_nStartOffset = 0) => {
+    __statusEnterAnim("error", el, tl, i_nStartOffset);
+};
+
+const _messageFailedLeaveAnim = (el, tl = null, i_nStartOffset = 0) => {
+    __statusLeaveAnim("error", el, tl, i_nStartOffset);
+};
+
+// => Status anims
+
+const __statusEnterAnim = (i_sModifier, el, tl = null, i_nStartOffset = 0) => {
+    const PARENT_SELECTOR = ".Contact__status";
+    const iconEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-icon`);
+    const messageEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-message`);
+    const formButtonEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-form-button`);
+    
+    const elementList = [ iconEl, messageEl, formButtonEl ];
+
+    __phaseEnterAnim(elementList, tl, i_nStartOffset);
+};
+
+const __statusLeaveAnim = (i_sModifier, el, tl = null, i_nStartOffset = 0) => {
+    const PARENT_SELECTOR = ".Contact__status";
+    const iconEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-icon`);
+    const messageEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-message`);
+    const formButtonEl = el.querySelector(`${PARENT_SELECTOR}.${i_sModifier} .Contact__status-form-button`);
+    
+    const elementList = [ iconEl, messageEl, formButtonEl ].reverse();
+
+    __phaseLeaveAnim(elementList, tl, i_nStartOffset);
+};
+
+// => Base phase anims
+
+const __phaseEnterAnim = (i_aElements, tl = null, i_nStartOffset = 0) => {
+    if (!tl) {
+        tl = new TimelineLite();
+    }
+
+    TweenLite.killTweensOf([ ...i_aElements ]);
+
+    const START_OPTIONS = { x: -20, opacity: 0 };
+    const END_OPTIONS = { x: 0, opacity: 1, ease: Power1.easeOut };
+
+    tl.add(
+        TweenMax.staggerFromTo(
+            i_aElements,
+            0.4,
+            { ...START_OPTIONS },
+            { ...END_OPTIONS },
+            0.2
+        ), 
+        `-=${i_nStartOffset}`
+    );
+}
+
+const __phaseLeaveAnim = (i_aElements, tl = null, i_nStartOffset = 0) => {
+    if (!tl) {
+        tl = new TimelineLite();
+    }
+
+    TweenLite.killTweensOf([ ...i_aElements ]);
+
+    const END_OPTIONS = { x: 20, opacity: 0, ease: Power1.easeIn };
+
+    tl.add(
+        TweenMax.staggerTo(
+            i_aElements,
+            0.4,
+            { ...END_OPTIONS },
+            0.2
+        ), 
+        `-=${i_nStartOffset}`
+    );
+}
+
+// Setup phase animation mappings
+const PHASE_ANIM_MAPPINGS = {
+    enter: {
+        [PHASE_TYPES.COMPOSE_MESSAGE]: _composeMessageEnterAnim,
+        [PHASE_TYPES.MESSAGE_SENT]: _messageSentEnterAnim,
+        [PHASE_TYPES.MESSAGE_FAILED]: _messaageFailedEnterAnim
+    },
+    leave: {
+        [PHASE_TYPES.COMPOSE_MESSAGE]: _composeMessageLeaveAnim,
+        [PHASE_TYPES.MESSAGE_SENT]: _messageSentLeaveAnim,
+        [PHASE_TYPES.MESSAGE_FAILED]: _messageFailedLeaveAnim
+    }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -277,62 +461,64 @@ export default {
 
             & .Contact__title {
                 text-align: center;
-                font-weight: 600; // h1 sets this by default
+                font-weight: 600; // Note: h1 sets this by default
 
                 font-size: 4rem;
                 line-height: 4rem;
                 color: theme-link("page", "accent-color", "primary");
             }
 
-            & .Contact__form {
-                $gap: 1.1rem;
-
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto auto;
-                grid-template-areas: 
-                    "name email"
-                    "subject subject"
-                    "message message"
-                    "submit submit";
-                grid-row-gap: $gap;
-                grid-column-gap: $gap;
-
+            & .Contact__form-container {
                 margin-top: 4.5rem;
 
-                & .Contact__name-input {
-                    grid-area: name;
-                }
+                & .Contact__form {
+                    $gap: 1.1rem;
 
-                & .Contact__email-input {
-                    grid-area: email;
-                }
-
-                & .Contact__subject-input {
-                    grid-area: subject;
-                }
-
-                & .Contact__message-input {
-                    grid-area: message;
-                }
-
-                @include respond(phone) {
-                    grid-template-columns: 1fr;
-                    grid-template-rows: auto auto auto auto auto;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-template-rows: auto auto auto auto;
                     grid-template-areas: 
-                        "name"
-                        "email"
-                        "subject"
-                        "message"
-                        "submit";
+                        "name email"
+                        "subject subject"
+                        "message message"
+                        "submit submit";
+                    grid-row-gap: $gap;
+                    grid-column-gap: $gap;
 
-                    margin-top: 3rem;
+                    & .Contact__name-input {
+                        grid-area: name;
+                    }
+
+                    & .Contact__email-input {
+                        grid-area: email;
+                    }
+
+                    & .Contact__subject-input {
+                        grid-area: subject;
+                    }
+
+                    & .Contact__message-input {
+                        grid-area: message;
+                    }
+
+                    @include respond(phone) {
+                        grid-template-columns: 1fr;
+                        grid-template-rows: auto auto auto auto auto;
+                        grid-template-areas: 
+                            "name"
+                            "email"
+                            "subject"
+                            "message"
+                            "submit";
+
+                        margin-top: 3rem;
+                    }
                 }
-            }
 
-            & .Contact__submit-container {
-                display: flex;
-                flex-direction: row-reverse;
+                & .Contact__submit-container {
+                    display: flex;
+                    flex-direction: row-reverse;
+                }
             }
 
             & .Contact__status {
@@ -344,6 +530,8 @@ export default {
                 margin-top: 10rem;
 
                 & > .Contact__status-icon {
+                    display: inline-block;
+
                     @include icon-size(7rem);
                 }
 
