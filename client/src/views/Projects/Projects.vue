@@ -331,7 +331,7 @@ const _leaveAnim = (el) => {
             `-=${totalFilterAnimTime}`
         );
     });
-}
+};
 </script>
 
 <style lang="scss" scoped>    

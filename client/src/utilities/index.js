@@ -405,7 +405,7 @@ export const generateUniqueID = (i_sPrefix = null) => {
  * @param {Function} i_fnAsyncCall The async function call. Must return a promise.
  * @param {Number} i_nMinDuration The minimum loading duration (ms).
  */
-export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1000) => {
+export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1500) => {
     return new Promise(async (resolve, reject) => {
         // State
         let resolveVal;
