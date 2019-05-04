@@ -33,6 +33,14 @@ const template = {
         "error-color": {
             "primary": "rgb(250, 74, 74)",
             "secondary": "rgb(255, 0, 0)",
+        },
+        "success-color": {
+            "primary": "#6FD66F",
+            "secondary": "rgb(0, 255, 0)"
+        },
+        "warning-color": {
+            "primary": "#E5CC66",
+            "secondary": "#FFCD00"
         }
     },
     "subSections": {

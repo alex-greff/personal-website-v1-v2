@@ -12,7 +12,7 @@
 
     background-color: theme-link($base, "accent-color", "secondary", 0);
 
-    transition: background-color 0.4s;
+    transition: background-color 0.5s;
 
     @if $component-based == true {
         & a {

@@ -31,9 +31,9 @@ export default {
     methods: {
         onClick(e) {
             if (this.disabled) {
+                e.preventDefault();
                 return;
             }
-            console.log("emitting click"); // TODO: fix this not not call when disabled == true
             this.$emit("click", e);
         }
     }

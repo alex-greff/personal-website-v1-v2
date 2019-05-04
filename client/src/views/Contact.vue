@@ -73,13 +73,14 @@
 
             <div 
                 v-if="displayCompleteSendView"
-                class="Contact__complete"
+                class="Contact__status complete"
             >
-                <div>
-                    Message sent!
+                <md-icon class="Contact__status-icon">done_outline</md-icon>
+                <div class="Contact__status-message">
+                    Message sent successfully!
                 </div>
                 <button-field
-                    class="Contact__complete-form-button"
+                    class="Contact__status-form-button"
                     type="button"
                     @click="openForm(true)"
                 >
@@ -89,13 +90,14 @@
 
             <div
                 v-if="displayErrorSendView"
-                class="Contact__error"
+                class="Contact__status error"
             >
-                <div class="Contact__error-message">
+                <md-icon class="Contact__status-icon">error_outline</md-icon>
+                <div class="Contact__status-message">
                     An error occurred when attempting to send!
                 </div>
                 <button-field
-                    class="Contact__error-retry-button"
+                    class="Contact__status-form-button"
                     type="button"
                     @click="openForm(false)"
                 >
@@ -122,10 +124,10 @@ const PHASE_TYPES = {
 }
 
 const INIT_FORM_DATA = {
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
+    name: "Alex",
+    email: "alex@greff.com",
+    subject: "hi",
+    message: "sup"
 }
 
 export default {
@@ -169,9 +171,10 @@ export default {
     },
     methods: {
         async submit() {
-            // TODO: remove
-            this.requestSending = !this.requestSending;
-            return;
+            console.log("Submitting");
+            // // TODO: remove
+            // this.requestSending = !this.requestSending;
+            // return;
 
             // Validate form
             // Note: this happens almost instantly since there are no async validators
@@ -227,7 +230,7 @@ export default {
             };
 
             // const fnServerCall = () => Vue.axios.post("/api/contact", oReqBody);
-            const fnServerCall = () => new Promise((res) => res()); // TODO: remove
+            const fnServerCall = () => new Promise((res, rej) => res()); // TODO: remove
 
             // Send contact request to the server
             return Utilites.runSpoofedAsyncFunc(fnServerCall, 1000);
@@ -263,7 +266,7 @@ export default {
             $padding-amount: 2rem;
 
             position: relative;
-        
+
             margin-top: 4.5rem;
 
             max-width: 80rem;
@@ -330,6 +333,54 @@ export default {
             & .Contact__submit-container {
                 display: flex;
                 flex-direction: row-reverse;
+            }
+
+            & .Contact__status {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                margin-top: 10rem;
+
+                & > .Contact__status-icon {
+                    @include icon-size(7rem);
+                }
+
+                & > .Contact__status-message {
+                    font-size: 2rem;
+                    line-height: 2rem;
+
+                    margin-top: 0.5rem;
+
+                    text-align: center;
+
+                    color: theme-link("contact", "text-color", "primary");
+                }
+
+                & > .Contact__status-form-button {
+                    margin-top: 2rem;
+                }
+
+                @include respond(phone) {
+                    margin-top: 50%;
+                }
+
+                // -----------------
+                // --- Modifiers ---
+                // -----------------
+
+                &.complete {
+                    & > .Contact__status-icon {
+                        color: theme-link("contact", "success-color", "primary");
+                    }
+                }
+
+                &.error {
+                    & > .Contact__status-icon {
+                        color: theme-link("contact", "error-color", "primary");
+                    }
+                }
             }
         }
     }

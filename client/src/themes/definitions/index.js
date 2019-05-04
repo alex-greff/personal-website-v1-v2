@@ -7,6 +7,8 @@ export const baseProperties = [
     "scrollbar-color",
     "button-color",
     "error-color",
+    "success-color",
+    "warning-color",
 ];
 
 export const propertyVariations = [
