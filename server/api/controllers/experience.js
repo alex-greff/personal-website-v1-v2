@@ -23,7 +23,7 @@ exports.experience_get_all = async (req, res, next) => {
                     companyLink: doc.companyLink,
                     summary: doc.summary,
                     tags: doc.tags,
-                    thumbnail: doc.thumbnail, 
+                    thumbnailImage: doc.thumbnailImage, 
                     startDate: doc.startDate,
                     endDate: doc.endDate,
                     request: {
