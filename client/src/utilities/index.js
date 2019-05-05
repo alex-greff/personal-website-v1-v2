@@ -352,6 +352,24 @@ export function getFormattedDate(i_dDate) {
 }
 
 /**
+ * Returns a formatted version of the given start date.
+ * 
+ * @param {Date} i_dStartDate The start date.
+ */
+export function getFormattedStartDate(i_dStartDate) {
+    return (i_dStartDate) ? getFormattedDate(i_dStartDate) : "Unknown";
+}
+
+/**
+ * Returns a formatted version of the given end date.
+ * 
+ * @param {Date} i_dEndDate The end date.
+ */
+export function getFormattedEndDate(i_dEndDate) {
+    return (i_dEndDate) ? getFormattedDate(i_dEndDate) : "Present";
+}
+
+/**
  * Runs the given functions, if they are defined.
  * 
  * @param {...Function} i_fnFuncs All the functions.
@@ -457,6 +475,91 @@ export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1500) => {
     });
 };
 
+
+/**
+ * Sorts a standard items object (i.e. containing name and date information).
+ * 
+ * @param {Object} i_oItems The object containing all the items data.
+ * @param {String} i_sNameKey The accessor for the name field.
+ * @param {String} i_sEndDateKey The accessor for the end date field.
+ */
+export const sortStandardItemsObject = (i_oItems, i_sNameKey = "name", i_sEndDateKey = "endDate") => {
+    // Convert items object into an array
+    let aSortedItems = Object.values(i_oItems).map(i_oItemData => i_oItemData);
+
+    // Sort the items by date and sub-sorted by name, when needed
+    aSortedItems.sort((oItemA, oItemB) => {
+        const sNameA = oItemA[i_sNameKey];
+        const sEndDateA = oItemA[i_sEndDateKey];
+        const sNameB = oItemB[i_sNameKey];
+        const sEndDateB = oItemB[i_sEndDateKey];
+
+        // Case 1: both end dates are defined
+        if (sEndDateA && sEndDateB) {
+            const dEndDateA = new Date(sEndDateA);
+            const dEndDateB = new Date(sEndDateB);
+
+            // Case 1a: end dates are the same
+            if (dEndDateA.getTime() === dEndDateB.getTime()) {
+                // Sort by name
+                return (`${sNameA}`).localeCompare(sNameB);
+            }
+            // Case 1b: end dates are different
+            else {
+                // Sort by end date
+                return dEndDateB - dEndDateA;
+            }
+        } 
+        // Case 2: A's end date is not defined but B's is
+        else if (!sEndDateA && sEndDateB) {
+            // Sort A in front of B
+            return -1;
+        } 
+        // Case 3: B's end date is not defined by A's is
+        else if (sEndDateA && !sEndDateB) {
+            // Sort B in front of A
+            return 1;
+        }
+        // Case 4: both end dates are not defined
+        else {
+            // Sort by name
+            return (`${sNameA}`).localeCompare(sNameB);
+        }
+    });
+    
+    // Return the sorted items list
+    return aSortedItems; 
+};
+
+/**
+ * Returns a filtered array of the given items array that matches the filter set and show all arguments.
+ * 
+ * @param {Array} i_aItems The array of items to filter.
+ * @param {Boolean} i_bShowAll Indicates if all items should be shown.
+ * @param {Set} i_filterSet The set to filter the items array by.
+ * @param {String} i_sTagsKey The accessor for the tags field.
+ */
+export const filterStandardItemsArray = (i_aItems, i_bShowAll, i_filterSet, i_sTagsKey = "tags") => {
+    const newItemsFiltered = i_aItems.reduce((acc, item) => {
+        const currItem = [];
+        
+        const bMatchesFilter = Array.from(i_filterSet).every(filterItem => {
+            return item[i_sTagsKey].some(tag => tag === filterItem);
+        });
+
+        if (i_bShowAll || bMatchesFilter) {
+            currItem.push({ ...item });
+        }
+
+        return [
+            ...acc,
+            ...currItem
+        ];
+    }, []);
+
+    return newItemsFiltered;
+};
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -487,9 +590,13 @@ export default {
     computeParallelogramClipPath,
     totalStaggerTime,
     getFormattedDate,
+    getFormattedStartDate,
+    getFormattedEndDate,
     runFunctions,
     runFunctionsWithParams,
     preloadImage,
     generateUniqueID,
     runSpoofedAsyncFunc,
+    sortStandardItemsObject,
+    filterStandardItemsArray,
 };

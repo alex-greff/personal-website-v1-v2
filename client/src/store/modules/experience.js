@@ -88,11 +88,6 @@ const actions = {
             // Construct in-memory experience object
             res.data.experience.forEach(experience => {
                 const currData = Object.entries(experience).reduce((acc, [field, value]) => {
-                    // Don't need the _id field
-                    if (field === "_id") {
-                        return acc;
-                    }
-
                     return {
                         ...acc,
                         [field]: value

@@ -85,51 +85,9 @@ export default {
             return [...tagsSet];
         },
         sortedProjectsList() {
-            // Convert tags map into an array
-            let aSortedProjects = Object.values(this.projects).map(i_oProjectData => i_oProjectData);
-
-            // Sort the projects by date and sub-sorted by name, when needed
-            aSortedProjects.sort((oProjectA, oProjectB) => {
-                const sNameA = oProjectA.name;
-                const sEndDateA = oProjectA.endDate;
-                const sNameB = oProjectB.name;
-                const sEndDateB = oProjectB.endDate;
-
-                // Case 1: both end dates are defined
-                if (sEndDateA && sEndDateB) {
-                    const dEndDateA = new Date(sEndDateA);
-                    const dEndDateB = new Date(sEndDateB);
-
-                    // Case 1a: end dates are the same
-                    if (dEndDateA.getTime() === dEndDateB.getTime()) {
-                        // Sort by name
-                        return (`${sNameA}`).localeCompare(sNameB);
-                    }
-                    // Case 1b: end dates are different
-                    else {
-                        // Sort by end date
-                        return dEndDateB - dEndDateA;
-                    }
-                } 
-                // Case 2: A's end date is not defined but B's is
-                else if (!sEndDateA && sEndDateB) {
-                    // Sort A in front of B
-                    return -1;
-                } 
-                // Case 3: B's end date is not defined by A's is
-                else if (sEndDateA && !sEndDateB) {
-                    // Sort B in front of A
-                    return 1;
-                }
-                // Case 4: both end dates are not defined
-                else {
-                    // Sort by name
-                    return (`${sNameA}`).localeCompare(sNameB);
-                }
-            });
-            
-            // Return the sorted projects list
-            return aSortedProjects; 
+            // Sort the projects
+            let aSortedProjects = Utilities.sortStandardItemsObject(this.projects, "name", "endDate");
+            return aSortedProjects;
         },
     },
     watch: {
@@ -163,25 +121,10 @@ export default {
             this.animateCssGridApplied = true;
         },
         filterUpdated(i_bShowAll, i_filterSet) {
-            const newProjectsFiltered = this.sortedProjectsList.reduce((acc, project) => {
-                const currProj = [];
-                
-                const bMatchesFilter = Array.from(i_filterSet).every(filterItem => {
-                    return project.tags.some(tag => tag === filterItem);
-                });
+            // Filter projects
+            const aProjectsFiltered = Utilities.filterStandardItemsArray(this.sortedProjectsList, i_bShowAll, i_filterSet, "tags");
 
-                if (i_bShowAll || bMatchesFilter) {
-                    currProj.push({ ...project });
-                    // currProj[project.name] = { ...project };
-                }
-
-                return [
-                    ...acc,
-                    ...currProj
-                ];
-            }, []);
-
-            Vue.set(this, "projectsFiltered", newProjectsFiltered);
+            Vue.set(this, "projectsFiltered", aProjectsFiltered);
         },
         // -------------------------------
         // --- Project Item Animations ---
@@ -193,7 +136,7 @@ export default {
                 return;
             }
 
-            console.log("running project item enter anim for", el);
+            console.log("Running project item enter anim for", el);
             const ON_COMPLETE = () => done();
             const DURATION = 0.4;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });

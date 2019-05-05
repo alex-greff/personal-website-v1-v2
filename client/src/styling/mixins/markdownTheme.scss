@@ -1,5 +1,15 @@
-@mixin markdown-theme() {
-    font-size: 1.5rem;
+@function __calculate-header-font-size($heading-num, $largest-font-size, $smallest-font-size) {
+    $num-headings: 5;
+    $font-difference: $largest-font-size - $smallest-font-size;
+    $font-increment: $font-difference / ( $num-headings - 1);
+
+    $font-size: $largest-font-size - ($font-increment * ($heading-num - 1));
+
+    @return $font-size;
+}
+
+@mixin markdown-theme($largest-font-size: 3rem, $smallest-font-size: 1.5rem) {
+    font-size: $smallest-font-size;
     font-weight: 300;
 
     & /deep/ {
@@ -21,28 +31,33 @@
         }
         
         & h1 {
-            font-size: 3rem;
-            line-height: 3rem;
+            $font-size: __calculate-header-font-size(1, $largest-font-size, $smallest-font-size);
+            font-size: $font-size;
+            line-height: $font-size;
         }
 
         & h2 {
-            font-size: 2.3rem;
-            line-height: 2.3rem;
+            $font-size: __calculate-header-font-size(2, $largest-font-size, $smallest-font-size);
+            font-size: $font-size;
+            line-height: $font-size;
         }
 
         & h3 {
-            font-size: 2.1rem;
-            line-height: 2.1rem;
+            $font-size: __calculate-header-font-size(3, $largest-font-size, $smallest-font-size);
+            font-size: $font-size;
+            line-height: $font-size;
         }
 
         & h4 {
-            font-size: 1.8rem;
-            line-height: 1.8rem;
+            $font-size: __calculate-header-font-size(4, $largest-font-size, $smallest-font-size);
+            font-size: $font-size;
+            line-height: $font-size;
         }
 
         & h5 {
-            font-size: 1.5rem;
-            line-height: 1.5rem;
+            $font-size: __calculate-header-font-size(5, $largest-font-size, $smallest-font-size);
+            font-size: $font-size;
+            line-height: $font-size;
         }
 
         & p {

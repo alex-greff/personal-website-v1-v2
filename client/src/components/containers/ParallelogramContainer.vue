@@ -24,7 +24,7 @@ export default {
         },
         maxWidth: { // rem
             type: Number,
-            default: 15
+            default: 20
         },
         spaceBetween: { // rem
             type: Number,

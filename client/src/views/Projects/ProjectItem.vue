@@ -1,9 +1,9 @@
 <template>
-    <div :class="projectItemClassList">
+    <div class="ProjectItem">
         <router-link
             :to="detailsRouterPath"
             tag="div"
-            :class="contentClassList"
+            :class="['ProjectItem__content', contentClass]"
         >
             <!-- Note: this first anchor tag is used by router-link -->
             <a>
@@ -80,12 +80,6 @@ export default {
         };
     },
     computed: {
-        projectItemClassList() {
-            return `ProjectItem ${(this.hover ? "hover" :  "")}`.trim();
-        },
-        contentClassList() {
-            return `ProjectItem__content ${this.contentClass}`.trim();
-        },
         thumbnailImageLinkStyles() {
             return { backgroundImage: `url('${this.projectData.thumbnailImage}')` };
         },

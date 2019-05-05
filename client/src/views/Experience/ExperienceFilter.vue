@@ -1,9 +1,9 @@
 <template>
     <filter-controller
         v-bind="$attrs"
-        class="ProjectFilter"
+        class="ExperienceFilter"
     >
-        Filter Projects
+        Filter Experience Items
     </filter-controller>
 </template>
 
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .ProjectFilter {
+    .ExperienceFilter {
         margin-top: 2rem;
     }
 </style>

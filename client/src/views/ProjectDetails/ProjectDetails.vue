@@ -34,7 +34,6 @@
                     </div>
                     <div class="ProjectDetails__summary">
                         <div class="ProjectDetails__summary-text">
-                            <!-- {{ projectData.summary }} -->
                             <pd-description 
                                 :description-markdown="projectData.summary"
                             />
@@ -209,10 +208,10 @@ export default {
             return (sEndDate) ? new Date(sEndDate) : null;
         },
         startDateFormatted() {
-            return (this.startDate) ? Utilities.getFormattedDate(this.startDate) : "Unknown";
+            return Utilities.getFormattedStartDate(this.startDate);
         },
         endDateFormatted() {
-            return (this.endDate) ? Utilities.getFormattedDate(this.endDate) : "Present";
+            return Utilities.getFormattedEndDate(this.endDate);
         },
         hasGalleryImages() {
             const oGalleryImages = this.projectData.galleryImages;
