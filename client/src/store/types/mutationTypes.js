@@ -9,6 +9,12 @@ export const ADD_PROJECT = "ADD_PROJECT";
 export const REMOVE_PROJECT = "REMOVE_PROJECT";
 export const EDIT_PROJECT = "EDIT_PROJECT";
 
+// Experience store
+export const POPULATE_EXPERIENCE = "POPULATE_EXPERIENCE";
+export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
+export const REMOVE_EXPERIENCE = "REMOVE_EXPERIENCE";
+export const EDIT_EXPERIENCE = "EDIT_EXPERIENCE";
+
 // Theme store
 export const ADD_THEME = "ADD_THEME";
 export const REMOVE_THEME = "REMOVE_THEME";

@@ -12,23 +12,23 @@ const _projectExists = (i_oState, i_sProjectName) => {
     if (!i_oState[i_sProjectName]) {
         throw `Error: project '${i_sProjectName}' does not exist`;
     }
-}
+};
 
 const _projectDoesNotExist = (i_oState, i_sProjectName) => {
     if (i_oState[i_sProjectName]) {
         throw `Error: project '${i_sProjectName}' exists already`;
     }
-}
+};
 
 // -------------------
 // --- Store Setup ---
 // -------------------
 
 const state =  {
-    
+    // Empty initial state
 };
 
-const getters =  {
+const getters = {
     [getterTypes.GET_ALL_PROJECTS]: (i_oState) => {
         return i_oState;
     },
@@ -77,35 +77,30 @@ const actions = {
     // Retrieves the project data from the server
     [actionTypes.POPULATE_PROJECTS]: async ({ dispatch }) => {
         try {
-            // Get all the projects from the database
+            // Get all the projects from the server
             const res = await Vue.axios.get('/api/projects');
 
             console.log("Projects get successful", res); // TODO: remove
 
             // Construct our in-memory projects object
             res.data.projects.forEach(project => {
-                // TODO: I can probably rewrite this with reduce
-                const currData = {};
-                Object.entries(project).forEach(([field, value]) => {
-                    // We don't need the _id field
+                const currData = Object.entries(project).reduce((acc, [field, value]) => {
+                    // Don't need the _id field
                     if (field === "_id") {
-                        return;
+                        return acc;
                     }
 
-                    currData[field] = value;
-                });
+                    return {
+                        ...acc,
+                        [field]: value
+                    };
+                }, {});
 
-                // TODO: this parsing really shouldn't be done here
-                // ...the server should return a full, serialized URL
-
-                // Append the backend server address to the thumbnail image so the front end
-                // knows where to access it
-                const thumbnailImage = currData['thumbnailImage'];
-                if (thumbnailImage) {
-                    const sThumbnailPath = `${thumbnailImage}`.replace('\\', '/')
-                    currData['thumbnailImage'] = sThumbnailPath;
+                const sThumbnailImagePath = currData['thumbnailImage'];
+                if (sThumbnailImagePath) {
+                    currData['thumbnailImage'] = sThumbnailImagePath;
                     // Preload the thumbnail
-                    Utilities.preloadImage(sThumbnailPath);
+                    Utilities.preloadImage(sThumbnailImagePath);
                 }
 
                 const galleryImages = currData['galleryImages'];
@@ -113,7 +108,7 @@ const actions = {
                     const newGalleryImages = {};
 
                     Object.entries(galleryImages).forEach(([ID, path]) => {
-                        const sCurrGalleryImagePath = `/${path}`.replace('\\', '/');
+                        const sCurrGalleryImagePath = path;
                         newGalleryImages[ID] = sCurrGalleryImagePath;
                         // Preload the current gallery image
                         Utilities.preloadImage(sCurrGalleryImagePath);
@@ -152,4 +147,4 @@ export default {
     getters,
     mutations,
     actions
-}
+};

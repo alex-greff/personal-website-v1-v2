@@ -455,7 +455,7 @@ export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1500) => {
             reject(rejectVal);
         }
     });
-}
+};
 
 // Public API export
 export default {

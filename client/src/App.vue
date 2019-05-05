@@ -43,7 +43,7 @@ import BlockLoader from "@/components/loaders/BlockLoader.vue";
 import Home from "@/views/Home.vue";
 import Projects from "@/views/Projects/Projects.vue";
 import ProjectDetails from "@/views/ProjectDetails/ProjectDetails.vue";
-import Experience from "@/views/Experience.vue";
+import Experience from "@/views/Experience/Experience.vue";
 import Music from "@/views/Music.vue";
 import About from "@/views/About.vue";
 import Contact from "@/views/Contact.vue";
@@ -165,6 +165,7 @@ export default {
         // Instantiate vuex data
         this.populateThemes();
         this.populateProjects();
+        this.populateExperience();
 
         // Add default namespace
         this.addNamespace({
@@ -208,7 +209,9 @@ export default {
             populateThemes: actionTypes.POPULATE_THEMES,
             addNamespace: actionTypes.ADD_NAMESPACE,
             // Projects store
-            populateProjects: actionTypes.POPULATE_PROJECTS
+            populateProjects: actionTypes.POPULATE_PROJECTS,
+            // Experience store
+            populateExperience: actionTypes.POPULATE_EXPERIENCE,
         }),
         updateRouteTheme(i_sRouteName) {
             const currPageData = pageData.pages[i_sRouteName];
