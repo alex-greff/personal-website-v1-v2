@@ -4,7 +4,8 @@ let roles = {
         inherits: ['editor', 'artist']
     },
     editor: {
-        can: ['create-project', 'edit-project', 'delete-project'],
+        can: ['create-project', 'edit-project', 'delete-project', 
+            'create-experience', 'edit-experience', 'delete-experience'],
         inherits: ['default']
     },
     artist: {

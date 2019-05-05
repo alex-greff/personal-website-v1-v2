@@ -1,7 +1,12 @@
 const fs = require('fs');
+const storage = require("./storage");
+
+exports.StorageUtility = storage;
 
 exports.cleanupFile = (filePath) => {
-    fs.unlink(filePath, (err) => {
+    const correctedFilePath = filePath.replace(/^\//, "");
+
+    fs.unlink(correctedFilePath, (err) => {
         if (!err) {
             console.log(filePath, "successfully cleaned up");
         } else {
@@ -10,6 +15,19 @@ exports.cleanupFile = (filePath) => {
         // Do nothing if file is not found
     });
 };
+
+exports.deleteUploadedFiles = (req) => {
+    // Delete uploaded files
+    const fields = Object.entries(req.files);
+    // Iterate through each field
+    fields.forEach(([field, files])=> {
+        // Iterate through the files in the current field
+        files.forEach(file => {
+            // Remove each file
+            exports.cleanupFile(file.path);
+        });
+    });
+}
 
 exports.map_to_object = (i_mMap, recursive = false) => {
     const oRet = {};
@@ -37,8 +55,29 @@ exports.object_to_map = (i_oObj, recursive = false) => {
     });
 
     return mRet;
-}
+};
 
 exports.isObject = (i_oObj) => {
     return (!!i_oObj) && (i_oObj.constructor === Object);
+};
+
+exports.isLink = (i_sLink) => {
+    const rLinkRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    return rLinkRegex.test(i_sLink);
+};
+
+exports.validateMap = (i_mMap, i_fnValidator) => {
+    let bValid = true;
+    i_mMap.forEach((i_val) => {
+        bValid = bValid && i_fnValidator(i_val);
+    });
+    return bValid;
+};
+
+exports.getURLBase = (req) => {
+    return `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+};
+
+exports.sanitizeImagePath = (raw) => {
+    return `/${raw.replace(/\\/g, "/")}`;
 }

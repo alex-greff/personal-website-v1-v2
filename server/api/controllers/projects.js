@@ -8,7 +8,7 @@ exports.projects_get_all = async (req, res, next) => {
     try {
         const docs = await Project.find().select(SELECTED_FIELDS).exec();
 
-        let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+        const urlBase = Utilities.getURLBase(req);
 
         console.log("FROM DATABASE\n", docs);
 
@@ -34,6 +34,7 @@ exports.projects_get_all = async (req, res, next) => {
                 };
             })
         };
+
         // Send response
         res.status(200).json(response);
 
@@ -49,8 +50,7 @@ exports.projects_create_project = async (req, res, next) => {
     // Construct thumbnail image path entry
     let thumbnailImagePath;
     if (req.files['thumbnailImage']) {
-        thumbnailImagePath = req.files['thumbnailImage'][0].path.replace("\\", "/");
-        thumbnailImagePath =  `/${thumbnailImagePath}`;
+        thumbnailImagePath = Utilities.sanitizeImagePath(req.files["thumbnailImage"][0].path);
     }
     
     // Construct gallery images object
@@ -58,8 +58,7 @@ exports.projects_create_project = async (req, res, next) => {
     if (req.files['galleryImages']) {
         req.files['galleryImages'].forEach(galleryImage => {
             const id = new mongoose.Types.ObjectId();
-            galleryImagesPaths[id] = galleryImage.path.replace("\\", "/");
-            galleryImagesPaths[id] = `/${galleryImagesPaths[id]}`;
+            galleryImagesPaths[id] = Utilities.sanitizeImagePath(galleryImage.path);
         });
     }
 
@@ -85,7 +84,8 @@ exports.projects_create_project = async (req, res, next) => {
 
         console.log("CREATED PROJECT\n", result);
 
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`;
+        const url = `${Utilities.getURLBase(result)}/${result._id}`;
+
         // Send response
         res.status(201).json({
             message: "Created project successfully",
@@ -112,15 +112,7 @@ exports.projects_create_project = async (req, res, next) => {
         console.log(err);
 
         // Delete uploaded files
-        const fields = Object.entries(req.files);
-        // Iterate through each field
-        fields.forEach(([field, files])=> {
-            // Iterate through the files in the current field
-            files.forEach(file => {
-                // Remove each file
-                Utilities.cleanupFile(file.path);
-            });
-        });
+        Utilities.deleteUploadedFiles(req);
 
         res.status(500).json({
             error: err
@@ -138,7 +130,8 @@ exports.projects_get_project = async (req, res, next) => {
         console.log("FROM DATABASE\n", doc);
 
         if (doc) { // If document is found
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+            const url = Utilities.getURLBase(req);
+
             // Send response
             res.status(200).json({
                 project: doc,
@@ -163,8 +156,6 @@ exports.projects_get_project = async (req, res, next) => {
 };
 
 exports.projects_update_project = async (req, res, next) => { 
-    let errored = false;
-
     const id = req.params.projectID;
 
     // Construct update operations object
@@ -185,14 +176,14 @@ exports.projects_update_project = async (req, res, next) => {
 
     // If the thumbnail image is being updated then add it to the update ops
     if (!!req.files && !!req.files['thumbnailImage']) {
-        updateOps['thumbnailImage'] = req.files['thumbnailImage'][0].path;
+        updateOps['thumbnailImage'] = Utilities.sanitizeImagePath(req.files['thumbnailImage'][0].path);
     }
 
     // Construct the list of gallery image paths to be added
     let addGalleryImages = [];
     if (!!req.files && !!req.files['galleryImages']) {
         req.files['galleryImages'].forEach(galleryImage => {
-            addGalleryImages.push(galleryImage.path);
+            addGalleryImages.push(Utilities.sanitizeImagePath(galleryImage.path));
         });
     }
 
@@ -203,7 +194,7 @@ exports.projects_update_project = async (req, res, next) => {
             // Cleanup the thumbnail image, if needed
             if (!!doc.thumbnailImage && !!updateOps['thumbnailImage']) {
                 Utilities.cleanupFile(doc.thumbnailImage);
-            }   
+            }
 
             if (doc.galleryImages) {
                 // Construct the base updated gallery images map
@@ -239,7 +230,7 @@ exports.projects_update_project = async (req, res, next) => {
 
         const result = await Project.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec();
 
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
+        const url = `${Utilities.getURLBase(req)}/${id}`;
 
         // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
         // If no project is found
@@ -281,7 +272,11 @@ exports.projects_delete_project = async (req, res, next) => {
     try {
         const removed = await Project.findOneAndRemove({ _id: id }).exec();
 
-        console.log("Removed", removed);
+        if (!removed) {
+            throw "Unable to remove project";
+        }
+
+        console.log("REMOVED\n", removed);
 
         // Clean up thumbnail image
         Utilities.cleanupFile(removed.thumbnailImage);
@@ -294,7 +289,7 @@ exports.projects_delete_project = async (req, res, next) => {
         };
 
         // Send response
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+        const url = Utilities.getURLBase(req);
         res.status(200).json({
             message: "Project deleted",
             request: {
