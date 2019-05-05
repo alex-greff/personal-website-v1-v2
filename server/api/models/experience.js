@@ -11,6 +11,9 @@ const experienceSchema = mongoose.Schema({
     companyLink: { type: String, default: null, validate: Utilities.isLink }, // Null implies no company link
     summary: { type: String, required: true },
 
+    // Lists
+    tags: { type: [String], required: false },
+
     // Images
     thumbnailImage: { type: String, required: true },
 

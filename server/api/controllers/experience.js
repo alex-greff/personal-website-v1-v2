@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Experience = require("../models/experience");
 const Utilities = require("../utilities");
 
-const SELECTED_FIELDS = "title company companyLink summary _id thumbnailImage startDate endDate";
+const SELECTED_FIELDS = "title company companyLink summary tags _id thumbnailImage startDate endDate";
 
 exports.experience_get_all = async (req, res, next) => {
     try {
@@ -22,6 +22,7 @@ exports.experience_get_all = async (req, res, next) => {
                     company: doc.company,
                     companyLink: doc.companyLink,
                     summary: doc.summary,
+                    tags: doc.tags,
                     thumbnail: doc.thumbnail, 
                     startDate: doc.startDate,
                     endDate: doc.endDate,
@@ -58,9 +59,8 @@ exports.experience_create_experience = async (req, res, next) => {
         company: req.body.company,
         companyLink: req.body.companyLink,
         summary: req.body.summary,
-
+        tags: req.body.tags,
         thumbnailImage: thumbnailImagePath,
-
         startDate: req.body.startDate,
         endDate: req.body.endDate,
     });
@@ -81,6 +81,7 @@ exports.experience_create_experience = async (req, res, next) => {
                 company: result.company,
                 companyLink: result.companyLink,
                 summary: result.summary,
+                tags: result.tags,
                 thumbnailImage: result.thumbnailImage,
                 startDate: result.startDate,
                 endDate: result.endDate,
@@ -223,6 +224,7 @@ exports.experience_delete_experience = async (req, res, next) => {
                     company: "String",
                     companyLink: "String",
                     summary: "String",
+                    tags: "Array of Strings",
                     thumbnailImage: "image/JPEG or image/PNG",
                     startDate: "Date",
                     endDate: "Date",
