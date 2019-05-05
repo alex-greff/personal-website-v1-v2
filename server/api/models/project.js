@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Utilities = require("../utilities");
 
-const linkMapValidator = (i_mMap) => Utilities.validateMap(i_mMap, Utilities.isLink);
-
 const projectSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     updated: { type: Date, default: Date.now },
@@ -13,7 +11,7 @@ const projectSchema = mongoose.Schema({
     description: { type: String, required: true },
 
     // Listed info
-    links: { type: Map, of: String, required: false, validate: linkMapValidator },
+    links: { type: Map, of: String, required: false, validate: Utilities.linkMapValidator },
     tags: { type: [String], required: false},
 
     // Images

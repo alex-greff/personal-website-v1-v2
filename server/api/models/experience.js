@@ -8,7 +8,7 @@ const experienceSchema = mongoose.Schema({
     // Text info
     title: { type: String, required: true },
     company: { type: String, required: true },
-    companyLink: { type: String, default: null, validate: Utilities.isLink }, // Null implies no company link
+    companyLink: { type: String, default: null, validate: Utilities.linkValidator }, // Null implies no company link
     summary: { type: String, required: true },
 
     // Lists

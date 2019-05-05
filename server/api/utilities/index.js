@@ -80,4 +80,8 @@ exports.getURLBase = (req) => {
 
 exports.sanitizeImagePath = (raw) => {
     return `/${raw.replace(/\\/g, "/")}`;
-}
+};
+
+exports.linkValidator = (i_sVal) => !i_sVal || exports.isLink(i_sVal);
+
+exports.linkMapValidator = (i_mMap) => exports.validateMap(i_mMap, exports.linkValidator);
