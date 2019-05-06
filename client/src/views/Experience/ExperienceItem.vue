@@ -147,7 +147,7 @@ export default {
             display: grid;
             grid-column-gap: 1rem;
             grid-row-gap: 1rem;
-            grid-template-columns: 2fr 3fr;
+            grid-template-columns: 2fr 5fr;
             grid-template-rows: auto;
             grid-template-areas:
                 "thumbnail information";
@@ -165,9 +165,9 @@ export default {
                 justify-content: center;
 
                 & .ExperienceItem__thumbnail {
-                    // Force 16:9 aspect ratio
+                    // Force 1:1 ratio
                     width: 100%;
-                    @include aspect-ratio("16:9");
+                    @include aspect-ratio("1:1");
 
                     background-size: cover;
                     background-position: center center;
