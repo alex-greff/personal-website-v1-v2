@@ -25,7 +25,8 @@
                     </component>
                 </div> -->
                 <div class="ExperienceItem__title">
-                    {{ experienceItemData.title }} -
+                    {{ experienceItemData.title }}
+                    <span class="ExperienceItem__title-dash">-</span>
                 </div>
                 <component 
                     :is="companyComponentTag"
@@ -38,7 +39,7 @@
                 <div class="ExperienceItem__date">
                     {{ startDateFormatted }} - {{ endDateFormatted }}
                 </div>
-                <div class="ExperienceItems__tags">
+                <div class="ExperienceItem__tags">
                     <!-- Generate tags -->
                     <tag-item
                         v-for="(tag, index) in experienceItemData.tags"
@@ -178,6 +179,7 @@ export default {
 
                 display: grid;
                 grid-row-gap: 0.5rem;
+                grid-column-gap: 0.5rem;
                 grid-template-columns: auto 1fr;
                 grid-template-rows: auto auto auto 1fr;
                 grid-template-areas: 
@@ -190,20 +192,22 @@ export default {
                     grid-area: title;
                     align-self: center;
 
-                    $font-size: 2.3rem;
+                    $font-size: 2rem;
                     font-size: $font-size;
                     line-height: $font-size;
 
                     font-weight: 500;
 
-                    margin-right: 0.5rem;
+                    & .ExperienceItem__title-dash {
+                        display: initial;
+                    }
                 }
 
                 & .ExperienceItem__company {
                     grid-area: company;
                     align-self: center;
 
-                    $font-size: 2.1rem;
+                    $font-size: 2rem;
                     font-size: $font-size;
                     line-height: $font-size;
 
@@ -275,7 +279,8 @@ export default {
                     grid-area: tags;
 
                     display: flex;
-                    justify-content: flex-end;
+                    // justify-content: flex-end;
+                    justify-content: flex-start;
                     flex-wrap: wrap;
                     margin-right: 1rem;
 
@@ -286,6 +291,23 @@ export default {
 
                 & .ExperienceItem__summary {
                     grid-area: summary;
+                }
+
+                @include respond(tab-port) {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto auto auto auto 1fr;
+                    grid-template-areas: 
+                        "title"
+                        "company"
+                        "date"
+                        "tags"
+                        "summary";
+
+                    & .ExperienceItem__title {
+                        & .ExperienceItem__title-dash {
+                            display: none;
+                        }
+                    }
                 }
             }
 
