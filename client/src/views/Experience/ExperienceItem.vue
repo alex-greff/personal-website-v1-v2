@@ -148,6 +148,8 @@ export default {
             grid-column-gap: 1rem;
             grid-row-gap: 1rem;
             grid-template-columns: 2fr 5fr;
+            // grid-template-columns: 30rem 1fr;
+            // grid-template-rows: 20rem;
             grid-template-rows: auto;
             grid-template-areas:
                 "thumbnail information";
@@ -167,7 +169,8 @@ export default {
                 & .ExperienceItem__thumbnail {
                     // Force 1:1 ratio
                     width: 100%;
-                    @include aspect-ratio("1:1");
+                    // height: 100%;
+                    @include aspect-ratio("1:1"); // TODO: need to figure out how to use height with this
 
                     background-size: cover;
                     background-position: center center;
