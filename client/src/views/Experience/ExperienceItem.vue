@@ -1,29 +1,15 @@
 <template>
     <div class="ExperienceItem">
         <div :class="['ExperienceItem__content', contentClass]">
-            <div class="ExperienceItem__thumbnail-container">
-                <div 
-                    class="ExperienceItem__thumbnail" 
-                    :style="thumbnailImageStyles"
-                />
-            </div>
+            <!-- <div class="ExperienceItem__thumbnail-container">
+                <div class="ExperienceItem__thumbnail-tint">
+                    <div 
+                        class="ExperienceItem__thumbnail" 
+                        :style="thumbnailImageStyles"
+                    />
+                </div>
+            </div> -->
             <div class="ExperienceItem__information">
-                <!-- <div class="ExperienceItem__position-info">
-                    <div class="ExperienceItem__title">
-                        {{ experienceItemData.title }}
-                    </div>
-                    <div class="ExperienceItem__separator-container">
-                        -
-                    </div>
-                    <component 
-                        :is="companyComponentTag"
-                        :href="companyComponentLink"
-                        target="__blank"
-                        class="ExperienceItem__company"
-                    >
-                        {{ experienceItemData.company }}
-                    </component>
-                </div> -->
                 <div class="ExperienceItem__title">
                     {{ experienceItemData.title }}
                     <span class="ExperienceItem__title-dash">-</span>
@@ -50,11 +36,12 @@
                         {{ tag }}
                     </tag-item>
                 </div>
-                <experience-item-summary
-                    class="ExperienceItem__summary"
-                    :summary-markdown="experienceItemData.summary"
-                />
             </div>
+
+            <experience-item-summary
+                class="ExperienceItem__summary"
+                :summary-markdown="experienceItemData.summary"
+            />
         </div>
     </div>
 </template>
@@ -144,58 +131,148 @@ export default {
         height: 100%;
 
         & .ExperienceItem__content {
+            position: relative;
             display: grid;
+            // grid-column-gap: 1rem;
+            // grid-row-gap: 1rem;
+            // grid-template-columns: 2fr 5fr;
+            // // grid-template-columns: 30rem 1fr;
+            // // grid-template-rows: 20rem;
+            // grid-template-rows: auto;
+            // grid-template-areas:
+            //     "thumbnail information";
+
+            // grid-template-columns: auto auto 1fr;
+            // grid-template-rows: auto auto auto auto;
+            // grid-template-areas:
+            //     "thumbnail title company"
+            //     "thumbnail date date"
+            //     "thumbnail tags tags"
+            //     "summary summary summary";
+
+            // grid-template-columns: 3fr 20fr;
+            // grid-column-gap: 1rem;
+            // grid-row-gap: 1rem;
+            // grid-template-columns: auto 1fr;
+            // grid-template-rows: auto auto;
+            // grid-template-areas:
+            //     "thumbnail information"
+            //     "summary summary";
+
             grid-column-gap: 1rem;
             grid-row-gap: 1rem;
-            grid-template-columns: 2fr 5fr;
-            // grid-template-columns: 30rem 1fr;
-            // grid-template-rows: 20rem;
+            grid-template-columns: auto;
             grid-template-rows: auto;
             grid-template-areas:
-                "thumbnail information";
+                "information"
+                "summary";
 
             color: theme-link("page", "text-color", "primary");
             background-color: theme-link("page", "bg-color", "secondary");
 
             padding: 1.5rem;
 
+            z-index: 1;
+
             & .ExperienceItem__thumbnail-container {
-                grid-area: thumbnail;
+                // position: relative;
+                // grid-area: thumbnail;
+
+                // grid-area: summary;
+                // justify-self: end;
+                // align-self: bottom;
+
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+
+
+                // $size: 10rem;
+                // width: $size;
+                // width: 100%;
+                // height: $size;
+                // height: 100%;
+                // width: 10vh;
+                // height: 10vh;
+
 
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                align-self: end;
 
-                & .ExperienceItem__thumbnail {
-                    // Force 1:1 ratio
+                z-index: 0;
+
+                opacity: 0.5;
+
+                & .ExperienceItem__thumbnail-tint {
+                    position: relative;
+
+                    z-index: initial;
+
                     width: 100%;
-                    // height: 100%;
-                    @include aspect-ratio("1:1"); // TODO: need to figure out how to use height with this
+                    height: 100%;
 
-                    background-size: cover;
-                    background-position: center center;
+                    & .ExperienceItem__thumbnail {
+                        position: relative;
+                        // Force 1:1 ratio
+                        // width: 100%;
+                        @include aspect-ratio("1:1"); // TODO: need to figure out how to use height with this
+
+                        $size: 20rem;
+                        width: $size;
+                        // height: $size;
+
+                        // width: 100%;
+                        height: 100%;
+
+                        background-size: cover;
+                        background-position: center center;
+
+                        z-index: -1;
+                    }
+                }
+
+                @include respond(phone) {
+                    grid-area: information;
+                    justify-self: end;
+                    
+                    & .ExperienceItem__thumbnail-tint {
+                        background-color: rgba(0, 0, 0, 0.5);
+                    }
                 }
             }
 
             & .ExperienceItem__information {
                 grid-area: information;
 
+                z-index: 1;
+
+                // Vertical center the grid
+                // margin: auto 0;
+                margin: 0 0 auto 0;
+
                 display: grid;
                 grid-row-gap: 0.5rem;
                 grid-column-gap: 0.5rem;
-                grid-template-columns: auto 1fr;
-                grid-template-rows: auto auto auto 1fr;
+                // grid-template-columns: auto 1fr;
+                // grid-template-rows: auto auto auto;
+                // grid-template-areas: 
+                //     "title company"
+                //     "date date"
+                //     "tags tags";
+                grid-template-columns: auto 1fr auto;
+                grid-template-rows: auto auto;
                 grid-template-areas: 
-                    "title company"
-                    "date date"
-                    "tags tags"
-                    "summary summary";
+                    "title company date"
+                    "tags tags tags";
 
                 & .ExperienceItem__title {
                     grid-area: title;
                     align-self: center;
 
-                    $font-size: 2rem;
+                    $font-size: 2.5rem;
                     font-size: $font-size;
                     line-height: $font-size;
 
@@ -210,7 +287,7 @@ export default {
                     grid-area: company;
                     align-self: center;
 
-                    $font-size: 2rem;
+                    $font-size: 2.5rem;
                     font-size: $font-size;
                     line-height: $font-size;
 
@@ -227,52 +304,14 @@ export default {
                         color: theme-link("projects-item", "accent-color", "primary");
                     }
                 }
-
-                & .ExperienceItem__position-info {
-                    grid-area: position;
-
-                    display: flex;
-                    align-items: center;
-
-                    & .ExperienceItem__title, & .ExperienceItem__separator-container, & .ExperienceItem__company {
-                        display: inline-block;
-
-                        $font-size: 2.3rem;
-                        font-size: $font-size;
-                        line-height: $font-size;
-
-                        // white-space: nowrap;
-                        // overflow: hidden;
-                    }
-
-                    & .ExperienceItem__title {
-                        font-weight: 500;
-                    }
-
-                    & .ExperienceItem__separator-container {
-                        // color: theme-link("projects-item", "selected-color", "primary");
-
-                        margin: 0 0.7rem 0 0.7rem;
-                    }
-
-                    & .ExperienceItem__company {
-                        text-decoration: none;
-                        color: theme-link("projects-item", "selected-color", "primary");
-
-                        transition: color 0.5s;
-                    }
-
-                    & a.ExperienceItem__company {
-                        cursor: pointer;
-
-                        &:hover {
-                            color: theme-link("projects-item", "accent-color", "primary");
-                        }
-                    }
-                }
                 
                 & .ExperienceItem__date {
                     grid-area: date;
+
+                    font-size: 1.5rem;
+                    line-height: 1.5rem;
+
+                    align-self: center;
 
                     // text-align: right;
                     color: theme-link("page", "text-color", "secondary");
@@ -292,19 +331,14 @@ export default {
                     }
                 }
 
-                & .ExperienceItem__summary {
-                    grid-area: summary;
-                }
-
                 @include respond(tab-port) {
                     grid-template-columns: 1fr;
-                    grid-template-rows: auto auto auto auto 1fr;
+                    grid-template-rows: auto auto auto auto;
                     grid-template-areas: 
                         "title"
                         "company"
                         "date"
-                        "tags"
-                        "summary";
+                        "tags";
 
                     & .ExperienceItem__title {
                         & .ExperienceItem__title-dash {
@@ -314,12 +348,18 @@ export default {
                 }
             }
 
-            @include respond(tab-port) {
+            & .ExperienceItem__summary {
+                grid-area: summary;
+            }
+
+            @include respond(phone) {
+                grid-column-gap: 1rem;
+                grid-row-gap: 1rem;
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
                 grid-template-areas:
-                    "thumbnail"
-                    "information";
+                    "information"
+                    "summary";
             }
         }
     }
