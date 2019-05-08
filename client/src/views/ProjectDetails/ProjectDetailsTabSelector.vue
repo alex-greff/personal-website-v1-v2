@@ -53,13 +53,13 @@ export default {
     },
     data() {
         return {
-            // TODO: For the trick
+            // NOTE: for the trick
             isMounted: false,
         }
     },
     computed: {
         passThroughHref() {
-            // TODO: For the trick
+            // NOTE: for the trick
             // This tricks vue into updating the refs once they are attached
             if (!this.isMounted) {
                 return;
@@ -69,7 +69,7 @@ export default {
         }
     },
     mounted() {
-        // TODO: For the trick
+        // NOTE: for the trick
         this.isMounted = true;
     }
 }
