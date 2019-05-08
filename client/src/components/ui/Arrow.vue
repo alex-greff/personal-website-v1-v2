@@ -1,10 +1,21 @@
 <template>
-    <div :class="rootClasses">
-        <md-icon :key="currIconID" class="Arrow__icon">{{ currIconID }}</md-icon>
-    </div>
+    <span 
+        :class="['Arrow', disabledClasses]"
+        @click="onClick"
+    >
+        <md-icon 
+            :key="currIconID" 
+            class="Arrow__icon"
+            :style="iconStyles"
+        >
+            {{ currIconID }}
+        </md-icon>
+    </span>
 </template>
 
 <script>
+import Utilities from "@/utilities"
+
 const DIRECTION_TO_ICON_NAME = {
     "left": "keyboard_arrow_left",
     "right": "keyboard_arrow_right",
@@ -27,9 +38,9 @@ export default {
         },
         size: {
             type: String,
-            default: "md",
+            default: "2.5rem",
             validator(val) {
-                return ["sm", "md", "lg"].indexOf(val) !== -1;
+                return Utilities.isCSSLength(val);
             }
         }
     },
@@ -37,16 +48,23 @@ export default {
         currIconID() {
             return this.getIconID(this.direction);
         },
-        sizeModifierClass() {
-            return this.size;
+        iconStyles() {
+            return Utilities.getIconSizeCSSStyles(this.size);
         },
-        rootClasses() {
-            return `Arrow ${this.sizeModifierClass}`.trim();
+        disabledClasses() {
+            return (this.disabled) ? "disabled" : "";
         }
     },
     methods: {
         getIconID(direction) {
             return DIRECTION_TO_ICON_NAME[direction];
+        },
+        onClick(e) {
+            if (this.disabled) {
+                e.preventDefault();
+                return;
+            }
+            this.$emit("click", e);
         }
     }
 }
@@ -54,38 +72,26 @@ export default {
 
 <style lang="scss" scoped>
     .Arrow {
-        color: theme-link("page", "text-color", "primary");
-
         & .Arrow__icon {
+            display: block;
+
             color: theme-link("page", "text-color", "primary");
 
             transition: color 0.4s;
         }
 
+
         // -----------------
         // --- Modifiers ---
         // -----------------
 
-        // Size
-        &.sm {
+        &.disabled {
             & .Arrow__icon {
-                @include icon-size(3rem);
+                color: theme-link("page", "text-color", "secondary");
             }
         }
 
-        &.md {
-            & .Arrow__icon {
-                @include icon-size(5rem);
-            }
-        }
-
-        &.lg {
-            & .Arrow__icon {
-                @include icon-size(7rem);
-            }
-        }
-
-        &:hover {
+        &:not(.disabled):hover {
             cursor: pointer;
 
             & .Arrow__icon {

@@ -1,16 +1,20 @@
 <template>
-    <markdown-display 
-        class="ExperienceItemSummary"
-        :markdown="summaryMarkdown" 
-    />
+    <collapsible-container>
+        <markdown-display 
+            class="ExperienceItemSummary"
+            :markdown="summaryMarkdown" 
+        />
+    </collapsible-container>
 </template>
 
 <script>
 import MarkdownDisplay from "@/components/markdown/MarkdownDisplay.vue";
+import CollapsibleContainer from "@/components/containers/CollapsibleContainer.vue";
 
 export default {
     components: {
-        markdownDisplay: MarkdownDisplay
+        markdownDisplay: MarkdownDisplay,
+        collapsibleContainer: CollapsibleContainer,
     },
     props: {
         summaryMarkdown: {

@@ -14,14 +14,16 @@
                     {{ experienceItemData.title }}
                     <span class="ExperienceItem__title-dash">-</span>
                 </div>
-                <component 
-                    :is="companyComponentTag"
-                    :href="companyComponentLink"
-                    target="__blank"
-                    class="ExperienceItem__company"
-                >
-                    {{ experienceItemData.company }}
-                </component>
+                <div class="ExperienceItem__company">
+                    <component 
+                        :is="companyComponentTag"
+                        :href="companyComponentLink"
+                        target="__blank"
+                        class="ExperienceItem__company-link"
+                    >
+                        {{ experienceItemData.company }}
+                    </component>
+                </div>
                 <div class="ExperienceItem__date">
                     {{ startDateFormatted }} - {{ endDateFormatted }}
                 </div>
@@ -287,21 +289,23 @@ export default {
                     grid-area: company;
                     align-self: center;
 
-                    $font-size: 2.5rem;
-                    font-size: $font-size;
-                    line-height: $font-size;
+                    & .ExperienceItem__company-link {
+                        $font-size: 2.5rem;
+                        font-size: $font-size;
+                        line-height: $font-size;
 
-                    text-decoration: none;
-                    color: theme-link("projects-item", "selected-color", "primary");
+                        text-decoration: none;
+                        color: theme-link("projects-item", "selected-color", "primary");
 
-                    transition: color 0.5s;
-                }
+                        transition: color 0.5s;
+                    }
 
-                & a.ExperienceItem__company {
-                    cursor: pointer;
+                    & a.ExperienceItem__company-link {
+                        cursor: pointer;
 
-                    &:hover {
-                        color: theme-link("projects-item", "accent-color", "primary");
+                        &:hover {
+                            color: theme-link("projects-item", "accent-color", "primary");
+                        }
                     }
                 }
                 
