@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Experience = require("../models/experience");
 const Utilities = require("../utilities");
 
-const SELECTED_FIELDS = "title company companyLink summary tags _id thumbnailImage startDate endDate";
+const SELECTED_FIELDS = "title company companyLink summary tags _id startDate endDate";
 
 exports.experience_get_all = async (req, res, next) => {
     try {
@@ -23,7 +23,6 @@ exports.experience_get_all = async (req, res, next) => {
                     companyLink: doc.companyLink,
                     summary: doc.summary,
                     tags: doc.tags,
-                    thumbnailImage: doc.thumbnailImage, 
                     startDate: doc.startDate,
                     endDate: doc.endDate,
                     request: {
@@ -46,12 +45,6 @@ exports.experience_get_all = async (req, res, next) => {
 };
 
 exports.experience_create_experience = async (req, res, next) => {
-    // Construct thumbnail image path entry
-    let thumbnailImagePath;
-    if (req.files['thumbnailImage']) {
-        thumbnailImagePath = Utilities.sanitizeImagePath(req.files['thumbnailImage'][0].path);
-    }
-
     // Create experience doc
     const experience = new Experience({
         _id: new mongoose.Types.ObjectId(),
@@ -60,7 +53,6 @@ exports.experience_create_experience = async (req, res, next) => {
         companyLink: req.body.companyLink,
         summary: req.body.summary,
         tags: req.body.tags,
-        thumbnailImage: thumbnailImagePath,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
     });
@@ -82,7 +74,6 @@ exports.experience_create_experience = async (req, res, next) => {
                 companyLink: result.companyLink,
                 summary: result.summary,
                 tags: result.tags,
-                thumbnailImage: result.thumbnailImage,
                 startDate: result.startDate,
                 endDate: result.endDate,
                 request: {
@@ -149,21 +140,7 @@ exports.experience_update_experience = async (req, res, next) => {
         updateOps[field] = newValue;
     });
 
-    // If the thumbnail image is being updated then add it to the update ops
-    if (!!req.files && !!req.files['thumbnailImage']) {
-        updateOps['thumbnailImage'] = req.files['thumbnailImage'][0].path;
-    }
-
     try {
-        const doc = await Experience.findById(id).select(SELECTED_FIELDS).exec();
-
-        if (doc) { // If doc found
-            // Cleanup the thumbnail image, if needed
-            if (!!doc.thumbnailImage && !!updateOps['thumbnailImage']) {
-                Utilities.cleanupFile(doc.thumbnailImage);
-            }
-        }
-
         console.log("UPDATE OPS\n", updateOps);
 
         const result = await Experience.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec();
@@ -208,9 +185,6 @@ exports.experience_delete_experience = async (req, res, next) => {
 
         console.log("REMOVED\n", removed);
 
-        // Cleanup thumbnail image
-        Utilities.cleanupFile(removed.thumbnailImage);
-
         // Send response
         const url = Utilities.getURLBase(req);
         res.status(200).json({
@@ -225,7 +199,6 @@ exports.experience_delete_experience = async (req, res, next) => {
                     companyLink: "String",
                     summary: "String",
                     tags: "Array of Strings",
-                    thumbnailImage: "image/JPEG or image/PNG",
                     startDate: "Date",
                     endDate: "Date",
                 }

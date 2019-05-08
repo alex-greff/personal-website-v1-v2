@@ -14,9 +14,6 @@ const experienceSchema = mongoose.Schema({
     // Lists
     tags: { type: [String], required: false },
 
-    // Images
-    thumbnailImage: { type: String, required: true },
-
     // Dates
     startDate: { type: Date, required: false, default: null }, // Null implies unknown start date
     endDate: { type: Date, required: false, default: null } // Null implies ongoing
