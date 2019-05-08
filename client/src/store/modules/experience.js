@@ -94,13 +94,6 @@ const actions = {
                     };
                 }, {});
 
-                const sThumbnailImagePath = currData['thumbnailImage'];
-                if (sThumbnailImagePath) {
-                    currData['thumbnailImage'] = sThumbnailImagePath;
-                    // Preload the thumbnail
-                    Utilities.preloadImage(sThumbnailImagePath);
-                }
-
                 // Add the experience item to the store
                 dispatch(actionTypes.ADD_EXPERIENCE, {
                     data: currData,

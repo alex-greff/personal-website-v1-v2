@@ -1,14 +1,6 @@
 <template>
     <div class="ExperienceItem">
         <div :class="['ExperienceItem__content', contentClass]">
-            <!-- <div class="ExperienceItem__thumbnail-container">
-                <div class="ExperienceItem__thumbnail-tint">
-                    <div 
-                        class="ExperienceItem__thumbnail" 
-                        :style="thumbnailImageStyles"
-                    />
-                </div>
-            </div> -->
             <div class="ExperienceItem__information">
                 <div class="ExperienceItem__title">
                     {{ experienceItemData.title }}
@@ -80,9 +72,6 @@ export default {
         };
     },
     computed: {
-        thumbnailImageStyles() {
-            return { backgroundImage: `url('${this.experienceItemData.thumbnailImage}')` };
-        },
         tags() {
             const tags = this.experienceItemData.tags;
             const tagsCleaned = (tags) ? tags : [];
@@ -135,31 +124,6 @@ export default {
         & .ExperienceItem__content {
             position: relative;
             display: grid;
-            // grid-column-gap: 1rem;
-            // grid-row-gap: 1rem;
-            // grid-template-columns: 2fr 5fr;
-            // // grid-template-columns: 30rem 1fr;
-            // // grid-template-rows: 20rem;
-            // grid-template-rows: auto;
-            // grid-template-areas:
-            //     "thumbnail information";
-
-            // grid-template-columns: auto auto 1fr;
-            // grid-template-rows: auto auto auto auto;
-            // grid-template-areas:
-            //     "thumbnail title company"
-            //     "thumbnail date date"
-            //     "thumbnail tags tags"
-            //     "summary summary summary";
-
-            // grid-template-columns: 3fr 20fr;
-            // grid-column-gap: 1rem;
-            // grid-row-gap: 1rem;
-            // grid-template-columns: auto 1fr;
-            // grid-template-rows: auto auto;
-            // grid-template-areas:
-            //     "thumbnail information"
-            //     "summary summary";
 
             grid-column-gap: 1rem;
             grid-row-gap: 1rem;
@@ -172,98 +136,20 @@ export default {
             color: theme-link("page", "text-color", "primary");
             background-color: theme-link("page", "bg-color", "secondary");
 
-            padding: 1.5rem;
+            padding: 1.8rem;
 
             z-index: 1;
-
-            & .ExperienceItem__thumbnail-container {
-                // position: relative;
-                // grid-area: thumbnail;
-
-                // grid-area: summary;
-                // justify-self: end;
-                // align-self: bottom;
-
-                position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translateY(-50%);
-
-
-                // $size: 10rem;
-                // width: $size;
-                // width: 100%;
-                // height: $size;
-                // height: 100%;
-                // width: 10vh;
-                // height: 10vh;
-
-
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-self: end;
-
-                z-index: 0;
-
-                opacity: 0.5;
-
-                & .ExperienceItem__thumbnail-tint {
-                    position: relative;
-
-                    z-index: initial;
-
-                    width: 100%;
-                    height: 100%;
-
-                    & .ExperienceItem__thumbnail {
-                        position: relative;
-                        // Force 1:1 ratio
-                        // width: 100%;
-                        @include aspect-ratio("1:1"); // TODO: need to figure out how to use height with this
-
-                        $size: 20rem;
-                        width: $size;
-                        // height: $size;
-
-                        // width: 100%;
-                        height: 100%;
-
-                        background-size: cover;
-                        background-position: center center;
-
-                        z-index: -1;
-                    }
-                }
-
-                @include respond(phone) {
-                    grid-area: information;
-                    justify-self: end;
-                    
-                    & .ExperienceItem__thumbnail-tint {
-                        background-color: rgba(0, 0, 0, 0.5);
-                    }
-                }
-            }
 
             & .ExperienceItem__information {
                 grid-area: information;
 
                 z-index: 1;
 
-                // Vertical center the grid
-                // margin: auto 0;
                 margin: 0 0 auto 0;
 
                 display: grid;
                 grid-row-gap: 0.5rem;
                 grid-column-gap: 0.5rem;
-                // grid-template-columns: auto 1fr;
-                // grid-template-rows: auto auto auto;
-                // grid-template-areas: 
-                //     "title company"
-                //     "date date"
-                //     "tags tags";
                 grid-template-columns: auto 1fr auto;
                 grid-template-rows: auto auto;
                 grid-template-areas: 
@@ -317,7 +203,6 @@ export default {
 
                     align-self: center;
 
-                    // text-align: right;
                     color: theme-link("page", "text-color", "secondary");
                 }
 
@@ -325,7 +210,6 @@ export default {
                     grid-area: tags;
 
                     display: flex;
-                    // justify-content: flex-end;
                     justify-content: flex-start;
                     flex-wrap: wrap;
                     margin-right: 1rem;
@@ -357,6 +241,8 @@ export default {
             }
 
             @include respond(phone) {
+                padding: 1.6rem;
+
                 grid-column-gap: 1rem;
                 grid-row-gap: 1rem;
                 grid-template-columns: 1fr;
