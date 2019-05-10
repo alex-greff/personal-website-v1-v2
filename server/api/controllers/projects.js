@@ -248,18 +248,11 @@ exports.projects_update_project = async (req, res, next) => {
         });
 
     } catch(err) {
-        // Delete uploaded files
-        const fields = Object.entries(req.files);
-        // Iterate through each field
-        fields.forEach(([field, files])=> {
-            // Iterate through the files in the current field
-            files.forEach(file => {
-                // Remove each file
-                Utilities.cleanupFile(file.path);
-            });
-        });
-
         console.log(err);
+
+        // Delete uploaded files
+        Utilities.deleteUploadedFiles(req);
+
         res.status(500).json({
             error: err
         });

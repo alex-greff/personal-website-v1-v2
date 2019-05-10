@@ -11,6 +11,7 @@ const experienceRoutes = require("./api/routes/experience");
 const userRoutes = require("./api/routes/user");
 const themeRoutes = require("./api/routes/themes");
 const contactRoutes = require("./api/routes/contact");
+const aboutRoutes = require("./api/routes/about");
 
 // Setup connection
 mongoose.connect(
@@ -56,6 +57,7 @@ app.use("/api/experience", experienceRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/themes", themeRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/about", aboutRoutes);
 
 // Handle 404 error
 // If it gets down there, then there is no route for the given request

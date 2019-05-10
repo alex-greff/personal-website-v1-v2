@@ -74,6 +74,14 @@ exports.validateMap = (i_mMap, i_fnValidator) => {
     return bValid;
 };
 
+exports.validateObject = (i_oObj, i_fnValidator) => {
+    let bValid = true;
+    Object.values(i_oObj).forEach((i_val) => {
+        bValid = bValid && i_fnValidator(i_val);
+    });
+    return bValid;
+}
+
 exports.getURLBase = (req) => {
     return `${req.protocol}://${req.headers.host}${req.baseUrl}`;
 };
@@ -82,6 +90,7 @@ exports.sanitizeImagePath = (raw) => {
     return `/${raw.replace(/\\/g, "/")}`;
 };
 
+// Link validators
 exports.linkValidator = (i_sVal) => !i_sVal || exports.isLink(i_sVal);
-
 exports.linkMapValidator = (i_mMap) => exports.validateMap(i_mMap, exports.linkValidator);
+exports.linkObjectValidator = (i_oObj) => exports.validateObject(i_oObj, exports.linkValidator);
