@@ -3,7 +3,9 @@
     <div
         class="MarkdownDisplay" 
         v-html="compiledMarkdown"
-    />
+    >
+        <slot></slot>
+    </div>
 </template>
 
 <script>

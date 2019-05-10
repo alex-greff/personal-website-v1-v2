@@ -2,7 +2,9 @@
     <markdown-display 
         class="ThemedMarkdownDisplay"
         :markdown="markdown"
-    />
+    >
+        <slot></slot>
+    </markdown-display>
 </template>
 
 <script>
