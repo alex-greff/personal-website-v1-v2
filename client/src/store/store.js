@@ -11,6 +11,7 @@ import Vuex from 'vuex';
 import theme from './modules/theme';
 import projects from './modules/projects';
 import experience from './modules/experience';
+import about from './modules/about';
 import autoTheme from './modules/autoTheme';
 
 Vue.use(Vuex);
@@ -32,6 +33,7 @@ export default new Vuex.Store({
         theme,
         projects,
         experience,
+        about,
         autoTheme
     }
 });

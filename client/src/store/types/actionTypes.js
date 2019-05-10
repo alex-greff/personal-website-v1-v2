@@ -23,3 +23,7 @@ export const EDIT_THEME = "EDIT_THEME";
 export const ADD_NAMESPACE = "ADD_NAMESPACE";
 export const REMOVE_NAMESPACE = "REMOVE_NAMESPACE";
 export const EDIT_NAMESPACE = "EDIT_NAMESPACE";
+
+// About store
+export const POPULATE_ABOUT = "POPULATE_ABOUT";
+export const SET_ABOUT = "SET_ABOUT";

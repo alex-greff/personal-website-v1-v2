@@ -166,6 +166,7 @@ export default {
         this.populateThemes();
         this.populateProjects();
         this.populateExperience();
+        this.populateAbout();
 
         // Add default namespace
         this.addNamespace({
@@ -212,6 +213,8 @@ export default {
             populateProjects: actionTypes.POPULATE_PROJECTS,
             // Experience store
             populateExperience: actionTypes.POPULATE_EXPERIENCE,
+            // About store
+            populateAbout: actionTypes.POPULATE_ABOUT,
         }),
         updateRouteTheme(i_sRouteName) {
             const currPageData = pageData.pages[i_sRouteName];
