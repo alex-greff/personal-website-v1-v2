@@ -28,9 +28,9 @@ router.patch("/artists/:artistID", permit(false, "edit-artist"), MusicController
 router.delete("/artists/:artistID", permit(false, "delete-artist"), MusicController.music_delete_artist);
 
 // [domain]/api/music/clientID : GET
-router.get("/cleintID", permit(false, "view-client-ID"), MusicController.music_get_client_ID);
+router.get("/clientID", permit(false, "view-client-ID"), MusicController.music_get_client_ID);
 
 // [domain]/api/music/clientID : PATCH
-router.get("/clientID", permit(false, "regenerate-client-ID"), MusicController.muisc_regenerate_client_ID);
+router.patch("/clientID", permit(false, "regenerate-client-ID"), MusicController.muisc_regenerate_client_ID);
 
 module.exports = router;

@@ -32,13 +32,9 @@ exports.about_get_info = async (req, res, next) => {
 exports.about_override_info = async (req, res, next) => {
     let oldID;
 
-    // Remove the exist document, if it's there. If not, ignore the error and proceed
+    // Remove the existing document, if it's there. If not, ignore the error and proceed
     try {
         const removed = await About.findOneAndRemove().exec();
-
-        if (!removed) {
-            throw "Unable to remove project";
-        }
 
         // Clean up profile image
         Utilities.cleanupFile(removed.profileImage);

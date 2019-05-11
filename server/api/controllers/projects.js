@@ -84,7 +84,7 @@ exports.projects_create_project = async (req, res, next) => {
 
         console.log("CREATED PROJECT\n", result);
 
-        const url = `${Utilities.getURLBase(result)}/${result._id}`;
+        const url = `${Utilities.getURLBase(req)}/${result._id}`;
 
         // Send response
         res.status(201).json({

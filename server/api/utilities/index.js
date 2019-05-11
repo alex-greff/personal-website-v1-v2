@@ -1,7 +1,9 @@
 const fs = require('fs');
 const storage = require("./storage");
+const soundCloudScraper = require("./soundcloudScraper");
 
 exports.StorageUtility = storage;
+exports.SoundCloudScraper = soundCloudScraper;
 
 exports.cleanupFile = (filePath) => {
     const correctedFilePath = filePath.replace(/^\//, "");
