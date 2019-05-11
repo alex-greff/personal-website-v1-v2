@@ -1,0 +1,36 @@
+const express = require("express");
+const router = express.Router();
+const permit = require("../middleware/permission");
+
+const MusicController = require("../controllers/music");
+
+
+// ----------------
+// --- Requests ---
+// ----------------
+
+// [domain]/api/music : GET
+router.get("/", MusicController.music_get_all);
+
+// [domain]/api/music/artists : GET
+router.get("/artists", MusicController.music_get_all_artists);
+
+// [domain]/api/music/artists : POST
+router.post("/artists", permit(false, "create-artist"), MusicController.music_create_aritst);
+
+// [domain]/api/music/artists/:artistID : GET
+router.get("/artists/:artistID", MusicController.music_get_artist);
+
+// [domain]/api/music/artists/:artistID : PATCH
+router.patch("/artists/:artistID", permit(false, "edit-artist"), MusicController.music_update_artist);
+
+// [domain]/api/music/artists/:artistID : DELETE
+router.delete("/artists/:artistID", permit(false, "delete-artist"), MusicController.music_delete_artist);
+
+// [domain]/api/music/clientID : GET
+router.get("/cleintID", permit(false, "view-client-ID"), MusicController.music_get_client_ID);
+
+// [domain]/api/music/clientID : PATCH
+router.get("/clientID", permit(false, "regenerate-client-ID"), MusicController.muisc_regenerate_client_ID);
+
+module.exports = router;
