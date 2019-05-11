@@ -14,18 +14,15 @@
                     Designed and Built by Alexander Greff
                 </div>
                 <div class="Footer__social-media">
-                    <a title="Github" href="https://github.com/alex-greff" target="_blank" class="icon">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a title="LinkedIn" href="https://www.linkedin.com/in/alex-greff/" target="_blank" class="icon">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a title="Email" href="mailto:alex.j.greff@gmail.com" target="_top" class="icon">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a title="SoundCloud" href="https://soundcloud.com/hammerled" target="_blank" class="icon">
-                        <i class="fab fa-soundcloud"></i>
-                    </a>
+                    <link-item 
+                        v-for="(link, linkType, index) in aboutData.links"
+                        :key="index"
+                        class="About__link-item"
+                        :link-type="linkType"
+                        :title="linkType"
+                        :href="`${link}`"
+                        :size="1.7"
+                    />
                 </div>
             </div>
             <div class="Footer__right">
@@ -42,14 +39,20 @@
 
 <script>
 /* global Power1 */
-import ThemeControls from './ThemeControls.vue';
 import Utilities from "@/utilities";
 import { TweenLite } from "gsap/all";
+import { mapGetters } from 'vuex';
+import { getterTypes } from '@/store/types';
+
+import ThemeControls from "@/components/ThemeControls.vue";
+import LinkItem from "@/components/links/LinkItem.vue";
+
 const INIT_IS_OPEN = false;
 
 export default {
     components: {
-        themeControls: ThemeControls
+        themeControls: ThemeControls,
+        linkItem: LinkItem,
     },
     props: {
         animateIn: {
@@ -62,6 +65,14 @@ export default {
             isOpen: INIT_IS_OPEN,
             displayFooter: INIT_IS_OPEN,
         }
+    },
+    computed: {
+        ...mapGetters({
+            aboutData: getterTypes.GET_ABOUT
+        }),
+        aboutDataLoaded() {
+            return Object.keys(this.aboutData).length > 0;
+        },
     },
     watch: {
         isOpen(isOpening) {
@@ -206,6 +217,10 @@ export default {
 
             & .Footer__social-media {
                 margin-top: 0.5rem;
+
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
 
                 & > .icon {
                     font-size: 1.7rem;

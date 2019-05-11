@@ -28,7 +28,7 @@
                             class="ProjectDetails__link-item"
                             :link-type="linkType"
                             :title="linkType"
-                            :href="`//${link}`"
+                            :href="`${link}`"
                             :size="2"
                         />
                     </div>
@@ -452,7 +452,7 @@ export default {
                     & .ProjectDetails__thumbnail-image {
                         // Force 16:9 aspect ratio
                         width: 100%;
-                        @include aspect-ratio("16:9");
+                        @include aspect-ratio(16/9);
 
                         z-index: -1;
 
