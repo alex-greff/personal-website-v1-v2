@@ -3,6 +3,7 @@ const Project = require("../models/project");
 const Utilities = require("../utilities");
 
 const SELECTED_FIELDS = "name summary description _id thumbnailImage galleryImages links tags startDate endDate";
+const UNEDITABLE_FIELDS = ["_id", "updated"];
 
 exports.projects_get_all = async (req, res, next) => {
     try {
@@ -158,36 +159,42 @@ exports.projects_get_project = async (req, res, next) => {
 exports.projects_update_project = async (req, res, next) => { 
     const id = req.params.projectID;
 
-    // Construct update operations object
-    const updateOps = {};
+    try {   
+        // Construct update operations object
+        const updateOps = {};
 
-    let removeGalleryImagesIDs = [];
-    Object.entries(req.body).forEach(([field, newValue]) => {
-        // Manually handle the removeGalleryImages operation
-        if (field === "removeGalleryImages") {
-            // Construct the list of gallery image IDs to be removed
-            removeGalleryImagesIDs = (typeof newValue === 'string') ? [ newValue ] : newValue;
-            return;
+        let removeGalleryImagesIDs = [];
+        Object.entries(req.body).forEach(([field, newValue]) => {
+            if (UNEDITABLE_FIELDS.includes(field)) {
+                throw `Uneditable field: ${field}`;
+            }
+
+            // Manually handle the removeGalleryImages operation
+            if (field === "removeGalleryImages") {
+                // Construct the list of gallery image IDs to be removed
+                removeGalleryImagesIDs = (typeof newValue === 'string') ? [ newValue ] : newValue;
+                return;
+            }
+
+            // Add in the current regular operation 
+            updateOps[field] = newValue;
+        });
+
+        updateOps["updated"] = Date.now();
+
+        // If the thumbnail image is being updated then add it to the update ops
+        if (!!req.files && !!req.files['thumbnailImage']) {
+            updateOps['thumbnailImage'] = Utilities.sanitizeImagePath(req.files['thumbnailImage'][0].path);
         }
 
-        // Add in the current regular operation 
-        updateOps[field] = newValue;
-    });
-
-    // If the thumbnail image is being updated then add it to the update ops
-    if (!!req.files && !!req.files['thumbnailImage']) {
-        updateOps['thumbnailImage'] = Utilities.sanitizeImagePath(req.files['thumbnailImage'][0].path);
-    }
-
-    // Construct the list of gallery image paths to be added
-    let addGalleryImages = [];
-    if (!!req.files && !!req.files['galleryImages']) {
-        req.files['galleryImages'].forEach(galleryImage => {
-            addGalleryImages.push(Utilities.sanitizeImagePath(galleryImage.path));
-        });
-    }
-
-    try {   
+        // Construct the list of gallery image paths to be added
+        let addGalleryImages = [];
+        if (!!req.files && !!req.files['galleryImages']) {
+            req.files['galleryImages'].forEach(galleryImage => {
+                addGalleryImages.push(Utilities.sanitizeImagePath(galleryImage.path));
+            });
+        }
+    
         const doc = await Project.findById(id).select(SELECTED_FIELDS).exec();
 
         if (doc) { // If document is found
@@ -232,10 +239,9 @@ exports.projects_update_project = async (req, res, next) => {
 
         const url = `${Utilities.getURLBase(req)}/${id}`;
 
-        // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
-        // If no project is found
-        if (result.n < 1) {
-            throw "Project not found";
+        // If no documents were modified
+        if (!result || result.nModified < 1) {
+            throw "Unabled to update project";
         }
 
         // Send response
@@ -269,7 +275,7 @@ exports.projects_delete_project = async (req, res, next) => {
             throw "Unable to remove project";
         }
 
-        console.log("REMOVED\n", removed);
+        console.log("REMOVED PROJECT\n", removed);
 
         // Clean up thumbnail image
         Utilities.cleanupFile(removed.thumbnailImage);

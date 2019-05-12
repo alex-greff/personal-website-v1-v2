@@ -3,6 +3,7 @@ const About = require("../models/about");
 const Utilities = require("../utilities");
 
 const SELECTED_FIELDS = "_id description profileImage links";
+const UNEDITABLE_FIELDS = ["_id", "updated"];
 
 exports.about_get_info = async (req, res, next) => {
     try {
@@ -95,9 +96,15 @@ exports.about_update_info = async (req, res, next) => {
         const updateOps = {};
 
         Object.entries(req.body).forEach(([field, newValue]) => {
+            if (UNEDITABLE_FIELDS.includes(field)) {
+                throw `Uneditable field: ${field}`;
+            }
+
             // Add in the current regular operation 
             updateOps[field] = newValue;
         });
+
+        updateOps["updated"] = Date.now();
 
         // If the profile image is being updated then add it to the update ops
         if (!!req.files && !!req.files['profileImage']) {
@@ -117,9 +124,7 @@ exports.about_update_info = async (req, res, next) => {
 
             const result = await About.updateOne({}, { $set: updateOps }, { runValidators: true }).exec();
 
-            // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
-            // If no about is found
-            if (result.n < 1) {
+            if (!result || result.nModified < 1) {
                 throw "About document not initialized. Change request type to POST."
             }
 

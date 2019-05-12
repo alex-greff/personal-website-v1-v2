@@ -4,6 +4,8 @@ const Utilities = require("../utilities");
 
 const SELECTED_FIELDS = "title company companyLink summary tags _id startDate endDate";
 
+const UNEDITABLE_FIELDS = ["_id", "updated"];
+
 exports.experience_get_all = async (req, res, next) => {
     try {
         const docs = await Experience.find().select(SELECTED_FIELDS).exec();
@@ -133,24 +135,28 @@ exports.experience_get_experience = async (req, res, next) => {
 exports.experience_update_experience = async (req, res, next) => {
     const id = req.params.projectID;
 
-    // Construct update operations object
-    const updateOps = {}; 
-    Object.entries(req.body).forEach(([field, newValue]) => {
-        // Add in the current regular operation 
-        updateOps[field] = newValue;
-    });
-
     try {
+        // Construct update operations object
+        const updateOps = {}; 
+        Object.entries(req.body).forEach(([field, newValue]) => {
+            if (UNEDITABLE_FIELDS.includes(field)) {
+                throw `Uneditable field: ${field}`;
+            }
+
+            // Add in the current regular operation 
+            updateOps[field] = newValue;
+        });
+
+        updateOps["updated"] = Date.now();
+
         console.log("UPDATE OPS\n", updateOps);
 
         const result = await Experience.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec();
 
         const url = `${Utilities.getURLBase(req)}/${id}`;
 
-        // TODO: this is a really ugly way of detecting if the file does not exist... is there a better way?
-        // If no experience is found
-        if (result.n < 1) {
-            throw "Experience item not found";
+        if (!result || result.nModified < 1) {
+            throw "Unable to update experience item";
         }
 
         // Send response

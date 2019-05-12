@@ -4,12 +4,13 @@ const Utilities = require('../utilities');
 const THEME_ITEMS = require('../constants/themeItems');
 
 const UNREMOVEABLE_DOC_IDS = require('../constants/unremovableDocs');
+const UNEDITABLE_FIELDS = ["_id"];
 
 exports.themes_get_all = async (req, res, next) => {
     try {
         const docs = await Theme.find().exec();
 
-        let urlBase = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+        let urlBase = `${Utilities.getURLBase(req)}`;
 
         // Construct response
         const response = {
@@ -61,7 +62,7 @@ exports.themes_get_theme = async (req, res, next) => {
             const theme_BASE = doc["BASE"];
             const theme_subSections = doc["subSections"];
 
-            let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`
+            let url = `${Utilities.getURLBase(req)}`;
 
             // Send response
             res.status(200).json({
@@ -115,7 +116,7 @@ exports.themes_create_theme = async (req, res, next) => {
         const theme_BASE = result["BASE"];
         const theme_subSections = result["subSections"];
 
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${result._id}`
+        let url = `${Utilities.getURLBase(req)}/${result._id}`
         // Send response 
         res.status(201).json({
             message: "Created theme sucessfully",
@@ -147,17 +148,26 @@ exports.themes_create_theme = async (req, res, next) => {
 
 exports.themes_update_theme = async (req, res, next) => {
     const id = req.params.themeID;
-
-    // Construct update operations object
-    const updateOps = {};
-    Object.entries(req.body).forEach(([field, newValue]) => {
-        updateOps[field] = newValue;
-    });
-
+    
     try {
+        // Construct update operations object
+        const updateOps = {};
+        Object.entries(req.body).forEach(([field, newValue]) => {
+            if (UNEDITABLE_FIELDS.includes(field)) {
+                throw `Uneditable field: ${field}`;
+            }
+
+            updateOps[field] = newValue;
+        });
+
         const result = await Theme.updateOne({ _id: id}, { $set: updateOps }, { runValidators: true }).exec(); // Update document
 
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/${id}`;
+        if (!result || result.nModified < 1) {
+            throw "Unable to update theme";
+        }
+
+        let url = `${Utilities.getURLBase(req)}/${id}`;
+        
         // Send response
         res.status(200).json({
             message: "Theme updated",
@@ -187,7 +197,7 @@ exports.themes_delete_theme = async (req, res, next) => {
     try {
         const removed = await Theme.findByIdAndRemove({ _id: id }).exec();
 
-        let url = `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+        let url = `${Utilities.getURLBase(req)}`;
         // Send response
         res.status(200).json({
             message: "Theme deleted",

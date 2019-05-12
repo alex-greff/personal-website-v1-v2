@@ -138,6 +138,10 @@ exports.user_update = async (req, res, next) => {
     try {
         const result = await User.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec(); // Update the user
 
+        if (!result || result.nModified < 1) {
+            throw "Unable to update user";
+        }
+
         let url = `${req.protocol}://${req.headers.host}${req.baseUrl}/login`
         // Send response
         res.status(200).json({
