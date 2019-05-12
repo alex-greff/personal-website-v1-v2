@@ -4,6 +4,8 @@ const ClientID = require("../models/clientID");
 const Utilities = require("../utilities");
 
 const CLIENT_ID_SELECTED_FIELDS = "_id clientID";
+const ARTIST_PROFILE_SELECTED_FIELDS = "_id username userID tracks";
+
 const UNEDITABLE_FIELDS = ["_id", "updated"];
 
 // ------------------------
@@ -65,15 +67,107 @@ const getFilteredTrackData = async (i_aTrackFiler, i_nUserID) => {
 // ---------------------------
 
 exports.music_get_all = async (req, res, next) => {
+    const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
 
+    console.log("FROM DATABASE\n", docs);
+
+    const url = `${Utilities.getURLBase(req)}`;
+
+    const aAllTracks = docs.reduce((acc, doc) => {
+        const aTracks = doc.tracks.reduce((acc_sub, i_oTrackData) => {
+            return [
+                ...acc_sub,
+                { 
+                    trackID: i_oTrackData.trackID,
+                    title: i_oTrackData.title,
+                    artistUsername: doc.username,
+                    permalink: i_oTrackData.permalink,
+                    createdDate: i_oTrackData.createdDate,
+                    artworkURL: i_oTrackData.artworkURL
+                }
+            ];
+        }, []);
+
+        return [ 
+            ...acc,
+            ...aTracks 
+        ];
+    }, [])
+
+    res.status(200).json({
+        count: aAllTracks.length,
+        tracks: aAllTracks,
+        request: {
+            type: "GET", 
+            url: `${url}/artists`
+        }
+    });
 };
 
 exports.music_get_all_artist_profiles = async (req, res, next) => {
+    try {
+        const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
 
+        const urlBase = `${Utilities.getURLBase(req)}/artists`;
+
+        console.log("FROM DATABASE\n", docs);
+
+        // Send response
+        res.status(200).json({
+            count: docs.length,
+            artistProfiles: docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    username: doc.username,
+                    userID: doc.userID,
+                    tracks: doc.tracks,
+                    request: {
+                        type: "GET",
+                        url: `${urlBase}/${doc._id}`
+                    }
+                }
+            })
+        });
+
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }
 };
 
 exports.music_get_artist_profile = async (req, res, next) => {
+    const id = req.params.artistID;
 
+    try {
+        // Get specific doc
+        const doc = await ArtistProfile.findById(id).select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
+
+        console.log("FROM DATABASE\n", doc);
+
+        if (doc) {
+            const url = `${Utilities.getURLBase(req)}/artists`;
+
+            // Send response 
+            res.status(200).json({
+                artistProfile: doc,
+                request: {
+                    type: "GET",
+                    url: url
+                }
+            });
+        } else {
+            res.status(404).json({
+                message: "No artist profile found for provided ID"
+            });
+        }
+
+    } catch(err) {
+        res.status(500).json({
+            error: err
+        });
+    }
 };
 
 exports.music_create_aritst_profile = async (req, res, next) => {
@@ -163,7 +257,9 @@ exports.music_update_artist_profile = async (req, res, next) => {
         const result = await ArtistProfile.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec();
 
         if (!result || result.nModified < 1) {
-            throw "Unable to update artist profile";
+            return res.status(404).json({
+                message: "Unable to find and update artist profile"
+            });
         }
 
         let url = `${Utilities.getURLBase(req)}/artists/${id}`;
