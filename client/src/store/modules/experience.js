@@ -68,9 +68,16 @@ const mutations = {
         _experienceExists(i_oState, id);
 
         const oExperienceData = i_oState[id];
-        const oUpdatedExperienceData = update(oExperienceData, {
+        let oUpdatedExperienceData = update(oExperienceData, {
             $merge: data
         });
+
+        // Deal with tag update manually
+        if (data["tags"]) {
+            oUpdatedExperienceData = update(oUpdatedExperienceData, {
+                tags: { $set: data["tags"] }
+            });
+        }
 
         // Edit the experience item
         Vue.set(i_oState, id, oUpdatedExperienceData);

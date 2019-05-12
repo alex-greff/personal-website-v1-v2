@@ -23,3 +23,8 @@ export const EDIT_NAMESPACE = "EDIT_NAMESPACE";
 
 // About store
 export const SET_ABOUT = "SET_ABOUT";
+
+// Music store
+export const ADD_ARTIST_PROFILE = "ADD_ARTIST_PROFILE";
+export const REMOVE_ARTIST_PROFILE = "REMOVE_ARTIST_PROFILE";
+export const EDIT_ARTIST_PROFILE = "EDIT_ARTIST_PROFILE";

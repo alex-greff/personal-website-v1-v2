@@ -19,3 +19,8 @@ export const GET_NAMESPACE = "GET_NAMESPACE";
 
 // About store
 export const GET_ABOUT = "GET_ABOUT";
+
+// Music store
+export const GET_ALL_ARTIST_PROFILES = "GET_ALL_ARTIST_PROFILES";
+export const GET_ARTIST_PROFILE = "GET_ARTIST_PROFILE";
+export const GET_ALL_TRACKS = "GET_ALL_TRACKS";

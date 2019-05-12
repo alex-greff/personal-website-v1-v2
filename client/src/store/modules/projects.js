@@ -64,9 +64,30 @@ const mutations = {
         _projectExists(i_oState, name);
 
         const oProjectData = i_oState[name];
-        const oUpdatedProjectData = update(oProjectData, {
+        let oUpdatedProjectData = update(oProjectData, {
             $merge: data
         });
+
+        // Deal with gallery image update manually
+        if (data["galleryImages"]) {
+            oUpdatedProjectData = update(oUpdatedProjectData, {
+                galleryImages: { $set: data["galleryImages"] }
+            });
+        }
+
+        // Deal with links update manually
+        if (data["links"]) {
+            oUpdatedProjectData = update(oUpdatedProjectData, {
+                links: { $set: data["links"] }
+            });
+        }
+
+        // Deal with tags update manually
+        if (data["tags"]) {
+            oUpdatedProjectData = update(oUpdatedProjectData, {
+                tags: { $set: data["tags"] }
+            });
+        }
 
         // Edit the project
         Vue.set(i_oState, name, oUpdatedProjectData);

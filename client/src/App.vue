@@ -40,13 +40,13 @@ import NavBar from "@/components/NavBar/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import BlockLoader from "@/components/loaders/BlockLoader.vue";
 
-import Home from "@/views/Home.vue";
+import Home from "@/views/Home/Home.vue";
 import Projects from "@/views/Projects/Projects.vue";
 import ProjectDetails from "@/views/ProjectDetails/ProjectDetails.vue";
 import Experience from "@/views/Experience/Experience.vue";
-import Music from "@/views/Music.vue";
+import Music from "@/views/Music/Music.vue";
 import About from "@/views/About/About.vue";
-import Contact from "@/views/Contact.vue";
+import Contact from "@/views/Contact/Contact.vue";
 
 // TODO: export this shit somewhere else
 const PAGE_ANIM_FUNCTIONS = {
@@ -167,6 +167,7 @@ export default {
         this.populateProjects();
         this.populateExperience();
         this.populateAbout();
+        this.populateArtistProfiles();
 
         // Add default namespace
         this.addNamespace({
@@ -215,6 +216,8 @@ export default {
             populateExperience: actionTypes.POPULATE_EXPERIENCE,
             // About store
             populateAbout: actionTypes.POPULATE_ABOUT,
+            // Music store
+            populateArtistProfiles: actionTypes.POPULATE_ARTIST_PROFILES,
         }),
         updateRouteTheme(i_sRouteName) {
             const currPageData = pageData.pages[i_sRouteName];
