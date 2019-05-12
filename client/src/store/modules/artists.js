@@ -38,6 +38,14 @@ const getters = {
             return i_oState[i_sArtistProfileID];
         }
     },
+    [getterTypes.GET_ALL_TRACKS]: (i_oState) => {
+        return Object.values(i_oState).reduce((acc, artistProfile) => {
+            return [
+                ...acc,
+                ...artistProfile.tracks
+            ];
+        }, []);
+    },
 };
 
 const mutations = {
