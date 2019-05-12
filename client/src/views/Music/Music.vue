@@ -11,12 +11,12 @@
                 Music
             </h1>
 
-            <div class="Music__seach-field-container">
+            <div class="Music__filter-field-container">
                 <text-field 
                     v-model="searchFilter"
-                    class="Music__search-field"
-                    name="searchTracks"
-                    placeholder="Search Tracks"
+                    class="Music__filter-field"
+                    name="filterTracks"
+                    placeholder="Filter Tracks"
                 />
             </div>
             
@@ -217,7 +217,7 @@ const _enterAnim = (el) => {
         console.log("Running Music enter anim for", el); 
         
         const titleEl = el.querySelector(".Music__title");
-        const searchFieldEl = el.querySelector(".Music__search-field");
+        const searchFieldEl = el.querySelector(".Music__filter-field");
         const trackItemEls = el.querySelectorAll(".Music__track");
 
         // Kill any running animations (that we know are for sure there)
@@ -245,7 +245,7 @@ const _leaveAnim = (el) => {
         console.log("Running Music leave anim for", el); 
 
         const titleEl = el.querySelector(".Music__title");
-        const searchFieldEl = el.querySelector(".Music__search-field");
+        const searchFieldEl = el.querySelector(".Music__filter-field");
         const trackItemEls = el.querySelectorAll(".Music__track");
 
         // Kill any running animations
@@ -300,13 +300,13 @@ const _leaveAnim = (el) => {
                 color: theme-link("page", "accent-color", "primary");
             }
 
-            & > .Music__seach-field-container {
+            & > .Music__filter-field-container {
                 margin-top: 1.5rem;
 
                 display: flex;
                 justify-content: flex-end;
 
-                & > .Music__search-field {
+                & > .Music__filter-field {
                     max-width: 45rem;
 
                     @include respond(tab-port) {
