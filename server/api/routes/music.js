@@ -13,19 +13,19 @@ const MusicController = require("../controllers/music");
 router.get("/", MusicController.music_get_all);
 
 // [domain]/api/music/artists : GET
-router.get("/artists", MusicController.music_get_all_artists);
+router.get("/artists", MusicController.music_get_all_artist_profiles);
 
 // [domain]/api/music/artists : POST
-router.post("/artists", permit(false, "create-artist"), MusicController.music_create_aritst);
+router.post("/artists", permit(false, "create-artist"), MusicController.music_create_aritst_profile);
 
 // [domain]/api/music/artists/:artistID : GET
-router.get("/artists/:artistID", MusicController.music_get_artist);
+router.get("/artists/:artistID", MusicController.music_get_artist_profile);
 
 // [domain]/api/music/artists/:artistID : PATCH
-router.patch("/artists/:artistID", permit(false, "edit-artist"), MusicController.music_update_artist);
+router.patch("/artists/:artistID", permit(false, "edit-artist"), MusicController.music_update_artist_profile);
 
 // [domain]/api/music/artists/:artistID : DELETE
-router.delete("/artists/:artistID", permit(false, "delete-artist"), MusicController.music_delete_artist);
+router.delete("/artists/:artistID", permit(false, "delete-artist"), MusicController.music_delete_artist_profile);
 
 // [domain]/api/music/clientID : GET
 router.get("/clientID", permit(false, "view-client-ID"), MusicController.music_get_client_ID);
