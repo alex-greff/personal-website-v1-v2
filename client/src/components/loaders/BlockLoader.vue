@@ -11,9 +11,9 @@
                     <div class="BlockLoader__cell-inner"></div>
                 </div>
             </div>
-            <div class="BlockLoader__loading-text">
-                Loading<span class="dot dot-1">.</span><span class="dot dot-2">.</span><span class="dot dot-3">.</span>
-            </div>
+            <loading-text class="BlockLoader__loading-text">
+                Loading
+            </loading-text>
         </div>
         <div :class="backgroundClasses" />
     </div>
@@ -23,6 +23,8 @@
 import Utilities from "@/utilities";
 import { TweenLite, TweenMax, TimelineMax, TimelineLite } from "gsap/all";
 
+import LoadingText from "@/components/ui/LoadingText.vue";
+
 // STYLE LINKED CONSTANTS
 const FLASH_DURATION = 2000; // NOTE: this MUST correspond with the duration defined in the stylesheets
 const NUM_CELLS = 10;
@@ -30,6 +32,9 @@ const NUM_CELLS = 10;
 let infiniteTL = null;
 
 export default {
+    components: {
+        loadingText: LoadingText
+    },
     props: {
         zIndex: {
             type: Number,
@@ -450,81 +455,7 @@ const _completeAnim = (el) => {
 
             color: theme-link("loader", "accent-color", "primary");
 
-            $num-dots: 3;
-            $anim-duration: 1.3s;
-
-            // Assign anims to dots
-            @for $i from 1 through $num-dots {
-                & .dot-#{$i} {
-                    animation: dot-#{$i}-anim $anim-duration infinite;
-                }
-            }
-
-            // Dot anims
-            @keyframes dot-1-anim {
-                // Fade in
-                0% {
-                    opacity: 0;
-                }
-                20% {
-                    opacity: 1;
-                }
-                // Fade out
-                60% {
-                    opacity: 1;
-                }
-                80% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-            }
-
-            @keyframes dot-2-anim {
-                // Reset
-                0% {
-                    opacity: 0;
-                }
-                // Fade in
-                20% {
-                    opacity: 0;
-                }
-                40% {
-                    opacity: 1;
-                }
-                // Fade out
-                60% {
-                    opacity: 1;
-                }
-                80% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-            }
-
-            @keyframes dot-3-anim {
-                // Reset
-                0% {
-                    opacity: 0;
-                }
-                // Fade in
-                40% {
-                    opacity: 0;
-                }
-                // Fade out
-                60% {
-                    opacity: 1;
-                }
-                80% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-            }
+            font-size: 1.5rem;
         }
     }
 </style>

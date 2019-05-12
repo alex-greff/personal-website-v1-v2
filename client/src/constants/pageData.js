@@ -1,11 +1,11 @@
-import Home from '@/views/Home.vue'
+import Home from '@/views/Home/Home.vue'
 import Projects from '@/views/Projects/Projects.vue';
 import ProjectDetails from '@/views/ProjectDetails/ProjectDetails.vue';
-import Music from '@/views/Music.vue';
+import Music from '@/views/Music/Music.vue';
 import Experience from '@/views/Experience/Experience.vue';
-import Contact from '@/views/Contact.vue';
+import Contact from '@/views/Contact/Contact.vue';
 import About from '@/views/About/About.vue';
-import NotFound from '@/views/404.vue';
+import NotFound from '@/views/404/404.vue';
 
 export const pageData = {
     navPageOrder: ["home", "projects", "experience", "music", "about", "contact"],

@@ -104,10 +104,15 @@
                     </template>
                 </tabs>
             </div>
-            <div v-else-if="projectNotFound">
+            <div 
+                v-else-if="projectNotFound"
+                class="ProjectDetails__not-found"
+            >
+                <!-- TODO: complete -->
                 Not found
             </div>
             <div v-else>
+                <!-- TODO: complete -->
                 Loading...
             </div>            
         </div>
@@ -254,6 +259,21 @@ export default {
         return new Promise((resolve, reject) => {
             console.log("Running ProjectDetails enter anim for", el); 
 
+            const REG_ANIM_START_LEFT = { x: -30, opacity: 0 };
+            const REG_ANIM_START_RIGHT = { x: 30, opacity: 0 };
+            const REG_ANIM_END = { x: 0, opacity: 1, ease: Power1.easeOut };
+
+            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
+
+            const notFoundEl = el.querySelector(".ProjectDetails__not-found");
+
+            // Run not found anim if the project is not found
+            if (notFoundEl) {
+                TweenLite.killTweensOf(notFoundEl);
+                tl.add(TweenLite.fromTo(notFoundEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }));
+                return;
+            }
+
             // Get DOM references
             const titleEl = el.querySelector(".ProjectDetails__title");
             const thumbnailImageEl = el.querySelector(".ProjectDetails__tint");
@@ -268,16 +288,11 @@ export default {
             // Kill anims
             TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
 
-            const REG_ANIM_START_LEFT = { x: -30, opacity: 0 };
-            const REG_ANIM_START_RIGHT = { x: 30, opacity: 0 };
-            const REG_ANIM_END = { x: 0, opacity: 1, ease: Power1.easeOut };
-
             // Run animations
             const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
             const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
             const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
 
-            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
             tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
             tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
             tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
@@ -320,6 +335,20 @@ export default {
         return new Promise((resolve, reject) => {
             console.log("Running ProjectDetails leave anim for", el); 
 
+            const REG_ANIM_END_LEFT = { x: -30, opacity: 0, ease: Power1.easeOut };
+            const REG_ANIM_END_RIGHT = { x: 30, opacity: 0, ease: Power1.easeOut };
+
+            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
+
+            const notFoundEl = el.querySelector(".ProjectDetails__not-found");
+
+            // Run not found anim if the project is not found
+            if (notFoundEl) {
+                TweenLite.killTweensOf(notFoundEl);
+                tl.add(TweenLite.to(notFoundEl, 0.75, { ...REG_ANIM_END_RIGHT }));
+                return;
+            }
+
             // Get DOM references
             const titleEl = el.querySelector(".ProjectDetails__title");
             const thumbnailImageEl = el.querySelector(".ProjectDetails__tint");
@@ -334,15 +363,11 @@ export default {
             // Kill anims
             TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
 
-            const REG_ANIM_END_LEFT = { x: -30, opacity: 0, ease: Power1.easeOut };
-            const REG_ANIM_END_RIGHT = { x: 30, opacity: 0, ease: Power1.easeOut };
-
             // Run animations
             const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
             const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
             const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
 
-            const tl = new TimelineLite({ onComplete: () => { resolve(); }});
             tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
             tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
             tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.75");

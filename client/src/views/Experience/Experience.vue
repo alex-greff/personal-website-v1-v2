@@ -158,7 +158,7 @@ export default {
     }
 }
 
-const _animateInExperienceEls = (el, ignoreFlags = false) => {
+const _animateInExperienceEls = (el, ignoreFlags = false, i_tl = null, i_nStartOffset = 0) => {
     return new Promise((resolve, reject) => {
         // Dont run the experience els animation if the page hasn't been animated in yet, unless the force flag is active
         if (!ignoreFlags && !forceRunExperienceElsAnims && !pageAnimatedIn) {
@@ -174,9 +174,8 @@ const _animateInExperienceEls = (el, ignoreFlags = false) => {
         // Kill any running animations
         TweenLite.killTweensOf([...filterItemEls, ...experienceItemEls]);
 
-        // TODO: consolidate these animations with the same ones that are in _enterAnim
-        const tl = new TimelineLite({ onComplete: () => resolve() });
-        tl.add(TweenLite.fromTo(filterSubScriptEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }));
+        const tl = (i_tl) ? i_tl : new TimelineLite({ onComplete: () => resolve() });
+        tl.add(TweenLite.fromTo(filterSubScriptEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }), `-=${i_nStartOffset}`);
         tl.add(
             TweenMax.staggerFromTo(
                 filterItemEls,
@@ -194,11 +193,15 @@ const _animateInExperienceEls = (el, ignoreFlags = false) => {
                 0.3,
                 { x: -20, opacity: 0 },
                 { x: 0, opacity: 1 },
-                // { x: 0, opacity: 1, clearProps: "all" },
                 0.1
             ),
             `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
         );
+
+        // If we're latching onto another timeline then we don't need this promise
+        if (i_tl) {
+            resolve();
+        }
     })
 };
 
@@ -226,10 +229,7 @@ const _enterAnim = (el) => {
         }
 
         // Run the experience els animations, ignoring any flags
-        _animateInExperienceEls(el, true);
-
-        // TODO: put in onComplete
-        pageAnimatedIn = true; resolve();
+        _animateInExperienceEls(el, true, tl);
     });
 };
 
