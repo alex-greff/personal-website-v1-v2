@@ -4,7 +4,7 @@
         class="Music"
     >
         <div 
-            v-if="artistProfilesLoaded"
+            v-if="tracksLoaded"
             class="Music__content"
         >
             <h1 class="Music__title">
@@ -21,7 +21,7 @@
             </div>
             
             <transition-group 
-                v-if="artistProfilesLoaded"
+                v-if="tracksLoaded"
                 ref="gridRef"
                 class="Music__tracks-grid"
                 tag="div"
@@ -31,7 +31,7 @@
             >
                 <!-- Generate music tracks -->
                 <div 
-                    v-for="(track) in allTracksFiltered"
+                    v-for="(track) in allTracks"
                     :key="track.trackID"
                     class="Music__track-container"
                 >
@@ -74,32 +74,20 @@ export default {
         return {
             animateCssGridApplied: false,
             searchFilter: "",
-            allTracksFiltered: null,
+            allTracksFiltered: this.allTracks,
             updateFilteredItemsDebounced: Utilities.debounce(this.updateFilteredItems, DEBOUNCE_RATE),
         }
     },
     computed: {
         ...mapGetters({
-            artistProfiles: getterTypes.GET_ALL_ARTIST_PROFILES
+            allTracks: getterTypes.GET_ALL_TRACKS,
         }),
-        artistProfilesLoaded() {
-            return Object.keys(this.artistProfiles).length > 0;
-        },
-        allTracks() {
-            if (!this.artistProfilesLoaded) {
-                return;
-            }
-
-            return Object.values(this.artistProfiles).reduce((acc, artistProfile) => {
-                return [
-                    ...acc,
-                    ...artistProfile.tracks
-                ];
-            }, []);
+        tracksLoaded() {
+            return this.allTracks.length > 0;
         },
     },
     watch: {
-        artistProfilesLoaded(isLoaded, wasLoaded) {
+        tracksLoaded(isLoaded, wasLoaded) {
             // TODO: if this was fast and the spoof loader is still running, this runs anyways... I should probably fix this eventually
             if (isLoaded && !wasLoaded) {
                 this.$nextTick(() => {
@@ -113,7 +101,7 @@ export default {
         }
     },
     mounted() {
-        if (this.artistProfilesLoaded) {
+        if (this.tracksLoaded) {
             this.$nextTick(() => {
                 this.updateFilteredItemsDebounced(this.searchFilter);
 
@@ -187,6 +175,7 @@ const _animateInTrackEls = (el, ignoreFlags = false, i_tl = null, i_nStartOffset
             return;
         }
 
+        console.log("Running track els animation", el);
         const trackItemEls = el.querySelectorAll(".Music__track");
 
         // Kill any running animations
