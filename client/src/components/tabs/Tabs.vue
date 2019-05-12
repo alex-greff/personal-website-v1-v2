@@ -125,6 +125,12 @@ export default {
         this.$nextTick(() => {
             const windowHash = window.location.hash.substring(1);
             const validHash = !!this.getTabConfig(windowHash);
+            
+            // Set the window hash to be initial selected tab
+            // This prevents the animations from running if the initial selected tab is clicked again
+            if (!validHash) {
+                window.location.hash = `#${this.initialSelectedTab}`;
+            }
 
             // Only use the hash if it points to a tab, if not use the initial selected tab
             const selectedTab = (validHash) ? windowHash : this.initialSelectedTab;
