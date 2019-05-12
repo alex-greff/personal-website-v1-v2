@@ -163,7 +163,9 @@ exports.themes_update_theme = async (req, res, next) => {
         const result = await Theme.updateOne({ _id: id}, { $set: updateOps }, { runValidators: true }).exec(); // Update document
 
         if (!result || result.nModified < 1) {
-            throw "Unable to update theme";
+            return res.status(404).json({
+                message: "Unable to find and update theme"
+            });
         }
 
         let url = `${Utilities.getURLBase(req)}/${id}`;

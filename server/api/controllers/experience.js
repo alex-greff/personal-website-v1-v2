@@ -14,8 +14,8 @@ exports.experience_get_all = async (req, res, next) => {
 
         console.log("FROM DATABASE\n", docs);
 
-        // Construct response
-        const response = {
+        // Send response
+        res.status(200).json({
             count: docs.length,
             experience: docs.map(doc => {
                 return {
@@ -33,10 +33,7 @@ exports.experience_get_all = async (req, res, next) => {
                     }
                 }
             })
-        };
-
-        // Send response
-        res.status(200).json(response);
+        });
 
     } catch(err) {
         console.log(err);
@@ -156,7 +153,9 @@ exports.experience_update_experience = async (req, res, next) => {
         const url = `${Utilities.getURLBase(req)}/${id}`;
 
         if (!result || result.nModified < 1) {
-            throw "Unable to update experience item";
+            return res.status(404).json({
+                message: "Unable to find and update experience item"
+            });
         }
 
         // Send response
