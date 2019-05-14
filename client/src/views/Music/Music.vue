@@ -29,9 +29,16 @@
                 @enter="trackItemEnterAnim"
                 @leave="trackItemLeaveAnim"
             >
+                <empty-filter-display 
+                    key="empty-filter-display"
+                    :filter-empty="emptyFilter"
+                >
+                    No tracks found
+                </empty-filter-display>
+
                 <!-- Generate music tracks -->
                 <div 
-                    v-for="(track) in allTracks"
+                    v-for="(track) in allTracksFiltered"
                     :key="track.trackID"
                     class="Music__track-container"
                 >
@@ -59,6 +66,7 @@ import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
 import SoundCloudEmbeddedPlayer from "@/components/embeds/SoundCloudEmbeddedPlayer.vue";
 import TextField from "@/components/ui/forms/TextField.vue";
+import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
 
 let pageAnimatedIn = false;
 let forceRunTrackElsAnims = false;
@@ -69,6 +77,7 @@ export default {
     components: {
         soundCloudEmbeddedPlayer: SoundCloudEmbeddedPlayer,
         textField: TextField,
+        emptyFilterDisplay: EmptyFilterDisplay,
     },
     data() {
         return {
@@ -85,6 +94,9 @@ export default {
         tracksLoaded() {
             return this.allTracks.length > 0;
         },
+        emptyFilter() {
+            return (!this.allTracksFiltered) ? false : Object.keys(this.allTracksFiltered).length <= 0;
+        }
     },
     watch: {
         tracksLoaded(isLoaded, wasLoaded) {
@@ -305,6 +317,8 @@ const _leaveAnim = (el) => {
             }
 
             & > .Music__tracks-grid {
+                position: relative;
+
                 margin-top: 1.5rem;
                 margin-bottom: 3rem;
 

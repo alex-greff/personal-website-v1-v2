@@ -22,6 +22,13 @@
                 @enter="projectItemEnterAnim"
                 @leave="projectItemLeaveAnim"
             >
+                <empty-filter-display 
+                    key="empty-filter-display"
+                    :filter-empty="emptyFilter"
+                >
+                    No projects found
+                </empty-filter-display>
+
                 <project-item 
                     v-for="project in projectsFiltered"
                     :key="project.name"
@@ -39,13 +46,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import ProjectItem from '@/views/Projects/ProjectItem.vue';
-import ProjectFilter from '@/views/Projects/ProjectFilter.vue';
-import { getterTypes } from '@/store/types';
-import Vue from 'vue';
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import { getterTypes } from "@/store/types";
 import { wrapGrid } from "animate-css-grid";
 import Utilities from "@/utilities";
+
+import ProjectItem from "@/views/Projects/ProjectItem.vue";
+import ProjectFilter from "@/views/Projects/ProjectFilter.vue";
+import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -57,6 +66,7 @@ export default {
     components: {
         projectItem: ProjectItem,
         projectFilter: ProjectFilter,
+        emptyFilterDisplay: EmptyFilterDisplay,
     },
     data() {
         return {
@@ -89,6 +99,9 @@ export default {
             let aSortedProjects = Utilities.sortStandardItemsObject(this.projects, "name", "endDate");
             return aSortedProjects;
         },
+        emptyFilter() {
+            return (!this.projectsFiltered) ? false : Object.keys(this.projectsFiltered).length <= 0;
+        }
     },
     watch: {
         projectDataLoaded(isLoaded, wasLoaded) {
@@ -300,6 +313,8 @@ const _leaveAnim = (el) => {
             }
 
             & .Projects__grid {
+                position: relative; // For empty filter display
+
                 margin-top: 2.5rem;
                 margin-bottom: 3rem;
 
@@ -308,12 +323,6 @@ const _leaveAnim = (el) => {
                 grid-row-gap: 2rem;
 
                 $item-width: 30rem;
-
-                & /deep/ .Projects__item {
-                    & /deep/ .Projects__item-content {
-                        will-change: transform, opacity;
-                    }
-                }
 
                 // ---------------------
                 // --- Media Queries ---

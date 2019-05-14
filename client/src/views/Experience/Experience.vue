@@ -22,6 +22,13 @@
                 @enter="experienceItemEnterAnim"
                 @leave="experienceItemLeaveAnim"
             >
+                <empty-filter-display 
+                    key="empty-filter-display"
+                    :filter-empty="emptyFilter"
+                >
+                    No experience items found
+                </empty-filter-display>
+
                 <experience-item
                     v-for="experienceItem in experienceItemsFiltered"
                     :key="experienceItem._id"
@@ -40,12 +47,14 @@
 
 <script>
 import Vue from "vue";
+import { mapGetters } from "vuex";
+import { getterTypes } from '@/store/types';
+import { wrapGrid } from "animate-css-grid";
+import Utilities from "@/utilities";
+
 import ExperienceItem from "@/views/Experience/ExperienceItem.vue";
 import ExperienceFilter from "@/views/Experience/ExperienceFilter.vue";
-import { mapGetters } from 'vuex';
-import { getterTypes } from '@/store/types';
-import Utilities from "@/utilities";
-import { wrapGrid } from "animate-css-grid";
+import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -57,6 +66,7 @@ export default {
     components: {
         experienceItem: ExperienceItem,
         experienceFilter: ExperienceFilter,
+        emptyFilterDisplay: EmptyFilterDisplay,
     },
     data() {
         return {
@@ -85,6 +95,9 @@ export default {
             // Sort the experience items
             let aSortedExperienceItems = Utilities.sortStandardItemsObject(this.experienceItems, "title", "endDate");
             return aSortedExperienceItems;
+        },
+        emptyFilter() {
+            return (!this.experienceItemsFiltered) ? false : Object.keys(this.experienceItemsFiltered).length <= 0;
         }
     },
     watch: {
@@ -291,8 +304,6 @@ const _leaveAnim = (el) => {
             max-width: 100rem;
             width: 100%;
 
-            // background-color: red;
-
             & > .Experience__title {
                 text-align: center;
                 font-weight: 600; // h1 sets this by default
@@ -303,6 +314,8 @@ const _leaveAnim = (el) => {
             }
 
             & > .Experience__grid {
+                position: relative;
+
                 margin-top: 2.5rem;
                 margin-bottom: 3rem;
 
