@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Theme = require('../models/theme');
 const Utilities = require('../utilities');
-const THEME_ITEMS = require('../constants/themeItems');
 
 const UNREMOVEABLE_DOC_IDS = require('../constants/unremovableDocs');
 const UNEDITABLE_FIELDS = ["_id"];
+
+// Object filters
+const THEME_FIELDS = ["_id", "name", "baseTheme", "BASE", "subSections"];
 
 exports.themes_get_all = async (req, res, next) => {
     try {
@@ -16,19 +18,8 @@ exports.themes_get_all = async (req, res, next) => {
         const response = {
             count: docs.length,
             themes: docs.map(doc => {
-                const theme_BASE = doc["BASE"];
-                const theme_subSections = doc["subSections"];
-
                 return {
-                    name: doc.name,
-                    baseTheme: doc.baseTheme,
-                    BASE: {
-                        ...theme_BASE
-                    },
-                    subSections: {
-                        ...theme_subSections
-                    },
-                    _id: doc._id,
+                    ...Utilities.filterByKeys(doc, ...THEME_FIELDS),
                     request: {
                         type: "GET",
                         url: `${urlBase}/${doc._id}`
@@ -66,17 +57,7 @@ exports.themes_get_theme = async (req, res, next) => {
 
             // Send response
             res.status(200).json({
-                theme: {
-                    _id: doc._id,
-                    name: doc.name,
-                    baseTheme: doc.baseTheme,
-                    BASE: {
-                        ...theme_BASE
-                    },
-                    subSections: {
-                        ...theme_subSections
-                    }
-                }, 
+                theme: Utilities.filterByKeys(doc, ...THEME_FIELDS),
                 request: {
                     type: "GET",
                     url: url
@@ -111,29 +92,14 @@ exports.themes_create_theme = async (req, res, next) => {
     try {
         const result = await theme.save();
 
-        console.log(result);
-
-        const theme_BASE = result["BASE"];
-        const theme_subSections = result["subSections"];
-
         let url = `${Utilities.getURLBase(req)}/${result._id}`
         // Send response 
         res.status(201).json({
             message: "Created theme sucessfully",
-            createdTheme: {
-                name: result.name,
-                baseTheme: result.baseTheme,
-                BASE: {
-                    ...theme_BASE
-                },
-                subSections: {
-                    ...theme_subSections
-                },
-                _id: result._id,
-                request: {
-                    type: "GET",
-                    url: url
-                }
+            createdTheme: Utilities.filterByKeys(result, ...THEME_FIELDS),
+            request: {
+                type: "GET",
+                url: url
             }
         });
 

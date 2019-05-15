@@ -5,6 +5,9 @@ const Utilities = require("../utilities");
 const SELECTED_FIELDS = "name summary description _id thumbnailImage galleryImages links tags startDate endDate";
 const UNEDITABLE_FIELDS = ["_id", "updated"];
 
+// Object filters
+const PROJECT_ITEM_FIELDS = ["_id", "name", "summary", "description", "thumbnailImage", "galleryImages", "links", "tags", "startDate", "endDate"];
+
 exports.projects_get_all = async (req, res, next) => {
     try {
         const docs = await Project.find().select(SELECTED_FIELDS).exec();
@@ -18,16 +21,7 @@ exports.projects_get_all = async (req, res, next) => {
             count: docs.length,
             projects: docs.map(doc => {
                 return {
-                    _id: doc._id,
-                    name: doc.name,
-                    summary: doc.summary,
-                    description: doc.description,
-                    thumbnailImage: doc.thumbnailImage,
-                    galleryImages: doc.galleryImages,
-                    links: doc.links,
-                    tags: doc.tags,
-                    startDate: doc.startDate,
-                    endDate: doc.endDate,
+                    ...Utilities.filterByKeys(doc, ...PROJECT_ITEM_FIELDS),
                     request: {
                         type: "GET",
                         url: `${urlBase}/${doc._id}`
@@ -69,13 +63,10 @@ exports.projects_create_project = async (req, res, next) => {
         name: req.body.name,
         summary: req.body.summary,
         description: req.body.description,
-
         thumbnailImage: thumbnailImagePath,
         galleryImages: galleryImagesPaths,
-
         links: req.body.links,
         tags: req.body.tags,
-
         startDate: req.body.startDate,
         endDate: req.body.endDate,
     });
@@ -91,17 +82,7 @@ exports.projects_create_project = async (req, res, next) => {
         res.status(201).json({
             message: "Created project successfully",
             createdProject: {
-                // TODO: don't hardcode this
-                _id: result._id,
-                name: result.name,
-                summary: result.summary,
-                description: result.description,
-                thumbnailImage: result.thumbnailImage,
-                galleryImages: result.galleryImages,
-                links: result.links,
-                tags: result.tags,
-                startDate: result.startDate,
-                endDate: result.endDate,
+                ...Utilities.filterByKeys(result, ...PROJECT_ITEM_FIELDS),
                 request: {
                     type: "GET",
                     url: url
@@ -295,7 +276,6 @@ exports.projects_delete_project = async (req, res, next) => {
                 type: "POST",
                 url: url,
                 body: {
-                    // TODO: don't hardcode this
                     name: "String",
                     summary: "String",
                     description: "String",

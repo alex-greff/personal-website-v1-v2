@@ -5,6 +5,9 @@ const Utilities = require("../utilities");
 const SELECTED_FIELDS = "_id description profileImage links";
 const UNEDITABLE_FIELDS = ["_id", "updated"];
 
+// Object filters
+const ABOUT_FIELDS = ["_id", "description", "profileImage", "links"];
+
 exports.about_get_info = async (req, res, next) => {
     try {
         // Only need to find one cuz there should only be one about document
@@ -13,11 +16,7 @@ exports.about_get_info = async (req, res, next) => {
         console.log("FROM DATABASE\n", doc);
 
         // Construct response
-        const response = {
-            description: doc.description,
-            profileImage: doc.profileImage,
-            links: doc.links
-        }
+        const response = Utilities.filterByKeys(doc, ...ABOUT_FIELDS);
 
         // Send response
         res.status(200).json(response);
@@ -70,12 +69,7 @@ exports.about_override_info = async (req, res, next) => {
         // Send response 
         res.status(201).json({
             message: "Overrode/initialized about successfully",
-            about: {
-                _id: result._id,
-                description: about.description,
-                profileImage: result.profileImage,
-                links: result.links
-            }
+            about: Utilities.filterByKeys(result, ...ABOUT_FIELDS),
         });
 
     } catch(err) {

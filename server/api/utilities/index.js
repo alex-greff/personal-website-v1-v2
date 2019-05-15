@@ -92,6 +92,25 @@ exports.sanitizeImagePath = (raw) => {
     return `/${raw.replace(/\\/g, "/")}`;
 };
 
+/**
+ * Returns a new object with only the filtered keys in it.
+ * 
+ * @param {Object} i_oObj The source object.
+ * @param  {...String} i_aKeys The filtered keys. Format: "<destination key>:<object key>", shorthand "<key>" <=> "<key>:<key>"
+ */
+exports.filterByKeys = (i_oObj, ...i_aKeys) => {
+    return i_aKeys.reduce((acc, i_sCurrKey) => {
+        const aCurrKeySplit = i_sCurrKey.split(':');
+        const sRetKey = aCurrKeySplit[0];
+        const sObjKey = (aCurrKeySplit.length > 1) ? aCurrKeySplit[1] : aCurrKeySplit[0];
+
+        return {
+            ...acc,
+            [sRetKey]: i_oObj[sObjKey]
+        };
+    }, {});
+};
+
 // Link validators
 exports.linkValidator = (i_sVal) => !i_sVal || exports.isLink(i_sVal);
 exports.linkMapValidator = (i_mMap) => exports.validateMap(i_mMap, exports.linkValidator);

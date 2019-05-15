@@ -6,6 +6,9 @@ const SELECTED_FIELDS = "title company companyLink summary tags _id startDate en
 
 const UNEDITABLE_FIELDS = ["_id", "updated"];
 
+// Object filters
+const EXPERIENCE_ITEM_FIELDS = ["_id", "title", "company", "companyLink", "summary", "tags", "startDate", "endDate"];
+
 exports.experience_get_all = async (req, res, next) => {
     try {
         const docs = await Experience.find().select(SELECTED_FIELDS).exec();
@@ -19,14 +22,7 @@ exports.experience_get_all = async (req, res, next) => {
             count: docs.length,
             experience: docs.map(doc => {
                 return {
-                    _id: doc._id,
-                    title: doc.title,
-                    company: doc.company,
-                    companyLink: doc.companyLink,
-                    summary: doc.summary,
-                    tags: doc.tags,
-                    startDate: doc.startDate,
-                    endDate: doc.endDate,
+                    ...Utilities.filterByKeys(doc, ...EXPERIENCE_ITEM_FIELDS),
                     request: {
                         type: "GET",
                         url: `${urlBase}/${doc._id}`
@@ -67,14 +63,7 @@ exports.experience_create_experience = async (req, res, next) => {
         res.status(201).json({
             message: "Created experience item successfully",
             createdExperience: {
-                _id: result._id,
-                title: result.title,
-                company: result.company,
-                companyLink: result.companyLink,
-                summary: result.summary,
-                tags: result.tags,
-                startDate: result.startDate,
-                endDate: result.endDate,
+                ...Utilities.filterByKeys(result, ...EXPERIENCE_ITEM_FIELDS),
                 request: {
                     type: "GET",
                     url: url
@@ -198,7 +187,6 @@ exports.experience_delete_experience = async (req, res, next) => {
                 type: "POST",
                 url: url,
                 body: {
-                    // TODO: don't hardcode this
                     title: "String",
                     company: "String",
                     companyLink: "String",

@@ -8,6 +8,12 @@ const ARTIST_PROFILE_SELECTED_FIELDS = "_id username userID tracks";
 
 const UNEDITABLE_FIELDS = ["_id", "updated"];
 
+// Object filters
+const TRACK_FIELDS = ["_id", "trackID", "title", "permalink", "createdDate", "description", "artworkUrl"];
+const ARTIST_PROFILE_FIELDS = ["_id", "username", "userID", "tracks"];
+const TRACK_SANITIZATION_FIELDS = ["trackID:id", "title", "permalink", "createdDate:created_at", "description", "artworkURL:artwork_url"];
+
+
 // ------------------------
 // --- Helper functions ---
 // ------------------------
@@ -18,14 +24,7 @@ const filterTrackData = (i_aFilteredTracks, i_aTracks) => {
 
 const sanitizeTrackData = (i_oTrackDataRaw) => {
     return i_oTrackDataRaw.collection.map(i_oTrackData => {
-        return {
-            trackID: i_oTrackData.id,
-            title: i_oTrackData.title,
-            permalink: i_oTrackData.permalink,
-            createdDate: i_oTrackData.created_at,
-            description: i_oTrackData.description,
-            artworkURL: i_oTrackData.artwork_url,
-        };
+        return Utilities.filterByKeys(i_oTrackData, ...TRACK_SANITIZATION_FIELDS);
     });
 };
 
@@ -77,13 +76,9 @@ exports.music_get_all = async (req, res, next) => {
         const aTracks = doc.tracks.reduce((acc_sub, i_oTrackData) => {
             return [
                 ...acc_sub,
-                { 
-                    trackID: i_oTrackData.trackID,
-                    title: i_oTrackData.title,
-                    artistUsername: doc.username,
-                    permalink: i_oTrackData.permalink,
-                    createdDate: i_oTrackData.createdDate,
-                    artworkURL: i_oTrackData.artworkURL
+                {
+                    ...Utilities.filterByKeys(i_oTrackData, ...TRACK_FIELDS),
+                    artistUsername: doc.username
                 }
             ];
         }, []);
@@ -117,10 +112,7 @@ exports.music_get_all_artist_profiles = async (req, res, next) => {
             count: docs.length,
             artistProfiles: docs.map(doc => {
                 return {
-                    _id: doc._id,
-                    username: doc.username,
-                    userID: doc.userID,
-                    tracks: doc.tracks,
+                    ...Utilities.filterByKeys(doc, ...ARTIST_PROFILE_FIELDS),
                     request: {
                         type: "GET",
                         url: `${urlBase}/${doc._id}`
@@ -151,7 +143,7 @@ exports.music_get_artist_profile = async (req, res, next) => {
 
             // Send response 
             res.status(200).json({
-                artistProfile: doc,
+                artistProfile: Utilities.filterByKeys(doc, ...ARTIST_PROFILE_FIELDS),
                 request: {
                     type: "GET",
                     url: url
@@ -204,12 +196,8 @@ exports.music_create_aritst_profile = async (req, res, next) => {
         // Send response
         res.status(201).json({
             message: "Created artist profile successfully",
-            "artist-profile": {
-                // TODO: don't hardcode this
-                _id: result._id,
-                username: result.username,
-                userID: result.userID,
-                tracks: result.tracks,
+            artistProfile: {
+                ...Utilities.filterByKeys(result, ...ARTIST_PROFILE_FIELDS),
             },
             request: {
                 type: "GET",
