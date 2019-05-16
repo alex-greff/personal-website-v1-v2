@@ -5,16 +5,16 @@ const soundCloudScraper = require("./soundcloudScraper");
 exports.StorageUtility = storage;
 exports.SoundCloudScraper = soundCloudScraper;
 
-exports.cleanupFile = (filePath) => {
-    const correctedFilePath = filePath.replace(/^\//, "");
+exports.cleanupFile = (i_sFilePath) => {
+    // Convert to relative path, if needed
+    const sRelFilePath = i_sFilePath.replace(/\.\/|^\//, "./"); 
 
-    fs.unlink(correctedFilePath, (err) => {
+    fs.unlink(sRelFilePath, (err) => {
         if (!err) {
-            console.log(filePath, "successfully cleaned up");
-        } else {
-            console.log(filePath, "not found");
+            console.log(`Successfully cleaned up file '${sRelFilePath}'`);
+        } else { // Do nothing if file is not found, just log it
+            console.log(`Unable to clean up file '${sRelFilePath}'`);
         }
-        // Do nothing if file is not found
     });
 };
 

@@ -1,9 +1,9 @@
 const multer = require("multer");
 
-exports.setupFileUpload = (desinationFolder = null) => {
+exports.setupFileUpload = (i_sDesinationFolder = null, ...i_aMimetypes) => {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            const uploadFilePath = (desinationFolder) ? `./uploads/${desinationFolder}` : "./uploads";
+            const uploadFilePath = (i_sDesinationFolder) ? `./uploads/${i_sDesinationFolder}` : "./uploads";
             cb(null, uploadFilePath);
         },
         filename: function (req, file, cb) {
@@ -13,11 +13,10 @@ exports.setupFileUpload = (desinationFolder = null) => {
     });
 
     const fileFilter = (req, file, cb) => {
-        // reject a file
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        if (i_aMimetypes.includes(file.mimetype)) { // Accept
             cb(null, true);
-        } else {
-            cb(null, false);
+        } else { // Reject
+            cb(null, false); 
         }
     };
 
@@ -30,4 +29,6 @@ exports.setupFileUpload = (desinationFolder = null) => {
     });
 
     return upload;
-}
+};
+
+exports.setup;

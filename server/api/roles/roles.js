@@ -6,7 +6,7 @@ let roles = {
     editor: {
         can: ['create-project', 'edit-project', 'delete-project', 
             'create-experience', 'edit-experience', 'delete-experience',
-            'edit-about'],
+            'override-about', 'edit-about'],
         inherits: ['default']
     },
     artist: {
