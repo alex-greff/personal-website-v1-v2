@@ -75,10 +75,13 @@ export default {
             const contentEl = this.$refs.contentEl;
             const minimizedPlaceholderEl = this.$refs.minimizedPlaceholderEl;
 
-            let nHeight = contentEl.offsetHeight;
+            // NOTE: putting this in can shrink the container which causes the height to animate on enter (which I don't want rn)
+            // let nHeight = contentEl.offsetHeight; 
+            let nHeight = this.minimizedHeight;
             if (this.expandable) {
                 nHeight = (this.expanded) ? contentEl.offsetHeight : minimizedPlaceholderEl.offsetHeight;
             }
+            
 
             return {
                 height: `${nHeight}px`

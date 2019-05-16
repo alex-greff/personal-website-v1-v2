@@ -37,7 +37,6 @@
                     :experience-item-data="experienceItem"
                 />
             </transition-group>
-
             <div v-else>
                 Loading...
             </div>
@@ -146,7 +145,6 @@ export default {
                 return;
             }
 
-            // console.log("Running experience item enter anim for", el);
             const ON_COMPLETE = () => done();
             const DURATION = 0.4;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });

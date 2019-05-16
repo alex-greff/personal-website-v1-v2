@@ -153,8 +153,7 @@ export default {
                 done();
                 return;
             }
-
-            console.log("Running track item enter anim for", el);
+            
             const ON_COMPLETE = () => done();
             const DURATION = 0.4;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });
