@@ -67,7 +67,9 @@ export default {
             // NOTE: for the trick
             // This tricks vue into updating the refs once they are attached
             if (!this.isMounted) {
-                return;
+                return {
+                    height: this.minimizedHeight
+                };
             }
 
             const contentEl = this.$refs.contentEl;
