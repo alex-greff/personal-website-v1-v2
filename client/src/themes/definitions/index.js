@@ -21,6 +21,7 @@ export const subSections = [
     "page",
     "navBar",
     "navBar__item",
+    "navBar__menu",
     "footer",
     "content",
     "button",

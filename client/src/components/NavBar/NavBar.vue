@@ -2,11 +2,14 @@
     <div :class="navBarClasses">
         <div :class="overlayClasses" @click="toggleNavMenu"></div>
 
-        <!-- <md-icon class="NavBar__menu-icon">menu</md-icon> -->
-        <div ref="menuEl" class="NavBar__menu-container" @click="toggleNavMenu">
-            <md-icon v-if="isOpen" class="NavBar__menu-icon">close</md-icon>
-            <md-icon v-else class="NavBar__menu-icon">menu</md-icon>
-        </div>  
+        <hamburger-menu
+            ref="menuRef" 
+            class="NavBar__hamburger-menu"
+            :open="isOpen"
+            size="3.6rem"
+            @click="toggleNavMenu"
+        />
+
         <nav-link-container 
             class="NavBar__pages-container"
             :is-open="isOpen"
@@ -25,10 +28,12 @@ import { getAllNavRouterLinks } from "@/constants/pageData";
 /* global Power1 */
 import { TweenLite } from "gsap/all";
 
+import HamburgerMenu from "@/components/ui/HamburgerMenu.vue";
 import NavLinkContainer from "@/components/NavBar/NavLinkContainer/NavLinkContainer.vue";
 
 export default {
     components: {
+        hamburgerMenu: HamburgerMenu,
         navLinkContainer: NavLinkContainer
     }, 
     props: {
@@ -111,7 +116,8 @@ export default {
             this.displayOverlay = false;
         },
         appearAnim() {
-            const menuEl = this.$refs.menuEl;
+            // const menuEl = this.$refs.menuEl;
+            const menuEl = this.$refs.menuRef.$el;
 
             TweenLite.fromTo(
                 menuEl, 
@@ -135,20 +141,13 @@ export default {
         z-index: 10;
 
         pointer-events: none;
-    
-        & .NavBar__menu-container {
-            $menu-btn-size: 4rem;
 
-            width: $menu-btn-size;
-            height: $menu-btn-size;
-
-            z-index: 2;
-
+        & .NavBar__hamburger-menu {
             pointer-events: all;
 
-            & .NavBar__menu-icon {
-                @include icon-size($menu-btn-size);
-            }
+            margin: 0.6rem;
+
+            z-index: 2;
         }
 
         &.desktop {
