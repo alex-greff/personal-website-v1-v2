@@ -152,7 +152,7 @@ export default {
         trackItemEnterAnim(el, done) {
             const ON_COMPLETE = () => { tracksAnimatedIn = true; done(); };
             const DURATION = 0.4;
-            const DELAY = (tracksAnimatedIn) ? 0 : el.dataset.index * 0.1 + TRACK_ANIM_IN_DELAY;
+            const DELAY = (tracksAnimatedIn) ? 0 : (el.dataset.index * 0.1) + TRACK_ANIM_IN_DELAY;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE }).delay(DELAY);
         }, 
         trackItemLeaveAnim(el, done) {
