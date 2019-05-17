@@ -21,7 +21,6 @@
             </div>
             
             <transition-group 
-                v-if="tracksLoaded"
                 ref="gridRef"
                 class="Music__tracks-grid"
                 tag="div"
@@ -38,8 +37,9 @@
 
                 <!-- Generate music tracks -->
                 <div 
-                    v-for="(track) in allTracksFiltered"
+                    v-for="(track, index) in allTracksFiltered"
                     :key="track.trackID"
+                    :data-index="index"
                     class="Music__track-container"
                 >
                     <sound-cloud-embedded-player
@@ -71,6 +71,9 @@ import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
 let pageAnimatedIn = false;
 let forceRunTrackElsAnims = false;
 
+let tracksAnimatedIn = false;
+const TRACK_ANIM_IN_DELAY = 0;
+
 const DEBOUNCE_RATE = 500;
 
 export default {
@@ -100,10 +103,10 @@ export default {
     },
     watch: {
         tracksLoaded(isLoaded, wasLoaded) {
+            console.log("Tracks loaded");
             // TODO: if this was fast and the spoof loader is still running, this runs anyways... I should probably fix this eventually
             if (isLoaded && !wasLoaded) {
                 this.$nextTick(() => {
-                    this.animateInTrackEls(this.$refs.baseEl);
                     this.initializeGridAnimations();
                 });
             }
@@ -117,7 +120,6 @@ export default {
             this.$nextTick(() => {
                 this.updateFilteredItemsDebounced(this.searchFilter);
 
-                this.animateInTrackEls(this.$refs.baseEl);
                 this.initializeGridAnimations();
             });
         }
@@ -148,23 +150,15 @@ export default {
         // --- Track Item Animations ---
         // -----------------------------
         trackItemEnterAnim(el, done) {
-            // Do not run the enter animation if the page has not been animated in yet
-            if (!pageAnimatedIn) {
-                done();
-                return;
-            }
-            
-            const ON_COMPLETE = () => done();
+            const ON_COMPLETE = () => { tracksAnimatedIn = true; done(); };
             const DURATION = 0.4;
-            TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });
+            const DELAY = (tracksAnimatedIn) ? 0 : el.dataset.index * 0.1 + TRACK_ANIM_IN_DELAY;
+            TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE }).delay(DELAY);
         }, 
         trackItemLeaveAnim(el, done) {
             const ON_COMPLETE = () => done();
             const DURATION = 0.2;
             TweenLite.to(el, DURATION, { opacity: 0, ease: Power1.easeIn, onComplete: ON_COMPLETE });
-        },
-        animateInTrackEls(el) {
-            _animateInTrackEls(el);
         }
     },
     // ------------------
@@ -178,47 +172,12 @@ export default {
     }
 }
 
-const _animateInTrackEls = (el, ignoreFlags = false, i_tl = null, i_nStartOffset = 0) => {
-    return new Promise((resolve, reject) => {
-        // Dont run the track els animation if the page hasn't been animated in yet, unless the force flag is active
-        if (!ignoreFlags && !forceRunTrackElsAnims && !pageAnimatedIn) {
-            resolve();
-            return;
-        }
-
-        console.log("Running track els animation", el);
-        const trackItemEls = el.querySelectorAll(".Music__track");
-
-        // Kill any running animations
-        TweenLite.killTweensOf([...trackItemEls]);
-
-        // Run animations
-        const tl = (i_tl) ? i_tl : new TimelineLite({ onComplete: () => { pageAnimatedIn = true; resolve(); }});
-        tl.add(
-            TweenMax.staggerFromTo(
-                trackItemEls,
-                0.3,
-                { x: -20, opacity: 0 },
-                { x: 0, opacity: 1 },
-                0.1
-            ),
-            `-=${i_nStartOffset}`
-        );
-
-        // If we're latching onto another timeline then we don't need this promise
-        if (i_tl) {
-            resolve();
-        }
-    });
-};
-
 const _enterAnim = (el) => {
     return new Promise((resolve, reject) => {
         console.log("Running Music enter anim for", el); 
         
         const titleEl = el.querySelector(".Music__title");
         const searchFieldEl = el.querySelector(".Music__filter-field");
-        const trackItemEls = el.querySelectorAll(".Music__track");
 
         // Kill any running animations (that we know are for sure there)
         TweenLite.killTweensOf([titleEl, searchFieldEl]);
@@ -227,16 +186,6 @@ const _enterAnim = (el) => {
         const tl = new TimelineLite({ onComplete: () => { pageAnimatedIn = true; resolve(); }});
         tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}));
         tl.add(TweenLite.fromTo(searchFieldEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}), "-=0.25");
-
-        // Activate the force flag if there are no filter experience els present
-        // This combats the issue where experienceItemEls does not get rendered right away
-        if (trackItemEls.length <= 0) {
-            forceRunTrackElsAnims = true;
-            return;
-        }
-
-        // Run the track els animations, ignoring any flags
-        _animateInTrackEls(el, true, tl);
     });
 };
 
