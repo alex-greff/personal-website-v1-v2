@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Utilities = require("../utilities");
 
 const artistSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -15,7 +14,7 @@ const artistSchema = mongoose.Schema({
             permalink: { type: String, required: true },
             createdDate: { type: Date, required: true },
             description: { type: String, default: "" },
-            artworkURL: { type: String, required: true }, // TODO: setup link validator
+            artworkURL: { type: String, required: true }, 
         }
     ], 
 });

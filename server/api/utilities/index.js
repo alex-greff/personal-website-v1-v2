@@ -68,6 +68,16 @@ exports.isLink = (i_sLink) => {
     return rLinkRegex.test(i_sLink);
 };
 
+exports.isEmail = (i_sEmail) => {
+    const rEmailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return rEmailRegex.test(i_sEmail);
+};
+
+exports.isColorFormat = (i_sColor) => {
+    const rColorFormat = /^[0-9]{1,3},\040[0-9]{1,3},\040[0-9]{1,3}$/;
+    return rColorFormat.test(i_sColor);
+};
+
 exports.validateMap = (i_mMap, i_fnValidator) => {
     let bValid = true;
     i_mMap.forEach((i_val) => {
@@ -77,12 +87,14 @@ exports.validateMap = (i_mMap, i_fnValidator) => {
 };
 
 exports.validateObject = (i_oObj, i_fnValidator) => {
+    console.log("VALIDATE OBJECT", i_oObj, typeof i_oObj);
     let bValid = true;
     Object.values(i_oObj).forEach((i_val) => {
+        console.log("VAL:", i_val, "VALID:", i_fnValidator(i_val));
         bValid = bValid && i_fnValidator(i_val);
     });
     return bValid;
-}
+};
 
 exports.getURLBase = (req) => {
     return `${req.protocol}://${req.headers.host}${req.baseUrl}`;
@@ -111,7 +123,12 @@ exports.filterByKeys = (i_oObj, ...i_aKeys) => {
     }, {});
 };
 
-// Link validators
+// Link validators (unused at the moment)
 exports.linkValidator = (i_sVal) => !i_sVal || exports.isLink(i_sVal);
 exports.linkMapValidator = (i_mMap) => exports.validateMap(i_mMap, exports.linkValidator);
 exports.linkObjectValidator = (i_oObj) => exports.validateObject(i_oObj, exports.linkValidator);
+
+// Color validators (unused at the moment)
+exports.colorValidator = (i_sVal) => !i_sVal || exports.isColorFormat(i_sVal);
+exports.colorMapValidator = (i_mMap) => exports.validateMap(i_mMap, exports.colorValidator);
+exports.colorObjectValidator = (i_oObj) => exports.validateObject(i_oObj, exports.colorValidator);

@@ -42,36 +42,36 @@ exports.projects_get_all = async (req, res, next) => {
 };
 
 exports.projects_create_project = async (req, res, next) => {
-    // Construct thumbnail image path entry
-    let thumbnailImagePath;
-    if (req.files['thumbnailImage']) {
-        thumbnailImagePath = Utilities.sanitizeImagePath(req.files["thumbnailImage"][0].path);
-    }
-    
-    // Construct gallery images object
-    let galleryImagesPaths = {};
-    if (req.files['galleryImages']) {
-        req.files['galleryImages'].forEach(galleryImage => {
-            const id = new mongoose.Types.ObjectId();
-            galleryImagesPaths[id] = Utilities.sanitizeImagePath(galleryImage.path);
-        });
-    }
-
-    // Create project mongodb doc
-    const project = new Project({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        summary: req.body.summary,
-        description: req.body.description,
-        thumbnailImage: thumbnailImagePath,
-        galleryImages: galleryImagesPaths,
-        links: req.body.links,
-        tags: req.body.tags,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-    });
-
     try {
+        // Construct thumbnail image path entry
+        let thumbnailImagePath;
+        if (req.files['thumbnailImage']) {
+            thumbnailImagePath = Utilities.sanitizeImagePath(req.files["thumbnailImage"][0].path);
+        }
+        
+        // Construct gallery images object
+        let galleryImagesPaths = {};
+        if (req.files['galleryImages']) {
+            req.files['galleryImages'].forEach(galleryImage => {
+                const id = new mongoose.Types.ObjectId();
+                galleryImagesPaths[id] = Utilities.sanitizeImagePath(galleryImage.path);
+            });
+        }
+
+        // Create project mongodb doc
+        const project = new Project({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            summary: req.body.summary,
+            description: req.body.description,
+            thumbnailImage: thumbnailImagePath,
+            galleryImages: galleryImagesPaths,
+            links: req.body.links,
+            tags: req.body.tags,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+        });
+
         const result = await project.save();
 
         console.log("CREATED PROJECT\n", result);

@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-
-const colorFormat = /^[0-9]{1,3},\040[0-9]{1,3},\040[0-9]{1,3}$/;
+const mongoose = require("mongoose");
 
 const themeSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -8,64 +6,8 @@ const themeSchema = mongoose.Schema({
     name: { type: String, required: true, unique: true },
     baseTheme: { type: Boolean, required: false, default: false },
 
-    // TODO: right now BASE and subSections accepts anything (which is essentially what an object is)
-    BASE: { type: {}, required: false, default: new Map() },
-    subSections: { type: {}, required: false, default: new Map() }
-    // BASE: { type: Map, of: Map, required: false, default: new Map() },
-    // subSections: { type: Map, of: Map, required: false, default: new Map() },   
-
-    // Colors
-    // "--color-page-bg": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "61, 61, 61"
-    // },
-    // "--color-page-text": {
-    //     type: String,
-    //     match: colorFormat,
-    //     default: "229, 229, 229"
-    // },
-    // "--color-nav-bg": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "42, 42, 42"
-    // }, 
-    // "--color-nav-text": {
-    //     type: String,
-    //     match: colorFormat,
-    //     default: "143, 143, 143"
-    // },
-    // "--color-sidebar-bg": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "26, 26, 26"
-    // }, 
-    // "--color-footer-bg": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "42, 42, 42"
-    // },
-    // "--color-footer-text": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "151, 151, 151"
-    // },
-    // // Accents
-    // "--color-accent-primary": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "234, 234, 234"
-    // },
-    // "--color-accent-secondary": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "194, 194, 194"
-    // },
-    // "--color-accent-tertiary": {
-    //     type: String, 
-    //     match: colorFormat,
-    //     default: "139, 139, 139"
-    // },
+    BASE: { type: mongoose.Schema.Types.Mixed, required: false, default: {} },
+    subSections: { type: mongoose.Schema.Types.Mixed, required: false, default: {} }
 }, { minimize: false });
 
 module.exports = mongoose.model("Theme", themeSchema);

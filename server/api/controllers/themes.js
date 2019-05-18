@@ -78,18 +78,18 @@ exports.themes_get_theme = async (req, res, next) => {
 };
 
 exports.themes_create_theme = async (req, res, next) => {
-    const theme_BASE = req.body["BASE"];
-    const theme_subSections = req.body["subSections"];
-
-    // Create theme mongodb doc
-    const theme = new Theme({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        BASE: theme_BASE,
-        subSections: theme_subSections
-    });
-
     try {
+        const theme_BASE = req.body["BASE"];
+        const theme_subSections = req.body["subSections"];
+
+        // Create theme mongodb doc
+        const theme = new Theme({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            BASE: theme_BASE,
+            subSections: theme_subSections
+        });
+
         const result = await theme.save();
 
         let url = `${Utilities.getURLBase(req)}/${result._id}`

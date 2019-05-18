@@ -42,26 +42,26 @@ exports.about_override_info = async (req, res, next) => {
         // Store the old ID
         oldID = removed._id;
 
-    } catch(err) {}
+    } catch(err) {} // Ignore errors
 
     // === Create the new, overridden entry ===
 
-    // Construct profile image path entry
-    let profileImagePath;
-    if (req.files['profileImage']) {
-        profileImagePath = Utilities.sanitizeImagePath(req.files["profileImage"][0].path);
-    }
-
-    // Create the About doc
-    const about = new About({
-        _id: (oldID) ? oldID : new mongoose.Types.ObjectId(),
-        description: req.body.description,
-        profileImage: profileImagePath,
-        links: req.body.links
-    });
-
-    // Save the doc to the database
     try {
+        // Construct profile image path entry
+        let profileImagePath;
+        if (req.files['profileImage']) {
+            profileImagePath = Utilities.sanitizeImagePath(req.files["profileImage"][0].path);
+        }
+
+        // Create the About doc
+        const about = new About({
+            _id: (oldID) ? oldID : new mongoose.Types.ObjectId(),
+            description: req.body.description,
+            profileImage: profileImagePath,
+            links: req.body.links
+        });
+
+        // Save the doc to the database
         const result = await about.save();
 
         console.log("OVERRODE ABOUT\n", result);

@@ -66,37 +66,44 @@ const getFilteredTrackData = async (i_aTrackFiler, i_nUserID) => {
 // ---------------------------
 
 exports.music_get_all = async (req, res, next) => {
-    const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
+    try {
+        const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
 
-    console.log("FROM DATABASE\n", docs);
+        console.log("FROM DATABASE\n", docs);
 
-    const url = `${Utilities.getURLBase(req)}`;
+        const url = `${Utilities.getURLBase(req)}`;
 
-    const aAllTracks = docs.reduce((acc, doc) => {
-        const aTracks = doc.tracks.reduce((acc_sub, i_oTrackData) => {
-            return [
-                ...acc_sub,
-                {
-                    ...Utilities.filterByKeys(i_oTrackData, ...TRACK_FIELDS),
-                    artistUsername: doc.username
-                }
+        const aAllTracks = docs.reduce((acc, doc) => {
+            const aTracks = doc.tracks.reduce((acc_sub, i_oTrackData) => {
+                return [
+                    ...acc_sub,
+                    {
+                        ...Utilities.filterByKeys(i_oTrackData, ...TRACK_FIELDS),
+                        artistUsername: doc.username
+                    }
+                ];
+            }, []);
+
+            return [ 
+                ...acc,
+                ...aTracks 
             ];
-        }, []);
+        }, [])
 
-        return [ 
-            ...acc,
-            ...aTracks 
-        ];
-    }, [])
-
-    res.status(200).json({
-        count: aAllTracks.length,
-        tracks: aAllTracks,
-        request: {
-            type: "GET", 
-            url: `${url}/artists`
-        }
-    });
+        res.status(200).json({
+            count: aAllTracks.length,
+            tracks: aAllTracks,
+            request: {
+                type: "GET", 
+                url: `${url}/artists`
+            }
+        });   
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }
 };
 
 exports.music_get_all_artist_profiles = async (req, res, next) => {

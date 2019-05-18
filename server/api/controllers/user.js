@@ -103,39 +103,39 @@ exports.user_login = async (req, res, next) => {
 };
 
 exports.user_update = async (req, res, next) => {
-    const id = req.params.userID;
-
-    // Construct update operations object
-    const updateOps = {};
-    Object.entries(req.body).forEach(([field, newValue]) => {
-        const $name = field;
-        var $value = newValue;
-
-        // If the password is being changed
-        if ($name === "password") {
-            // Hash the password
-            try {
-                let hash = bcrypt.hashSync($value, 10);
-                $value = hash;
-            } catch (err) {
-                return res.status(500).json({
-                    error: err
-                });
-            };
-        }
-        else if ($name === "role") {
-            // Check if user has access to editing roles and not just self
-            if (req.userAccessType !== "role") {
-                return res.status(401).json({
-                    message: "Unauthorized role edit"
-                });
-            }
-        }
-        
-        updateOps[$name] = $value;
-    });
-
     try {
+        const id = req.params.userID;
+
+        // Construct update operations object
+        const updateOps = {};
+        Object.entries(req.body).forEach(([field, newValue]) => {
+            const $name = field;
+            var $value = newValue;
+
+            // If the password is being changed
+            if ($name === "password") {
+                // Hash the password
+                try {
+                    let hash = bcrypt.hashSync($value, 10);
+                    $value = hash;
+                } catch (err) {
+                    return res.status(500).json({
+                        error: err
+                    });
+                };
+            }
+            else if ($name === "role") {
+                // Check if user has access to editing roles and not just self
+                if (req.userAccessType !== "role") {
+                    return res.status(401).json({
+                        message: "Unauthorized role edit"
+                    });
+                }
+            }
+            
+            updateOps[$name] = $value;
+        });
+
         const result = await User.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec(); // Update the user
 
         if (!result || result.nModified < 1) {

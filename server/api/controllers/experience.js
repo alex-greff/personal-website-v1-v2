@@ -40,19 +40,19 @@ exports.experience_get_all = async (req, res, next) => {
 };
 
 exports.experience_create_experience = async (req, res, next) => {
-    // Create experience doc
-    const experience = new Experience({
-        _id: new mongoose.Types.ObjectId(),
-        title: req.body.title,
-        company: req.body.company,
-        companyLink: req.body.companyLink,
-        summary: req.body.summary,
-        tags: req.body.tags,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-    });
-
     try {
+        // Create experience doc
+        const experience = new Experience({
+            _id: new mongoose.Types.ObjectId(),
+            title: req.body.title,
+            company: req.body.company,
+            companyLink: req.body.companyLink,
+            summary: req.body.summary,
+            tags: req.body.tags,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+        });
+
         const result = await experience.save();
 
         console.log("CREATED EXPERIENCE ITEM\n", result);

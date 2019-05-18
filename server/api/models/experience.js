@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Utilities = require("../utilities");
 
 const experienceSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -8,7 +7,7 @@ const experienceSchema = mongoose.Schema({
     // Text info
     title: { type: String, required: true },
     company: { type: String, required: true },
-    companyLink: { type: String, default: null, validate: Utilities.linkValidator }, // Null implies no company link
+    companyLink: { type: String, default: null }, // Null implies no company link
     summary: { type: String, required: true },
 
     // Lists
