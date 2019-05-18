@@ -269,30 +269,30 @@ const actions = {
 
         return; 
 
-        // Load the offline default theme just in case the backend server cannot be connected to
-        dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
+        // // Load the offline default theme just in case the backend server cannot be connected to
+        // dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
 
-        try {
-            // Get themes from the database
-            const res = await Vue.axios.get('/api/themes');
+        // try {
+        //     // Get themes from the database
+        //     const res = await Vue.axios.get('/api/themes');
 
-            console.log("Themes get sucessful", res); // TODO: remove
+        //     console.log("Themes get sucessful", res); // TODO: remove
 
-            // Construct our in-memory themes object
-            res.data.themes.forEach(theme => {
-                const template = {
-                    name: theme.name,
-                    baseTheme: theme.baseTheme,
-                    BASE: theme.BASE,
-                    subSections: theme.subSections
-                };
+        //     // Construct our in-memory themes object
+        //     res.data.themes.forEach(theme => {
+        //         const template = {
+        //             name: theme.name,
+        //             baseTheme: theme.baseTheme,
+        //             BASE: theme.BASE,
+        //             subSections: theme.subSections
+        //         };
 
-                // Add the theme
-                dispatch(actionTypes.ADD_THEME, { template: template, override: true });
-            });
-        } catch(err) {
-            console.error("Unable to retrieve themes from server:\n", err);
-        }
+        //         // Add the theme
+        //         dispatch(actionTypes.ADD_THEME, { template: template, override: true });
+        //     });
+        // } catch(err) {
+        //     console.error("Unable to retrieve themes from server:\n", err);
+        // }
         
     },
     // Theme actions

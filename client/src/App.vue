@@ -48,7 +48,7 @@ import Music from "@/views/Music/Music.vue";
 import About from "@/views/About/About.vue";
 import Contact from "@/views/Contact/Contact.vue";
 
-// TODO: export this shit somewhere else
+// TODO: export this somewhere else (if possible)
 const PAGE_ANIM_FUNCTIONS = {
     home: { introAnim: Home.introAnim, enterAnim: Home.enterAnim, leaveAnim: Home.leaveAnim },
     projects: { enterAnim: Projects.enterAnim, leaveAnim: Projects.leaveAnim },
