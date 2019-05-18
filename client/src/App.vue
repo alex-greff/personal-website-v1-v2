@@ -47,6 +47,7 @@ import Experience from "@/views/Experience/Experience.vue";
 import Music from "@/views/Music/Music.vue";
 import About from "@/views/About/About.vue";
 import Contact from "@/views/Contact/Contact.vue";
+import NotFound from "@/views/404/404.vue";
 
 // TODO: export this somewhere else (if possible)
 const PAGE_ANIM_FUNCTIONS = {
@@ -56,7 +57,8 @@ const PAGE_ANIM_FUNCTIONS = {
     experience: { enterAnim: Experience.enterAnim, leaveAnim: Experience.leaveAnim },
     music: { enterAnim: Music.enterAnim, leaveAnim: Music.leaveAnim },
     about: { enterAnim: About.enterAnim, leaveAnim: About.leaveAnim },
-    contact: { enterAnim: Contact.enterAnim, leaveAnim: Contact.leaveAnim }
+    contact: { enterAnim: Contact.enterAnim, leaveAnim: Contact.leaveAnim },
+    notFound: { enterAnim: NotFound.enterAnim, leaveAnim: NotFound.leaveAnim },
 };
 
 const DEBOUNCE_RATE = 20;
@@ -110,7 +112,7 @@ export default {
             },
             contentEnterAnim: async (el, done) => {
                 const routeName = this.$route.name;
-                const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+                const routeAnims = (routeName) ? PAGE_ANIM_FUNCTIONS[routeName] : PAGE_ANIM_FUNCTIONS.notFound;
 
                 // Update theme
                 this.updateRouteTheme(routeName);
@@ -128,7 +130,7 @@ export default {
             },
             contentLeaveAnim: async (el, done) => {
                 const routeName = this.prevRouteName;
-                const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+                const routeAnims = (routeName) ? PAGE_ANIM_FUNCTIONS[routeName] : PAGE_ANIM_FUNCTIONS.notFound;
 
                 if (!routeAnims || !routeAnims.leaveAnim) {
                     console.log(`No anim found for '${routeName}'...skipping`);
