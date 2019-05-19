@@ -28,7 +28,7 @@
                             class="ProjectDetails__link-item"
                             :link-type="linkType"
                             :title="linkType"
-                            :href="`${link}`"
+                            :href="`//${link}`"
                             :size="2"
                         />
                     </div>

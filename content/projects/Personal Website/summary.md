@@ -1,0 +1,1 @@
+A personal website developed from scratch by myself to display my entire projects porfolio as well as my professional experience and other endeavors including music production.
