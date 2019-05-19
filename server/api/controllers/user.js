@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const keys = require("../../keys");
 
 const User = require("../models/user");
 
@@ -76,9 +77,9 @@ exports.user_login = async (req, res, next) => {
                         userId: user[0]._id,
                         role: user[0].role
                     },
-                    process.env.JWT_KEY,
+                    keys.jwtKey,
                     {
-                        expiresIn: process.env.TOKEN_EXPIRE_TIME
+                        expiresIn: keys.jwtTokenExpireTime
                     }
                 );
                 // Send response

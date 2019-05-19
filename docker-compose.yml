@@ -1,0 +1,29 @@
+version: "3"
+services: 
+    nginx:
+        restart: always
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./nginx
+        ports:
+            - "3050:80"
+    api:
+        build:
+            dockerfile: Dockerfile.dev
+            context: ./server
+        volumes: 
+            - /app/node_modules
+            - ./server:/app
+        environment: 
+            - MONGO_URI=personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/personal-website?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true
+            - MONGO_USERNAME=admin
+            - MONGO_PASSWORD=mDIvMC1uFrJdivQT
+            - JWT_KEY=secret
+            - JWT_TOKEN_EXPIRE_TIME=1h
+    client:
+        build: 
+            dockerfile: Dockerfile.dev
+            context: ./client
+        volumes: 
+            - /app/node_modules
+            - ./client:/app

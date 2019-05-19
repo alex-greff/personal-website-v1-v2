@@ -6,22 +6,22 @@ The back-end for my personal website.
 
 ## HTTP Requests
 
-Note: for requests that have permissions a valid token obtained from ``` localhost:3000/api/users/signin``` must be provided as a header in the form: ``` Key: "Authorization", Value: "Bearer <token>"```
+Note: for requests that have permissions a valid token obtained from ``` localhost:5000/api/users/signin``` must be provided as a header in the form: ``` Key: "Authorization", Value: "Bearer <token>"```
 
 ### Projects
 
 #### Get all projects
-&nbsp;&nbsp;Endpoint: ```GET: localhost:3000/api/projects```
+&nbsp;&nbsp;Endpoint: ```GET: localhost:5000/api/projects```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Get specific project
-&nbsp;&nbsp;Endpoint: ```GET: localhost:3000/api/projects/:projectID```
+&nbsp;&nbsp;Endpoint: ```GET: localhost:5000/api/projects/:projectID```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Create new project
-&nbsp;&nbsp;Endpoint: ```POST: localhost:3000/api/projects```
+&nbsp;&nbsp;Endpoint: ```POST: localhost:5000/api/projects```
 
 &nbsp;&nbsp;Permissions Required: **create-project**
 
@@ -42,7 +42,7 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 ```
 
 #### Update existing project
-&nbsp;&nbsp;Endpoint: ```PATCH: localhost:3000/api/projects/:projectID```
+&nbsp;&nbsp;Endpoint: ```PATCH: localhost:5000/api/projects/:projectID```
 
 &nbsp;&nbsp;Permissions Required: **edit-project**
 
@@ -66,13 +66,13 @@ Note: for requests that have permissions a valid token obtained from ``` localho
 Note: at the moment, updating the thumbnail image is not implemented
 
 #### Delete project
-&nbsp;&nbsp;Endpoint: ```DELETE: localhost:3000/api/projects/:projectID```
+&nbsp;&nbsp;Endpoint: ```DELETE: localhost:5000/api/projects/:projectID```
 
 &nbsp;&nbsp;Permissions Required: **delete-project**
 
 ### Users
 #### Signup user
-&nbsp;&nbsp;Endpoint: ```POST: localhost:3000/api/users/signup```
+&nbsp;&nbsp;Endpoint: ```POST: localhost:5000/api/users/signup```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
@@ -87,7 +87,7 @@ Note: at the moment, updating the thumbnail image is not implemented
 
 #### Signin user
 
-&nbsp;&nbsp;Endpoint: ```POST: localhost:3000/api/users/signup```
+&nbsp;&nbsp;Endpoint: ```POST: localhost:5000/api/users/signup```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
@@ -102,30 +102,30 @@ Note: at the moment, updating the thumbnail image is not implemented
 
 #### Edit user
 
-&nbsp;&nbsp;Endpoint: ```PATCH: localhost:3000/api/users/:userID```
+&nbsp;&nbsp;Endpoint: ```PATCH: localhost:5000/api/users/:userID```
 
 &nbsp;&nbsp;Permissions Required: **edit-user** or *self*
 
 #### Delete user
 
-&nbsp;&nbsp;Endpoint: ```DELETE: localhost:3000/api/users/:userID```
+&nbsp;&nbsp;Endpoint: ```DELETE: localhost:5000/api/users/:userID```
 
 &nbsp;&nbsp;Permissions Required: **delete-user** or *self*
 
 
 ### Themes
 #### Get all themes
-&nbsp;&nbsp;Endpoint: ```GET: localhost:3000/api/theme```
+&nbsp;&nbsp;Endpoint: ```GET: localhost:5000/api/theme```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Get specific theme
-&nbsp;&nbsp;Endpoint: ```GET: localhost:3000/api/theme/:themeID```
+&nbsp;&nbsp;Endpoint: ```GET: localhost:5000/api/theme/:themeID```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Create theme
-&nbsp;&nbsp;Endpoint: ```POST: localhost:3000/api/theme```
+&nbsp;&nbsp;Endpoint: ```POST: localhost:5000/api/theme```
 
 &nbsp;&nbsp;Permissions Required: **create-theme**
 
@@ -142,7 +142,7 @@ Note: at the moment, updating the thumbnail image is not implemented
 Click [here](api/constants/themeItems.js) to see a list of all theme properties.
 
 #### Edit theme
-&nbsp;&nbsp;Endpoint: ```PATCH: localhost:3000/api/theme/:themeID```
+&nbsp;&nbsp;Endpoint: ```PATCH: localhost:5000/api/theme/:themeID```
 
 &nbsp;&nbsp;Permissions Required: **edit-theme**
 
@@ -158,7 +158,7 @@ Click [here](api/constants/themeItems.js) to see a list of all theme properties.
 
 #### Delete theme
 
-&nbsp;&nbsp;Endpoint: ```DELETE: localhost:3000/api/theme/:themeID```
+&nbsp;&nbsp;Endpoint: ```DELETE: localhost:5000/api/theme/:themeID```
 
 &nbsp;&nbsp;Permissions Required: **delete-theme**
 
@@ -166,7 +166,7 @@ Click [here](api/constants/themeItems.js) to see a list of all theme properties.
 #### Contact
 
 #### Send contact email
-&nbsp;&nbsp;Endpoint: ```POST: localhost:3000/api/contact```
+&nbsp;&nbsp;Endpoint: ```POST: localhost:5000/api/contact```
 
 &nbsp;&nbsp;Permissions Required: *none*
 

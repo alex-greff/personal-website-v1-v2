@@ -1,45 +1,47 @@
 {
-  "name": "personal-website-back-end",
-  "version": "1.0.0",
-  "description": "The backend for my personal website.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alex-greff/personal-website-back-end.git"
-  },
-  "keywords": [
-    "backend",
-    "restful",
-    "personal",
-    "website"
-  ],
-  "author": "Alexander Greff",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/alex-greff/personal-website-back-end/issues"
-  },
-  "homepage": "https://github.com/alex-greff/personal-website-back-end#readme",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
-    "cheerio": "^1.0.0-rc.3",
-    "express": "^4.16.4",
-    "express-validator": "^5.3.1",
-    "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.0",
-    "mongoose-immutable-plugin": "^1.0.1",
-    "morgan": "^1.9.1",
-    "multer": "^1.4.1",
-    "nodemailer": "^4.7.0",
-    "puppeteer": "^1.15.0",
-    "query-string": "^6.5.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.9"
-  }
+    "name": "personal-website-back-end",
+    "version": "1.0.0",
+    "description": "The backend for my personal website.",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js",
+        "start:dev": "nodemon server.js",
+        "start:prod": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alex-greff/personal-website-back-end.git"
+    },
+    "keywords": [
+        "backend",
+        "restful",
+        "personal",
+        "website"
+    ],
+    "author": "Alexander Greff",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/alex-greff/personal-website-back-end/issues"
+    },
+    "homepage": "https://github.com/alex-greff/personal-website-back-end#readme",
+    "dependencies": {
+        "axios": "^0.18.0",
+        "bcrypt": "^3.0.2",
+        "body-parser": "^1.18.3",
+        "cheerio": "^1.0.0-rc.3",
+        "express": "^4.16.4",
+        "express-validator": "^5.3.1",
+        "jsonwebtoken": "^8.4.0",
+        "mongoose": "^5.4.0",
+        "mongoose-immutable-plugin": "^1.0.1",
+        "morgan": "^1.9.1",
+        "multer": "^1.4.1",
+        "nodemailer": "^4.7.0",
+        "puppeteer": "^1.15.0",
+        "query-string": "^6.5.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.9"
+    }
 }
