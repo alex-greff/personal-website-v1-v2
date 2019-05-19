@@ -3,7 +3,11 @@
 module.exports = {
     devServer: {
         disableHostCheck: true,
-        public: '0.0.0.0:8080'
+        watchOptions: {
+            poll: true
+        },
+        // Some stuff that isn't needed at the moment
+        // public: '0.0.0.0:8080'
         // host: '0.0.0.0',
         // port: 8080,
         // proxy: {
