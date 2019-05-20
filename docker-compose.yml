@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 services: 
     nginx:
         restart: always
@@ -15,11 +15,11 @@ services:
             - /app/node_modules
             - ./server:/app
         environment: 
-            - MONGO_URI=personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/personal-website?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true
-            - MONGO_USERNAME=admin
-            - MONGO_PASSWORD=mDIvMC1uFrJdivQT
-            - JWT_KEY=secret
-            - JWT_TOKEN_EXPIRE_TIME=1h
+            - "MONGO_URI=${PERSONAL_WEBSITE_MONGO_URI}"
+            - "MONGO_USERNAME=${PERSONAL_WEBSITE_MONGO_USERNAME}"
+            - "MONGO_PASSWORD=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
+            - "JWT_KEY=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
+            - "JWT_TOKEN_EXPIRE_TIME=${PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME}"
     client:
         build: 
             dockerfile: Dockerfile.dev
