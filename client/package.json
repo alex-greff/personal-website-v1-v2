@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "test": "vue-cli-service test:unit",
         "serve": "vue-cli-service serve",
         "start": "npm run serve",
         "build": "vue-cli-service build"
