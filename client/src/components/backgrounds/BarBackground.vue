@@ -32,8 +32,6 @@ export default {
     // ------------------
     enterAnim(el, i_nDuration = 1.5, i_nDelay = 0) {
         return new Promise((resolve, reject) => {
-            console.log("Running BarBackground enter anim for", el); // TODO: remove
-
             // DOM references
             const barBackgroundEl = el.querySelector(".BarBackground");
 
@@ -48,8 +46,6 @@ export default {
     },
     leaveAnim(el, i_nDuration = 1.5, i_nDelay = 0) {
         return new Promise((resolve, reject) => {
-            console.log("Running BarBackground leave anim for", el); // TODO: remove
-            
             // DOM references
             const barBackgroundEl = el.querySelector(".BarBackground");
 

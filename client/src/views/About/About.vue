@@ -60,8 +60,6 @@ export default {
     // ------------------
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running About enter anim for", el); 
-
             const titleEl = el.querySelector(".About__title");
             const linkEls = el.querySelectorAll(".About__link-item");
             const descriptionEl = el.querySelector(".About__description");
@@ -92,8 +90,6 @@ export default {
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running About leave anim for", el); 
-
             const titleEl = el.querySelector(".About__title");
             const linkEls = Array.from(el.querySelectorAll(".About__link-item")).reverse();
             const descriptionEl = el.querySelector(".About__description");

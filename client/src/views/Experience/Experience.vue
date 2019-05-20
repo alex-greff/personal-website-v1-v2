@@ -177,7 +177,6 @@ const _animateInExperienceEls = (el, ignoreFlags = false, i_tl = null, i_nStartO
             return;
         }
 
-        console.log("Running experience els animation", el);
         const filterItemEls = el.querySelectorAll(".Experience__filter-item");
         const filterSubScriptEl = el.querySelector(".Experience__filter-sub-script");
         const experienceItemEls = el.querySelectorAll(".Experience__item-content");
@@ -218,8 +217,6 @@ const _animateInExperienceEls = (el, ignoreFlags = false, i_tl = null, i_nStartO
 
 const _enterAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Experience enter anim for", el);
-
         // Get DOM references
         const titleEl = el.querySelector(".Experience__title");
         const filterItemEls = el.querySelectorAll(".Experience__filter-item");
@@ -246,8 +243,6 @@ const _enterAnim = (el) => {
 
 const _leaveAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Experience leave anim for", el); 
-
         // Reset
         pageAnimatedIn = false;
         forceRunExperienceElsAnims = false;

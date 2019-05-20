@@ -271,8 +271,6 @@ export default {
     // ------------------
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Contact enter anim for", el); 
-
             const tl = new TimelineLite({ onComplete: () => resolve() });
             const titleEl = el.querySelector(".Contact__title");
             TweenLite.killTweensOf([ titleEl ]);
@@ -283,8 +281,6 @@ export default {
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Contact leave anim for", el); 
-
             const tl = new TimelineLite({ onComplete: () => resolve() });
             const titleEl = el.querySelector(".Contact__title");
             TweenLite.killTweensOf([ titleEl ]);

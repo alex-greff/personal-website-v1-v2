@@ -103,7 +103,6 @@ export default {
     },
     watch: {
         tracksLoaded(isLoaded, wasLoaded) {
-            console.log("Tracks loaded");
             // TODO: if this was fast and the spoof loader is still running, this runs anyways... I should probably fix this eventually
             if (isLoaded && !wasLoaded) {
                 this.$nextTick(() => {
@@ -174,8 +173,6 @@ export default {
 
 const _enterAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Music enter anim for", el); 
-        
         const titleEl = el.querySelector(".Music__title");
         const searchFieldEl = el.querySelector(".Music__filter-field");
 
@@ -191,8 +188,6 @@ const _enterAnim = (el) => {
 
 const _leaveAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Music leave anim for", el); 
-
         const titleEl = el.querySelector(".Music__title");
         const searchFieldEl = el.querySelector(".Music__filter-field");
         const trackItemEls = el.querySelectorAll(".Music__track");

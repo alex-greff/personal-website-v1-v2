@@ -262,38 +262,30 @@ const mutations = {
 const actions = {
     // Retrieves tab data from the server
     [actionTypes.POPULATE_THEMES]: async ({ dispatch }) => {
-        // TODO: Load offline themes for now
-        Object.values(themes).forEach((template) => {
-            dispatch(actionTypes.ADD_THEME, { template: template, override: true });
-        });
+        // Load the offline default theme just in case the backend server cannot be connected to
+        dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
 
-        return; 
+        try {
+            // Get themes from the database
+            const res = await Vue.axios.get('/api/themes');
 
-        // // Load the offline default theme just in case the backend server cannot be connected to
-        // dispatch(actionTypes.ADD_THEME, { template: defaultTheme, override: true });
+            console.log("Themes get sucessful", res);
 
-        // try {
-        //     // Get themes from the database
-        //     const res = await Vue.axios.get('/api/themes');
+            // Construct our in-memory themes object
+            res.data.themes.forEach(theme => {
+                const template = {
+                    name: theme.name,
+                    baseTheme: theme.baseTheme,
+                    BASE: theme.BASE,
+                    subSections: theme.subSections
+                };
 
-        //     console.log("Themes get sucessful", res); // TODO: remove
-
-        //     // Construct our in-memory themes object
-        //     res.data.themes.forEach(theme => {
-        //         const template = {
-        //             name: theme.name,
-        //             baseTheme: theme.baseTheme,
-        //             BASE: theme.BASE,
-        //             subSections: theme.subSections
-        //         };
-
-        //         // Add the theme
-        //         dispatch(actionTypes.ADD_THEME, { template: template, override: true });
-        //     });
-        // } catch(err) {
-        //     console.error("Unable to retrieve themes from server:\n", err);
-        // }
-        
+                // Add the theme
+                dispatch(actionTypes.ADD_THEME, { template: template, override: true });
+            });
+        } catch(err) {
+            console.error("Unable to retrieve themes from server:\n", err);
+        }
     },
     // Theme actions
     [actionTypes.ADD_THEME]: ({ commit }, i_oPayload) => {        

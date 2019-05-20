@@ -313,6 +313,8 @@ const _completeAnim = (el) => {
         width: 100%;
         height: 100%;
 
+        transition: background-color 0.2s;
+
         // Bg display modifiers
         &.display-bg {
             background-color: theme-link("loader", "bg-color", "primary");

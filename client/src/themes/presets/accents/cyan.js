@@ -8,7 +8,7 @@ const template = {
         },
         "selected-color": {
             "primary": "rgb(100, 191, 178)",
-            "secondary": "rgb(0, 0, 0)" // TODO:
+            "secondary": "#05D0C1"
         }
     }
 };

@@ -257,8 +257,6 @@ export default {
     // ------------------
     enterAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running ProjectDetails enter anim for", el); 
-
             const REG_ANIM_START_LEFT = { x: -30, opacity: 0 };
             const REG_ANIM_START_RIGHT = { x: 30, opacity: 0 };
             const REG_ANIM_END = { x: 0, opacity: 1, ease: Power1.easeOut };
@@ -333,8 +331,6 @@ export default {
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running ProjectDetails leave anim for", el); 
-
             const REG_ANIM_END_LEFT = { x: -30, opacity: 0, ease: Power1.easeOut };
             const REG_ANIM_END_RIGHT = { x: 30, opacity: 0, ease: Power1.easeOut };
 

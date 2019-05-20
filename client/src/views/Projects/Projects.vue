@@ -149,7 +149,6 @@ export default {
                 return;
             }
 
-            console.log("Running project item enter anim for", el);
             const ON_COMPLETE = () => done();
             const DURATION = 0.4;
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE });
@@ -182,7 +181,6 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
             return;
         }
 
-        console.log("Running project els animation", el);
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
         const filterSubScriptEl = el.querySelector(".Projects__filter-sub-script");
         const projectItemEls = el.querySelectorAll(".Projects__item-content");
@@ -220,8 +218,6 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
 
 const _enterAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Projects enter anim for", el);
-
         // Get DOM references
         const titleEl = el.querySelector(".Projects__title");
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
@@ -248,8 +244,6 @@ const _enterAnim = (el) => {
 
 const _leaveAnim = (el) => {
     return new Promise((resolve, reject) => {
-        console.log("Running Projects leave anim for", el); 
-
         // Reset
         pageAnimatedIn = false;
         forceRunProjectElsAnims = false;

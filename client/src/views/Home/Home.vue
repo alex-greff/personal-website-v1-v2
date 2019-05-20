@@ -56,9 +56,6 @@ export default {
             lastname: "Greff"
         }
     },
-    mounted() {
-        // console.log(this.$refs.nameRefs);
-    },
     // ------------------
     // --- Animations ---
     // ------------------
@@ -128,8 +125,6 @@ export default {
     },
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
-            console.log("Running Home leave anim for", el); // TODO: remove
-
             // Get DOM references
             const hiEl = el.querySelector(".hi");
             const myNameIsEl = el.querySelector(".my-name-is");
