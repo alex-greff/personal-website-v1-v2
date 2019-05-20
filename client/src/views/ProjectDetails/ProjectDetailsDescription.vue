@@ -24,5 +24,7 @@ export default {
 <style lang="scss" scoped>
     .ProjectDetailsDescription {
         width: 100%;
+
+        @include markdown-theme(2.5rem, 1.5rem);
     }
 </style>
