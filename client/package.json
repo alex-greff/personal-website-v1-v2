@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "test": "vue-cli-service test:unit",
+        "test:coverage": "vue-cli-service test:unit --coverage",
         "serve": "vue-cli-service serve",
         "start": "npm run serve",
         "build": "vue-cli-service build"
