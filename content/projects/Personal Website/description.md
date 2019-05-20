@@ -1,6 +1,6 @@
 # Front-End
 
-The front-end is a SPA build using [Vue JS](https://vuejs.org/) in a highly modular and resuable fashion. All components were developed from scratch by myself and are highly modular allowing for potential reuse in future projects. The front-end connects to the server using HTTP requests with [Vue Axios](https://www.npmjs.com/package/vue-axios) to get content which it then displays. The page transition system was also developed from scratch to be highly flexible and reusable. Greensocks's [GSAP](https://greensock.com/gsap) animation libraries were used extensively to provide a smooth and seamless viewing experience.
+The front-end is a SPA build using [Vue JS](https://vuejs.org/) in a highly modular and resuable fashion. All components were developed from scratch by myself and are highly modular allowing for potential reuse in future projects. The front-end connects to the server using HTTP requests with [Vue Axios](https://www.npmjs.com/package/vue-axios) to get content which it then displays. The page transition and theme system were also developed from scratch to be highly flexible and reusable. Greensocks's [GSAP](https://greensock.com/gsap) animation libraries were used extensively to provide a smooth and seamless viewing experience.
 
 # Back-End
 
@@ -21,7 +21,7 @@ The server also handles scraping SoundCloud for artist/track information for the
 
 # Database
 
-MongoDB is used as the database for this site. Flexible schemas for Projects, Experiences and Music are utilized. User credentials are are securely stored in it. 
+MongoDB is used as the database for this site. Flexible schemas for Projects, Experiences and Music are utilized. User credentials are also securely stored in it. 
 
 # Deployment
 
