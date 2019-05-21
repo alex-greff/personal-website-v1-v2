@@ -9,6 +9,7 @@ script:
     - docker run alexgreff/personal-website-client-test npm run test:coverage
 
 after_success:
+    # Build the production docker images
     - docker build -t alexgreff/personal-website-client ./client
     - docker build -t alexgreff/personal-website-server ./server
     - docker build -t alexgreff/personal-website-nginx ./nginx
