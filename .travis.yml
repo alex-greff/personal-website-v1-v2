@@ -2,6 +2,10 @@ sudo: required
 services:
     - docker
 
+env:
+    global:
+        - SHA=$(git rev-parse HEAD) # Grab the current commit SHA
+
 before_install:
     - docker build -t alexgreff/personal-website-client-test -f ./client/Dockerfile.dev ./client
 
@@ -10,15 +14,18 @@ script:
 
 after_success:
     # Build the production docker images
-    - docker build -t alexgreff/personal-website-client ./client
-    - docker build -t alexgreff/personal-website-server ./server
-    - docker build -t alexgreff/personal-website-nginx ./nginx
+    - docker build -t alexgreff/personal-website-client:latest -t alexgreff/personal-website-client:$SHA -f ./client/Dockerfile ./client
+    - docker build -t alexgreff/personal-website-server:latest -t alexgreff/personal-website-server:$SHA -f ./server/Dockerfile ./server
+    - docker build -t alexgreff/personal-website-nginx:latest -t alexgreff/personal-website-nginx:$SHA -f ./nginx/Dockerfile ./nginx
     # Log into the docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Push built images onto docker hub
-    - docker push alexgreff/personal-website-client
-    - docker push alexgreff/personal-website-server
-    - docker push alexgreff/personal-website-nginx
+    - docker push alexgreff/personal-website-client:latest
+    - docker push alexgreff/personal-website-server:latest
+    - docker push alexgreff/personal-website-nginx:latest
+    - docker push alexgreff/personal-website-client:$SHA
+    - docker push alexgreff/personal-website-server:$SHA
+    - docker push alexgreff/personal-website-nginx:$SHA
 
 # deploy:
 #     provider: script

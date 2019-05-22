@@ -4,7 +4,7 @@
 
 * Start up docker containers with:
 
-    `$ docker-compose up --build`
+    `$ docker-compose -f docker-compose-dev.yml up --build`
 
 * Connections:
 
