@@ -1,32 +1,18 @@
-# Sets up the development environment
+# Sets up the production environment
 version: "3.2"
 services: 
     nginx:
         restart: always
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./nginx
+        image: alexgreff/personal-website-nginx:${SHA}
         ports:
-            - "3050:80"
+            - "80:80"
     api:
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./server
-        volumes: 
-            - /app/node_modules
-            - ./server:/app
+        image: alexgreff/personal-website-server:${SHA}
         environment: 
             - "MONGO_URI=${PERSONAL_WEBSITE_MONGO_URI}"
             - "MONGO_USERNAME=${PERSONAL_WEBSITE_MONGO_USERNAME}"
             - "MONGO_PASSWORD=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
-            - "JWT_KEY=${PERSONAL_WEBSITE_JWT_KEY}"
+            - "JWT_KEY=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
             - "JWT_TOKEN_EXPIRE_TIME=${PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME}"
     client:
-        build: 
-            dockerfile: Dockerfile.dev
-            context: ./client
-        volumes: 
-            - /app/node_modules
-            - ./client:/app
-        environment: 
-            - CHOKIDAR_USEPOLLING=true
+        image: alexgreff/personal-website-client:${SHA}
