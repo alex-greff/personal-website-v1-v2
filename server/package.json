@@ -27,7 +27,7 @@
     "homepage": "https://github.com/alex-greff/personal-website-back-end#readme",
     "dependencies": {
         "axios": "^0.18.0",
-        "bcrypt": "^3.0.2",
+        "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.3",
         "cheerio": "^1.0.0-rc.3",
         "express": "^4.16.4",
