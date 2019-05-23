@@ -4,7 +4,7 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 
 # Setup ssh client
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/travis_rsa
+# ssh-add ~/.ssh/travis_rsa
 
 # -------------------------------
 # --- Stop running containers ---
