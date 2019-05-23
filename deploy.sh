@@ -4,28 +4,27 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 
 # Setup ssh client
 eval "$(ssh-agent -s)"
-# ssh-add ~/.ssh/travis_rsa
 
 # -------------------------------
 # --- Stop running containers ---
 # ------------------------------- 
 
 # Make sure the stop commands exit 0 even if the container does not exist (which normally returns a non-zero exit code)
-docker stop alexgreff/personal-website-nginx || true && docker rm alexgreff/personal-website-nginx || true
-docker stop alexgreff/personal-website-client || true && docker rm alexgreff/personal-website-client || true
-docker stop alexgreff/personal-website-server || true && docker rm alexgreff/personal-website-server || true
+docker rm $(docker stop $(docker ps -a -q --filter ancestor="alexgreff/alexgreff/personal-website-nginx" --format="{{.ID}}" )) || true
+docker rm $(docker stop $(docker ps -a -q --filter ancestor="alexgreff/alexgreff/personal-website-client" --format="{{.ID}}" )) || true
+docker rm $(docker stop $(docker ps -a -q --filter ancestor="alexgreff/alexgreff/personal-website-server" --format="{{.ID}}" )) || true
 
 # ----------------------------
 # --- Start new containers ---
 # ----------------------------
 
 # Start client image
-docker run \
+docker run -d \
     --name "client" \
     alexgreff/personal-website-client:$SHA
 
 # Start server image
-docker run \
+docker run -d \
     --name "api" \
     -e "MONGO_URI=$PERSONAL_WEBSITE_MONGO_URI" \
     -e "MONGO_USERNAME=$PERSONAL_WEBSITE_MONGO_USERNAME" \
@@ -35,7 +34,7 @@ docker run \
     alexgreff/personal-website-server:$SHA
 
 # Start nginx proxy image
-docker run \
+docker run -d \
     --name "nginx" \
     --restart always \
     -p 80:80 \
