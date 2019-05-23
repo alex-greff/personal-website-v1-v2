@@ -22,7 +22,7 @@ docker stop alexgreff/personal-website-server || true && docker rm alexgreff/per
 # Start client image
 docker run \
     --name "client" \
-    alexgreff/personal-website-client:$($SHA)
+    alexgreff/personal-website-client:$SHA
 
 # Start server image
 docker run \
@@ -32,11 +32,11 @@ docker run \
     -e "MONGO_PASSWORD=$PERSONAL_WEBSITE_MONGO_PASSWORD" \
     -e "JWT_KEY=$PERSONAL_WEBSITE_JWT_KEY" \
     -e "JWT_TOKEN_EXPIRE_TIME=$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME" \
-    alexgreff/personal-website-server:$($SHA)
+    alexgreff/personal-website-server:$SHA
 
 # Start nginx proxy image
 docker run \
     --name "nginx" \
     --restart always \
     -p 80:80 \
-    alexgreff/personal-website-nginx:$($SHA)
+    alexgreff/personal-website-nginx:$SHA
