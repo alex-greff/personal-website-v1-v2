@@ -5,9 +5,23 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 # Setup ssh client
 eval "$(ssh-agent -s)"
 
-docker-compose down
+chmod 600 ./travis_rsa
 
-docker-compose up -d 
+echo -e "Host $DROPLET_IP\nStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+ssh-add ./travis_rsa
+
+echo "USERNAME (travis): $PERSONAL_WEBSITE_MONGO_USERNAME"
+
+ssh -i ./travis_rsa travis@$DROPLET_IP
+
+echo "USERNAME (droplet): $PERSONAL_WEBSITE_MONGO_USERNAME"
+
+
+
+# docker-compose down
+
+# docker-compose up -d 
 
 # -------------------------------
 # --- Stop running containers ---
