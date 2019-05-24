@@ -6,7 +6,7 @@ services:
         image: alexgreff/personal-website-nginx:${SHA}
         ports:
             - "80:80"
-        network:
+        networks:
             - personal-website
     api:
         image: alexgreff/personal-website-server:${SHA}
@@ -16,9 +16,11 @@ services:
             - "MONGO_PASSWORD=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
             - "JWT_KEY=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
             - "JWT_TOKEN_EXPIRE_TIME=${PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME}"
-        network:
+        networks:
             - personal-website
     client:
         image: alexgreff/personal-website-client:${SHA}
-        network:
+        networks:
             - personal-website
+networks:
+    personal-website:
