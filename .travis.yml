@@ -33,8 +33,7 @@ after_success:
     - docker push alexgreff/personal-website-nginx:$SHA
 after_script:
     - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
-    - ssh -i ./travis_rsa travis@$DROPLET_IP
-    - echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
+    - ssh -i ./travis_rsa travis@$DROPLET_IP echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh
