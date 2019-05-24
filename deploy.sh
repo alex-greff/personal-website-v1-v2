@@ -3,19 +3,19 @@
 set -xe # -x print commands, -e exit immediately if non-zero exit code occurs 
 
 # Setup ssh client
-eval "$(ssh-agent -s)"
+# eval "$(ssh-agent -s)"
 
-chmod 600 ./travis_rsa
+# chmod 600 ./travis_rsa
 
-echo -e "Host $DROPLET_IP\nStrictHostKeyChecking no\n" >> ~/.ssh/config
+# echo -e "Host $DROPLET_IP\nStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-ssh-add ./travis_rsa
+# ssh-add ./travis_rsa
 
-echo "USERNAME (travis): $PERSONAL_WEBSITE_MONGO_USERNAME"
+# echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
 
-ssh -i ./travis_rsa travis@$DROPLET_IP
+# ssh -i ./travis_rsa travis@$DROPLET_IP
 
-echo "USERNAME (droplet): $PERSONAL_WEBSITE_MONGO_USERNAME"
+# echo "USERNAME (droplet): $PERSONAL_WEBSITE_MONGO_USERNAME"
 
 
 

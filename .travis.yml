@@ -2,7 +2,7 @@ sudo: required
 services:
     - docker
 addons:
-    sshknownhosts:
+    ssh_known_hosts:
         - $DROPLET_IP
 env:
     global:
@@ -13,6 +13,10 @@ branches:
         - staging
 before_install:
     - openssl aes-256-cbc -K $encrypted_bacf9fc6807e_key -iv $encrypted_bacf9fc6807e_iv -in travis_rsa.enc -out travis_rsa -d
+    - eval "$(ssh-agent -s)"
+    - chmod 600 ./travis_rsa
+    - echo -e "Host $DROPLET_IP\nStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - ssh-add ./travis_rsa
     - docker build -t alexgreff/personal-website-client-test -f ./client/Dockerfile.dev ./client
 script:
     - docker run alexgreff/personal-website-client-test npm run test:coverage
@@ -27,8 +31,12 @@ after_success:
     - docker push alexgreff/personal-website-client:$SHA
     - docker push alexgreff/personal-website-server:$SHA
     - docker push alexgreff/personal-website-nginx:$SHA
-deploy:
-    provider: script
-    script: bash ./deploy.sh
-    on:
-        branch: master
+after_script:
+    - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
+    - ssh -i ./travis_rsa travis@$DROPLET_IP
+    - echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
+# deploy:
+#     provider: script
+#     script: bash ./deploy.sh
+#     on:
+#         branch: master
