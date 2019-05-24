@@ -35,7 +35,7 @@ after_script:
     - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
     # - ssh -i ./travis_rsa travis@$DROPLET_IP echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
-    - ssh -i ./travis_rsa travis@$DROPLET_IP cd /var/app && docker-compose up
+    - ssh -i ./travis_rsa travis@$DROPLET_IP cd /var/app && docker-compose up -d
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh
