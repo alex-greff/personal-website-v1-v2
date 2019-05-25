@@ -17,14 +17,19 @@ before_install:
     - chmod 600 ./travis_rsa
     - echo -e "Host $DROPLET_IP\nStrictHostKeyChecking no\n" >> ~/.ssh/config
     - ssh-add ./travis_rsa
+    # Build client test build
     - docker build -t alexgreff/personal-website-client-test -f ./client/Dockerfile.dev ./client
 script:
+    # Run client test script
     - docker run alexgreff/personal-website-client-test npm run test:coverage
 after_success:
+    # Build docker images
     - docker build -t alexgreff/personal-website-client:latest -t alexgreff/personal-website-client:$SHA -f ./client/Dockerfile ./client
     - docker build -t alexgreff/personal-website-server:latest -t alexgreff/personal-website-server:$SHA -f ./server/Dockerfile ./server
     - docker build -t alexgreff/personal-website-nginx:latest -t alexgreff/personal-website-nginx:$SHA -f ./nginx/Dockerfile ./nginx
+    # Login to docker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push the images
     - docker push alexgreff/personal-website-client:latest
     - docker push alexgreff/personal-website-server:latest
     - docker push alexgreff/personal-website-nginx:latest
@@ -32,34 +37,13 @@ after_success:
     - docker push alexgreff/personal-website-server:$SHA
     - docker push alexgreff/personal-website-nginx:$SHA
 after_script:
-    # - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
-    # - ssh -i ./travis_rsa travis@$DROPLET_IP echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
-    # - ssh -i ./travis_rsa travis@$DROPLET_IP cd /var/app && docker-compose up -d
-
-    # Setup and send the production environment variables over
-    # - echo 'SHA='$SHA'' > sshenv
-    # - echo 'PERSONAL_WEBSITE_MONGO_URI='$PERSONAL_WEBSITE_MONGO_URI'' >> sshenv
-    # - echo 'PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME'' >> sshenv
-    # - echo 'PERSONAL_WEBSITE_MONGO_PASSWORD='$PERSONAL_WEBSITE_MONGO_PASSWORD'' >> sshenv
-    # - echo 'PERSONAL_WEBSITE_JWT_SECRET='$PERSONAL_WEBSITE_JWT_SECRET'' >> sshenv
-    # - echo 'PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME='$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME'' >> sshenv
-    # - echo 'TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'' >> sshenv
-    # - scp -i ./travis_rsa sshenv travis@$DROPLET_IP:~/.ssh/environment
-
-    - echo "Travis Pass $TRAVIS_USER_PASSWORD"
-
     # Send the docker-compose.yml file over
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
 
     # Send the deploy.sh file over
     - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/var/app/deploy.sh
 
-    # - echo "ALL ENVS $(export -p)"
-    # Ssh in and run the deploy.sh file on the droplet
-    # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
-    # - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
-    # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && echo "Pass '$TRAVIS_USER_PASSWORD'" && echo "'$TRAVIS_USER_PASSWORD'" | sudo -S -E bash ./deploy.sh'
-    # - $(export -p; cat ./deploy.sh) | ssh -i ./travis_rsa travis@$DROPLET_IP 'bash -s'
+    # Ssh in to droplet, export the prod env vars and run the deploy.sh script
     - ssh -i ./travis_rsa travis@$DROPLET_IP 
         'export TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'; 
         export SHA='$SHA';
@@ -69,8 +53,3 @@ after_script:
         export PERSONAL_WEBSITE_JWT_SECRET='$PERSONAL_WEBSITE_JWT_SECRET';
         export PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME='$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME';
         cd /var/app; bash ./deploy.sh'
-# deploy:
-#     provider: script
-#     script: bash ./deploy.sh
-#     on:
-#         branch: master
