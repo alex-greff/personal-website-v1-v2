@@ -32,6 +32,7 @@ import Utilities from "@/utilities";
 import { getterTypes, actionTypes } from "@/store/types";
 import { mapActions, mapGetters } from "vuex";
 import { pageData, getAllPageThemes } from "@/constants/pageData";
+import { CSSPlugin, AttrPlugin } from "gsap/all";
 
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
@@ -97,6 +98,7 @@ export default {
             contentAppearAnim: async (el, done) => {
                 const routeName = this.$route.name;
                 const routeAnims = PAGE_ANIM_FUNCTIONS[routeName];
+
                 // If the page has an intro animation then run it
                 if (routeAnims && routeAnims.introAnim) {
                     // Update theme
@@ -198,6 +200,9 @@ export default {
 
             this.pageLoadAnim();
         });
+
+        // NOTE: this prevents the CSSPlugin and the AttrPlugin from getting tree shaked
+        const plugins = [ CSSPlugin, AttrPlugin ];
     },
     beforeDestroy() {
         window.removeEventListener("resize", this.onResize);

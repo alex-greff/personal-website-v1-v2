@@ -32,10 +32,25 @@ after_success:
     - docker push alexgreff/personal-website-server:$SHA
     - docker push alexgreff/personal-website-nginx:$SHA
 after_script:
-    - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
+    # - echo "USERNAME (travis) $PERSONAL_WEBSITE_MONGO_USERNAME"
     # - ssh -i ./travis_rsa travis@$DROPLET_IP echo "USERNAME (droplet) $PERSONAL_WEBSITE_MONGO_USERNAME"
+    # - ssh -i ./travis_rsa travis@$DROPLET_IP cd /var/app && docker-compose up -d
+
+    # Setup and send the production environment variables over
+    - echo "SHA=$SHA" > sshenv
+    - echo "PERSONAL_WEBSITE_MONGO_URI=$PERSONAL_WEBSITE_MONGO_URI" >> sshenv
+    - echo "PERSONAL_WEBSITE_MONGO_USERNAME=$PERSONAL_WEBSITE_MONGO_USERNAME" >> sshenv
+    - echo "PERSONAL_WEBSITE_MONGO_PASSWORD=$PERSONAL_WEBSITE_MONGO_PASSWORD" >> sshenv
+    - echo "PERSONAL_WEBSITE_JWT_SECRET=$PERSONAL_WEBSITE_JWT_SECRET" >> sshenv
+    - echo "PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME=$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME" >> sshenv
+    - scp -i ./travis_rsa sshenv travis@$DROPLET_IP:~/.ssh/environment
+
+    # Send the docker-compose.yml file over
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
-    - ssh -i ./travis_rsa travis@$DROPLET_IP cd /var/app && docker-compose up -d
+
+    # Ssh in and run the deploy.sh file on the droplet
+    - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
+    
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh

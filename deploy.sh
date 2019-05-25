@@ -57,3 +57,7 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 #     --restart always \
 #     -p 80:80 \
 #     alexgreff/personal-website-nginx:$SHA
+
+cd /var/app
+
+docker-compose up -d --force-recreate
