@@ -15,4 +15,4 @@ echo "MONGO PASS $PERSONAL_WEBSITE_MONGO_PASSWORD"
 echo "JWT SECRET $PERSONAL_WEBSITE_JWT_SECRET"
 echo "JWT EXPIRE $PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME"
 
-echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up --force-recreate
+echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d --force-recreate
