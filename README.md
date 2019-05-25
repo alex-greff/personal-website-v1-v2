@@ -6,6 +6,10 @@
 
     `$ docker-compose -f docker-compose-dev.yml up --build`
 
+* Development docker-compose for testing production containers
+
+    `$ docker-compose -f docker-compose-dev-prod.yml up --build`
+
 * Connections:
 
     * Frontend:
