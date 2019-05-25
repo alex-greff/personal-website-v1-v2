@@ -48,9 +48,12 @@ after_script:
     # Send the docker-compose.yml file over
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
 
+    # Send the deploy.sh file over
+    - scp -i ./deploy.sh ./docker-compose.yml travis@$DROPLET_IP:/var/app/deploy.sh
+
     # Ssh in and run the deploy.sh file on the droplet
-    - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
-    
+    - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
+
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh
