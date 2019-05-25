@@ -12,6 +12,7 @@ branches:
         - master
         - staging
 before_install:
+    # Decrypt travis_rsa and prepare for ssh
     - openssl aes-256-cbc -K $encrypted_bacf9fc6807e_key -iv $encrypted_bacf9fc6807e_iv -in travis_rsa.enc -out travis_rsa -d
     - eval "$(ssh-agent -s)"
     - chmod 600 ./travis_rsa
@@ -39,28 +40,15 @@ after_success:
 after_script:
     # Send the docker-compose.yml file over
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
-
     # Send the deploy.sh file over
     - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/var/app/deploy.sh
-
-    - echo "TRAVIS MONGO URI $PERSONAL_WEBSITE_MONGO_URI"
-
     # Ssh in to droplet, export the prod env vars and run the deploy.sh script
-    # - ssh -i ./travis_rsa travis@$DROPLET_IP 
-    #     "export TRAVIS_USER_PASSWORD=$TRAVIS_USER_PASSWORD; 
-    #     export SHA=$SHA;
-    #     export PERSONAL_WEBSITE_MONGO_URI='$PERSONAL_WEBSITE_MONGO_URI';
-    #     export PERSONAL_WEBSITE_MONGO_USERNAME=$PERSONAL_WEBSITE_MONGO_USERNAME;
-    #     export PERSONAL_WEBSITE_MONGO_PASSWORD=$PERSONAL_WEBSITE_MONGO_PASSWORD;
-    #     export PERSONAL_WEBSITE_JWT_SECRET=$PERSONAL_WEBSITE_JWT_SECRET;
-    #     export PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME=$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME;
-    #     cd /var/app; bash ./deploy.sh"
     - ssh -i ./travis_rsa travis@$DROPLET_IP 
-        'export TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'; 
-        export SHA='$SHA';
+        'export TRAVIS_USER_PASSWORD='"'"''$TRAVIS_USER_PASSWORD''"'"'; 
+        export SHA='"'"''$SHA''"'"';
         export PERSONAL_WEBSITE_MONGO_URI='"'"''$PERSONAL_WEBSITE_MONGO_URI''"'"';
-        export PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME';
-        export PERSONAL_WEBSITE_MONGO_PASSWORD='$PERSONAL_WEBSITE_MONGO_PASSWORD';
-        export PERSONAL_WEBSITE_JWT_SECRET='$PERSONAL_WEBSITE_JWT_SECRET';
-        export PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME='$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME';
+        export PERSONAL_WEBSITE_MONGO_USERNAME='"'"''$PERSONAL_WEBSITE_MONGO_USERNAME''"'"';
+        export PERSONAL_WEBSITE_MONGO_PASSWORD='"'"''$PERSONAL_WEBSITE_MONGO_PASSWORD''"'"';
+        export PERSONAL_WEBSITE_JWT_SECRET='"'"''$PERSONAL_WEBSITE_JWT_SECRET''"'"';
+        export PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME='"'"''$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME''"'"';
         cd /var/app; bash ./deploy.sh'
