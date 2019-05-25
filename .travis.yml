@@ -43,16 +43,18 @@ after_script:
     - echo "PERSONAL_WEBSITE_MONGO_PASSWORD=$PERSONAL_WEBSITE_MONGO_PASSWORD" >> sshenv
     - echo "PERSONAL_WEBSITE_JWT_SECRET=$PERSONAL_WEBSITE_JWT_SECRET" >> sshenv
     - echo "PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME=$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME" >> sshenv
+    - echo "TRAVIS_USER_PASSWORD=$TRAVIS_USER_PASSWORD" >> sshenv
     - scp -i ./travis_rsa sshenv travis@$DROPLET_IP:~/.ssh/environment
 
     # Send the docker-compose.yml file over
     - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
 
     # Send the deploy.sh file over
-    - scp -i ./deploy.sh ./docker-compose.yml travis@$DROPLET_IP:/var/app/deploy.sh
+    # - scp -i ./deploy.sh ./docker-compose.yml travis@$DROPLET_IP:/var/app/deploy.sh
 
     # Ssh in and run the deploy.sh file on the droplet
-    - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
+    # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
+    - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
 
 # deploy:
 #     provider: script
