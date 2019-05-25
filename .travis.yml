@@ -54,13 +54,13 @@ after_script:
     # Send the deploy.sh file over
     - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/var/app/deploy.sh
 
-    - echo "ALL ENVS $(export -p)"
+    # - echo "ALL ENVS $(export -p)"
     # Ssh in and run the deploy.sh file on the droplet
     # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
     # - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
     # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && echo "Pass '$TRAVIS_USER_PASSWORD'" && echo "'$TRAVIS_USER_PASSWORD'" | sudo -S -E bash ./deploy.sh'
-    - $(export -p; cat ./deploy.sh) | ssh -i ./travis_rsa travis@$DROPLET_IP 'bash -s'
-
+    # - $(export -p; cat ./deploy.sh) | ssh -i ./travis_rsa travis@$DROPLET_IP 'bash -s'
+    - ssh -i ./travis_rsa travis@$DROPLET_IP 'export TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'; export PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME'; bash ./deploy.sh'
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh
