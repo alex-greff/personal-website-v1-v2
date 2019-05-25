@@ -38,7 +38,7 @@ after_script:
 
     # Setup and send the production environment variables over
     - echo 'SHA='$SHA'' > sshenv
-    - echo 'PERSONAL_WEBSITE_MONGO_URI='$PERSONAL_WEBSITE_MONGO_URI'' >> sshenv
+    # - echo 'PERSONAL_WEBSITE_MONGO_URI='$PERSONAL_WEBSITE_MONGO_URI'' >> sshenv
     - echo 'PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME'' >> sshenv
     - echo 'PERSONAL_WEBSITE_MONGO_PASSWORD='$PERSONAL_WEBSITE_MONGO_PASSWORD'' >> sshenv
     - echo 'PERSONAL_WEBSITE_JWT_SECRET='$PERSONAL_WEBSITE_JWT_SECRET'' >> sshenv
