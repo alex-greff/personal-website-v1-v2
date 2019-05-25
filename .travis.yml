@@ -60,7 +60,15 @@ after_script:
     # - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
     # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && echo "Pass '$TRAVIS_USER_PASSWORD'" && echo "'$TRAVIS_USER_PASSWORD'" | sudo -S -E bash ./deploy.sh'
     # - $(export -p; cat ./deploy.sh) | ssh -i ./travis_rsa travis@$DROPLET_IP 'bash -s'
-    - ssh -i ./travis_rsa travis@$DROPLET_IP 'export TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'; export PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME'; cd /var/app; bash ./deploy.sh'
+    - ssh -i ./travis_rsa travis@$DROPLET_IP 
+        'export TRAVIS_USER_PASSWORD='$TRAVIS_USER_PASSWORD'; 
+        export SHA='$SHA';
+        export PERSONAL_WEBSITE_MONGO_URI='$PERSONAL_WEBSITE_MONGO_URI';
+        export PERSONAL_WEBSITE_MONGO_USERNAME='$PERSONAL_WEBSITE_MONGO_USERNAME'; 
+        export PERSONAL_WEBSITE_MONGO_PASSWORD='$PERSONAL_WEBSITE_MONGO_PASSWORD';
+        export PERSONAL_WEBSITE_JWT_SECRET='$PERSONAL_WEBSITE_JWT_SECRET';
+        export PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME='$PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME';
+        cd /var/app; bash ./deploy.sh'
 # deploy:
 #     provider: script
 #     script: bash ./deploy.sh
