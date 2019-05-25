@@ -16,6 +16,8 @@ services:
             - "MONGO_PASSWORD=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
             - "JWT_KEY=${PERSONAL_WEBSITE_JWT_SECRET}"
             - "JWT_TOKEN_EXPIRE_TIME=${PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME}"
+        # volumes:
+        #     - /var/app/uploads:/app/uploads
         networks:
             - personal-website
     client:
