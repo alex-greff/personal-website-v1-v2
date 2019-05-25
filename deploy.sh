@@ -64,4 +64,10 @@ cd /var/app
 
 # echo "$TRAVIS_USER_PASSWORD\n" | sudo -S -E "docker-compose up -d --force-recreate"
 # sudo -E "docker-compose up -d --force-recreate"
-docker-compose up -d --force-recreate
+# docker-compose up -d --force-recreate
+
+echo "TRAVIS PASS $TRAVIS_USER_PASSWORD"
+
+echo "MONGO USER $PERSONAL_WEBSITE_MONGO_USERNAME"
+
+echo "$TRAVIS_USER_PASSWORD" | sudo -S -E 'docker-compose up -d --force-recreate'
