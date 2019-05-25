@@ -43,6 +43,8 @@ after_script:
     # Send the deploy.sh file over
     - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/var/app/deploy.sh
 
+    - echo "TRAVIS MONGO URI $PERSONAL_WEBSITE_MONGO_URI"
+
     # Ssh in to droplet, export the prod env vars and run the deploy.sh script
     - ssh -i ./travis_rsa travis@$DROPLET_IP 
         "export TRAVIS_USER_PASSWORD=$TRAVIS_USER_PASSWORD; 
