@@ -70,4 +70,4 @@ echo "TRAVIS PASS $TRAVIS_USER_PASSWORD"
 
 echo "MONGO USER $PERSONAL_WEBSITE_MONGO_USERNAME"
 
-echo "$TRAVIS_USER_PASSWORD" | sudo -S -E 'docker-compose up -d --force-recreate'
+echo "$TRAVIS_USER_PASSWORD" | sudo -S -E docker-compose up -d --force-recreate
