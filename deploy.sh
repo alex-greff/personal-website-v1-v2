@@ -62,4 +62,5 @@ cd /var/app
 
 echo "Travis Pass $TRAVIS_USER_PASSWORD"
 
-echo "$TRAVIS_USER_PASSWORD\n" | sudo -S -E "docker-compose up -d --force-recreate"
+# echo "$TRAVIS_USER_PASSWORD\n" | sudo -S -E "docker-compose up -d --force-recreate"
+sudo -E "docker-compose up -d --force-recreate"

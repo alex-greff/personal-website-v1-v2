@@ -54,7 +54,8 @@ after_script:
 
     # Ssh in and run the deploy.sh file on the droplet
     # - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && sudo bash ./deploy.sh'
-    - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
+    # - cat ./deploy.sh | ssh -i ./travis_rsa travis@$DROPLET_IP
+    - ssh -i ./travis_rsa travis@$DROPLET_IP 'cd /var/app && echo "$TRAVIS_USER_PASSWORD\n" | sudo -S -E bash ./deploy.sh'
 
 # deploy:
 #     provider: script
