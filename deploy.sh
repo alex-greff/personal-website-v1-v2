@@ -8,10 +8,6 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 
 cd /var/app
 
-echo "MONGO URI BEFORE $PERSONAL_WEBSITE_MONGO_URI"
-
-# Hardcode in the mongo URI for now
-export PERSONAL_WEBSITE_MONGO_URI='personal-cluster-shard-00-00-hujs7.mongodb.net:27017,personal-cluster-shard-00-01-hujs7.mongodb.net:27017,personal-cluster-shard-00-02-hujs7.mongodb.net:27017/personal-website?ssl=true&replicaSet=personal-cluster-shard-0&authSource=admin&retryWrites=true'
 
 echo "SHA $SHA"
 echo "MONGO URI $PERSONAL_WEBSITE_MONGO_URI"
