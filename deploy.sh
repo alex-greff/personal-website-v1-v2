@@ -60,4 +60,6 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 
 cd /var/app
 
-echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d --force-recreate
+echo "Travis Pass $TRAVIS_USER_PASSWORD"
+
+echo "$TRAVIS_USER_PASSWORD\n" | sudo -S -E "docker-compose up -d --force-recreate"
