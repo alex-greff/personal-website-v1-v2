@@ -1,4 +1,4 @@
-# Sets up the development environment but with the client and server production images running
+# Sets up the development environment but with the client production image running
 version: "3.2"
 services: 
     nginx:
@@ -10,9 +10,10 @@ services:
             - "3050:80"
     api:
         build:
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
             context: ./server
         volumes: 
+            - /app/node_modules
             - ./server:/app
         environment: 
             - "MONGO_URI=${PERSONAL_WEBSITE_MONGO_URI}"
