@@ -21,6 +21,6 @@ echo "LETSENCRYPT INITIALIZATION COMPLETE"
 # Start the containers
 echo "STARTING DOCKER IMAGES..."
 
-echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d --force-recreate
+echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d
 
 echo "DOCKER IMAGES RUNNING"
