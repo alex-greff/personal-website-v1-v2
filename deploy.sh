@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -xe # -x print commands, -e exit immediately if non-zero exit code occurs 
+# set -xe # -x print commands, -e exit immediately if non-zero exit code occurs 
+set -x # -x print commands
 
 # --------------------------
 # --- Run docker compose ---
