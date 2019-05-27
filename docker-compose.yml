@@ -27,7 +27,7 @@ services:
             - "PERSONAL_WEBSITE_CONTACT_EMAIL=${PERSONAL_WEBSITE_CONTACT_EMAIL}"
             - "PERSONAL_WEBSITE_CONTACT_PASSWORD=${PERSONAL_WEBSITE_CONTACT_PASSWORD}"
         # volumes:
-        #     - /var/app/uploads:/app/uploads
+        #     - /home/travis/app/uploads:/app/uploads
         networks:
             - personal-website
     client:

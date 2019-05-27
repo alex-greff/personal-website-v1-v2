@@ -39,11 +39,11 @@ after_success:
     - docker push alexgreff/personal-website-nginx:$SHA
 after_script:
     # Send the docker-compose.yml file over
-    - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/var/app/docker-compose.yml
+    - scp -i ./travis_rsa ./docker-compose.yml travis@$DROPLET_IP:/home/travis/app/docker-compose.yml
     # Send the deploy.sh file over
-    - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/var/app/deploy.sh
+    - scp -i ./travis_rsa ./deploy.sh travis@$DROPLET_IP:/home/travis/app/deploy.sh
     # Send the init-letsencrypt.sh file over
-    - scp -i ./travis_rsa ./init-letsencrypt.sh travis@$DROPLET_IP:/var/app/init-letsencrypt.sh
+    - scp -i ./travis_rsa ./init-letsencrypt.sh travis@$DROPLET_IP:/home/travis/app/init-letsencrypt.sh
     # Ssh in to droplet, export the prod env vars and run the deploy.sh script
     - ssh -i ./travis_rsa travis@$DROPLET_IP 
         'export TRAVIS_USER_PASSWORD='"'"''$TRAVIS_USER_PASSWORD''"'"'; 
@@ -57,4 +57,4 @@ after_script:
         export PERSONAL_WEBSITE_CONTACT_EMAIL='"'"''$PERSONAL_WEBSITE_CONTACT_EMAIL''"'"';
         export PERSONAL_WEBSITE_CONTACT_PASSWORD='"'"''$PERSONAL_WEBSITE_CONTACT_PASSWORD''"'"';
         export PERSONAL_WEBSITE_LETSENCRYPT_EMAIL='"'"''$PERSONAL_WEBSITE_LETSENCRYPT_EMAIL''"'"';
-        cd /var/app; bash ./deploy.sh'
+        cd /home/travis/app; bash ./deploy.sh'
