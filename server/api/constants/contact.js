@@ -1,8 +1,9 @@
-// TODO: I need to move this out into an environment variable
+const keys = require("../../keys");
+
 module.exports = {
-    service: "gmail",
+    service: keys.contactService,
     auth: {
-        user: "contact.alex.greff@gmail.com",
-        pass: "uhalncynmjayjuzn"
+        user: keys.contactEmail,
+        pass: keys.contactPassword
     }
 };
