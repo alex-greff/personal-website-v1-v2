@@ -1,33 +1,33 @@
 <template>
     <!-- <fragment> -->
     <div class="Home">
-        <div class="home-content">
-            <div class="welcome-container">
-                <div class="greeting-text">
-                    <span class="hi">Hi,&nbsp;</span><span class="my-name-is">my name is</span>
+        <div class="Home__content">
+            <div class="Home__welcome-container">
+                <div class="Home__greeting-text">
+                    <span class="Home__hi">Hi,&nbsp;</span><span class="Home__my-name-is">my name is</span>
                 </div>
-                <h1 class="name-text">
+                <h1 class="Home__name-text">
                     Alexander Greff
                 </h1>
-                <div class="info-text">
+                <div class="Home__info-text">
                     I am a computer science student specializing in software engineering at the 
-                    <span class="uni-name">University of Toronto</span>.
+                    <span class="Home__uni-name">University of Toronto</span>.
                 </div>
 
                 <component-button 
                     to="/contact"
-                    class="contact-button"
+                    class="Home__contact-button"
                 >
                     Contact Me
                 </component-button>
             </div>
-            <div class="logo-container">
-                <div class="logo-1">
+            <div class="Home__logo-container">
+                <div class="Home__logo-1">
                     <svg viewBox="0 0 16.5 16.5" clipPath="#logo-clip">
                         <use xlink:href="#logo-symbol" href="#logo-symbol" />
                     </svg>
                 </div>
-                <div class="logo-2">
+                <div class="Home__logo-2">
                     <svg viewBox="0 0 16.5 16.5">
                         <use xlink:href="#logo-symbol" href="#logo-symbol" />
                     </svg>
@@ -50,24 +50,18 @@ export default {
         barBackground: BarBackground,
         componentButton: ComponentButton,
     },
-    data() {
-        return {
-            firstname: "Alexander",
-            lastname: "Greff"
-        }
-    },
     // ------------------
     // --- Animations ---
     // ------------------
     introAnim(el) {
         return new Promise((resolve, reject) => {
             // Get DOM references
-            const hiEl = el.querySelector(".hi");
-            const myNameIsEl = el.querySelector(".my-name-is");
-            const nameEl = el.querySelector(".name-text");
-            const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-button");
-            const logoEl = el.querySelector(".logo-container");
+            const hiEl = el.querySelector(".Home__hi");
+            const myNameIsEl = el.querySelector(".Home__my-name-is");
+            const nameEl = el.querySelector(".Home__name-text");
+            const infoTextEl = el.querySelector(".Home__info-text");
+            const contactBtnEl = el.querySelector(".Home__contact-button");
+            const logoEl = el.querySelector(".Home__logo-container");
 
             // Kill any running animations
             TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
@@ -95,12 +89,12 @@ export default {
     enterAnim(el) {
         return new Promise((resolve, reject) => {
             // Get DOM references
-            const hiEl = el.querySelector(".hi");
-            const myNameIsEl = el.querySelector(".my-name-is");
-            const nameEl = el.querySelector(".name-text");
-            const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-button");
-            const logoEl = el.querySelector(".logo-container");
+            const hiEl = el.querySelector(".Home__hi");
+            const myNameIsEl = el.querySelector(".Home__my-name-is");
+            const nameEl = el.querySelector(".Home__name-text");
+            const infoTextEl = el.querySelector(".Home__info-text");
+            const contactBtnEl = el.querySelector(".Home__contact-button");
+            const logoEl = el.querySelector(".Home__logo-container");
 
             // Kill any running animations
             TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
@@ -126,12 +120,12 @@ export default {
     leaveAnim(el) {
         return new Promise((resolve, reject) => {
             // Get DOM references
-            const hiEl = el.querySelector(".hi");
-            const myNameIsEl = el.querySelector(".my-name-is");
-            const nameEl = el.querySelector(".name-text");
-            const infoTextEl = el.querySelector(".info-text");
-            const contactBtnEl = el.querySelector(".contact-button");
-            const logoEl = el.querySelector(".logo-container");
+            const hiEl = el.querySelector(".Home__hi");
+            const myNameIsEl = el.querySelector(".Home__my-name-is");
+            const nameEl = el.querySelector(".Home__name-text");
+            const infoTextEl = el.querySelector(".Home__info-text");
+            const contactBtnEl = el.querySelector(".Home__contact-button");
+            const logoEl = el.querySelector(".Home__logo-container");
 
             // Kill any running animations
             TweenMax.killTweensOf([hiEl, myNameIsEl, nameEl, infoTextEl, contactBtnEl, logoEl]);
@@ -164,7 +158,7 @@ export default {
         overflow: hidden;
     }
 
-    .home-content {
+    .Home__content {
         line-height: normal;
 
         padding: 0 15rem 0 15rem;
@@ -199,7 +193,7 @@ export default {
         z-index: 1;
     }
 
-    .welcome-container {
+    .Home__welcome-container {
         grid-column: 1 / 1;
         grid-row: 1 / 1;
 
@@ -220,38 +214,23 @@ export default {
             margin-right: auto;
         }
 
-        & .greeting-text {
+        & .Home__greeting-text {
             font-size: 2.5rem;
             font-weight: 400;
         }
         
-        & .name-text__char, .hi, .my-name-is {
+        & .Home__name-text__char, .Home__hi, .Home__my-name-is {
             display: inline-block;
         }
 
-        & .name-text {
+        & .Home__name-text {
             font-size: 6rem;
             font-weight: bold;
 
             color: theme-link("page", "accent-color", "primary");
-
-
-            & .name-text__firstname {
-                margin-right: 1.5rem;
-            }
-
-            & .name-text__firstname, & .name-text__lastname {
-                display: inline-block;
-            }
-
-            // text-shadow:
-            //     -1px -1px 0 rgba(var(--color-accent-secondary), 1),
-            //     1px -1px 0 rgba(var(--color-accent-secondary), 1),
-            //     -1px 1px 0 rgba(var(--color-accent-secondary), 1),
-            //     1px 1px 0 rgba(var(--color-accent-secondary), 1);
         }
 
-        & .info-text {
+        & .Home__info-text {
             font-size: 1.5rem;
 
             font-family: 'Montserrat', sans-serif;
@@ -259,19 +238,19 @@ export default {
 
             max-width: 50rem;
 
-            & .uni-name {
+            & .Home__uni-name {
                 font-size: inherit;
 
                 color: theme-link("page", "accent-color", "primary");
             }
         }
 
-        & .contact-button {
+        & .Home__contact-button {
             margin-top: 2.5rem;
         }
     }
 
-    .logo-container {
+    .Home__logo-container {
         grid-column: 2 / 2;
         grid-row: 1 / 1;
 
@@ -281,7 +260,7 @@ export default {
 
         position: relative;
 
-        & .logo-1, & .logo-2 {
+        & .Home__logo-1, & .Home__logo-2 {
             & svg {
                 height: 40rem;
 
@@ -309,7 +288,7 @@ export default {
             left: 0;
         }
 
-        & .logo-1 {
+        & .Home__logo-1 {
             position: absolute;
 
             & svg {
@@ -323,7 +302,7 @@ export default {
             z-index: 2;
         }
 
-        & .logo-2 {
+        & .Home__logo-2 {
             position: absolute;
 
             & svg {

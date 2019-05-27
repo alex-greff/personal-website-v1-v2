@@ -261,7 +261,7 @@ export default {
             }
 
             // Align the content so that it is under the nav bar
-            contentEl.style.marginTop = navBarHeight + "px";
+            contentEl.style.paddingTop = navBarHeight + "px";
 
             // Record change
             this.lastNavBarHeight = navBarHeight;
