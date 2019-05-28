@@ -4,15 +4,15 @@ services:
     nginx:
         restart: always
         image: alexgreff/personal-website-nginx:${SHA}
-        # volumes: 
-        #     # Connect nginx with certbot
-        #     - ./data/certbot/conf:/etc/letsencrypt
-        #     - ./data/certbot/www:/var/www/certbot
+        volumes: 
+            # Connect nginx with certbot
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
         ports:
             - "80:80" # Http traffic
-            # - "443:443" # LetsEncrypt traffic
+            - "443:443" # LetsEncrypt traffic
         # # Renew the newly obtained HTTPS certificates
-        # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
         networks:
             - personal-website
     api:
@@ -34,15 +34,15 @@ services:
         image: alexgreff/personal-website-client:${SHA}
         networks:
             - personal-website
-    # certbot:
-    #     image: certbot/certbot
-    #     # Connect with nginx
-    #     volumes: 
-    #         - ./data/certbot/conf:/etc/letsencrypt
-    #         - ./data/certbot/www:/var/www/certbot
-    #     networks:
-    #         - personal-website
-    #     # Renew the certificate every 12 hours
-    #     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    certbot:
+        image: certbot/certbot
+        # Connect with nginx
+        volumes: 
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+        networks:
+            - personal-website
+        # Renew the certificate every 12 hours
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 networks:
     personal-website:
