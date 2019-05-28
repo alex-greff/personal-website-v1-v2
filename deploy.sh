@@ -9,13 +9,15 @@ set -x # -x print commands
 
 cd /home/travis/app
 
-# Update the permissions and execute the letsencrypt initialization script
-echo "INITIALIZING LETSENCRYPT..."
+if [ $PERSONAL_WEBSITE_INIT_CERTIFICATION == "0" ]; then
+    # Update the permissions and execute the letsencrypt initialization script
+    echo "INITIALIZING LETSENCRYPT..."
 
-echo "$TRAVIS_USER_PASSWORD" | sudo -S chmod +x init-letsencrypt.sh
-echo "$TRAVIS_USER_PASSWORD" | sudo -SE ./init-letsencrypt.sh
+    echo "$TRAVIS_USER_PASSWORD" | sudo -S chmod +x init-letsencrypt.sh
+    echo "$TRAVIS_USER_PASSWORD" | sudo -SE ./init-letsencrypt.sh
 
-echo "LETSENCRYPT INITIALIZATION COMPLETE"
+    echo "LETSENCRYPT INITIALIZATION COMPLETE"
+fi
 
 
 # Start the containers
