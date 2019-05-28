@@ -11,7 +11,7 @@ services:
         ports:
             - "80:80" # Http traffic
             - "443:443" # LetsEncrypt traffic
-        # # Renew the newly obtained HTTPS certificates
+        # Renew the newly obtained HTTPS certificates
         command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
         networks:
             - personal-website
