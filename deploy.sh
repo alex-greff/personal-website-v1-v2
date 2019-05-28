@@ -8,7 +8,7 @@ set -xe # -x print commands, -e exit immediately if non-zero exit code occurs
 
 cd /home/travis/app
 
-if [ $PERSONAL_WEBSITE_INIT_CERTIFICATION == "0" ]; then
+if [ $PERSONAL_WEBSITE_INIT_CERTIFICATION != "0" ]; then
     # Update the permissions and execute the letsencrypt initialization script
     echo "INITIALIZING LETSENCRYPT..."
 
