@@ -6,7 +6,7 @@ domains=(alexgreff.com www.alexgreff.com)
 rsa_key_size=4096
 data_path="./data/certbot"
 email=$PERSONAL_WEBSITE_LETSENCRYPT_EMAIL # Adding a valid address is strongly recommended
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=$PERSONAL_WEBSITE_SSL_STAGING # Set to 1 if you're testing your setup to avoid hitting request limits
 
 # This is not needed, always assume yes
 # if [ -d "$data_path" ]; then
