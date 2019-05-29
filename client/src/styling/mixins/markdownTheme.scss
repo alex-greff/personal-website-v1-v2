@@ -22,8 +22,6 @@
                 margin-bottom: 0.3rem;
             }
 
-            // color: theme-link("project-details", "accent-color", "primary");
-
             // Section spacing
             &:not(:first-child) {
                 margin-top: 1.3rem;
@@ -104,6 +102,9 @@
             &:not(:last-child) {
                 margin-bottom: 0.3rem;
             }
+
+            font-size: $smallest-font-size;
+            line-height: calc(#{$smallest-font-size} + 0.5rem);
         }
 
         & strong {

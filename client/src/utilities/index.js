@@ -337,8 +337,9 @@ export function totalStaggerTime(i_nLength, i_nStagger, i_nNumItems) {
  * Returns a formatted version of the given date.
  * 
  * @param {Date} i_dDate The date object.
+ * @param {Boolean} i_bShowDate Show the day.
  */
-export function getFormattedDate(i_dDate) {
+export function getFormattedDate(i_dDate, i_bShowDay = false) {
     const month_names = ["January", "Feburary", "March", "April", 
         "May", "June", "July" ,"August","September", "October",
         "November", "December"];
@@ -348,6 +349,10 @@ export function getFormattedDate(i_dDate) {
     const month = month_names[month_index];
     const year = i_dDate.getFullYear();
     
+    if (!i_bShowDay) {
+        return `${month} ${year}`;    
+    }
+
     return `${month} ${day}, ${year}`;
 }
 
@@ -355,18 +360,20 @@ export function getFormattedDate(i_dDate) {
  * Returns a formatted version of the given start date.
  * 
  * @param {Date} i_dStartDate The start date.
+ * @param {Boolean} i_bShowDate Show the day.
  */
-export function getFormattedStartDate(i_dStartDate) {
-    return (i_dStartDate) ? getFormattedDate(i_dStartDate) : "Unknown";
+export function getFormattedStartDate(i_dStartDate, i_bShowDay = false) {
+    return (i_dStartDate) ? getFormattedDate(i_dStartDate, i_bShowDay) : "Unknown";
 }
 
 /**
  * Returns a formatted version of the given end date.
  * 
  * @param {Date} i_dEndDate The end date.
+ * @param {Boolean} i_bShowDate Show the day.
  */
-export function getFormattedEndDate(i_dEndDate) {
-    return (i_dEndDate) ? getFormattedDate(i_dEndDate) : "Present";
+export function getFormattedEndDate(i_dEndDate, i_bShowDay = false) {
+    return (i_dEndDate) ? getFormattedDate(i_dEndDate, i_bShowDay) : "Present";
 }
 
 /**

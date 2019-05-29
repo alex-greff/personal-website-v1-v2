@@ -149,13 +149,16 @@ export default {
 
             overflow: hidden;
 
+            outline: 2px solid theme-link("page", "bg-color", "secondary", 0.3);
+
+            transition: outline $transition-time;
+
             & .ProjectItem__tint {
                 z-index: 2;
                 // Note: this can't have position: absolute on it or it will dissapear behind the thumbnail image
                 width: 100%;
                 height: 100%;
 
-                // background-color: theme-link("page", "bg-color", "primary", 0);
                 background-color: rgba(0, 0, 0, 0);
 
                 transition: background-color $transition-time;
@@ -208,7 +211,10 @@ export default {
                     & .ProjectItem__title {
                         text-align: center;
 
-                        font-weight: 500;
+                        font-size: 2rem;
+                        font-weight: 600;
+                        
+                        margin-bottom: 0.5rem;
                     }
 
                     & .ProjectItem__links {
@@ -248,6 +254,7 @@ export default {
         // -----------------
         &:hover {
             & .ProjectItem__content {
+                outline: 2px solid theme-link("page", "bg-color", "secondary", 0);
 
                 & .ProjectItem__thumbnail-image {
                     // transform: scale(1.05);

@@ -7,7 +7,6 @@
             @click="setAutoThemeEnabled(true)"
         ></span>
 
-        <!-- TODO: don't hardcode the properties selector used here -->
         <span 
             v-for="theme in themes" 
             :key="theme.name" 

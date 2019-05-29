@@ -277,6 +277,11 @@ export default {
 <style lang="scss">
     #app {
         height: 100%;
+
+        // Set global selection color
+        & #app__base *::selection {
+            background-color: theme-link("page", "selected-color", "primary", 0.3);
+        }
     }
 
     .svg-def {

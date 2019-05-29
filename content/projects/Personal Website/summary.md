@@ -1,1 +1,1 @@
-A personal website developed from scratch by myself to display my entire projects porfolio as well as my professional experience and other endeavors including music production.
+A personal website developed from scratch using a contemporary web development technology stack. Built as a side project in order to get more familiar with modern web development principals and design.

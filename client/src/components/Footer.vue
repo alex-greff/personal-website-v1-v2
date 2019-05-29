@@ -28,9 +28,6 @@
             <div class="Footer__right">
                 <div class="Footer__right-container">
                     <theme-controls></theme-controls>
-                    <div class="Footer__dashboard">
-                        <a href="#">Dashboard</a>
-                    </div>
                 </div>
             </div>
         </footer>
@@ -246,18 +243,6 @@ export default {
 
             display: flex;
             align-items: center;
-
-            & .Footer__dashboard {
-                & a {
-                    text-decoration: none;
-                    color: inherit;
-
-                    &:hover {
-                        text-decoration: underline;
-                        color: theme-link("footer", "accent-color", "primary");
-                    }
-                }
-            }
         }
     }
 </style>

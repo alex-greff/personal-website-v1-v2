@@ -213,10 +213,10 @@ export default {
             return (sEndDate) ? new Date(sEndDate) : null;
         },
         startDateFormatted() {
-            return Utilities.getFormattedStartDate(this.startDate);
+            return Utilities.getFormattedStartDate(this.startDate, false);
         },
         endDateFormatted() {
-            return Utilities.getFormattedEndDate(this.endDate);
+            return Utilities.getFormattedEndDate(this.endDate, false);
         },
         hasGalleryImages() {
             const oGalleryImages = this.projectData.galleryImages;
