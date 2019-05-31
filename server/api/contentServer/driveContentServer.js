@@ -54,6 +54,24 @@ exports.getSectionID = async (i_sSectionName = null) => {
     return (aFolders.length > 0) ? aFolders[0].id : null;
 };
 
+exports.sectionExists = async (i_sSectionName) => {
+    return !!(await exports.getSectionID(i_sSectionName));
+};
+
+exports.createSection = async (i_sSectionName) => {
+    await exports.authorize();
+    const drive = google.drive({ version: 'v3', auth });
+
+    const res = await drive.files.create({
+        resource: {
+            name: i_sSectionName,
+            'mimeType': 'application/vnd.google-apps.folder'
+        }
+    });
+
+    return res.data.file.id;
+};
+
 exports.getAllFiles = async (i_sSectionName = null) => {
     const sSectionID = (i_sSectionName) ? await exports.getSectionID(i_sSectionName) : ROOT_FOLDER_ID;
 
@@ -75,13 +93,17 @@ exports.getFile = async (i_sFileName, i_sSectionName = null) => {
     const aFiles = await _filesList(sQuery);
     
     return (aFiles.length > 0) ? { ...aFiles[0], link: _getFileResourceLink(oFile.id) } : null;
-}
+};
 
 exports.uploadFile = async (i_sFileName, i_sFilePath, i_sMimeType, i_sSectionName = null) => {
     await exports.authorize();
     const drive = google.drive({ version: 'v3', auth });
 
-    const sSectionID = (i_sSectionName) ? await exports.getSectionID(i_sSectionName) : ROOT_FOLDER_ID;
+    let sSectionID = (i_sSectionName) ? await exports.getSectionID(i_sSectionName) : ROOT_FOLDER_ID;
+
+    if (!sSectionID) { // Section doesn't exist
+        sSectionID = await exports.createSection(i_sSectionName); // Create the section
+    }
 
     const res = await drive.files.create({
         resource: {
@@ -96,7 +118,7 @@ exports.uploadFile = async (i_sFileName, i_sFilePath, i_sMimeType, i_sSectionNam
 
     console.log("UPLOAD RESPONSE", res);
 
-    return res;
+    return res; // TODO: figure out 
 };
 
 exports.deleteFile = async (i_sFileID) => {
@@ -109,5 +131,5 @@ exports.deleteFile = async (i_sFileID) => {
 
     console.log("DELETE RESPONSE", res);
 
-    return res;
+    return res; // TODO: figure out
 }
