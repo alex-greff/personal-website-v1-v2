@@ -15,6 +15,11 @@ const contactRoutes = require("./api/routes/contact");
 const aboutRoutes = require("./api/routes/about");
 const musicRoutes = require("./api/routes/music");
 
+// Setup drive integration (TODO: will be moved)
+// const driveContentServer = require("./api/contentServer/driveContentServer");
+// driveContentServer.getSectionID("test");
+// driveContentServer.getAllFiles("test");
+
 // Setup connection
 const mongoConnect = `mongodb://${keys.mongoUsername}:${keys.mongoPassword}@${keys.mongoUri}`;
 mongoose.connect(mongoConnect, { useNewUrlParser: true });

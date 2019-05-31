@@ -32,6 +32,7 @@
         "cheerio": "^1.0.0-rc.3",
         "express": "^4.16.4",
         "express-validator": "^5.3.1",
+        "googleapis": "^40.0.0",
         "jsonwebtoken": "^8.4.0",
         "mongoose": "^5.4.0",
         "mongoose-immutable-plugin": "^1.0.1",
