@@ -1,6 +1,7 @@
 const { google } = require("googleapis");
 const fs = require("fs");
 const keys = require("../../keys");
+
 let auth;
 
 const CLIENT_EMAIL = keys.driveClientEmail;
@@ -36,10 +37,9 @@ exports.authorize = async (i_bForceRefresh = false) => {
     try {
         await jwtClient.authorize();
         auth = jwtClient;
-        console.log("Drive authorization successful")
+        console.log("Drive authorization successful");
     } catch(err) {
         console.log("Drive authorization failed:", err);
-        return;
     }
 };
 
@@ -61,15 +61,17 @@ exports.sectionExists = async (i_sSectionName) => {
 exports.createSection = async (i_sSectionName) => {
     await exports.authorize();
     const drive = google.drive({ version: 'v3', auth });
+    const sRootID = await exports.getSectionID();
 
     const res = await drive.files.create({
         resource: {
             name: i_sSectionName,
-            'mimeType': 'application/vnd.google-apps.folder'
-        }
+            parents: [sRootID],
+            mimeType: 'application/vnd.google-apps.folder'
+        }   
     });
 
-    return res.data.file.id;
+    return res.data.id;
 };
 
 exports.getAllFiles = async (i_sSectionName = null) => {
@@ -101,35 +103,52 @@ exports.uploadFile = async (i_sFileName, i_sFilePath, i_sMimeType, i_sSectionNam
 
     let sSectionID = (i_sSectionName) ? await exports.getSectionID(i_sSectionName) : ROOT_FOLDER_ID;
 
-    if (!sSectionID) { // Section doesn't exist
-        sSectionID = await exports.createSection(i_sSectionName); // Create the section
+    if (!sSectionID) { // If section doesnt exist, then create the section
+        sSectionID = await exports.createSection(i_sSectionName); 
     }
 
     const res = await drive.files.create({
         resource: {
-            name: i_sFileName
+            name: i_sFileName,
+            parents: [sSectionID]
         },
         media: {
             mimeType: i_sMimeType,
             body: fs.createReadStream(i_sFilePath),
-            parents: [sSectionID]
         }
     });
 
-    console.log("UPLOAD RESPONSE", res);
-
-    return res; // TODO: figure out 
+    return {
+        ...res.data,
+        link: _getFileResourceLink(res.data.id)
+    };
 };
 
 exports.deleteFile = async (i_sFileID) => {
     await exports.authorize();
     const drive = google.drive({ version: 'v3', auth });
 
-    const res = await drive.files.delete({
-        fileID: i_sFileID
+    await drive.files.delete({
+        fileId: i_sFileID
     });
+};
 
-    console.log("DELETE RESPONSE", res);
 
-    return res; // TODO: figure out
+
+exports.__test__ = async () => {
+    // let aAllFiles = await exports.getAllFiles("test");
+    // console.log("ALL FILES test", aAllFiles);
+
+    // const sCreatedSection = await exports.createSection("test2");
+    // console.log("CREATED SECTION", sCreatedSection);
+
+    // const sFilePath = "./uploads/projects/2019-05-29T02-38-49.521Z-thumbnail.jpg";
+    // const oUploadRes = await exports.uploadFile("test_image.jpg", sFilePath, "image/jpeg", "test2");
+    // console.log("UPLOAD RES", oUploadRes);
+
+    // aAllFiles = await exports.getAllFiles("test2");
+    // console.log("ALL FILES test2", aAllFiles);
+
+    // console.log("DELETING FILE", aAllFiles[0].id)
+    // await exports.deleteFile(aAllFiles[0].id);
 }

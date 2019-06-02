@@ -74,9 +74,6 @@ exports.experience_create_experience = async (req, res, next) => {
     } catch(err) {
         console.log(err);
 
-        // Delete uploaded files
-        Utilities.deleteUploadedFiles(req);
-
         res.status(500).json({
             error: err
         });
@@ -157,9 +154,6 @@ exports.experience_update_experience = async (req, res, next) => {
         });
 
     } catch(err) {
-        // Delete uploaded files
-        Utilities.deleteUploadedFiles(req);
-
         console.log(err);
         res.status(500).json({
             error: err

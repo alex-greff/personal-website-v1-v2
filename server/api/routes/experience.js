@@ -4,6 +4,7 @@ const permit = require("../middleware/permission");
 const injectMarkdown = require("../middleware/markdown-injector");
 const storageUtility = require("../utilities/storage");
 const mimetypes = require("../constants/mimetypes");
+const driveUploader = require("../middleware/drive-content-uploader");
 
 const ExperienceController = require("../controllers/experience");
 
@@ -23,13 +24,13 @@ const fileFields = [
 router.get("/", ExperienceController.experience_get_all);
 
 // [domain]/api/experiences : POST 
-router.post("/", permit(false, "create-experience"), upload.fields(fileFields), injectMarkdown, ExperienceController.experience_create_experience);
+router.post("/", permit(false, "create-experience"), upload.fields(fileFields), injectMarkdown, driveUploader, ExperienceController.experience_create_experience);
 
 // [domain]/api/expereince/[experienceID] : GET
 router.get("/:experienceID", ExperienceController.experience_get_experience);
 
 // [domain]/api/experience/[experienceID] : PATCH
-router.patch("/:experienceID", permit(false, "edit-experience"), upload.fields(fileFields), injectMarkdown, ExperienceController.experience_update_experience);
+router.patch("/:experienceID", permit(false, "edit-experience"), upload.fields(fileFields), injectMarkdown, driveUploader, ExperienceController.experience_update_experience);
 
 // [domain]/api/experience/[experienceID] : DELETE
 router.delete("/:experienceID", permit(false, "delete-project"), ExperienceController.experience_delete_experience);

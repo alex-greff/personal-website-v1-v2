@@ -4,6 +4,7 @@ const permit = require("../middleware/permission");
 const injectMarkdown = require("../middleware/markdown-injector");
 const storageUtility = require("../utilities/storage");
 const mimetypes = require("../constants/mimetypes");
+const driveUploader = require("../middleware/drive-content-uploader");
 
 const AboutController = require("../controllers/about");
 
@@ -24,9 +25,9 @@ const fileFields = [
 router.get("/", AboutController.about_get_info);
 
 // [domain]/api/about : POST
-router.post("/", permit(false, "override-about"), upload.fields(fileFields), injectMarkdown, AboutController.about_override_info)
+router.post("/", permit(false, "override-about"), upload.fields(fileFields), injectMarkdown, driveUploader, AboutController.about_override_info)
 
 // [domain]/api/about : PATCH
-router.patch("/", permit(false, "edit-about"), upload.fields(fileFields), injectMarkdown, AboutController.about_update_info);
+router.patch("/", permit(false, "edit-about"), upload.fields(fileFields), injectMarkdown, driveUploader, AboutController.about_update_info);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const fs = require("fs");
 const Utilities = require("../utilities");
 const mimetypes = require("../constants/mimetypes");
 
+// Finds all markdown files, reads them, injects them into the request body and removes the original markdown files
 module.exports = (req, res, next) => {
     // Filter all markdown files
     const aMarkdownFiles = Object.values(req.files).filter((i_aFiles) => {
@@ -24,6 +25,9 @@ module.exports = (req, res, next) => {
 
         // Clean up the markdown file
         Utilities.cleanupFile(sFilePath);
+
+        // Remove the field from the req.files object
+        delete req.files[sFieldName];
     });
 
     next();
