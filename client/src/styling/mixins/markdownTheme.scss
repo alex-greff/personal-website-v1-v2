@@ -8,7 +8,7 @@
     @return $font-size;
 }
 
-@mixin markdown-theme($largest-font-size: 3rem, $smallest-font-size: 1.5rem) {
+@mixin markdown-theme($largest-font-size: 3rem, $smallest-font-size: 1.5rem, $header-lines: true) {
     font-size: $smallest-font-size;
     font-weight: 300;
 
@@ -39,21 +39,24 @@
 
             font-weight: 600;
 
-            &:not(:first-child) {
-                $top-margin: 3rem;
-
-                margin-top: $top-margin;
-
-                &::after {
-                    content: "";
+            @if $header-lines == true {
+                // Section lines 
+                &:not(:first-child) {
+                    $top-margin: 3rem;
     
-                    position: absolute;
-                    top: calc((-1 * #{$top-margin})/2);
-                    left: 0;
-                    width: 100%;
-                    height: 1px;
-
-                    background-color: theme-link("project-details", "text-color", "secondary", 0.2);
+                    margin-top: $top-margin;
+    
+                    &::after {
+                        content: "";
+        
+                        position: absolute;
+                        top: calc((-1 * #{$top-margin})/2);
+                        left: 0;
+                        width: 100%;
+                        height: 1px;
+    
+                        background-color: theme-link("project-details", "text-color", "secondary", 0.2);
+                    }
                 }
             }
         }

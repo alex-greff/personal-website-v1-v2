@@ -63,8 +63,7 @@ export default {
 
 <style lang="scss" scoped>
     .AboutDescription {
-        // @include markdown-theme(2.3rem, 1.5rem);
-        @include markdown-theme();
+        @include markdown-theme(3rem, 1.5rem, false);
 
         overflow: auto;
 

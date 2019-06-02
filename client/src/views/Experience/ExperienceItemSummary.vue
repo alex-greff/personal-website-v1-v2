@@ -27,6 +27,6 @@ export default {
 
 <style lang="scss" scoped>
     .ExperienceItemSummary {
-        @include markdown-theme(2.3rem, 1.5rem);
+        @include markdown-theme(2.3rem, 1.5rem, true);
     }
 </style>

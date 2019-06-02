@@ -65,7 +65,7 @@ export default {
         },
         maxTags: {
             type: Number,
-            default: 10, // TODO: this might need some adjusting
+            default: 6, // TODO: this might need some adjusting
         },
         contentClass: {
             type: String,

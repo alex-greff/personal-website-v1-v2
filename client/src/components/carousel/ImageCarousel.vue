@@ -264,6 +264,8 @@ export default {
     .ImageCarousel {
         z-index: -2;
 
+        outline: 2px solid theme-link("page", "bg-color", "secondary", 0.3);
+
         & > .ImageCarousel__content {
             position: relative;
 
