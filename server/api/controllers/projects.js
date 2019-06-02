@@ -144,17 +144,9 @@ exports.projects_update_project = async (req, res, next) => {
         // Construct update operations object
         const updateOps = {};
 
-        let removeGalleryImagesIDs = [];
         Object.entries(req.body).forEach(([field, newValue]) => {
             if (UNEDITABLE_FIELDS.includes(field)) {
                 throw `Uneditable field: ${field}`;
-            }
-
-            // Manually handle the removeGalleryImages operation
-            if (field === "removeGalleryImages") {
-                // Construct the list of gallery image IDs to be removed
-                removeGalleryImagesIDs = (typeof newValue === 'string') ? [ newValue ] : newValue;
-                return;
             }
 
             // Add in the current regular operation 
@@ -168,11 +160,11 @@ exports.projects_update_project = async (req, res, next) => {
             updateOps['thumbnailImage'] = Utilities.sanitizeImagePath(req.files['thumbnailImage'][0].path);
         }
 
-        // Construct the list of gallery image paths to be added
-        let addGalleryImages = [];
+        // Construct the new gallery images list
+        updateOps['galleryImages'] = {};
         if (!!req.files && !!req.files['galleryImages']) {
             req.files['galleryImages'].forEach(galleryImage => {
-                addGalleryImages.push(Utilities.sanitizeImagePath(galleryImage.path));
+                updateOps['galleryImages'][new mongoose.Types.ObjectId()] = galleryImage.path;
             });
         }
     
@@ -184,33 +176,11 @@ exports.projects_update_project = async (req, res, next) => {
                 Utilities.cleanupFile(doc.thumbnailImage);
             }
 
+            // Clear the old gallery images, if needed
             if (doc.galleryImages) {
-                // Construct the base updated gallery images map
-                const updatedGalleryImages = {};
-                doc.galleryImages.forEach((path, imageID) => {
-                    updatedGalleryImages[imageID] = path;
+                doc.galleryImages.forEach((imagePath) => {
+                    Utilities.cleanupFile(imagePath); // Cleanup the image
                 });
-
-                // Remove out the gallery images that are listed for removal
-                removeGalleryImagesIDs.forEach(imageID => {
-                    if (doc.galleryImages.get(imageID)) {
-                        // Cleanup the image
-                        Utilities.cleanupFile(doc.galleryImages.get(imageID));
-                    } else {
-                        throw `Error unable to remove gallery image with ID '${imageID}'. Image not found`;
-                    }
-
-                    // Remove the entry
-                    delete updatedGalleryImages[imageID];
-                });
-
-                // Add in the gallery images that are listed for addition
-                addGalleryImages.forEach(imagePath => {
-                    updatedGalleryImages[new mongoose.Types.ObjectId()] = imagePath;
-                });
-
-                // Add the updated gallery images map to the update ops
-                updateOps['galleryImages'] = updatedGalleryImages;
             }
         }
 
