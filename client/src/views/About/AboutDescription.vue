@@ -74,18 +74,12 @@ export default {
             float: right;
 
             & /deep/ .AboutDescription__profile-image {
-                // float: right;
-                // width: 5rem;
-                // height: 5rem;
-                // width: 50%;
-                // @include aspect-ratio(16/9);
                 width: 100%;
                 @include aspect-ratio(4/5);
-                // padding-bottom: calc(100% / (4/5));
-                // background-color: red;
 
                 background-size: cover;
                 background-position: center center;
+                background-color: theme-link("page", "bg-color", "secondary", 1);
             }
 
             @include respond(phone) {

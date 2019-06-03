@@ -476,6 +476,7 @@ export default {
                         @include aspect-ratio(16/9);
 
                         outline: 2px solid theme-link("page", "bg-color", "secondary", 0.3);
+                        background-color: theme-link("page", "bg-color", "secondary", 1);
 
                         z-index: -1;
 
