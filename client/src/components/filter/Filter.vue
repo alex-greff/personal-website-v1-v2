@@ -86,7 +86,7 @@ export default {
     },
     methods: {
         updateFilterState(allFilters, currFilters, showAll) {
-            const newFilter = allFilters.reduce((acc, filter) => {
+            const newUnorderedFilter = allFilters.reduce((acc, filter) => {
                 return {
                     ...acc,
                     [filter]: {
@@ -95,7 +95,13 @@ export default {
                 }
             }, {});
 
-            Vue.set(this, "filters", newFilter);
+            const newOrderedFilter = {};
+            // Sort filter keys alphabetically
+            Object.keys(newUnorderedFilter).sort().forEach((key) => {
+                newOrderedFilter[key] = newUnorderedFilter[key];
+            });
+
+            Vue.set(this, "filters", newOrderedFilter);
 
             this.filterUpdated(this.showAll, this.currFilters);
         },
