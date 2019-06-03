@@ -169,6 +169,10 @@ export default {
     }
 }
 
+const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
+const FILTER_MAX_TIME = 1;
+const EXPERIENCE_ITEMS_MAX_TIME = 1;
+
 const _animateInExperienceEls = (el, ignoreFlags = false, i_tl = null, i_nStartOffset = 0) => {
     return new Promise((resolve, reject) => {
         // Dont run the experience els animation if the page hasn't been animated in yet, unless the force flag is active
@@ -186,26 +190,32 @@ const _animateInExperienceEls = (el, ignoreFlags = false, i_tl = null, i_nStartO
 
         const tl = (i_tl) ? i_tl : new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.fromTo(filterSubScriptEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }), `-=${i_nStartOffset}`);
+
+        const nRegTotalFitlerTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
+        const nFilterStagger = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? Utilities.calculateStagger(FILTER_MAX_TIME, STAGGER_DURATION, filterItemEls.length) : DEFAULT_STAGGER_TIME;
+        const nFilterTotalTime = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? FILTER_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
         tl.add(
             TweenMax.staggerFromTo(
                 filterItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: -20, opacity: 0 },
                 { x: 0, opacity: 1 },
-                0.1
+                nFilterStagger
             ),
             "-=0.5"
         );
-        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+
+        const nRegTotalExperienceItemsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, experienceItemEls.length);
+        const nExperienceItemsStagger = (nRegTotalExperienceItemsTime > EXPERIENCE_ITEMS_MAX_TIME) ? Utilities.calculateStagger(EXPERIENCE_ITEMS_MAX_TIME, STAGGER_DURATION, experienceItemEls.length, DEFAULT_STAGGER_TIME) : DEFAULT_STAGGER_TIME;
         tl.add(
             TweenMax.staggerFromTo(
                 experienceItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: -20, opacity: 0 },
                 { x: 0, opacity: 1 },
-                0.1
+                nExperienceItemsStagger
             ),
-            `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
+            `-=${Math.max(0, nFilterTotalTime - 0.3)}`
         );
 
         // If we're latching onto another timeline then we don't need this promise
@@ -260,24 +270,30 @@ const _leaveAnim = (el) => {
         const tl = new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
         tl.add(TweenLite.to(filterSubScriptEl, 0.5, { x: 20, opacity: 0}), "-=0.25");
+
+        const nRegTotalFitlerTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
+        const nFilterStagger = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? Utilities.calculateStagger(FILTER_MAX_TIME, STAGGER_DURATION, filterItemEls.length) : DEFAULT_STAGGER_TIME;
+        const nFilterTotalTime = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? FILTER_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
         tl.add(
             TweenMax.staggerTo(
                 filterItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: 20, opacity: 0 },
-                0.1
+                nFilterStagger
             ), 
             "-=0.5"
         );
-        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+
+        const nRegTotalExperienceItemsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, experienceItemEls.length);
+        const nExperienceItemsStagger = (nRegTotalExperienceItemsTime > EXPERIENCE_ITEMS_MAX_TIME) ? Utilities.calculateStagger(EXPERIENCE_ITEMS_MAX_TIME, STAGGER_DURATION, experienceItemEls.length, DEFAULT_STAGGER_TIME) : DEFAULT_STAGGER_TIME;
         tl.add(
             TweenMax.staggerTo(
                 experienceItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: 20, opacity: 0 },
-                0.1
+                nExperienceItemsStagger
             ),
-            `-=${totalFilterAnimTime}`
+            `-=${nFilterTotalTime}`
         );
     });
 };

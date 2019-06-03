@@ -203,12 +203,17 @@ const _leaveAnim = (el) => {
         const tl = new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
         tl.add(TweenLite.to(searchFieldEl, 0.5, { x: 20, opacity: 0 }), "-=0.25");
+
+        const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
+        const TRACKS_MAX_TIME = 1;
+        const nRegTotalTracksTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, trackItemEls.length);
+        const nTracksStagger = (nRegTotalTracksTime > TRACKS_MAX_TIME) ? Utilities.calculateStagger(TRACKS_MAX_TIME, STAGGER_DURATION, trackItemEls.length) : DEFAULT_STAGGER_TIME;
         tl.add(
             TweenMax.staggerTo(
                 trackItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: 20, opacity: 0 },
-                0.1
+                nTracksStagger
             ), 
             "-=0.25"
         );

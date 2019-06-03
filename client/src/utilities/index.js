@@ -321,16 +321,31 @@ export function computeParallelogramClipPath(itemHeight, tiltAngle) {
 /**
  * Calculates the total running time of a stagger animation with the provided values.
  * 
- * @param {Number} i_nLength The length of each animation.
+ * @param {Number} i_nDuration The duration of each animation.
  * @param {Number} i_nStagger The stagger time.
  * @param {Number} i_nNumItems The number of items being staggered.
  */
-export function totalStaggerTime(i_nLength, i_nStagger, i_nNumItems) {
-    if (i_nLength <= 0) {
+export function totalStaggerTime(i_nDuration, i_nStagger, i_nNumItems) {
+    if (i_nDuration <= 0) {
         return 0;
     }
 
-    return i_nLength + (i_nNumItems - 1) * i_nStagger;
+    return i_nDuration + (i_nNumItems - 1) * i_nStagger;
+}
+
+/**
+ * Calculates the needed stagger time to achieve the given total time.
+ * 
+ * @param {Number} i_nTotalTime The total duration
+ * @param {*} i_nDuration The duration of each animation.
+ * @param {*} i_nNumItems The number of items being staggered.
+ */
+export function calculateStagger(i_nTotalTime, i_nDuration, i_nNumItems) {
+    if (i_nTotalTime <= 0 || i_nDuration <= 0 || i_nNumItems <= 0) {
+        return 0;
+    }
+
+    return (i_nTotalTime - i_nDuration) / (i_nNumItems - 1);
 }
 
 /**
@@ -642,6 +657,7 @@ export default {
     debounce,
     computeParallelogramClipPath,
     totalStaggerTime,
+    calculateStagger,
     getFormattedDate,
     getFormattedStartDate,
     getFormattedEndDate,

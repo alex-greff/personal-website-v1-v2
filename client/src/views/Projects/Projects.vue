@@ -173,6 +173,10 @@ export default {
     }
 }
 
+const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
+const FILTER_MAX_TIME = 1;
+const PROJECT_ITEMS_MAX_TIME = 1;
+
 const _animateInProjectEls = (el, ignoreFlags = false) => {
     return new Promise((resolve, reject) => {
         // Dont run the project els animation if the page hasn't been animated in yet, unless the force flag is active
@@ -188,30 +192,34 @@ const _animateInProjectEls = (el, ignoreFlags = false) => {
         // Kill any running animations
         TweenLite.killTweensOf([...filterItemEls, ...projectItemEls]);
 
-        // TODO: consolidate these animations with the same ones that are in _enterAnim
         const tl = new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.fromTo(filterSubScriptEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1 }));
+
+        const nRegTotalFitlerTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
+        const nFilterStagger = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? Utilities.calculateStagger(FILTER_MAX_TIME, STAGGER_DURATION, filterItemEls.length) : DEFAULT_STAGGER_TIME;
+        const nFilterTotalTime = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? FILTER_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
         tl.add(
             TweenMax.staggerFromTo(
                 filterItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: -20, opacity: 0 },
                 { x: 0, opacity: 1 },
-                0.1
+                nFilterStagger
             ),
             "-=0.5"
         );
-        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+        
+        const nRegTotalProjectItemsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, projectItemEls.length);
+        const nProjectItemsStagger = (nRegTotalProjectItemsTime > PROJECT_ITEMS_MAX_TIME) ? Utilities.calculateStagger(PROJECT_ITEMS_MAX_TIME, STAGGER_DURATION, projectItemEls.length, DEFAULT_STAGGER_TIME) : DEFAULT_STAGGER_TIME;
         tl.add(
             TweenMax.staggerFromTo(
                 projectItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: -20, opacity: 0 },
                 { x: 0, opacity: 1 },
-                // { x: 0, opacity: 1, clearProps: "all" },
-                0.1
+                nProjectItemsStagger
             ),
-            `-=${Math.max(0, totalFilterAnimTime - 0.3)}`
+            `-=${Math.max(0, nFilterTotalTime - 0.3)}`
         );
     })
 };
@@ -261,24 +269,30 @@ const _leaveAnim = (el) => {
         const tl = new TimelineLite({ onComplete: () => resolve() });
         tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
         tl.add(TweenLite.to(filterSubScriptEl, 0.5, { x: 20, opacity: 0}), "-=0.25");
+
+        const nRegTotalFitlerTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
+        const nFilterStagger = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? Utilities.calculateStagger(FILTER_MAX_TIME, STAGGER_DURATION, filterItemEls.length) : DEFAULT_STAGGER_TIME;
+        const nFilterTotalTime = (nRegTotalFitlerTime > FILTER_MAX_TIME) ? FILTER_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, filterItemEls.length);
         tl.add(
             TweenMax.staggerTo(
                 filterItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: 20, opacity: 0 },
-                0.1
+                nFilterStagger
             ), 
             "-=0.5"
         );
-        const totalFilterAnimTime = Utilities.totalStaggerTime(0.3, 0.1, filterItemEls.length);
+
+        const nRegTotalProjectItemsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, projectItemEls.length);
+        const nProjectItemsStagger = (nRegTotalProjectItemsTime > PROJECT_ITEMS_MAX_TIME) ? Utilities.calculateStagger(PROJECT_ITEMS_MAX_TIME, STAGGER_DURATION, projectItemEls.length, DEFAULT_STAGGER_TIME) : DEFAULT_STAGGER_TIME;
         tl.add(
             TweenMax.staggerTo(
                 projectItemEls,
-                0.3,
+                STAGGER_DURATION,
                 { x: 20, opacity: 0 },
-                0.1
+                nProjectItemsStagger
             ),
-            `-=${totalFilterAnimTime}`
+            `-=${nFilterTotalTime}`
         );
     });
 };
