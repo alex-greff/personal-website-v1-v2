@@ -32,8 +32,6 @@ const actions = {
         try {
             // Get about data
             const res = await Vue.axios.get('/api/about');
-
-            console.log("About get successful", res);
         
             // Construct data object
             const oData = {

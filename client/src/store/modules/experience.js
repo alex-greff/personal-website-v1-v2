@@ -90,8 +90,6 @@ const actions = {
             // Get all experience items from the server
             const res = await Vue.axios.get('/api/experience');
 
-            console.log("Experience get successful", res); // TODO: remove
-
             // Construct in-memory experience object
             res.data.experience.forEach(experience => {
                 const currData = Object.entries(experience).reduce((acc, [field, value]) => {

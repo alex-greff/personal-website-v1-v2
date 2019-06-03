@@ -101,8 +101,6 @@ const actions = {
             // Get all the projects from the server
             const res = await Vue.axios.get('/api/projects');
 
-            console.log("Projects get successful", res); // TODO: remove
-
             // Construct our in-memory projects object
             res.data.projects.forEach(project => {
                 const currData = Object.entries(project).reduce((acc, [field, value]) => {

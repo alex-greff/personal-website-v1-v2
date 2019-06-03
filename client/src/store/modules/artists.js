@@ -97,8 +97,6 @@ const actions = {
             // Get artist profile data
             const res = await Vue.axios.get('/api/music/artists');
 
-            console.log("Artist profiles get successful", res);
-
             res.data.artistProfiles.forEach(artistProfile => {
                 const currData = Object.entries(artistProfile).reduce((acc, [field, value]) => {
                     return {
