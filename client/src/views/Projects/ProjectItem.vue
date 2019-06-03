@@ -153,7 +153,6 @@ export default {
             overflow: hidden;
 
             outline: 2px solid theme-link("page", "bg-color", "secondary", 0.3);
-            background-color: theme-link("page", "bg-color", "secondary", 1);
 
             transition: outline $transition-time;
 
@@ -182,6 +181,8 @@ export default {
 
                 background-size: cover;
                 background-position: center center;
+
+                background-color: theme-link("page", "bg-color", "secondary", 1);
 
                 transition: transform $transition-time, filter $transition-time;
             }
