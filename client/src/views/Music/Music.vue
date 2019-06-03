@@ -233,6 +233,7 @@ const _leaveAnim = (el) => {
             position: relative;
 
             margin-top: 4.5rem;
+            margin-bottom: 3rem;
 
             max-width: 150rem;
             width: 100vw;
@@ -268,7 +269,6 @@ const _leaveAnim = (el) => {
                 position: relative;
 
                 margin-top: 1.5rem;
-                margin-bottom: 3rem;
 
                 display: grid;
                 grid-row-gap: 2.5rem;

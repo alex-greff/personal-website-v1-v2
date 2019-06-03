@@ -456,6 +456,7 @@ const PHASE_ANIM_MAPPINGS = {
             position: relative;
 
             margin-top: 4.5rem;
+            margin-bottom: 3rem;
 
             max-width: 80rem;
             width: 100vw;

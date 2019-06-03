@@ -306,6 +306,7 @@ const _leaveAnim = (el) => {
             position: relative;
         
             margin-top: 4.5rem;
+            margin-bottom: 3rem;
 
             & .Projects__title {
                 text-align: center;

@@ -131,6 +131,7 @@ export default {
             position: relative;
 
             margin-top: 4.5rem;
+            margin-bottom: 3rem;
 
             max-width: 90rem;
             width: 100vw;

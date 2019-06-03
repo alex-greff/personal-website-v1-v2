@@ -137,6 +137,9 @@ import ImageCarousel from "@/components/carousel/ImageCarousel.vue";
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 
+const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
+const TAGS_MAX_TIME = 1;
+
 export default {
     components: {
         pdDescription: ProjectDetailsDescription,
@@ -288,8 +291,12 @@ export default {
 
             // Run animations
             const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
-            const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
-            const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
+
+            const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+            const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
+            const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+
+            const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
 
             tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
             tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
@@ -305,16 +312,18 @@ export default {
                 ),
                 `-=${summaryDuration}`
             );
+
             tl.add(
                 TweenMax.staggerFromTo(
                     tagItemEls,
-                    0.5, 
+                    STAGGER_DURATION, 
                     { ...REG_ANIM_START_RIGHT },
                     { ...REG_ANIM_END },
-                    0.1
+                    nTagsStagger
                 ),
-                `-=${totalLinkItemsAnimTime}`
+                `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
             );
+
             const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
             tl.add(
                 TweenMax.staggerFromTo(
@@ -324,7 +333,7 @@ export default {
                     { ...REG_ANIM_END },
                     0.1
                 ),
-                "-=0.25"
+                `-=${Math.max(0, nTagsTotalTime - 0.3)}`
             );
             tl.add(TweenLite.fromTo(tabViewEl, 1, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
         });
@@ -361,8 +370,12 @@ export default {
 
             // Run animations
             const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
-            const totalTagItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tagItemEls.length);
-            const summaryDuration = Math.max(totalLinkItemsAnimTime, totalTagItemsAnimTime);
+            
+            const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+            const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
+            const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+
+            const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
 
             tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
             tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
@@ -377,15 +390,17 @@ export default {
                 ),
                 `-=${summaryDuration}`
             );
+
             tl.add(
                 TweenMax.staggerTo(
                     tagItemEls,
-                    0.3, 
+                    STAGGER_DURATION, 
                     { ...REG_ANIM_END_RIGHT },
-                    0.1
+                    nTagsStagger
                 ),
-                `-=${totalLinkItemsAnimTime}`
+                `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
             );
+
             const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
             tl.add(
                 TweenMax.staggerTo(
@@ -394,7 +409,7 @@ export default {
                     { ...REG_ANIM_END_RIGHT },
                     0.1
                 ),
-                "-=0.25"
+                `-=${Math.max(0, nTagsTotalTime - 0.3)}`
             );
             tl.add(TweenLite.to(tabViewEl, 1, { ...REG_ANIM_END_RIGHT }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
         });
@@ -409,7 +424,8 @@ export default {
         & .ProjectDetails__content {
             position: relative;
         
-            margin: 5rem 0 0 0;
+            margin-top: 4.5rem;
+            margin-bottom: 3rem;
 
             & .ProjectDetails__heading {
                 display: grid;
