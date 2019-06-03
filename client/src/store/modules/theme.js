@@ -269,8 +269,6 @@ const actions = {
             // Get themes from the database
             const res = await Vue.axios.get('/api/themes');
 
-            console.log("Themes get sucessful", res);
-
             // Construct our in-memory themes object
             res.data.themes.forEach(theme => {
                 const template = {
