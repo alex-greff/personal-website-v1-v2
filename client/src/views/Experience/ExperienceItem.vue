@@ -22,7 +22,7 @@
                 <div class="ExperienceItem__tags">
                     <!-- Generate tags -->
                     <tag-item
-                        v-for="(tag, index) in experienceItemData.tags"
+                        v-for="(tag, index) in tagsSorted"
                         :key="index"
                         class="ExperienceItems__tag-item"
                         :height="2.5"
@@ -55,10 +55,6 @@ export default {
             type: Object, 
             required: true 
         },
-        maxTags: {
-            type: Number,
-            default: 10, // TODO: this might need some adjusting
-        },
         contentClass: {
             type: String,
             default: ""
@@ -72,14 +68,8 @@ export default {
         };
     },
     computed: {
-        tags() {
-            const tags = this.experienceItemData.tags;
-            const tagsCleaned = (tags) ? tags : [];
-            return tagsCleaned.length > this.maxTags ? tagsCleaned.slice(0, this.maxTags) : tagsCleaned;
-        },
-        tagsOverflow() {
-            const tags = this.experienceItemData.tags;
-            return (tags) ? tags.length > this.maxTags : false;
+        tagsSorted() {
+            return this.experienceItemData.tags.slice(0).sort();
         },
         hasCompanyLink() {
             return !!this.experienceItemData.companyLink;
