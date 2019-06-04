@@ -1,9 +1,15 @@
 const multer = require("multer");
+const fs = require("fs");
 
 exports.setupFileUpload = (i_sDesinationFolder = null, ...i_aMimetypes) => {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             const uploadFilePath = (i_sDesinationFolder) ? `./uploads/${i_sDesinationFolder}` : "./uploads";
+            // Create sub directory if it does not exist already
+            if (!fs.existsSync(uploadFilePath)) {
+                fs.mkdirSync(uploadFilePath);
+            }
+
             cb(null, uploadFilePath);
         },
         filename: function (req, file, cb) {
