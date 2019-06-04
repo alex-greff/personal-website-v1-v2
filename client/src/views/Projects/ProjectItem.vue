@@ -33,7 +33,7 @@
                     </div>
                     <div v-if="hasTags" class="ProjectItem__tags" :style="tagAlignment">
                         <tag-item
-                            v-for="(tag, index) in tagsSorted"
+                            v-for="(tag, index) in tags"
                             :key="index"
                             class="ProjectItem__tag-item"
                         >
@@ -99,9 +99,6 @@ export default {
             const tags = this.projectData.tags;
             const tagsCleaned = (tags) ? tags : [];
             return tagsCleaned.length > this.maxTags ? tagsCleaned.slice(0, this.maxTags) : tagsCleaned;
-        },
-        tagsSorted() {
-            return this.tags.slice(0).sort();
         },
         tagsOverflow() {
             const tags = this.projectData.tags;

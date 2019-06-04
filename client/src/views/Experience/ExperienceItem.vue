@@ -22,7 +22,7 @@
                 <div class="ExperienceItem__tags">
                     <!-- Generate tags -->
                     <tag-item
-                        v-for="(tag, index) in tagsSorted"
+                        v-for="(tag, index) in experienceItemData.tags"
                         :key="index"
                         class="ExperienceItems__tag-item"
                         :height="2.5"
@@ -68,9 +68,6 @@ export default {
         };
     },
     computed: {
-        tagsSorted() {
-            return this.experienceItemData.tags.slice(0).sort();
-        },
         hasCompanyLink() {
             return !!this.experienceItemData.companyLink;
         },

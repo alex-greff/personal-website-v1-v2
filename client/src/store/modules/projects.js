@@ -47,6 +47,11 @@ const mutations = {
             _projectDoesNotExist(i_oState, name);
         }
 
+        // Sort tags alphabetically
+        if (data.tags) {
+            data.tags.sort();
+        }
+
         // Add the project
         Vue.set(i_oState, name, data);
     },
@@ -62,6 +67,11 @@ const mutations = {
         const { name, data } = i_oPayload;
 
         _projectExists(i_oState, name);
+
+        // Sort tags alphabetically
+        if (data.tags) {
+            data.tags.sort();
+        }
 
         const oProjectData = i_oState[name];
         let oUpdatedProjectData = update(oProjectData, {

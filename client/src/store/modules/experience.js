@@ -51,6 +51,11 @@ const mutations = {
             _experienceDoesNotExist(i_oState, sID);
         }
 
+        // Sort tags alphabetically
+        if (data.tags) {
+            data.tags.sort();
+        }
+
         // Add the experience item
         Vue.set(i_oState, sID, data);
     },
@@ -66,6 +71,11 @@ const mutations = {
         const { id, data } = i_oPayload;
 
         _experienceExists(i_oState, id);
+
+        // Sort tags alphabetically
+        if (data.tags) {
+            data.tags.sort();
+        }
 
         const oExperienceData = i_oState[id];
         let oUpdatedExperienceData = update(oExperienceData, {

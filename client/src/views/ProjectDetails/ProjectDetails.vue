@@ -42,7 +42,7 @@
                     <div class="ProjectDetails__tags">
                         <!-- Generate tags -->
                         <tag-item
-                            v-for="(tag, index) in projectDataSortedTags"
+                            v-for="(tag, index) in projectData.tags"
                             :key="index"
                             class="ProjectDetails__tag-item"
                             :height="2.5"
@@ -205,9 +205,6 @@ export default {
         },
         projectNotFound() {
             return !this.projectDataLoaded && Object.keys(this.projects).length > 0;
-        },
-        projectDataSortedTags() {
-            return this.projectData.tags.splice(0).sort();
         },
         // Date properties
         startDate() {
