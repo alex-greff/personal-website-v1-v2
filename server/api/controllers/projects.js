@@ -161,9 +161,13 @@ exports.projects_update_project = async (req, res, next) => {
         }
 
         // Construct the new gallery images list
-        updateOps['galleryImages'] = {};
-        if (!!req.files && !!req.files['galleryImages']) {
+        if (req.files && req.files['galleryImages']) {
             req.files['galleryImages'].forEach(galleryImage => {
+                // Initialize gallery images update ops if it hasn't been already
+                if (!updateOps['galleryImages']) {
+                    updateOps['galleryImages'] = {};
+                }
+
                 updateOps['galleryImages'][new mongoose.Types.ObjectId()] = galleryImage.path;
             });
         }
@@ -177,7 +181,7 @@ exports.projects_update_project = async (req, res, next) => {
             }
 
             // Clear the old gallery images, if needed
-            if (doc.galleryImages) {
+            if (updateOps['galleryImages']) {
                 doc.galleryImages.forEach((imagePath) => {
                     Utilities.cleanupFile(imagePath); // Cleanup the image
                 });
