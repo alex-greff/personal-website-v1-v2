@@ -361,7 +361,7 @@ export function getFormattedDate(i_dDate, i_bShowDay = false) {
     
     const day = i_dDate.getDate();
     const month_index = i_dDate.getMonth();
-    const month = month_names[month_index + 1];
+    const month = month_names[month_index];
     const year = i_dDate.getFullYear();
     
     if (!i_bShowDay) {
