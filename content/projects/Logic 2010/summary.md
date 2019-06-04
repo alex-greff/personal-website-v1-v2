@@ -1,1 +1,1 @@
-A high-fidelity prototype redesign of [Logic 2010](https://logiclx.humnet.ucla.edu/) done as the final project for **CSCC10: Human-Computer Interaction**.
+A high-fidelity prototype redesign of [Logic 2010](https://logiclx.humnet.ucla.edu/) done as the final project for the course **CSCC10: Human-Computer Interaction**.

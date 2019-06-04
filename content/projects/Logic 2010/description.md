@@ -1,1 +1,7 @@
-Something
+# Background
+
+The group project for **CSCC10: Human-Computer Interaction** was to redesign or create an interface using the concepts learned throughout the course. Our team decided upon redesigning the **PHLB50: Introduction to Symbolic Logic** course software, [Logic 2010](https://logiclx.humnet.ucla.edu/) as a few of our members were taking that course and noticed numerous flaws that we felt could be vastly improved upon. To start, a pitch was made on how we planned to improve the software. Over the course of the semester data was the gathered from a variety of different subjects through various sources including questionaires, interviews and study groups. Using common HCI guidlines such as [Nielsen's 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) and [5 Usability Components](https://www.nngroup.com/articles/usability-101-introduction-to-usability/) multiple improvements were reasearched and gathered together. The high-fidelity website was a direct accumulation of all the work done throughout the project.
+
+# The Site
+
+The website is a static HTML site utilizing Bootstrap to develop a high-fidelity working prototype of the [Logic 2010](https://logiclx.humnet.ucla.edu/) redesign.
