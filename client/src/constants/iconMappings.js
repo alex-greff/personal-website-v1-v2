@@ -12,5 +12,6 @@ export default {
     "vimeo": "brands/vimeo-v",
     "docker": "brands/docker",
     "twitter": "brands/twitter",
+    "download": "download",
     "default": "link",
 };

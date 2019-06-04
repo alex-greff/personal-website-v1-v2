@@ -26,6 +26,7 @@ import "vue-awesome/icons/brands/vimeo-v";
 import "vue-awesome/icons/brands/docker";
 import "vue-awesome/icons/brands/twitter";
 import "vue-awesome/icons/link";
+import "vue-awesome/icons/download";
 
 Vue.config.productionTip = false;
 
