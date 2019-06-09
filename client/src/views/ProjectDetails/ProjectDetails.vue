@@ -430,10 +430,7 @@ export default {
         $transition-time: 0.4s;
 
         & .ProjectDetails__content {
-            position: relative;
-        
-            margin-top: 4.5rem;
-            margin-bottom: 3rem;
+            @include Standard-Page-Layout(130rem);
 
             & .ProjectDetails__heading {
                 display: grid;
@@ -649,34 +646,6 @@ export default {
                 & /deep/ .ProjectDetails__tab-view {
                     margin-top: 0.7rem;
                 }
-            }
-
-            // ---------------------
-            // --- Media Queries ---
-            // ---------------------
-            @include respond(big-desktop) {
-                margin-right: 30rem;
-                margin-left: 30rem;
-            }
-
-            @include respond(normal) {
-                margin-right: 18rem;
-                margin-left: 18rem;
-            }
-
-            @include respond(tab-land) {
-                margin-right: 10rem;
-                margin-left: 10rem;
-            }
-
-            @include respond(tab-port) {
-                margin-right: 5rem;
-                margin-left: 5rem;
-            }
-
-            @include respond(phone) {
-                margin-right: 3rem;
-                margin-left: 3rem;
             }
         }
     }

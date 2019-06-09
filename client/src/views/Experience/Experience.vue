@@ -301,18 +301,8 @@ const _leaveAnim = (el) => {
 
 <style lang="scss" scoped>
     .Experience {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
         & > .Experience__content {
-            position: relative;
-
-            margin-top: 4.5rem;
-            margin-bottom: 3rem;
-
-            max-width: 100rem;
-            width: 100%;
+            @include Standard-Page-Layout(100rem);
 
             & > .Experience__title {
                 text-align: center;
@@ -331,34 +321,6 @@ const _leaveAnim = (el) => {
                 display: grid;
                 grid-row-gap: 2rem;
             }
-        }
-
-        // ---------------------
-        // --- Media Queries ---
-        // ---------------------
-        @include respond(big-desktop) {
-            margin-right: 20rem;
-            margin-left: 20rem;
-        }
-
-        @include respond(normal) {
-            margin-right: 15rem;
-            margin-left: 15rem;
-        }
-
-        @include respond(tab-land) {
-            margin-right: 10rem;
-            margin-left: 10rem;
-        }
-
-        @include respond(tab-port) {
-            margin-right: 5rem;
-            margin-left: 5rem;
-        }
-
-        @include respond(phone) {
-            margin-right: 3rem;
-            margin-left: 3rem;
         }
     }
 </style>

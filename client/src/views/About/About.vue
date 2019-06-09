@@ -121,23 +121,8 @@ export default {
 
 <style lang="scss" scoped>
     .About {
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-
         & > .About__content {
-            $padding-amount: 2rem;
-
-            position: relative;
-
-            margin-top: 4.5rem;
-            margin-bottom: 3rem;
-
-            max-width: 90rem;
-            width: 100vw;
-
-            padding-left: $padding-amount;
-            padding-right: $padding-amount;
+            @include Standard-Page-Layout(90rem);
 
             & > .About__title {
                 text-align: center;

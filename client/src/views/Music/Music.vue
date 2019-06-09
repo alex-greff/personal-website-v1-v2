@@ -223,23 +223,8 @@ const _leaveAnim = (el) => {
 
 <style lang="scss" scoped>
     .Music {
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-
         & > .Music__content {
-            $padding-amount: 2rem;
-
-            position: relative;
-
-            margin-top: 4.5rem;
-            margin-bottom: 3rem;
-
-            max-width: 150rem;
-            width: 100vw;
-
-            padding-left: $padding-amount;
-            padding-right: $padding-amount;
+            @include Standard-Page-Layout(130rem);
 
             & > .Music__title {
                 text-align: center;

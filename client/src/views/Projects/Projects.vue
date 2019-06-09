@@ -303,10 +303,7 @@ const _leaveAnim = (el) => {
 
     .Projects {
         & .Projects__content {
-            position: relative;
-        
-            margin-top: 4.5rem;
-            margin-bottom: 3rem;
+            @include Standard-Page-Layout(130rem);
 
             & .Projects__title {
                 text-align: center;
@@ -337,7 +334,7 @@ const _leaveAnim = (el) => {
                 // --- Media Queries ---
                 // ---------------------
                 @include respond(big-desktop) {
-                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                    grid-template-columns: 1fr 1fr 1fr;
                 }
 
                 @include respond(normal) {
@@ -355,34 +352,6 @@ const _leaveAnim = (el) => {
                 @include respond(phone) {
                     grid-template-columns: 1fr;
                 }
-            }
-
-            // ---------------------
-            // --- Media Queries ---
-            // ---------------------
-            @include respond(big-desktop) {
-                margin-right: 20rem;
-                margin-left: 20rem;
-            }
-
-            @include respond(normal) {
-                margin-right: 15rem;
-                margin-left: 15rem;
-            }
-
-            @include respond(tab-land) {
-                margin-right: 10rem;
-                margin-left: 10rem;
-            }
-
-            @include respond(tab-port) {
-                margin-right: 5rem;
-                margin-left: 5rem;
-            }
-
-            @include respond(phone) {
-                margin-right: 3rem;
-                margin-left: 3rem;
             }
         }
     }
