@@ -25,3 +25,13 @@ echo "STARTING DOCKER IMAGES..."
 echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d
 
 echo "DOCKER IMAGES RUNNING"
+
+# Cleanup previous image caches
+echo "CLEANING UP IMAGE CACHE..."
+
+echo "$TRAVIS_USER_PASSWORD" | sudo -S docker image prune -af
+
+echo "IMAGE CACHE CLEANUP COMPLETED..."
+
+# Done!
+echo "COMPLETED DEPLOYMENT!"
