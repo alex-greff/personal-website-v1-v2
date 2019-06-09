@@ -1,1 +1,1 @@
-TODO
+A linux-inspired command shell built using Java done as the final project for **CSCB07: Software Design**. Created with resusable and maintainable code in mind, using [SOLID](https://deviq.com/solid/) design-principals and common [Design Patterns](https://sourcemaking.com/design_patterns). Developed in a team of 4 adhering to **Agile/Scrum** methodologies.

@@ -4,4 +4,4 @@ The group project for **CSCC10: Human-Computer Interaction**, redesigning the **
 
 # The Site
 
-The website is a static HTML site using Bootstrap for layout and components. A pseudo data-set was populated into the site in order to give a more finished appearance.
+The website is a static HTML site using Bootstrap for layout and components. A pseudo data-set was populated into the site in order to give a more user-expected appearance.
