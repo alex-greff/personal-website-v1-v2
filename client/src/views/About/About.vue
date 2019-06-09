@@ -122,7 +122,7 @@ export default {
 <style lang="scss" scoped>
     .About {
         & > .About__content {
-            @include Standard-Page-Layout(90rem);
+            @include Standard-Page-Layout(100rem);
 
             & > .About__title {
                 text-align: center;
