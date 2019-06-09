@@ -1,1 +1,1 @@
-TODO
+A simple ASCII-based arcade-inspired command line game. The game engine and game itself were developed completely from scratch using **Java**. Made for a school project in my grade 12 computer science class.
