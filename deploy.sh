@@ -2,9 +2,7 @@
 
 set -xe # -x print commands, -e exit immediately if non-zero exit code occurs 
 
-# --------------------------
-# --- Run docker compose ---
-# --------------------------
+# --- Initialize LetsEncrypt ---
 
 cd /home/travis/app
 
@@ -19,19 +17,27 @@ if [ $PERSONAL_WEBSITE_INIT_CERTIFICATION != "0" ]; then
 fi
 
 
-# Start the containers
+
+# --- Start docker containers ---
+
 echo "STARTING DOCKER IMAGES..."
 
 echo "$TRAVIS_USER_PASSWORD" | sudo -SE docker-compose up -d
 
 echo "DOCKER IMAGES RUNNING"
 
-# Cleanup previous image caches
+
+
+# --- Cleanup previous image caches ---
+
 echo "CLEANING UP IMAGE CACHE..."
 
 echo "$TRAVIS_USER_PASSWORD" | sudo -S docker image prune -af
 
 echo "IMAGE CACHE CLEANUP COMPLETED..."
 
-# Done!
+
+
+# --- Done! ---
+
 echo "COMPLETED DEPLOYMENT!"
