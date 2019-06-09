@@ -33,10 +33,12 @@
                         />
                     </div>
                     <div class="ProjectDetails__summary">
-                        <div class="ProjectDetails__summary-text">
-                            <pd-description 
-                                :description-markdown="projectData.summary"
-                            />
+                        <div class="ProjectDetails__summary-scroll">
+                            <div class="ProjectDetails__summary-text">
+                                <pd-description 
+                                    :description-markdown="projectData.summary"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div class="ProjectDetails__tags">
@@ -62,7 +64,7 @@
                     :tabs="tabs"
                     :initial-selected-tab="initialTab"
                 >
-                    <template v-slot:description_selector>
+                    <template v-if="hasDescription" v-slot:description_selector>
                         <pd-tab-selector 
                             tab-name="description"
                             :height="tabSelectorHeight"
@@ -74,7 +76,7 @@
                         </pd-tab-selector>
                     </template>
 
-                    <template v-slot:description>
+                    <template v-if="hasDescription" v-slot:description>
                         <tab>
                             <pd-description 
                                 :description-markdown="projectData.description"    
@@ -152,7 +154,6 @@ export default {
     },
     data() {
         return {
-            initialTab: "description",
             // Tab selector config
             tabSelectorHeight: 3.7, // rem
             tabSelectorWidth: 18, // rem
@@ -225,6 +226,9 @@ export default {
             const oGalleryImages = this.projectData.galleryImages;
             return Object.values(oGalleryImages).length > 0;
         },
+        hasDescription() {
+            return !!this.projectData.description;
+        },
         galleryImageList() {
             const oGalleryImages = this.projectData.galleryImages;
             return Object.values(oGalleryImages);
@@ -239,6 +243,9 @@ export default {
             return {
                 marginLeft: (this.tabSelectorSpaceBetween - gutterLength) + "rem"
             }
+        },
+        initialTab() {
+            return (this.hasDescription) ? "description" : ((this.hasGalleryImages) ? "gallery" : null);
         }
     },
     methods: {
@@ -536,13 +543,9 @@ export default {
 
                     position: relative;
 
-                    $padding-sides: 3rem;
-                    $padding-top: 1rem;
-
                     width: 100%;
                     height: 100%;
                     min-height: 15rem;
-                    padding: $padding-top $padding-sides;
 
                     background-color: theme-link("page", "bg-color", "secondary");
 
@@ -552,30 +555,53 @@ export default {
                         content: "";
                         will-change: width, background-color;
 
-                        position: absolute;
+                        position: fixed;
                         top: 0;
                         left: 0;
                         height: 100%;
+
                         width: 5px;
                         background-color: theme-link("page", "accent-color", "secondary", 1);
 
                         transition: width $transition-time, background-color $transition-time;
                     }
 
-                    & .ProjectDetails__summary-text {
-                        @include V_Align(absolute);
+                    & .ProjectDetails__summary-scroll {
+                        $padding-sides: 3rem;
+                        $padding-top: 1rem;
 
-                        width: calc(100% - #{$padding-sides * 2});
-                        max-height: calc(100% - #{$padding-top * 2});
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
 
-                        // NOTE: because the summary is more than 1 line we can't use this code to show ellipsis on overflow:
-                        // text-overflow: ellipsis;
-                        // white-space: nowrap;
-                        // overflow: hidden;
-                        
+                        padding: $padding-top $padding-sides;
+
                         // So giving a scrollbar is the only way to (nicely) deal with the text overflow
                         // Either way the summary shouldn't be that long in the first place
                         overflow: auto;
+
+                        & .ProjectDetails__summary-text {
+                            @include V_Align(absolute);
+
+                            width: calc(100% - #{$padding-sides * 2});
+                            max-height: calc(100% - #{$padding-top * 2});
+
+                            // NOTE: because the summary is more than 1 line we can't use this code to show ellipsis on overflow:
+                            // text-overflow: ellipsis;
+                            // white-space: nowrap;
+                            // overflow: hidden;
+                        }
+
+                        @include respond(phone) {
+                            $padding-top: 1rem;
+                            $padding-sides: 3rem;
+                            padding: $padding-top $padding-sides;
+
+                            & .ProjectDetails__summary-text {
+                                width: calc(100% - #{$padding-sides * 2});
+                                max-height: calc(100% - #{$padding-top * 2});
+                            }
+                        }
                     }
                 }
 
