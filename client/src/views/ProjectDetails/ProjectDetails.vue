@@ -34,8 +34,9 @@
                     </div>
                     <div class="ProjectDetails__summary">
                         <div class="ProjectDetails__summary-scroll">
-                            <div class="ProjectDetails__summary-text">
+                            <div class="ProjectDetails__summary-text-container">
                                 <pd-description 
+                                    class="ProjectDetails__summary-text"
                                     :description-markdown="projectData.summary"
                                 />
                             </div>
@@ -574,34 +575,28 @@ export default {
                         width: 100%;
                         height: 100%;
 
-                        padding: $padding-top $padding-sides;
+                        padding: 0rem $padding-sides;
 
                         // So giving a scrollbar is the only way to (nicely) deal with the text overflow
                         // Either way the summary shouldn't be that long in the first place
                         overflow: auto;
 
-                        & .ProjectDetails__summary-text {
+                        & .ProjectDetails__summary-text-container {
                             @include V_Align(absolute);
 
                             width: calc(100% - #{$padding-sides * 2});
-                            max-height: calc(100% - #{$padding-top * 2});
+                            max-height: 100%;
 
                             // NOTE: because the summary is more than 1 line we can't use this code to show ellipsis on overflow:
                             // text-overflow: ellipsis;
                             // white-space: nowrap;
                             // overflow: hidden;
-                        }
-
-                        @include respond(phone) {
-                            $padding-top: 1rem;
-                            $padding-sides: 3rem;
-                            padding: $padding-top $padding-sides;
 
                             & .ProjectDetails__summary-text {
-                                width: calc(100% - #{$padding-sides * 2});
-                                max-height: calc(100% - #{$padding-top * 2});
+                                padding: $padding-top 0rem;
                             }
                         }
+                        
                     }
                 }
 
