@@ -197,7 +197,7 @@ export default {
         },
         // Project properties
         projectName() {
-            return this.$route.params.id;
+            return this.$route.params.id.replace(/-/g, ' ');
         },
         projectData() {
             return this.projects[this.projectName];

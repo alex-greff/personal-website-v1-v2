@@ -89,7 +89,7 @@ export default {
             return stringList.trim().replace(/,$/, "");
         },
         detailsRouterPath() {
-            return `/projects/${this.projectData.name}`;
+            return `/projects/${this.projectData.name.replace(/\s/g, '-')}`;
         },
         links() {
             const links = this.projectData.links;
