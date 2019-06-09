@@ -7,7 +7,7 @@ const projectSchema = mongoose.Schema({
     // Text info
     name: { type: String, required: true, unique: true },
     summary: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String, required: false, default: null },
 
     // Listed info
     links: { type: mongoose.Schema.Types.Mixed, required: false, default: {} }, 
