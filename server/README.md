@@ -5,7 +5,7 @@ The back-end server for my personal website built using [NodeJS](https://nodejs.
 * [Roles](#roles)
 * [HTTP Requests](#http-requests)
     * [Projects](#projects)
-    * [Experiences](#experiences)
+    * [experience](#experience)
     * [Users](#users)
     * [Themes](#themes)
     * [Music](#music)
@@ -129,20 +129,20 @@ Note: for requests that have permissions a valid JWT token obtained from ``` [..
 
 
 
-# Experiences
+# Experience
 
-#### Get all experiences
-&nbsp;&nbsp;Endpoint: ```GET: [...]/api/experiences```
+#### Get all experience
+&nbsp;&nbsp;Endpoint: ```GET: [...]/api/experience```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Get specific experience
-&nbsp;&nbsp;Endpoint: ```GET: [...]/api/experiences/:experienceID```
+&nbsp;&nbsp;Endpoint: ```GET: [...]/api/experience/:experienceID```
 
 &nbsp;&nbsp;Permissions Required: *none*
 
 #### Create new experience
-&nbsp;&nbsp;Endpoint: ```POST: [...]/api/experiences```
+&nbsp;&nbsp;Endpoint: ```POST: [...]/api/experience```
 
 &nbsp;&nbsp;Permissions Required: **create-experience**
 
@@ -161,7 +161,7 @@ Note: for requests that have permissions a valid JWT token obtained from ``` [..
 ```
 
 #### Update existing experience
-&nbsp;&nbsp;Endpoint: ```PATCH: [...]/api/experiences/:experienceID```
+&nbsp;&nbsp;Endpoint: ```PATCH: [...]/api/experience/:experienceID```
 
 &nbsp;&nbsp;Permissions Required: **edit-experience**
 
@@ -180,7 +180,7 @@ Note: for requests that have permissions a valid JWT token obtained from ``` [..
 ```
 
 #### Delete experience
-&nbsp;&nbsp;Endpoint: ```DELETE: [...]/api/experiences/:experienceID```
+&nbsp;&nbsp;Endpoint: ```DELETE: [...]/api/experience/:experienceID```
 
 &nbsp;&nbsp;Permissions Required: **delete-experience**
 
