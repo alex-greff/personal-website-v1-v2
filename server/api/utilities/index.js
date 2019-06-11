@@ -110,7 +110,7 @@ exports.validateObject = (i_oObj, i_fnValidator) => {
 };
 
 exports.getURLBase = (req) => {
-    return `${req.protocol}://${req.headers.host}${req.baseUrl}`;
+    return `${req.baseUrl}`;
 };
 
 exports.sanitizeImagePath = (raw) => {

@@ -71,7 +71,7 @@ exports.music_get_all = async (req, res, next) => {
 
         console.log("FROM DATABASE\n", docs);
 
-        const url = `${Utilities.getURLBase(req)}`;
+        const url = `${Utilities.getURLBase(req)}/artists`;
 
         const aAllTracks = docs.reduce((acc, doc) => {
             const aTracks = doc.tracks.reduce((acc_sub, i_oTrackData) => {
@@ -95,7 +95,7 @@ exports.music_get_all = async (req, res, next) => {
             tracks: aAllTracks,
             request: {
                 type: "GET", 
-                url: `${url}/artists`
+                url: url
             }
         });   
     } catch(err) {
@@ -110,7 +110,7 @@ exports.music_get_all_artist_profiles = async (req, res, next) => {
     try {
         const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
 
-        const urlBase = `${Utilities.getURLBase(req)}/artists`;
+        const url = `${Utilities.getURLBase(req)}/artists/${doc._id}`;
 
         console.log("FROM DATABASE\n", docs);
 
@@ -122,7 +122,7 @@ exports.music_get_all_artist_profiles = async (req, res, next) => {
                     ...Utilities.filterByKeys(doc, ...ARTIST_PROFILE_FIELDS),
                     request: {
                         type: "GET",
-                        url: `${urlBase}/${doc._id}`
+                        url: url
                     }
                 }
             })
@@ -288,8 +288,9 @@ exports.music_delete_artist_profile = async (req, res, next) => {
 
         console.log("REMOVED ARTIST PROFILE\n", removed);
 
-        // Send response
         const url = Utilities.getURLBase(req);
+
+        // Send response
         res.status(200).json({
             message: "Artist profile deleted",
             request: {

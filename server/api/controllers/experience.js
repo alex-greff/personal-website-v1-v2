@@ -13,7 +13,7 @@ exports.experience_get_all = async (req, res, next) => {
     try {
         const docs = await Experience.find().select(SELECTED_FIELDS).exec();
 
-        const urlBase = Utilities.getURLBase(req);
+        const url = `${Utilities.getURLBase(req)}/${doc._id}`;
 
         console.log("FROM DATABASE\n", docs);
 
@@ -25,7 +25,7 @@ exports.experience_get_all = async (req, res, next) => {
                     ...Utilities.filterByKeys(doc, ...EXPERIENCE_ITEM_FIELDS),
                     request: {
                         type: "GET",
-                        url: `${urlBase}/${doc._id}`
+                        url: url
                     }
                 }
             })

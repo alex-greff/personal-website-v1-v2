@@ -64,12 +64,18 @@ exports.about_override_info = async (req, res, next) => {
         // Save the doc to the database
         const result = await about.save();
 
+        const url = `${Utilities.getURLBase(req)}`;
+
         console.log("OVERRODE ABOUT\n", result);
 
         // Send response 
         res.status(201).json({
             message: "Overrode/initialized about successfully",
             about: Utilities.filterByKeys(result, ...ABOUT_FIELDS),
+            request: {
+                type: "GET",
+                url: url
+            }
         });
 
     } catch(err) {
@@ -122,9 +128,15 @@ exports.about_update_info = async (req, res, next) => {
                 throw "About document not initialized. Change request type to POST."
             }
 
+            const url = `${Utilities.getURLBase(req)}`;
+
             // Send response
             res.status(200).json({
-                message: "About updated"
+                message: "About updated",
+                request: {
+                    type: "GET",
+                    url: url
+                }
             });
 
         } else {
