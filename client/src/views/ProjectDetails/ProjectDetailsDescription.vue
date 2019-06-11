@@ -25,6 +25,6 @@ export default {
     .ProjectDetailsDescription {
         width: 100%;
 
-        @include markdown-theme(2.5rem, 1.5rem, true);
+        @include markdown-theme(2.5rem, 1.7rem, true);
     }
 </style>
