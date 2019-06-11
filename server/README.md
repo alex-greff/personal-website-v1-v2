@@ -129,7 +129,7 @@ Note: for requests that have permissions a valid JWT token obtained from ``` [..
 
 
 
-# Experience
+# Experiences
 
 #### Get all experiences
 &nbsp;&nbsp;Endpoint: ```GET: [...]/api/experiences```
