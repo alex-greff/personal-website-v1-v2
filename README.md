@@ -25,7 +25,7 @@
 ## Documentation
 
 * [Client](/client/README.md)
-    * [Theme System](/client/README.md#theme&#32;system)
+    * [Theme System](/client/README.md#theme-system)
 
 * [Server](/server/README.md)
     * [Roles](/server/README.md#roles)

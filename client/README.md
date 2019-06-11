@@ -3,7 +3,7 @@
 The front-end client built using [Vue.js](https://vuejs.org/).
 
 ## Table of Contents
-* [Theme System](#theme&#32;system)
+* [Theme System](#theme-system)
 
 ## Theme System
 
