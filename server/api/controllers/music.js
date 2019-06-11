@@ -110,14 +110,14 @@ exports.music_get_all_artist_profiles = async (req, res, next) => {
     try {
         const docs = await ArtistProfile.find().select(ARTIST_PROFILE_SELECTED_FIELDS).exec();
 
-        const url = `${Utilities.getURLBase(req)}/artists/${doc._id}`;
-
         console.log("FROM DATABASE\n", docs);
 
         // Send response
         res.status(200).json({
             count: docs.length,
             artistProfiles: docs.map(doc => {
+                const url = `${Utilities.getURLBase(req)}/artists/${doc._id}`;
+
                 return {
                     ...Utilities.filterByKeys(doc, ...ARTIST_PROFILE_FIELDS),
                     request: {
