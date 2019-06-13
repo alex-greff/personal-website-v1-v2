@@ -149,6 +149,10 @@
 
                     background-color: theme-link("project-details", "selected-color", "primary");
                 }
+
+                &:not(:last-child) {
+                    margin-bottom: 0.6rem;
+                }
             }
         }
 
