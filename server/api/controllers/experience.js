@@ -94,7 +94,7 @@ exports.experience_get_experience = async (req, res, next) => {
 
             // Send response
             res.status(200).json({
-                project: doc,
+                experience: doc,
                 request: {
                     type: "GET",
                     url: url
@@ -116,7 +116,7 @@ exports.experience_get_experience = async (req, res, next) => {
 };
 
 exports.experience_update_experience = async (req, res, next) => {
-    const id = req.params.projectID;
+    const id = req.params.experienceID;
 
     try {
         // Construct update operations object
@@ -137,6 +137,8 @@ exports.experience_update_experience = async (req, res, next) => {
         const result = await Experience.updateOne({ _id: id }, { $set: updateOps }, { runValidators: true }).exec();
 
         const url = `${Utilities.getURLBase(req)}/${id}`;
+
+        console.log(result);
 
         if (!result || result.nModified < 1) {
             return res.status(404).json({
