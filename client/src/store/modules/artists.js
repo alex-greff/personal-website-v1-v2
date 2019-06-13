@@ -111,7 +111,7 @@ const actions = {
                 });
             })
         } catch(err) {
-            console.log("Unable to retrieve artist profiles from server\n", err);
+            console.error("Unable to retrieve artist profiles from server\n", err);
         }
     },
     [actionTypes.ADD_ARTIST_PROFILE]: ({ commit }, i_oPayload) => {

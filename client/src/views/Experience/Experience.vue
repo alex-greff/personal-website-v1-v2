@@ -37,9 +37,12 @@
                     :experience-item-data="experienceItem"
                 />
             </transition-group>
-            <div v-else>
-                Loading...
-            </div>
+            <loading-text 
+                v-else
+                class="Experience__loading-text"
+            >
+                Loading
+            </loading-text>
         </div>
     </div>
 </template>
@@ -54,6 +57,7 @@ import Utilities from "@/utilities";
 import ExperienceItem from "@/views/Experience/ExperienceItem.vue";
 import ExperienceFilter from "@/views/Experience/ExperienceFilter.vue";
 import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
+import LoadingText from "@/components/ui/LoadingText.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -66,6 +70,7 @@ export default {
         experienceItem: ExperienceItem,
         experienceFilter: ExperienceFilter,
         emptyFilterDisplay: EmptyFilterDisplay,
+        loadingText: LoadingText,
     },
     data() {
         return {
@@ -231,6 +236,7 @@ const _enterAnim = (el) => {
         const titleEl = el.querySelector(".Experience__title");
         const filterItemEls = el.querySelectorAll(".Experience__filter-item");
         const experienceItemEls = el.querySelectorAll(".Experience__item-content");
+        const loadingEl = el.querySelector(".Experience__loading-text");
 
         // Kill any running animations (that we know are for sure there)
         TweenLite.killTweensOf(titleEl);
@@ -243,11 +249,13 @@ const _enterAnim = (el) => {
         // This combats the issue where experienceItemEls does not get rendered right away
         if (filterItemEls.length <= 0 || experienceItemEls.length <= 0) {
             forceRunExperienceElsAnims = true;
-            return;
         }
 
-        // Run the experience els animations, ignoring any flags
         _animateInExperienceEls(el, true, tl);
+
+        if (loadingEl) {
+            tl.add(TweenLite.fromTo(loadingEl, 0.5, { x: -20, opacity: 0}, {x: 0, opacity: 1}), "-=0.45");
+        }
     });
 };
 
@@ -262,6 +270,7 @@ const _leaveAnim = (el) => {
         const filterItemEls = el.querySelectorAll(".Experience__filter-item");
         const filterSubScriptEl = el.querySelector(".Experience__filter-sub-script");
         const experienceItemEls = el.querySelectorAll(".Experience__item-content");
+        const loadingEl = el.querySelector(".Experience__loading-text");
 
         // Kill any running animations
         TweenLite.killTweensOf([titleEl, ...filterItemEls, ...experienceItemEls]);
@@ -295,6 +304,10 @@ const _leaveAnim = (el) => {
             ),
             `-=${nFilterTotalTime}`
         );
+
+        if (loadingEl) {
+            tl.add(TweenLite.to(loadingEl, 0.5, { x: 20, opacity: 0}), "-=0.45");
+        }
     });
 };
 </script>
@@ -320,6 +333,12 @@ const _leaveAnim = (el) => {
 
                 display: grid;
                 grid-row-gap: 2rem;
+            }
+
+            & > .Experience__loading-text {
+                color: theme-link("page", "accent-color", "primary");
+                font-size: 1.5rem;
+                line-height: 2rem;
             }
         }
     }

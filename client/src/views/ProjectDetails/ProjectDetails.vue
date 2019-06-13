@@ -111,13 +111,14 @@
                 v-else-if="projectNotFound"
                 class="ProjectDetails__not-found"
             >
-                <!-- TODO: complete -->
-                Not found
+                Project Not found
             </div>
-            <div v-else>
-                <!-- TODO: complete -->
-                Loading...
-            </div>            
+            <loading-text 
+                v-else
+                class="ProjectDetails__loading-text"
+            >
+                Loading
+            </loading-text>
         </div>
     </div>
 </template>
@@ -136,6 +137,7 @@ import Tabs from "@/components/tabs/Tabs.vue";
 import Tab from "@/components/tabs/Tab.vue";
 
 import ImageCarousel from "@/components/carousel/ImageCarousel.vue";
+import LoadingText from "@/components/ui/LoadingText.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -152,6 +154,7 @@ export default {
         tab: Tab,
         pdTabSelector: ProjectDetailsTabSelector,
         gallery: ImageCarousel,
+        loadingText: LoadingText,
     },
     data() {
         return {
@@ -294,56 +297,66 @@ export default {
             const tabSelectorEls = el.querySelectorAll(".ProjectDetails__tab-selector");
             const tabViewEl = el.querySelector(".ProjectDetails__tab-view");
 
+            const loadingEl = el.querySelector(".ProjectDetails__loading-text");
+
             // Kill anims
             TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
 
-            // Run animations
-            const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
+            if (loadingEl) {
+                tl.add(TweenLite.fromTo(loadingEl, 0.5, { x: -20, opacity: 0}, {x: 0, opacity: 1}));
+            }
 
-            const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
-            const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
-            const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+            const bLoading = !titleEl; // If the title element doesnt exist then its still loading
 
-            const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
+            if (!bLoading) {
+                // Run animations
+                const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
 
-            tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
-            tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
-            tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
-            tl.add(TweenLite.fromTo(summaryEl, summaryDuration, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
-            tl.add(
-                TweenMax.staggerFromTo(
-                    linkItemEls,
-                    0.5, 
-                    { ...REG_ANIM_START_RIGHT },
-                    { ...REG_ANIM_END },
-                    0.1
-                ),
-                `-=${summaryDuration}`
-            );
+                const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+                const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
+                const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
 
-            tl.add(
-                TweenMax.staggerFromTo(
-                    tagItemEls,
-                    STAGGER_DURATION, 
-                    { ...REG_ANIM_START_RIGHT },
-                    { ...REG_ANIM_END },
-                    nTagsStagger
-                ),
-                `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
-            );
+                const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
 
-            const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
-            tl.add(
-                TweenMax.staggerFromTo(
-                    tabSelectorEls,
-                    0.5, 
-                    { ...REG_ANIM_START_RIGHT },
-                    { ...REG_ANIM_END },
-                    0.1
-                ),
-                `-=${Math.max(0, nTagsTotalTime - 0.3)}`
-            );
-            tl.add(TweenLite.fromTo(tabViewEl, 1, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
+                tl.add(TweenLite.fromTo(titleEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END } ));
+                tl.add(TweenLite.fromTo(thumbnailImageEl, 0.75, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), "-=0.5");
+                tl.add(TweenLite.fromTo(dateEl, 0.75, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
+                tl.add(TweenLite.fromTo(summaryEl, summaryDuration, { ...REG_ANIM_START_RIGHT }, { ...REG_ANIM_END }), "-=0.5");
+                tl.add(
+                    TweenMax.staggerFromTo(
+                        linkItemEls,
+                        0.5, 
+                        { ...REG_ANIM_START_RIGHT },
+                        { ...REG_ANIM_END },
+                        0.1
+                    ),
+                    `-=${summaryDuration}`
+                );
+
+                tl.add(
+                    TweenMax.staggerFromTo(
+                        tagItemEls,
+                        STAGGER_DURATION, 
+                        { ...REG_ANIM_START_RIGHT },
+                        { ...REG_ANIM_END },
+                        nTagsStagger
+                    ),
+                    `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
+                );
+
+                const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
+                tl.add(
+                    TweenMax.staggerFromTo(
+                        tabSelectorEls,
+                        0.5, 
+                        { ...REG_ANIM_START_RIGHT },
+                        { ...REG_ANIM_END },
+                        0.1
+                    ),
+                    `-=${Math.max(0, nTagsTotalTime - 0.3)}`
+                );
+                tl.add(TweenLite.fromTo(tabViewEl, 1, { ...REG_ANIM_START_LEFT }, { ...REG_ANIM_END }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
+            }
         });
     },
     leaveAnim(el) {
@@ -373,53 +386,63 @@ export default {
             const tabSelectorEls = Array.from(el.querySelectorAll(".ProjectDetails__tab-selector")).reverse();
             const tabViewEl = el.querySelector(".ProjectDetails__tab-view");
 
+            const loadingEl = el.querySelector(".ProjectDetails__loading-text");
+
             // Kill anims
             TweenLite.killTweensOf([titleEl, dateEl, thumbnailImageEl, summaryEl, ...linkItemEls, ...tagItemEls, ...tabSelectorEls, tabViewEl]);
 
-            // Run animations
-            const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
-            
-            const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
-            const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
-            const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+            if (loadingEl) {
+                tl.add(TweenLite.to(loadingEl, 0.5, { x: 20, opacity: 0}));
+            }
 
-            const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
+            const bLoading = !titleEl; // If the title element doesnt exist then its still loading
 
-            tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
-            tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
-            tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.75");
-            tl.add(TweenLite.to(summaryEl, summaryDuration, { ...REG_ANIM_END_RIGHT }), "-=0.5");
-            tl.add(
-                TweenMax.staggerTo(
-                    linkItemEls,
-                    0.3, 
-                    { ...REG_ANIM_END_RIGHT },
-                    0.1
-                ),
-                `-=${summaryDuration}`
-            );
+            if (!bLoading) {
+                // Run animations
+                const totalLinkItemsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, linkItemEls.length);
+                
+                const nRegTotalTagsTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
+                const nTagsStagger = (nRegTotalTagsTime > TAGS_MAX_TIME) ? Utilities.calculateStagger(TAGS_MAX_TIME, STAGGER_DURATION, tagItemEls.length) : DEFAULT_STAGGER_TIME;
+                const nTagsTotalTime = (nRegTotalTagsTime > TAGS_MAX_TIME) ? TAGS_MAX_TIME : Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, tagItemEls.length);
 
-            tl.add(
-                TweenMax.staggerTo(
-                    tagItemEls,
-                    STAGGER_DURATION, 
-                    { ...REG_ANIM_END_RIGHT },
-                    nTagsStagger
-                ),
-                `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
-            );
+                const summaryDuration = Math.max(totalLinkItemsAnimTime, nTagsTotalTime);
 
-            const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
-            tl.add(
-                TweenMax.staggerTo(
-                    tabSelectorEls,
-                    0.3, 
-                    { ...REG_ANIM_END_RIGHT },
-                    0.1
-                ),
-                `-=${Math.max(0, nTagsTotalTime - 0.3)}`
-            );
-            tl.add(TweenLite.to(tabViewEl, 1, { ...REG_ANIM_END_RIGHT }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
+                tl.add(TweenLite.to(titleEl, 0.75, { ...REG_ANIM_END_LEFT }));
+                tl.add(TweenLite.to(thumbnailImageEl, 0.75, { ...REG_ANIM_END_LEFT }), "-=0.5");
+                tl.add(TweenLite.to(dateEl, 0.75, { ...REG_ANIM_END_RIGHT }), "-=0.75");
+                tl.add(TweenLite.to(summaryEl, summaryDuration, { ...REG_ANIM_END_RIGHT }), "-=0.5");
+                tl.add(
+                    TweenMax.staggerTo(
+                        linkItemEls,
+                        0.3, 
+                        { ...REG_ANIM_END_RIGHT },
+                        0.1
+                    ),
+                    `-=${summaryDuration}`
+                );
+
+                tl.add(
+                    TweenMax.staggerTo(
+                        tagItemEls,
+                        STAGGER_DURATION, 
+                        { ...REG_ANIM_END_RIGHT },
+                        nTagsStagger
+                    ),
+                    `-=${Math.max(0, totalLinkItemsAnimTime + 0.5)}`
+                );
+
+                const totalTabSelectorsAnimTime = Utilities.totalStaggerTime(0.3, 0.1, tabSelectorEls.length);
+                tl.add(
+                    TweenMax.staggerTo(
+                        tabSelectorEls,
+                        0.3, 
+                        { ...REG_ANIM_END_RIGHT },
+                        0.1
+                    ),
+                    `-=${Math.max(0, nTagsTotalTime - 0.3)}`
+                );
+                tl.add(TweenLite.to(tabViewEl, 1, { ...REG_ANIM_END_RIGHT }), `-=${Math.max(0, totalTabSelectorsAnimTime + 0.5)}`);
+            }
         });
     }
 }
@@ -647,6 +670,14 @@ export default {
                     margin-top: 0.7rem;
                 }
             }
+        }
+
+        & .ProjectDetails__loading-text, .ProjectDetails__not-found {
+            @include Standard-Page-Layout(130rem);
+
+            color: theme-link("page", "accent-color", "primary");
+            font-size: 1.5rem;
+            line-height: 2rem;
         }
     }
 </style>

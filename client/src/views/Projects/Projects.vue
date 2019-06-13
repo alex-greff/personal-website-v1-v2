@@ -38,9 +38,12 @@
                 />
             </transition-group>
 
-            <div v-else>
-                Loading...
-            </div>
+            <loading-text 
+                v-else
+                class="Projects__loading-text"
+            >
+                Loading
+            </loading-text>
         </div>
     </div>
 </template>
@@ -55,6 +58,7 @@ import Utilities from "@/utilities";
 import ProjectItem from "@/views/Projects/ProjectItem.vue";
 import ProjectFilter from "@/views/Projects/ProjectFilter.vue";
 import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
+import LoadingText from "@/components/ui/LoadingText.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -67,6 +71,7 @@ export default {
         projectItem: ProjectItem,
         projectFilter: ProjectFilter,
         emptyFilterDisplay: EmptyFilterDisplay,
+        loadingText: LoadingText,
     },
     data() {
         return {
@@ -230,6 +235,7 @@ const _enterAnim = (el) => {
         const titleEl = el.querySelector(".Projects__title");
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
         const projectItemEls = el.querySelectorAll(".Projects__item-content");
+        const loadingEl = el.querySelector(".Projects__loading-text");
 
         // Kill any running animations (that we know are for sure there)
         TweenLite.killTweensOf(titleEl);
@@ -242,11 +248,14 @@ const _enterAnim = (el) => {
         // This combats the issue where projectItemEls does not get rendered right away
         if (filterItemEls.length <= 0 || projectItemEls.length <= 0) {
             forceRunProjectElsAnims = true;
-            return;
         }
 
         // Run the project els animations, ignoring any flags
         _animateInProjectEls(el, true);
+
+        if (loadingEl) {
+            tl.add(TweenLite.fromTo(loadingEl, 0.5, { x: -20, opacity: 0}, {x: 0, opacity: 1}), "-=0.45");
+        }
     });
 };
 
@@ -261,6 +270,7 @@ const _leaveAnim = (el) => {
         const filterItemEls = el.querySelectorAll(".Projects__filter-item");
         const filterSubScriptEl = el.querySelector(".Projects__filter-sub-script");
         const projectItemEls = el.querySelectorAll(".Projects__item-content");
+        const loadingEl = el.querySelector(".Projects__loading-text");
 
         // Kill any running animations
         TweenLite.killTweensOf([titleEl, ...filterItemEls, ...projectItemEls]);
@@ -294,6 +304,10 @@ const _leaveAnim = (el) => {
             ),
             `-=${nFilterTotalTime}`
         );
+
+        if (loadingEl) {
+            tl.add(TweenLite.to(loadingEl, 0.5, { x: 20, opacity: 0}), "-=0.45");
+        }
     });
 };
 </script>
@@ -352,6 +366,12 @@ const _leaveAnim = (el) => {
                 @include respond(phone) {
                     grid-template-columns: 1fr;
                 }
+            }
+
+            & .Projects__loading-text {
+                color: theme-link("page", "accent-color", "primary");
+                font-size: 1.5rem;
+                line-height: 2rem;
             }
         }
     }

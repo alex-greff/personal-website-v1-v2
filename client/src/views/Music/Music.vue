@@ -49,9 +49,12 @@
                 </div>
             </transition-group>
         </div>
-        <div v-else>
-            Loading...
-        </div>
+        <loading-text 
+            v-else
+            class="Music__loading-text"
+        >
+            Loading
+        </loading-text>
     </div>
 </template>
 
@@ -67,6 +70,7 @@ import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
 import SoundCloudEmbeddedPlayer from "@/components/embeds/SoundCloudEmbeddedPlayer.vue";
 import TextField from "@/components/ui/forms/TextField.vue";
 import EmptyFilterDisplay from "@/components/ui/EmptyFilterDisplay.vue";
+import LoadingText from "@/components/ui/LoadingText.vue";
 
 let pageAnimatedIn = false;
 let forceRunTrackElsAnims = false;
@@ -81,6 +85,7 @@ export default {
         soundCloudEmbeddedPlayer: SoundCloudEmbeddedPlayer,
         textField: TextField,
         emptyFilterDisplay: EmptyFilterDisplay,
+        loadingText: LoadingText,
     },
     data() {
         return {
@@ -155,9 +160,11 @@ export default {
             TweenLite.fromTo(el, DURATION, { opacity: 0 }, { opacity: 1, ease: Power1.easeOut, onComplete: ON_COMPLETE }).delay(DELAY);
         }, 
         trackItemLeaveAnim(el, done) {
-            const ON_COMPLETE = () => done();
-            const DURATION = 0.2;
-            TweenLite.to(el, DURATION, { opacity: 0, ease: Power1.easeIn, onComplete: ON_COMPLETE });
+            if (el) {
+                const ON_COMPLETE = () => done();
+                const DURATION = 0.2;
+                TweenLite.to(el, DURATION, { opacity: 0, ease: Power1.easeIn, onComplete: ON_COMPLETE });
+            }
         }
     },
     // ------------------
@@ -175,14 +182,23 @@ const _enterAnim = (el) => {
     return new Promise((resolve, reject) => {
         const titleEl = el.querySelector(".Music__title");
         const searchFieldEl = el.querySelector(".Music__filter-field");
+        const loadingEl = el.querySelector(".Music__loading-text");
 
         // Kill any running animations (that we know are for sure there)
         TweenLite.killTweensOf([titleEl, searchFieldEl]);
 
         // Run animations
         const tl = new TimelineLite({ onComplete: () => { pageAnimatedIn = true; resolve(); }});
-        tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}));
-        tl.add(TweenLite.fromTo(searchFieldEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}), "-=0.25");
+
+        if (loadingEl) {
+            tl.add(TweenLite.fromTo(loadingEl, 0.5, { x: -20, opacity: 0}, {x: 0, opacity: 1}));
+        }
+
+        const bLoading = !titleEl;
+        if (!bLoading) {
+            tl.add(TweenLite.fromTo(titleEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}));
+            tl.add(TweenLite.fromTo(searchFieldEl, 0.5, { x: -20, opacity: 0 }, { x: 0, opacity: 1}), "-=0.25");
+        }
     });
 };
 
@@ -191,6 +207,7 @@ const _leaveAnim = (el) => {
         const titleEl = el.querySelector(".Music__title");
         const searchFieldEl = el.querySelector(".Music__filter-field");
         const trackItemEls = el.querySelectorAll(".Music__track");
+        const loadingEl = el.querySelector(".Music__loading-text");
 
         // Kill any running animations
         TweenLite.killTweensOf([titleEl, searchFieldEl, ...trackItemEls]);
@@ -201,22 +218,31 @@ const _leaveAnim = (el) => {
 
         // Run animations
         const tl = new TimelineLite({ onComplete: () => resolve() });
-        tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
-        tl.add(TweenLite.to(searchFieldEl, 0.5, { x: 20, opacity: 0 }), "-=0.25");
 
-        const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
-        const TRACKS_MAX_TIME = 1;
-        const nRegTotalTracksTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, trackItemEls.length);
-        const nTracksStagger = (nRegTotalTracksTime > TRACKS_MAX_TIME) ? Utilities.calculateStagger(TRACKS_MAX_TIME, STAGGER_DURATION, trackItemEls.length) : DEFAULT_STAGGER_TIME;
-        tl.add(
-            TweenMax.staggerTo(
-                trackItemEls,
-                STAGGER_DURATION,
-                { x: 20, opacity: 0 },
-                nTracksStagger
-            ), 
-            "-=0.25"
-        );
+        if (loadingEl) {
+            tl.add(TweenLite.to(loadingEl, 0.5, { x: 20, opacity: 0}));
+        }
+
+        const bLoading = !titleEl;
+        if (!bLoading) {
+            console.log("here");
+            tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
+            tl.add(TweenLite.to(searchFieldEl, 0.5, { x: 20, opacity: 0 }), "-=0.25");
+
+            const STAGGER_DURATION = 0.3, DEFAULT_STAGGER_TIME = 0.1;
+            const TRACKS_MAX_TIME = 1;
+            const nRegTotalTracksTime = Utilities.totalStaggerTime(STAGGER_DURATION, DEFAULT_STAGGER_TIME, trackItemEls.length);
+            const nTracksStagger = (nRegTotalTracksTime > TRACKS_MAX_TIME) ? Utilities.calculateStagger(TRACKS_MAX_TIME, STAGGER_DURATION, trackItemEls.length) : DEFAULT_STAGGER_TIME;
+            tl.add(
+                TweenMax.staggerTo(
+                    trackItemEls,
+                    STAGGER_DURATION,
+                    { x: 20, opacity: 0 },
+                    nTracksStagger
+                ), 
+                "-=0.25"
+            );
+        }
     });
 };
 </script>
@@ -264,6 +290,14 @@ const _leaveAnim = (el) => {
                     }
                 }
             }
+        }
+
+        & .Music__loading-text {
+            @include Standard-Page-Layout(130rem);
+
+            color: theme-link("page", "accent-color", "primary");
+            font-size: 1.5rem;
+            line-height: 2rem;
         }
     }
 </style>
