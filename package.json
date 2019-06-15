@@ -1,0 +1,21 @@
+{
+    "name": "personal-website",
+    "version": "1.0.0",
+    "description": "My personal website project",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start:dev": "docker-compose -f docker-compose-dev.yml up --build",
+        "start:dev-prod": "docker-compose -f docker-compose-dev-prod.yml up --build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alex-greff/personal-website.git"
+    },
+    "author": "Alexander Greff",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/alex-greff/personal-website/issues"
+    },
+    "homepage": "https://github.com/alex-greff/personal-website#readme"
+}
