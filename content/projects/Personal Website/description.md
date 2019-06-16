@@ -4,7 +4,7 @@ The front-end is a single page application (SPA) build using [Vue JS](https://vu
 
 # Back-End
 
-The back-end is a Level 3 RESTful API on the [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) and is built using **NodeJS** and **Express**. It provides an interface between the content database and the front-end site. *GET*, *POST*, *PATCH* and *DELETE* request types are fully implemented to allow for complete user control over the content. Modifing endpoints are protected and use a flexible customly developed role-based system. See [here](https://github.com/alex-greff/personal-website/tree/master/server#http-requests) for documentation on the available endpoints.
+The back-end is a Level 3 RESTful API on the [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) and is built using **NodeJS** and **Express**. It provides an interface between the content database and the front-end site. *GET*, *POST*, *PATCH* and *DELETE* request types are fully implemented to allow for complete user control over the content. Modifying endpoints are protected and use a flexible customly developed role-based system. See [here](https://github.com/alex-greff/personal-website/tree/master/server#http-requests) for documentation on the available endpoints.
 
 ## User Accounts
 
@@ -16,13 +16,13 @@ A flexible account system is used in order to protect modifing endpoints (i.e. m
 
 ## SoundCloud Scraping
 
-The server also handles scraping SoundCloud for artist/track information for the `music` endpoint. [Puppeteer](https://github.com/GoogleChrome/puppeteer), [Cheerio](https://github.com/cheeriojs/cheerio) and [Axios](https://github.com/axios/axios) are utilized to scrape the SoundCloud global Client ID, user ID and track information which is then stored in database to be used by the client when populating the `music` route page. The scraping process can be easily triggered using *POST* and *PATCH* request to `music` endpoints.
+The server also handles scraping SoundCloud for artist/track information for the `music` endpoint. [Puppeteer](https://github.com/GoogleChrome/puppeteer), [Cheerio](https://github.com/cheeriojs/cheerio) and [Axios](https://github.com/axios/axios) are utilized to scrape the SoundCloud global Client ID, user ID and track information which is then stored in the database to be used by the client when populating the `music` route page. The scraping process can be easily triggered using *POST* and *PATCH* requests to the `music` endpoints.
 
 
 # Database
 
-MongoDB is used as the database for this site. Flexible schemas for projects, experiences and music items are utilized. User credentials are also securely stored in it. 
+A MongoDB instance is used as the database for this site. Flexible schemas for projects, experiences and music items are utilized and user credentials are also securely stored in the database as well. 
 
 # Deployment
 
-The deployment process is containerized using [Docker](https://www.docker.com/) and continuously integrated with [Travis CI](https://travis-ci.org/) which pulls the code from the GitHub repositorym, builds/tests it and then automates the deployment process onto a [Digital Ocean](https://www.digitalocean.com/) droplet.
+The deployment process is containerized using [Docker](https://www.docker.com/) and continuously integrated with [Travis CI](https://travis-ci.org/) which pulls the code from the GitHub repository, builds/tests it and then automates the deployment process onto a [Digital Ocean](https://www.digitalocean.com/) droplet.
