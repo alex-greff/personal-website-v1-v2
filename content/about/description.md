@@ -2,7 +2,7 @@ Hi my name is **Alexander Greff**.
 
 I am currently a student studying computer science at the **University of Toronto: Scarborough**. 
 
-Every since I was a child I have enjoyed 4 things: learning, solving problems, building things and being creative. 
+Ever since I was a child I have enjoyed 4 things: learning, solving problems, building things and being creative. 
 
 Computer science gives me a place to do all of these things at once hence why I have chosen to study this field with such a passion. 
 
