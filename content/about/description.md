@@ -12,4 +12,4 @@ I also enjoy producing various forms of **Electronic Dance Music (EDM)** in my s
 
 Please feel free to check them out and let me know what you think. 
 
-If you have any questions please feel [contact me](contact).
+If you have any questions please do not hesitate to [contact me](contact).
