@@ -225,7 +225,6 @@ const _leaveAnim = (el) => {
 
         const bLoading = !titleEl;
         if (!bLoading) {
-            console.log("here");
             tl.add(TweenLite.to(titleEl, 0.5, { x: 20, opacity: 0 }));
             tl.add(TweenLite.to(searchFieldEl, 0.5, { x: 20, opacity: 0 }), "-=0.25");
 
