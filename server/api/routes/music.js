@@ -16,7 +16,7 @@ router.get("/", MusicController.music_get_all);
 router.get("/artists", MusicController.music_get_all_artist_profiles);
 
 // [domain]/api/music/artists : POST
-router.post("/artists", permit(false, "create-artist"), MusicController.music_create_aritst_profile);
+router.post("/artists", permit(false, "create-artist"), MusicController.music_create_artist_profile);
 
 // [domain]/api/music/artists/:artistID : GET
 router.get("/artists/:artistID", MusicController.music_get_artist_profile);

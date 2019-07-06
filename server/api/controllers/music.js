@@ -169,7 +169,7 @@ exports.music_get_artist_profile = async (req, res, next) => {
     }
 };
 
-exports.music_create_aritst_profile = async (req, res, next) => {
+exports.music_create_artist_profile = async (req, res, next) => {
     try {
         // --- Scrape user ID ---
 
