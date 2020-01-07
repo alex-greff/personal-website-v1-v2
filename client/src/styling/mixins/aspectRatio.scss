@@ -1,0 +1,14 @@
+// Including this mixin in an element locks it to the given ratio
+
+/* 
+Usage:
+@include respond(ratio number)
+
+Ex: 
+@include respond(16/9) // 16:9 ratio
+@include respond(1/1) // 1:1 ratio
+*/
+
+@mixin aspect-ratio($ratio) {
+    padding-bottom: calc(100% / (#{$ratio}));
+}

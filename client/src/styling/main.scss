@@ -1,0 +1,59 @@
+// make color-link is globally available everywhere
+@import "~themer/tools/sass/index.scss"; 
+
+@import './mixins/index.scss';
+@import './functions/index.scss';
+
+// @import './variables/colors.scss';
+// @import './variables/globalConstants.scss';
+// @import './global/buttons.scss';
+@import './global/scrollbar.scss';
+
+// Fonts
+// TODO: clean these up
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500');
+
+* {
+    // Global resets
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+
+    // Global font definition
+    // font-family: 'Ubuntu', sans-serif;
+    // font-family: 'Open Sans', sans-serif;
+    // font-family: 'Montserrat', sans-serif;
+    // font-family: 'Courier New', Courier, monospace;
+
+    // font-family: 'Roboto Mono', monospace;
+    font-family: 'Raleway', sans-serif;
+}
+
+* i { 
+    font-family: 'Material Icons'; 
+}
+
+html {
+    // Definition of 1rem
+    font-size: 62.5%;
+}
+
+body {
+    background-color: theme-link("page", "bg-color", "primary");
+    color: white;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+// Positioning 
+.content {
+    position: relative;
+}

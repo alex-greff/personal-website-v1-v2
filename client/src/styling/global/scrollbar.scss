@@ -1,0 +1,20 @@
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+	width: 5px; // Vertical scrollbar
+	height: 5px; // Horizontal scrollbar
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: theme-link("page", "scrollbar-color", "primary");
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: theme-link("page", "scrollbar-color", "secondary");
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: theme-link("page", "scrollbar-hover-color", "primary");
+}

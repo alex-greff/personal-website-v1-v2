@@ -6,5 +6,14 @@
 
 module.exports = {
     siteName: 'Personal Website',
-    plugins: []
+    plugins: [],
+    css: {
+        loaderOptions: {
+            sass: {
+                data: `
+                    @import "@/styling/main.scss";
+                `,
+            }
+        }
+    }
 };

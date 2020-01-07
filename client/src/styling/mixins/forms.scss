@@ -1,0 +1,38 @@
+@mixin standard-field-styles($base: "page") {
+    font-size: 1.6rem;
+    padding: .8rem;
+    outline: none;
+
+    color: theme-link($base, "text-color", "primary");
+    background-color: theme-link($base, "bg-color", "secondary");
+
+    border-radius: 0.2rem;
+    border: 0.1rem solid theme-link($base, "accent-color", "secondary");
+
+    box-shadow: 0px 0px 3px 0px theme-link($base, "accent-color", "primary", 0);
+
+    transition: color 0.4s, box-shadow 0.4s, border 0.4s;
+
+    // -----------------
+    // --- Modifiers ---
+    // -----------------
+
+    &:focus {
+        // border: 0.1rem solid theme-link($base, "accent-color", "primary");
+        box-shadow: 0px 0px 3px 0px theme-link($base, "accent-color", "primary");
+
+        &.error {
+            box-shadow: 0px 0px 3px 0px theme-link($base, "error-color", "primary"); 
+        }
+    }
+
+    &.error {
+        border: 0.1rem solid theme-link($base, "error-color", "secondary");
+    }
+
+    &:disabled {
+        color: theme-link($base, "text-color", "secondary");
+        box-shadow: 0px 0px 3px 0px theme-link($base, "accent-color", "primary", 0);
+        border: 0.1rem solid theme-link($base, "text-color", "secondary", 0.5);
+    }
+}

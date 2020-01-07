@@ -1,0 +1,100 @@
+@import "./helpers.scss";
+
+// A helper function for generating theme links
+@function theme-link($section, $property, $variation, $opacity: 1) {
+    @return rgba(var(unquote("--" + $section + "___" + $property + "--" + $variation)), $opacity);
+}
+
+// Computes the clip-path of the spoof border
+// TODO: add a border-width parameter
+@function compute-parallelogram-clip-path($item-height, $tilt-angle) {
+    $gutter-length: $item-height / tan($tilt-angle);
+
+    // top left, top right, bottom right, bottom left
+    @return polygon($gutter-length 0%, 100% 0%, calc(100% - #{$gutter-length}) 100%, 0% 100%);
+}
+
+// Generates a random number between $min and $max
+@function random-num($min, $max) {
+    $rand: random();
+    $randomNum: $min + floor($rand * (($max - $min) + 1));
+  
+    @return $randomNum;
+}
+
+// Clamps $number between $min and $max
+@function clamp($number, $min, $max) {
+    @return min(max($number, $min), $max);
+}
+
+// Computes $number ^ $exp
+// Note: $exponent must be an integer
+@function pow-integer($number, $exp) {
+    $value: 1;
+    @if $exp > 0 {
+        @for $i from 1 through $exp {
+            $value: $value * $number;
+        }
+    }
+    @else if $exp < 0 {
+        @for $i from 1 through -$exp {
+            $value: $value / $number;
+        }
+    }
+    @return $value;
+}
+
+// Computes $number ^ $exp
+// Note: $exponent can be a float/integer
+@function pow-float($number, $exponent) {
+    @if (round($exponent) != $exponent) {
+      @return exp($exponent * ln($number));
+    }
+      
+    $value: 1;
+    
+    @if $exponent > 0 {
+        @for $i from 1 through $exponent {
+            $value: $value * $number;
+        }
+    } @else if $exponent < 0 {
+        @for $i from 1 through -$exponent {
+            $value: $value / $number;
+        }
+    }
+  
+    @return $value;
+}
+
+// Returns a numerical approximation of sin
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function sin($angle) {
+    $sin: 0;
+    $angle: rad($angle);
+    // Iterate a bunch of times.
+    @for $i from 0 through 10 {
+      $sin: $sin + pow-integer(-1, $i) * pow-integer($angle, (2 * $i + 1)) / factorial(2 * $i + 1);
+    }
+    @return $sin;
+}
+
+// Returns a numerical approximation of cos
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function cos($angle) {
+    $cos: 0;
+    $angle: rad($angle);
+    // Iterate a bunch of times.
+    @for $i from 0 through 10 {
+        $cos: $cos + pow-integer(-1, $i) * pow-integer($angle, 2 * $i) / factorial(2 * $i);
+    }
+    @return $cos;
+}
+
+// Returns a numerical approximation of tan
+// Note: by default $angle assumes radians if no units are given
+// To use degrees suffix it with 'deg'
+@function tan($angle) {
+    @return sin($angle) / cos($angle);
+}
