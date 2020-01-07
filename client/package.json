@@ -7,6 +7,22 @@
         "explore": "gridsome explore"
     },
     "dependencies": {
-        "gridsome": "^0.7.0"
+        "animate-css-grid": "^1.4.0",
+        "axios": "^0.18.0",
+        "color": "^3.1.0",
+        "gridsome": "^0.7.0",
+        "gsap": "^2.1.2",
+        "immutability-helper": "^3.0.0",
+        "marked": "^0.6.2",
+        "vee-validate": "^2.2.5",
+        "vue-awesome": "^3.5.1",
+        "vue-axios": "^2.1.4",
+        "vue-fragment": "^1.5.0",
+        "vue-material": "^1.0.0-beta-10.2",
+        "vuex": "^3.0.1"
+    },
+    "devDependencies": {
+        "sass-loader": "^8.0.0",
+        "node-sass": "^4.13.0"
     }
 }
