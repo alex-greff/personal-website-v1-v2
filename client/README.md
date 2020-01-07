@@ -1,28 +1,14 @@
-# Personal Website Client
+# Default starter for Gridsome
 
-The front-end client built using [Vue.js](https://vuejs.org/).
+This is the project you get when you run `gridsome create new-project`.
 
-## Table of Contents
-* [Theme System](#theme-system)
+### 1. Install Gridsome CLI tool if you don't have
 
-## Theme System
+`npm install --global @gridsome/cli`
 
-The theming system based off a section-property-sub-property model.
+### 2. Create a Gridsome project
 
-By default the `BASE` section is defined which acts as the default section for the site.
-
-A theme defined as a `baseTheme` must fully implment each of the `baseProperties` and their `propertyVariations`. Additional `subSections` can be defined which allow for any amount of `baseProperties` to be overridden.
-
-Themes **not** defined as a `baseTheme` can implement however many `baseProperties` as needed.
-
-See [here](client/src/themes/definitiions/index.js) to see the theme definition for this site.
-
-Themes can be linked direcly in the SASS stylings using the [theme-link](/client/src/styling/functions.scss) SASS function.
-
-```scss
-// Example
-.MySelector {
-    color: theme-link("MySection", "text-color", "primary");
-    background-color: theme-link("BASE", "bg-color", "secondary", 0.5);
-}
-```
+1. `gridsome create my-gridsome-site` to install default starter
+2. `cd my-gridsome-site` to open the folder
+3. `gridsome develop` to start a local dev server at `http://localhost:8080`
+4. Happy coding 🎉🙌
