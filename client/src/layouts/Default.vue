@@ -21,6 +21,56 @@ query {
 }
 </static-query>
 
+<script>
+import { actionTypes } from "../store/types";
+import { mapActions } from "vuex";
+
+import { CSSPlugin, AttrPlugin } from "gsap/all";
+
+import themes from "../theme/themes";
+
+// TODO: put in constants file
+const DEFAULT_NAMESPACE = "default";
+const DEFAULT_THEME = "dark";
+
+export default {
+    created() {
+        // Instantiate Vuex data
+        this.instantiateThemes();
+        this.instantiateNamespaces();
+    },
+    mounted() {
+        // NOTE: this prevents the CSSPlugin and the AttrPlugin from getting tree shook
+        const plugins = [ CSSPlugin, AttrPlugin ];
+    },
+    methods: {
+        ...mapActions({
+            addTheme: actionTypes.ADD_THEME,
+            addNamespace: actionTypes.ADD_NAMESPACE,
+        }),
+        instantiateThemes() {
+            
+            // Add all the themes
+            Object.values(themes).forEach((themeData) => {
+                this.addTheme({
+                    name: themeData.name,
+                    theme: themeData.theme,
+                    override: true
+                });
+            });
+        },
+        instantiateNamespaces() {
+            // Add default namespace
+            this.addNamespace({
+                name: DEFAULT_NAMESPACE,
+                targetTheme: DEFAULT_THEME,
+                override: true
+            });
+        },
+    }
+}
+</script>
+
 <style>
 body {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
