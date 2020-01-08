@@ -1,0 +1,12 @@
+// make color-link is globally available everywhere
+@import "~themer/tools/sass/index.scss"; 
+
+@import './mixins/index.scss';
+@import './functions/index.scss';
+
+// TODO: cleanup
+// @import './variables/colors.scss';
+// @import './variables/globalConstants.scss';
+// @import './global/buttons.scss';
+// @import './global/scrollbar.scss';
+

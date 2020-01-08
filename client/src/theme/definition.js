@@ -1,7 +1,7 @@
 export const schema = {
     GLOBAL: {
         background_color: {
-            $mixins: ['primary_modifier', 'secondary_modifier']
+            $mixins: ['primary_modifier', 'secondary_modifier', 'tertiary_modifier', 'quaternary_modifier']
         },
         text_color: {
             $mixins: ['primary_modifier', 'secondary_modifier', 'tertiary_modifier']
@@ -19,6 +19,10 @@ export const schema = {
             $mixins: ['primary_modifier']
         }
     },
+    current_section: {
+        $inherits: "GLOBAL"
+    },
+    // --- Sections ---
     Home_section: {
         $inherits: "GLOBAL"
     },
@@ -34,6 +38,11 @@ export const schema = {
     Contact_section: {
         $inherits: "GLOBAL"
     },
+    // --- Components ---
+    // TODO: used commented version
+    NavBar: {
+        $inherits: "GLOBAL"
+    }
     // TODO: fix this
     // NavBar: {
     //     background_color: {

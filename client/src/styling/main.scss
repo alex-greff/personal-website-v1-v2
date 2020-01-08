@@ -1,12 +1,3 @@
-// make color-link is globally available everywhere
-@import "~themer/tools/sass/index.scss"; 
-
-@import './mixins/index.scss';
-@import './functions/index.scss';
-
-// @import './variables/colors.scss';
-// @import './variables/globalConstants.scss';
-// @import './global/buttons.scss';
 @import './global/scrollbar.scss';
 
 // Fonts
@@ -44,7 +35,8 @@ html {
 }
 
 body {
-    background-color: theme-link("page", "bg-color", "primary");
+    // background-color: theme-link("page", "bg-color", "primary");
+    background-color: color-link("GLOBAL", "background_color", "primary");
     color: white;
 }
 

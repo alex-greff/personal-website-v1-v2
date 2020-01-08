@@ -1,6 +1,13 @@
 <template>
-    <div class="layout">
-        <header class="header">
+    <!-- <div class="layout"> -->
+    <theme-provider 
+        class="layout"
+        id="app" 
+        ref="baseRef" 
+        :namespace="globalNamespace" 
+        use-root
+    >
+        <!-- <header class="header">
         <strong>
             <g-link to="/">{{ $static.metadata.siteName }}</g-link>
         </strong>
@@ -8,9 +15,11 @@
             <g-link class="nav__link" to="/">Home</g-link>
             <g-link class="nav__link" to="/about/">About</g-link>
         </nav>
-        </header>
+        </header> -->
+        <nav-bar animate-in />
         <slot />
-    </div>
+    </theme-provider>
+    <!-- </div> -->
 </template>
 
 <static-query>
@@ -28,12 +37,25 @@ import { mapActions } from "vuex";
 import { CSSPlugin, AttrPlugin } from "gsap/all";
 
 import themes from "../theme/themes";
+import { getAllPageThemes } from "../constants/pageData";
+
+import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
+import NavBar from "@/components/NavBar/NavBar.vue";
 
 // TODO: put in constants file
-const DEFAULT_NAMESPACE = "default";
-const DEFAULT_THEME = "dark";
+const GLOBAL_NAMESPACE = "global";
+const GLOBAL_THEME = "default";
 
 export default {
+    components: {
+        ThemeProvider,
+        NavBar
+    },
+    data() {
+        return {
+            globalNamespace: GLOBAL_NAMESPACE
+        }
+    },
     created() {
         // Instantiate Vuex data
         this.instantiateThemes();
@@ -49,7 +71,6 @@ export default {
             addNamespace: actionTypes.ADD_NAMESPACE,
         }),
         instantiateThemes() {
-            
             // Add all the themes
             Object.values(themes).forEach((themeData) => {
                 this.addTheme({
@@ -60,23 +81,35 @@ export default {
             });
         },
         instantiateNamespaces() {
-            // Add default namespace
+            // Add global namespace
             this.addNamespace({
-                name: DEFAULT_NAMESPACE,
-                targetTheme: DEFAULT_THEME,
+                name: GLOBAL_NAMESPACE,
+                targetTheme: GLOBAL_THEME,
                 override: true
+            });
+
+            // Add the section namespaces
+            const allPageThemes = getAllPageThemes();
+            Object.entries(allPageThemes).forEach(([namespaceName, targetTheme]) => {
+                this.addNamespace({
+                    name: namespaceName,
+                    targetTheme: targetTheme,
+                    override: true
+                });
             });
         },
     }
 }
 </script>
 
-<style>
+<style lang="scss">
 body {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.5;
+
+    // background-color: color-link("GLOBAL", "background-color", "primary");
 }
 
 .layout {
