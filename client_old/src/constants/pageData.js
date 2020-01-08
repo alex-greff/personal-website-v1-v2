@@ -182,7 +182,7 @@ export const getAllPageRoutes = () => {
 };
 
 export const getAllNavPageRoutes = () => {
-    return _getPageRoutes(this.navPageOrder);
+    return _getPageRoutes(pageData.navPageOrder);
 };
 
 // --------------------
