@@ -69,6 +69,11 @@ const _getPageLinks = (i_sPageList) => {
     }, []);
 };
 
+
+export const getAllPagesData = () => {
+    return Object.values(pageData.pages)
+};
+
 // ------------------
 // --- Page theme ---
 // ------------------

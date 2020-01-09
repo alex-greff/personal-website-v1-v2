@@ -1,5 +1,5 @@
 <template>
-    <div :class="navLinkClasses">
+    <div :class="['NavLinkContainer', displayMode, displayModifier]">
         <nav-link-item
             v-for="page in navLinkPagesData" 
             :key="page.name"
@@ -7,7 +7,8 @@
             ref="navLinkRefs"
 
             :is-open="isOpen"
-            :to="page.path"
+            :link="page.link"
+            :namespace="page.theme.namespace"
             :name="page.name"
             :display-mode="displayMode"
             :exact="page.exact"
@@ -61,9 +62,8 @@ export default {
         }
     },
     computed: {
-        navLinkClasses() {
-            const displayModifiers = (this.displayNavItems) ? "visible" : "hidden";
-            return `NavLinkContainer ${this.displayMode} ${displayModifiers}`;
+        displayModifier() {
+            return (this.displayNavItems) ? "visible" : "hidden";
         },
         // ------------------------------
         // --- NavLink computed props ---
@@ -77,9 +77,6 @@ export default {
                 display: (this.displayNavItems) ? "initial" : "none",
             }
         },
-        // navLinkClasses() {
-        //     return (this.displayNavItems) ? "show" : "hidden";
-        // },
         navLinkEls() {
             return this.$refs.navLinkRefs.map(ref => ref.$el);
         },

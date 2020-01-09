@@ -37,7 +37,7 @@ export default {
             default: false
         },
         el: {
-            type: HTMLDivElement,
+            type: HTMLElement,
             required: false,
             default: undefined
         }

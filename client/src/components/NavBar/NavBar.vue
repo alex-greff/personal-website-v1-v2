@@ -10,20 +10,20 @@
             @click="toggleNavMenu"
         />
 
-        <!-- <nav-link-container 
+        <nav-link-container 
             class="NavBar__pages-container"
             :is-open="isOpen"
             :animate-in="animateIn"
             :pages="pages"
             :display-mode="displayMode"
             :set-nav-open="setNavOpen"
-        /> -->
+        />
     </div>
 </template>
 
 <script>
 import Utilities from "@/utilities";
-// import { getAllNavRouterLinks } from "@/constants/pageData";
+import { getAllPagesData } from "../../constants/pageData";
 
 /* global Power1 */
 import { TweenLite } from "gsap/all";
@@ -51,9 +51,7 @@ export default {
             isOpen: this.initOpen,
             displayMode: "desktop",
             displayOverlay: this.initOpen,
-            // pages: [
-            //     ...getAllNavRouterLinks()
-            // ],
+            pages: [ ...getAllPagesData() ],
         }
     },
     computed: {
@@ -87,7 +85,6 @@ export default {
                 this.appearAnim();
             }
         });
-
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResize);

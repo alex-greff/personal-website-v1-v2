@@ -23,7 +23,7 @@ module.exports = {
         // Load variables for all vue-files
         const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
     
-        // or if you use scss
+        // Append scss style resources to each type
         types.forEach(type => {
             addStyleResource(config.module.rule('scss').oneOf(type));
         });

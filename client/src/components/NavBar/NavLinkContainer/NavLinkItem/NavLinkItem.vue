@@ -1,33 +1,28 @@
 <template>
-    <!-- <router-link
-        ref="routerRef"
-        :to="to"
-        tag="div"
-        :class="navLinkItemClasses"
-        active-class="active"
-        :exact="exact"
-    > -->
-        <!-- <theme-provider 
+    <a
+        :class="['NavLinkItem', displayMode, modifierClass]"
+        :href="`#${link}`"
+        ref="baseEl"
+    >
+        <theme-provider 
             class="NavLinkItem__container"
-            :namespace="currPageNamespace"
+            :namespace="namespace"
             :use-el="true"
-            :el="routerEl"
-        > -->
-        <div class="NavLinkItem__container">
+            :el="$refs.baseEl"
+        >
             <div class="NavLinkItem__content">
                 <slot></slot>
             </div>
-        </div>
-        <!-- </theme-provider> -->
-    <!-- </router-link> -->
+        </theme-provider>
+    </a>
 </template>
 
 <script>
-// import { getPageTheme } from "@/constants/pageData";
 import { mapGetters } from "vuex";
 import { getterTypes } from "@/store/types";
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
+// TODO: figure out how to detect which # section is in view and apply the active class when needed
 export default {
     components: {
         themeProvider: ThemeProvider,
@@ -37,7 +32,11 @@ export default {
             type: Boolean,
             required: true
         },
-        to: {
+        link: {
+            type: String,
+            required: true
+        },
+        namespace: {
             type: String,
             required: true
         },
@@ -48,16 +47,6 @@ export default {
         displayMode: {
             type: String,
             required: true
-        },
-        exact: {
-            type: Boolean,
-            default: false
-        }
-    },
-    data() {
-        return {
-            // NOTE: for the trick
-            isMounted: false
         }
     },
     computed: {
@@ -65,29 +54,9 @@ export default {
             isAutoThemeEnabled: getterTypes.IS_AUTO_THEME_ENABLED,
             currentStaticThemeNamespace: getterTypes.GET_CURRENT_STATIC_THEME_NAMESPACE 
         }),
-        navLinkItemClasses() {
-            const sModifierClasses = (this.isOpen) ? "visible" : "hidden";
-            return `NavLinkItem ${this.displayMode} ${sModifierClasses}`;
-        },
-        // currPageNamespace() {
-        //     if(!this.isAutoThemeEnabled) {
-        //         return this.currentStaticThemeNamespace;
-        //     }
-
-        //     return getPageTheme(this.name).namespace;
-        // },
-        // routerEl() {
-        //     // NOTE: for the trick
-        //     // This tricks vue into updating the refs once they are attached
-        //     if (!this.isMounted) {
-        //         return;
-        //     }
-        //     return this.$refs.routerRef.$el;
-        // }
-    },
-    mounted() {
-        // NOTE: for the trick
-        this.isMounted = true;
+        modifierClass() {
+            return (this.isOpen) ? "visible" : "hidden";
+        }
     }
 }
 </script>
@@ -96,6 +65,10 @@ export default {
     .NavLinkItem {
         flex-grow: 1;
         flex-shrink: 1;
+
+        color: color-link("current_section", "text_color", "primary");
+        text-decoration: none;
+        font-size: 1.5rem;
 
         cursor: pointer;
         pointer-events: all;
@@ -138,10 +111,14 @@ export default {
                 top: 50%;
                 transform: translateY(-50%);
 
+                will-change: transform;
+
                 & .NavLinkItem__content {
                     transition: transform 0.5s;
 
                     margin-left: 0.5rem;
+
+                    will-change: transform;
                 }
             }
 
@@ -185,7 +162,7 @@ export default {
                 background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
                 &::before {
-                    background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
+                    background-color: color-link("current_section", "accent_color", "primary", 0.8);
 
                     @include compute-border-clip-path(#{$gutter-length}, #{$border-width-hover});
                 }
@@ -200,7 +177,7 @@ export default {
                 background-color: rgba(39, 39, 39, 0.98); // TODO: theme
 
                 &::before {
-                    background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
+                    background-color: color-link("current_section", "accent_color", "primary", 0.8);
 
                     @include compute-border-clip-path(#{$gutter-length}, #{$border-width-active});
                 }
@@ -230,7 +207,7 @@ export default {
 
         width: 100vw;
 
-        background-color: theme-link("navBar__item", "bg-color", "primary", 0.8);
+        background-color: color-link("current_section", "background_color", "primary", 0.8);
 
         transition: background-color 0.3s, max-width 0.3s;
 
@@ -268,7 +245,7 @@ export default {
             height: 100%;
             width: 100%;
 
-            background-color: theme-link("navBar__item", "bg-color", "secondary", 0.8);
+            background-color: color-link("current_section", "background_color", "secondary", 0.8);
 
             @include compute-border-clip-path(#{$gutter-length}, #{$border-width});
 
@@ -289,12 +266,12 @@ export default {
 
         // Hover modifier
         &:hover {
-            background-color: theme-link("navBar__item", "bg-color", "primary", 0.8);
+            background-color: color-link("current_section", "background_color", "primary", 0.8);
 
             max-width: calc(#{$item-length} + #{$hover-offset});
 
             &::before {
-                background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
+                background-color: color-link("current_section", "accent_color", "primary", 0.8);
 
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width-hover});
             }
@@ -306,12 +283,12 @@ export default {
 
         // Active modifer
         &.active {
-            background-color: theme-link("navBar__item", "bg-color", "primary", 0.98);
+            background-color: color-link("current_section", "background_color", "primary", 0.98);
 
             max-width: calc(#{$item-length} + #{$active-offset});
 
             &::before {
-                background-color: theme-link("navBar__item", "accent-color", "primary", 0.8);
+                background-color: color-link("current_section", "accent_color", "primary", 0.8);
 
                 @include compute-border-clip-path(#{$gutter-length}, #{$border-width-active});
             }
