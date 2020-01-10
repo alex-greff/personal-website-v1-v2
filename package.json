@@ -5,9 +5,38 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "build:client": "docker exec personal-website_client_1 npm run build",
+
+        "rm-services:dev": "docker-compose -f docker-compose-dev.yml rm -f proxy api client",
+        "rm-services:dev-proxy": "docker-compose -f docker-compose-dev.yml rm -f proxy",
+        "rm-services:dev-api": "docker-compose -f docker-compose-dev.yml rm -f api",
+        "rm-services:dev-client": "docker-compose -f docker-compose-dev.yml rm -f client",
         "start:dev": "docker-compose -f docker-compose-dev.yml up --build",
+        "start:dev--recreate": "npm run rm-services:dev && npm run start:dev",
+        "start:dev--recreate-proxy": "npm run rm-services:dev-proxy && npm run start:dev",
+        "start:dev--recreate-client": "npm run rm-services:dev-client && npm run start:dev",
+        "start:dev--recreate-api": "npm run rm-services:dev-api && npm run start:dev",
+        "restart:dev": "docker-compose -f docker-compose-dev.yml restart proxy api client",
+        "restart:dev-proxy": "docker-compose -f docker-compose-dev.yml restart proxy",
+        "restart:dev-api": "docker-compose -f docker-compose-dev.yml restart api",
+        "restart:dev-client": "docker-compose -f docker-compose-dev.yml restart client",
+
+        "rm-services:dev-prod-proxy": "docker-compose -f docker-compose-dev-prod.yml rm -f proxy",
+        "rm-services:dev-prod-api": "docker-compose -f docker-compose-dev-prod.yml rm -f api",
+        "rm-services:dev-prod-client": "docker-compose -f docker-compose-dev-prod.yml rm -f client",
         "start:dev-prod": "docker-compose -f docker-compose-dev-prod.yml up --build",
-        "build:client": "docker exec personal-website_client_1 npm run build"
+        "start:dev-prod--recreate": "npm run rm-services:dev-prod && npm run start:dev",
+        "start:dev-prod--recreate-proxy": "npm run rm-services:dev-prod-proxy && npm run start:dev",
+        "start:dev-prod--recreate-client": "npm run rm-services:dev-prod-client && npm run start:dev",
+        "start:dev-prod--recreate-api": "npm run rm-services:dev-prod0api && npm run start:dev",
+        "restart:dev-prod": "docker-compose -f docker-compose-dev-prod.yml restart proxy api client",
+        "restart:dev-prod-proxy": "docker-compose -f docker-compose-dev-prod.yml restart proxy",
+        "restart:dev-prod-api": "docker-compose -f docker-compose-dev-prod.yml restart api",
+        "restart:dev-prod-client": "docker-compose -f docker-compose-dev.yml restart client",
+
+        "shell:proxy": "docker exec -it personal_website_proxy sh",
+        "shell:client": "docker exec -it personal_website_client sh",
+        "shell:api": "docker exec -it personal_website_api sh"
     },
     "repository": {
         "type": "git",
