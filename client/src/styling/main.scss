@@ -22,7 +22,8 @@
     // font-family: 'Courier New', Courier, monospace;
 
     // font-family: 'Roboto Mono', monospace;
-    font-family: 'Raleway', sans-serif;
+    // font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Raleway', sans-serif, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 * i { 
@@ -37,6 +38,8 @@ html {
 body {
     background-color: color-link("GLOBAL", "background_color", "primary");
     color: white;
+
+    line-height: 1.5;
 }
 
 html, body {

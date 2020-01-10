@@ -1,5 +1,5 @@
 <template>
-    <div :class="['NavLinkContainer', displayMode, displayModifier]">
+    <nav :class="['NavLinkContainer', displayMode, displayModifier]">
         <nav-link-item
             v-for="page in navLinkPagesData" 
             :key="page.name"
@@ -17,7 +17,7 @@
         >
             {{ capitalizeNavName(page.name) }}
         </nav-link-item>
-    </div>
+    </nav>
 </template>
 
 <script>

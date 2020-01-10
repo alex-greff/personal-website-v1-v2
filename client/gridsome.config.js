@@ -18,7 +18,41 @@ function addStyleResource (rule) {
 
 module.exports = {
     siteName: 'Personal Website',
-    plugins: [],
+    plugins: [
+        // Load general info
+        {
+            use: '@gridsome/source-filesystem',
+            options: {
+                path: 'content/general.md',
+                typeName: 'GeneralData',
+                remark: {
+                    // remark options
+                }
+            }
+        },
+        // Load project items
+        {
+            use: '@gridsome/source-filesystem',
+            options: {
+                path: 'content/projects/**/info.md',
+                typeName: 'ProjectData',
+                remark: {
+                    // remark options
+                }
+            }
+        },
+        // Load experience items
+        {
+            use: '@gridsome/source-filesystem',
+            options: {
+                path: 'content/experience/**/info.md',
+                typeName: 'ExperienceData',
+                remark: {
+                    // remark options
+                }
+            }
+        }
+    ],
     chainWebpack (config) {
         // Load variables for all vue-files
         const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
