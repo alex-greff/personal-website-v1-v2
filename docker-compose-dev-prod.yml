@@ -8,10 +8,12 @@ services:
             context: ./nginx
         ports:
             - "3050:80"
+        container_name: personal_website_proxy
     api:
         build:
             dockerfile: Dockerfile.dev
             context: ./server
+        container_name: personal_website_api
         volumes: 
             - /app/node_modules
             - ./server:/app
@@ -28,5 +30,6 @@ services:
         build: 
             dockerfile: Dockerfile
             context: ./client
+        container_name: personal_website_client
         volumes: 
             - ./client:/app
