@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 import NavBar from "@/components/NavBar/NavBar.vue";
 

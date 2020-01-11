@@ -1,8 +1,9 @@
-@mixin standard-button-styles($base: "button", $component-based: true) {
+@mixin standard-button-styles($base: "current_section", $component-based: true) {
     display: inline-block;
     font-size: 2rem;
 
-    color: theme-link($base, "accent-color", "primary");
+    // color: theme-link($base, "accent-color", "primary");
+    color: color-link($base, "accent_color", "primary");
 
     border: 0.1rem solid;
     border-radius: 0.2rem;
@@ -10,7 +11,8 @@
     cursor: pointer;
     text-align: center;
 
-    background-color: theme-link($base, "accent-color", "secondary", 0);
+    // background-color: theme-link($base, "accent-color", "secondary", 0);
+    background-color: color-link($base, "accent_color", "secondary", 0);
 
     transition: background-color 0.5s;
 
@@ -34,15 +36,18 @@
 
     &:hover {
         text-decoration: none;
-        background-color: theme-link($base, "accent-color", "secondary", 0.192);
+        // background-color: theme-link($base, "accent-color", "secondary", 0.192);
+        background-color: color-link($base, "accent_color", "secondary", 0.192);
     }
 
     &.disabled, &:disabled {
         cursor: initial;
-        color: theme-link($base, "text-color", "secondary");
+        // color: theme-link($base, "text-color", "secondary");
+        color: color-link($base, "text_color", "secondary");
 
         &:hover {
-            background-color: theme-link($base, "accent-color", "secondary", 0);
+            // background-color: theme-link($base, "accent-color", "secondary", 0);
+            background-color: color-link($base, "accent_color", "secondary", 0);
         }
     }
 }
