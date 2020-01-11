@@ -1,3 +1,5 @@
+// TODO: replace this whole lot with overflow-scrollbar
+
 /* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
 	width: 5px; // Vertical scrollbar
@@ -6,15 +8,15 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: theme-link("page", "scrollbar-color", "primary");
+    background: color-link("scrollbar", "track");
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: theme-link("page", "scrollbar-color", "secondary");
+    background: color-link("scrollbar", "thumb");
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: theme-link("page", "scrollbar-hover-color", "primary");
+    background: color-link("scrollbar", "hover");
 }
