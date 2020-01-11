@@ -1,10 +1,10 @@
 import * as Colors from "./common/_colors";
-import { GLOBAL } from "./common/_globalPart";
+import global from "./common/_globalPart";
 
 export default {
     name: "purple",
     theme: {
-        GLOBAL,
+        ...global,
         current_section: {
             accent_color: {
                 primary: Colors.PURPLE_THEME_ACCENT_1,

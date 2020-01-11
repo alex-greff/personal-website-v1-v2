@@ -7,6 +7,10 @@ export const TEXT_1 = "#FFFFFF";
 export const TEXT_2 = "#B8B8B8";
 export const TEXT_3 = "#505050";
 
+export const SCROLLBAR_TRACK = "#3C3C3C";
+export const SCROLLBAR_THUMB = "#4F4F4F";
+export const SCROLLBAR_HOVER = "#666666";
+
 export const DEFAULT_ACCENT_1 = "#E5E5E5";
 export const DEFAULT_ACCENT_2 = "#D6D6D6";
 export const DEFAULT_SELECTED_1 = "#FFFFFF";

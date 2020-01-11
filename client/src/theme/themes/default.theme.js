@@ -1,8 +1,8 @@
-import { GLOBAL } from "./common/_globalPart";
+import global from "./common/_globalPart";
 
 export default {
     name: "default",
     theme: {
-        GLOBAL,
+        ...global,
     }
 };

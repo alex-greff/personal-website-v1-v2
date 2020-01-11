@@ -19,6 +19,20 @@ export const schema = {
             $mixins: ['primary_modifier']
         }
     },
+    scrollbar: {
+        track: {
+            $type: "color",
+            $required: true
+        },
+        thumb: {
+            $type: "color",
+            $required: true
+        },
+        hover: {
+            $type: "color",
+            $required: true
+        }
+    },
     current_section: {
         $inherits: "GLOBAL"
     },
