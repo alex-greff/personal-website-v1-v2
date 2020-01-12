@@ -2,7 +2,7 @@
     <section-wrapper
         class="About"
         section-name="about"
-        margin-mode="narrow"
+        margin-mode="wide"
     >
         <div class="About__content">
             <h1 class="About__title">
@@ -22,30 +22,32 @@
             </div>
 
             <div class="About__content">
-                <themed-markdown-display 
-                    class="About__description"
-                    :compiled-markdown="$sectionData.content"
-                />
+                <div class="About__text-content">
+                    <themed-markdown-display 
+                        class="About__description"
+                        :compiled-markdown="$sectionData.content"
+                    />
+
+                    <div class="About__curr-tech">
+                        <themed-markdown-display 
+                            class="About__curr-tech-intro"
+                            :compiled-markdown="$sectionData.techIntroText"
+                        />
+
+                        <bullet-list
+                            class="About__curr-tech-list"
+                            :items="$sectionData.currentTech"
+                            :num-cols="2"
+                            :break-cols="false"
+                        />
+                    </div>
+                </div>
 
                 <profile-image 
                     class="About__profile-image"
                     :src="$sectionData.profileImage"
-                    size="20rem"
+                    size="28rem"
                 />
-
-                <div class="About__curr-tech">
-                    <themed-markdown-display 
-                        class="About__curr-tech-intro"
-                        :compiled-markdown="$sectionData.techIntroText"
-                    />
-
-                    <bullet-list
-                        class="About__curr-tech-list"
-                        :items="$sectionData.currentTech"
-                        :num-cols="2"
-                        :break-cols="false"
-                    />
-                </div>
             </div>
         </div>
     </section-wrapper>
@@ -101,6 +103,8 @@ query {
         align-items: center;
 
         & > .About__content {
+            width: 100%;
+
             & > .About__title {
                 font-weight: 600; // h1 sets this by default
 
@@ -127,38 +131,41 @@ query {
             & .About__content {
                 $pic-size: 20rem;
 
-                display: grid;
-                grid-template-columns: auto 25rem;
-                grid-template-rows: auto auto;
-                grid-template-areas: 
-                    "description picture"
-                    "tech picture";
+                width: 100%;
 
-                grid-row-gap: 1rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
 
                 @include respond(phone) {
-                    grid-template-columns: auto;
-                    grid-template-rows: auto auto auto;
-                    grid-template-areas: 
-                        "picture"
-                        "description"
-                        "tech";
+                    flex-direction: column-reverse;
                 }
 
                 padding-top: 1.5rem;
 
-                & .About__description {
-                    grid-area: description;
+                & .About__text-content {
+                    max-width: 60rem;
 
+                    margin-right: 2rem;
+
+                    & .About__description {
+
+                    }
+
+                    & .About__curr-tech {
+                        padding-top: 2rem;
+                    }
+
+                    @include respond(phone) {
+                        margin-right: 0;
+                        padding-top: 2rem;
+                    }
                 }
 
                 & .About__profile-image {
-                    grid-area: picture;
-                    justify-self: center;
-                }
-
-                & .About__curr-tech {
-                    grid-area: tech;
+                    @include respond(phone) {
+                        align-self: center;
+                    }
                 }
             }
         }
