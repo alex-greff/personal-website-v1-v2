@@ -81,6 +81,10 @@ export default {
             pointer-events: none;
         }
 
+        &:hover {
+            text-decoration: none;
+        }
+
         // -----------------------
         // --- Desktop Version ---
         // -----------------------
