@@ -5,7 +5,6 @@
         margin-mode="none"
         v-scroll-reveal="{
             delay: 0,
-            origin: 'right',
             distance: 0,
             duration: 1000
         }"
@@ -91,7 +90,7 @@
                 delay: 1300
             }"
         />
-        <home-divider />
+        <home-divider class="Home__divider" />
     </section-wrapper>
 </template>
 
@@ -317,5 +316,9 @@ query {
 
             z-index: 1;
         }
-    }   
+    } 
+
+    .Home__bar-background {
+        height: 100vh;
+    }
 </style>

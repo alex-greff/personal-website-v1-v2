@@ -19,13 +19,11 @@ export default {
     $divider-height-mobile: 2rem;
 
     .HomeDivider {
-        position: relative;
-
+        position: absolute;
         height: $divider-height;
         width: 100%;
 
-        position: absolute;
-        bottom: calc(-1 * #{$divider-height});
+        bottom: 0;
 
         background-color: color-link("current_section", "background_color", "primary");
 
