@@ -37,6 +37,7 @@
             </div>
         </div>
         <bar-background :z-index="0" />
+        <home-divider />
     </section-wrapper>
 </template>
 
@@ -45,6 +46,7 @@ import SectionWrapper from "@/components/wrappers/SectionWrapper.vue";
 import BarBackground from "@/components/backgrounds/BarBackground.vue";
 import ComponentButton from "@/components/ui/ComponentButton.vue";
 import ThemedMarkdownDisplay from "@/components/markdown/ThemedMarkdownDisplay.vue";
+import HomeDivider from "@/sections/Home/HomeDivider.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -54,7 +56,8 @@ export default {
         SectionWrapper,
         BarBackground,
         ComponentButton,
-        ThemedMarkdownDisplay
+        ThemedMarkdownDisplay,
+        HomeDivider
     },
     computed: {
         $sectionData() {
@@ -78,14 +81,24 @@ query {
 </static-query>
 
 <style lang="scss" scoped>
+    // Note: make sure these match the one in Home.vue
+    $divider-height: 5rem;
+    $divider-height-mobile: 2rem;
+
     .Home {
         width: 100%;
         height: 100%;
+
+        min-height: calc(100vh + #{$divider-height});
 
         overflow: hidden;
 
         background-color: black; // TODO: theme
         // background-color: color-link("current_page", "background_color", "tertiary");
+
+        @include respond(phone) {
+            min-height: calc(100vh + #{$divider-height-mobile});
+        }
     }
 
     .Home__content {
@@ -118,7 +131,11 @@ query {
         // Vertical align
         position: relative;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(calc(-50% - #{$divider-height} / 2));
+
+        @include respond(phone) {
+            transform: translateY(calc(-50% - #{$divider-height-mobile} / 2));
+        }
 
         z-index: 1;
     }
