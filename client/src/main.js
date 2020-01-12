@@ -2,6 +2,10 @@
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 import Vuex from 'vuex';
 import VeeValidate from 'vee-validate';
+import VueWaypoint from "vue-waypoint";
+import VueScrollReveal from "vue-scroll-reveal";
+import VueScrollTo from "vue-scrollto";
+
 import store from '@/store/store';
 
 import { MdIcon } from 'vue-material/dist/components';
@@ -42,6 +46,29 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
     // Set default layout as a global component
     Vue.component('Layout', DefaultLayout);
+
+    // Vue-Waypoint
+    Vue.use(VueWaypoint);
+
+    // Vue-Scroll-Reveal
+    Vue.use(VueScrollReveal, {
+        // Custom default options
+    });
+
+    // Vue-ScrollTo
+    Vue.use(VueScrollTo, {
+        container: "body",
+        duration: 700,
+        easing: "ease",
+        offset: 0,
+        force: true,
+        cancelable: true,
+        onStart: false,
+        onDone: false,
+        onCancel: false,
+        x: false,
+        y: true
+    });
 
     // Setup Vuex store
     Vue.use(Vuex);

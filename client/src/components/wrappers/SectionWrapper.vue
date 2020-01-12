@@ -5,6 +5,20 @@
         :namespace="currentNamespace"
         tag="div"
     >
+        <!-- This is needed because putting on the root is a little finicky -->
+        <div 
+            class="SectionWrapper__waypoint-trigger"
+            v-waypoint="{
+                active: true,
+                callback: onWaypoint,
+                options: {
+                    // Custom options config
+                    root: null,
+                    rootMargin: '0px 0px 0px 0px',
+                    thresholds: [0, 1]
+                }
+            }"
+        ></div>
         <slot />
     </theme-provider>
 </template>
@@ -53,6 +67,12 @@ export default {
             }
 
             return sanitized;
+        },
+        onWaypoint({ going, direction }) {
+            if (going === this.$waypointMap.GOING_IN) {
+                // Update URL hash to current section
+                window.location.hash = `#${this.sanitizedSectionName}`;
+            }
         }
     }
 }
@@ -62,7 +82,21 @@ export default {
     $side-padding: 1.3rem;
 
     .SectionWrapper {
+        position: relative;
+
         min-height: 100vh;
+
+        & .SectionWrapper__waypoint-trigger {
+            position: absolute;
+
+            width: 100%;
+            // height: 25%;
+
+            pointer-events: none;
+
+            top: 50%;
+            transform: translateY(-50%);
+        }
 
         // -------------
         // --- Modes ---

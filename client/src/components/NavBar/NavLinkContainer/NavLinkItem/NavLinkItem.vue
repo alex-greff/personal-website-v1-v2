@@ -1,8 +1,15 @@
 <template>
     <a
-        :class="['NavLinkItem', displayMode, modifierClass]"
+        :class="[
+            'NavLinkItem', 
+            displayMode, 
+            modifierClass,
+            (active) ? 'active' : null
+        ]"
         :href="`#${link}`"
+        v-scroll-to="`#${link}`"
         ref="baseEl"
+        @click="onClick"
     >
         <theme-provider 
             class="NavLinkItem__container"
@@ -26,6 +33,11 @@ import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 export default {
     components: {
         themeProvider: ThemeProvider,
+    },
+    data() {
+        return {
+            active: false
+        }
     },
     props: {
         isOpen: {
@@ -57,6 +69,26 @@ export default {
         modifierClass() {
             return (this.isOpen) ? "visible" : "hidden";
         }
+    },
+    methods: {
+        onHashChange(e) {
+            this.changeCurrentHash(e.newURL.split("#")[1]);
+        },
+        onClick() {
+            // Temporarily set active when clicked
+            this.active = true;
+        },
+        changeCurrentHash(hash) {
+            this.active = (this.link === hash);
+        }
+    },
+    mounted() {
+        window.addEventListener("hashchange", this.onHashChange);
+
+        this.changeCurrentHash(window.location.hash.split("#")[1]);
+    },
+    beforeDestroy() {
+        window.removeEventListener("hashchange", this.onHashChange);
     }
 }
 </script>
