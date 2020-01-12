@@ -83,7 +83,6 @@
 import SectionWrapper from "@/components/wrappers/SectionWrapper.vue";
 import LinkItem from "@/components/links/LinkItem.vue";
 import ProfileImage from "@/components/ui/ProfileImage.vue";
-import AboutDescription from "@/sections/About/AboutDescription.vue";
 import ThemedMarkdownDisplay from "@/components/markdown/ThemedMarkdownDisplay.vue";
 import BulletList from "@/components/ui/BulletList.vue";
 
@@ -92,7 +91,6 @@ export default {
         SectionWrapper,
         LinkItem,
         ProfileImage,
-        AboutDescription,
         ThemedMarkdownDisplay,
         BulletList
     },
