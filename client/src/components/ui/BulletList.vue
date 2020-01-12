@@ -8,9 +8,15 @@
             :key="`BulletList-col-${colNum}`"
         >
             <div
-                class="BulletList__item"
+                :class="['BulletList__item', (enableScrollReveal) ? 'sr-load-hidden' : null]"
                 v-for="(item, idx) in columnItems(colNum)"
                 :key="`BulletList-col-${colNum}-${idx}`"
+                v-scroll-reveal="{
+                    desktop: enableScrollReveal,
+                    mobile: enableScrollReveal,
+                    delay: revealInitDelay + (columnIndex(idx, columnItems(colNum).length) * revealDelayBetween),
+                    duration: revealDuration
+                }"
             >
                 <fa-icon 
                     class="BulletList__item-icon" 
@@ -37,6 +43,23 @@ export default {
         breakCols: {
             type: Boolean,
             default: true
+        },
+        enableScrollReveal: {
+            type: Boolean,
+            default: false
+        },
+        // Used only if enableScrollReveal=true
+        revealInitDelay: {
+            type: Number,
+            default: 0
+        },
+        revealDelayBetween: {
+            type: Number,
+            default: 150
+        },
+        revealDuration: {
+            type: Number,
+            default: 800
         }
     },
     computed: {
@@ -51,6 +74,11 @@ export default {
 
                 return this.items.slice(startIdx, startIdx + numItems);
             }
+        }
+    },
+    methods: {
+        columnIndex(listIdx, itemsPerColumn) {
+            return listIdx % itemsPerColumn;
         }
     }
 }

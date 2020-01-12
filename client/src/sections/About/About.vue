@@ -5,33 +5,51 @@
         margin-mode="wide"
     >
         <div class="About__content">
-            <h1 class="About__title">
+            <h1 
+                class="About__title sr-load-hidden"
+                v-scroll-reveal="{
+                    delay: 0,
+                    duration: 800
+                }"
+            >
                 About Me
             </h1>
             <div class="About__links">
                 <!-- Generate links -->
                 <link-item 
-                    v-for="(currLink, index) in $sectionData.links"
-                    :key="index"
-                    class="About__link-item"
+                    v-for="(currLink, idx) in $sectionData.links"
+                    :key="idx"
+                    class="About__link-item sr-load-hidden"
                     :link-type="currLink.type"
                     :title="currLink.type"
                     :href="`${currLink.link}`"
                     :size="2.2"
+                    v-scroll-reveal="{
+                        delay: 200 + (idx * 150),
+                        duration: 800,
+                    }"
                 />
             </div>
 
             <div class="About__content">
                 <div class="About__text-content">
                     <themed-markdown-display 
-                        class="About__description"
+                        class="About__description sr-load-hidden"
                         :compiled-markdown="$sectionData.content"
+                        v-scroll-reveal="{
+                            delay: 200,
+                            duration: 1000
+                        }"
                     />
 
                     <div class="About__curr-tech">
                         <themed-markdown-display 
-                            class="About__curr-tech-intro"
+                            class="About__curr-tech-intro sr-load-hidden"
                             :compiled-markdown="$sectionData.techIntroText"
+                            v-scroll-reveal="{
+                                delay: 400,
+                                duration: 1000
+                            }"
                         />
 
                         <bullet-list
@@ -39,14 +57,22 @@
                             :items="$sectionData.currentTech"
                             :num-cols="2"
                             :break-cols="false"
+
+                            :enable-scroll-reveal="true"
+                            :reveal-init-delay="600"
                         />
                     </div>
                 </div>
 
                 <profile-image 
-                    class="About__profile-image"
+                    class="About__profile-image sr-load-hidden"
                     :src="$sectionData.profileImage"
                     size="28rem"
+                    v-scroll-reveal="{
+                        delay: 400,
+                        origin: 'right',
+                        duration: 1000
+                    }"
                 />
             </div>
         </div>

@@ -51,3 +51,7 @@ html, body {
 .content {
     position: relative;
 }
+
+html.sr .sr-load-hidden {
+    visibility: hidden;
+}

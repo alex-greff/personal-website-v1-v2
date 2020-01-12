@@ -1,14 +1,20 @@
 <template>
     <section-wrapper 
-        class="Home"
+        class="Home sr-load-hidden"
         section-name="home"
         margin-mode="none"
+        v-scroll-reveal="{
+            delay: 0,
+            origin: 'right',
+            distance: 0,
+            duration: 1000
+        }"
     >
         <div class="Home__content">
             <div class="Home__welcome-container">
                 <div class="Home__greeting-text">
                     <span 
-                        class="Home__hi"
+                        class="Home__hi sr-load-hidden"
                         v-scroll-reveal="{
                             delay: 0,
                             duration: 1000
@@ -18,7 +24,7 @@
                     </span>
 
                     <span 
-                        class="Home__my-name-is"
+                        class="Home__my-name-is sr-load-hidden"
                         v-scroll-reveal="{
                             delay: 800,
                         }"
@@ -27,7 +33,7 @@
                     </span>
                 </div>
                 <h1 
-                    class="Home__name-text"
+                    class="Home__name-text sr-load-hidden"
                     v-scroll-reveal="{
                         delay: 1300
                     }"
@@ -36,7 +42,7 @@
                 </h1>
 
                 <div 
-                    class="Home__info-text"
+                    class="Home__info-text sr-load-hidden"
                     v-scroll-reveal="{
                         delay: 1800
                     }"
@@ -46,7 +52,7 @@
 
                 <component-button 
                     href="#contact"
-                    class="Home__contact-button"
+                    class="Home__contact-button sr-load-hidden"
                     v-scroll-reveal="{
                         delay: 2300
                     }"
@@ -55,11 +61,11 @@
                 </component-button>
             </div>
             <div 
-                class="Home__logo-container"
+                class="Home__logo-container sr-load-hidden"
                 v-scroll-reveal="{
                     duration: 1500,
                     origin: 'right',
-                    offset: '30px',
+                    distance: '30px',
                     delay: 1300
                 }"
             >
@@ -76,11 +82,12 @@
             </div>
         </div>
         <bar-background 
+            class="Home__bar-background sr-load-hidden"
             :z-index="0" 
             v-scroll-reveal="{
                 duration: 2500,
                 origin: 'right',
-                offset: 0,
+                distance: 0,
                 delay: 1300
             }"
         />
@@ -110,7 +117,7 @@ export default {
         $sectionData() {
             return this.$static.allGeneralData.edges[0].node;
         }
-    }
+    },
 }
 </script>
 
