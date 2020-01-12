@@ -16,6 +16,7 @@
         "gsap": "^2.1.2",
         "immutability-helper": "^3.0.0",
         "marked": "^0.6.2",
+        "nested-property": "^1.0.2",
         "themer": "github:alex-greff/themer#0066905fb80466d31fc234ea2a318cc166f07e89",
         "vee-validate": "^2.2.5",
         "vue-awesome": "^3.5.1",

@@ -8,7 +8,7 @@
     @return $font-size;
 }
 
-@mixin markdown-theme($largest-font-size: 3rem, $smallest-font-size: 1.5rem, $header-lines: true) {
+@mixin markdown-theme($largest-font-size: 3.2rem, $smallest-font-size: 1.7rem, $header-lines: true) {
     font-size: $smallest-font-size;
     font-weight: 300;
 
@@ -35,7 +35,8 @@
             font-size: $font-size;
             line-height: $font-size;
 
-            color: theme-link("project-details", "accent-color", "primary");
+            // color: theme-link("project-details", "accent-color", "primary");
+            color: color-link("current_section", "accent_color", "primary");
 
             font-weight: 600;
 
@@ -55,7 +56,8 @@
                         width: 100%;
                         height: 1px;
     
-                        background-color: theme-link("project-details", "text-color", "secondary", 0.2);
+                        // background-color: theme-link("project-details", "text-color", "secondary", 0.2);
+                        background-color: color-link("current_section", "text_color", "secondary", 0.2);
                     }
                 }
             }
@@ -68,7 +70,8 @@
 
             font-weight: 500;
 
-            color: theme-link("project-details", "accent-color", "primary");
+            // color: theme-link("project-details", "accent-color", "primary");
+            color: color-link("current_section", "accent_color", "primary");
         }
 
         & h3 {
@@ -78,7 +81,8 @@
 
             font-weight: 500;
 
-            color: theme-link("project-details", "accent-color", "primary");
+            // color: theme-link("project-details", "accent-color", "primary");
+            color: color-link("current_section", "accent_color", "primary");
         }
 
         & h4 {
@@ -88,7 +92,8 @@
 
             font-weight: 400;
 
-            color: theme-link("project-details", "accent-color", "primary", 0.8);
+            // color: theme-link("project-details", "accent-color", "primary", 0.8);
+            color: color-link("current_section", "accent_color", "primary", 0.8);
         }
 
         & h5 {
@@ -98,7 +103,8 @@
 
             font-weight: 400;
 
-            color: theme-link("project-details", "accent-color", "primary", 0.8);
+            // color: theme-link("project-details", "accent-color", "primary", 0.8);
+            color: color-link("current_section", "accent_color", "primary", 0.8);
         }
 
         & p {
@@ -112,6 +118,7 @@
 
         & strong {
             font-weight: 500;
+            color: color-link("current_section", "accent_color", "primary");
         }
 
         & em {
@@ -147,7 +154,8 @@
 
                     border-radius: 50%;
 
-                    background-color: theme-link("project-details", "selected-color", "primary");
+                    // background-color: theme-link("project-details", "selected-color", "primary");
+                    background-color: color-link("current_section", "selected_color", "primary");
                 }
 
                 &:not(:last-child) {
@@ -160,12 +168,14 @@
             color: inherit;
             text-decoration: none !important;
 
-            color: theme-link("project-details", "accent-color", "primary");
+            // color: theme-link("project-details", "accent-color", "primary");
+            color: color_link("current_section", "accent_color", "primary");
 
             transition: color 0.3s;
 
             &:hover {
-                color: theme-link("project-details", "selected-color", "primary");
+                // color: theme-link("project-details", "selected-color", "primary");
+                color: color-link("current_section", "selected_color", "primary");
             }
         }
     }

@@ -1,6 +1,7 @@
 <template>
     <theme-provider 
         :class="['SectionWrapper', marginMode]"
+        :id="sanitizedSectionName"
         :namespace="currentNamespace"
         tag="div"
     >
@@ -32,17 +33,20 @@ export default {
         }
     },
     computed: {
+        sanitizedSectionName() {
+            return this.sectionName.toLowerCase();
+        },
         currentNamespace() {
             if (!this.sectionName) {
                 return GLOBAL_NAMESPACE;
             }
 
-            return this.sanitizeSectionName(this.sectionName);
+            return this.convertToNamespace(this.sanitizedSectionName);
         }
     },
     methods: {
-        sanitizeSectionName(sectionName) {
-            let sanitized = sectionName.toLowerCase();
+        convertToNamespace(sectionName) {
+            let sanitized = sectionName;
 
             if (!sanitized.startsWith("section_")) {
                 sanitized = `section_${sanitized}`;
@@ -55,6 +59,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $side-padding: 1.3rem;
+
     .SectionWrapper {
         min-height: 100vh;
 
@@ -62,17 +68,25 @@ export default {
         // --- Modes ---
         // -------------
         &.wide {
-            max-width: 100rem;
+            max-width: calc(100rem - #{$side-padding});
 
             margin-right: auto;
             margin-left: auto;
         }
 
         &.narrow {
-            max-width: 75rem;
+            max-width: calc(75rem - #{$side-padding});
 
             margin-right: auto;
             margin-left: auto;
+        }
+
+        &.wide, &.narrow {
+            padding: 6rem $side-padding 6rem $side-padding;
+
+            @include respond(phone) {
+                padding: 2rem $side-padding 2rem $side-padding;
+            }
         }
 
         &.none {

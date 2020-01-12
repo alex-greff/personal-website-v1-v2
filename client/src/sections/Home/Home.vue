@@ -1,5 +1,4 @@
 <template>
-    <!-- <div class="Home"></div> -->
     <section-wrapper 
         class="Home"
         section-name="home"
@@ -11,11 +10,10 @@
                     <span class="Home__hi">Hi,&nbsp;</span><span class="Home__my-name-is">my name is</span>
                 </div>
                 <h1 class="Home__name-text">
-                    Alexander Greff
+                    {{ $sectionData.name }}
                 </h1>
                 <div class="Home__info-text">
-                    I am a computer science student specializing in software engineering at the 
-                    <span class="Home__uni-name">University of Toronto</span>.
+                    <themed-markdown-display :markdown="$sectionData.subText" />
                 </div>
 
                 <component-button 
@@ -46,6 +44,7 @@
 import SectionWrapper from "@/components/wrappers/SectionWrapper.vue";
 import BarBackground from "@/components/backgrounds/BarBackground.vue";
 import ComponentButton from "@/components/ui/ComponentButton.vue";
+import ThemedMarkdownDisplay from "@/components/markdown/ThemedMarkdownDisplay.vue";
 
 /* global Power1 */
 import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
@@ -54,10 +53,29 @@ export default {
     components: {
         SectionWrapper,
         BarBackground,
-        ComponentButton
+        ComponentButton,
+        ThemedMarkdownDisplay
+    },
+    computed: {
+        $sectionData() {
+            return this.$static.allGeneralData.edges[0].node;
+        }
     }
 }
 </script>
+
+<static-query>
+query {
+    allGeneralData {
+        edges {
+            node {
+                name
+                subText
+            }
+        }
+    }
+}
+</static-query>
 
 <style lang="scss" scoped>
     .Home {
@@ -146,15 +164,13 @@ export default {
             font-size: 1.5rem;
 
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
+
+            // Override default 300 weight
+            & /deep/ p {
+                font-weight: 400;
+            }
 
             max-width: 50rem;
-
-            & .Home__uni-name {
-                font-size: inherit;
-
-                color: color-link("current_section", "accent_color", "primary");
-            }
         }
 
         & .Home__contact-button {
