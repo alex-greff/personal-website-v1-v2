@@ -53,6 +53,13 @@ export default function (Vue, { router, head, isClient, appOptions }) {
     // Vue-Scroll-Reveal
     Vue.use(VueScrollReveal, {
         // Custom default options
+        class: 'v-scroll-reveal', // A CSS class applied to elements with the v-scroll-reveal directive; useful for animation overrides.
+        duration: 1000,
+        scale: 1,
+        distance: '20px',
+        origin: "left",
+        easing: "ease",
+        mobile: true
     });
 
     // Vue-ScrollTo

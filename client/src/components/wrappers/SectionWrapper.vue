@@ -72,6 +72,12 @@ export default {
             if (going === this.$waypointMap.GOING_IN) {
                 // Update URL hash to current section
                 window.location.hash = `#${this.sanitizedSectionName}`;
+
+                this.$emit('sectionEnter');
+            }
+
+            if (going === this.$waypointMap.GOING_OUT) {
+                this.$emit('sectionLeave');
             }
         }
     }

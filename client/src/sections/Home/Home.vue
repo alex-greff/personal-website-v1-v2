@@ -7,23 +7,62 @@
         <div class="Home__content">
             <div class="Home__welcome-container">
                 <div class="Home__greeting-text">
-                    <span class="Home__hi">Hi,&nbsp;</span><span class="Home__my-name-is">my name is</span>
+                    <span 
+                        class="Home__hi"
+                        v-scroll-reveal="{
+                            delay: 0,
+                            duration: 1000
+                        }"
+                    >
+                        Hi,&nbsp;
+                    </span>
+
+                    <span 
+                        class="Home__my-name-is"
+                        v-scroll-reveal="{
+                            delay: 800,
+                        }"
+                    >
+                        my name is
+                    </span>
                 </div>
-                <h1 class="Home__name-text">
+                <h1 
+                    class="Home__name-text"
+                    v-scroll-reveal="{
+                        delay: 1300
+                    }"
+                >
                     {{ $sectionData.name }}
                 </h1>
-                <div class="Home__info-text">
+
+                <div 
+                    class="Home__info-text"
+                    v-scroll-reveal="{
+                        delay: 1800
+                    }"
+                >
                     <themed-markdown-display :markdown="$sectionData.subText" />
                 </div>
 
                 <component-button 
                     href="#contact"
                     class="Home__contact-button"
+                    v-scroll-reveal="{
+                        delay: 2300
+                    }"
                 >
                     Contact Me
                 </component-button>
             </div>
-            <div class="Home__logo-container">
+            <div 
+                class="Home__logo-container"
+                v-scroll-reveal="{
+                    duration: 1500,
+                    origin: 'right',
+                    offset: '30px',
+                    delay: 1300
+                }"
+            >
                 <div class="Home__logo-1">
                     <svg viewBox="0 0 16.5 16.5" clipPath="#logo-clip">
                         <use xlink:href="#logo-symbol" href="#logo-symbol" />
@@ -36,7 +75,15 @@
                 </div>
             </div>
         </div>
-        <bar-background :z-index="0" />
+        <bar-background 
+            :z-index="0" 
+            v-scroll-reveal="{
+                duration: 2500,
+                origin: 'right',
+                offset: 0,
+                delay: 1300
+            }"
+        />
         <home-divider />
     </section-wrapper>
 </template>
