@@ -324,11 +324,9 @@ const _completeAnim = (el) => {
 
         // Bg display modifiers
         &.display-bg {
-            // background-color: theme-link("loader", "bg-color", "primary");
             background-color: color-link("current_section", "background_color", "primary");
         }
         &:not(.display-bg) {
-            // background-color: theme-link("loader", "bg-color", "primary", 0);
             background-color: color-link("current_section", "background_color", "primary", 0);
         }
     }
@@ -389,22 +387,18 @@ const _completeAnim = (el) => {
                 // -----------------------
 
                 @mixin cell-start() {
-                    // filter: drop-shadow(0 0 5px theme-link("loader", "accent-color", "primary", 0.5));
                     filter: drop-shadow(0 0 5px color-link("current_section", "accent_color", "primary", 0.5));
                 }
 
                 @mixin cell-end() {
-                    // filter: drop-shadow(0 0 0px theme-link("loader", "accent-color", "primary", 0.5));
                     filter: drop-shadow(0 0 0px color-link("current_section", "accent_color", "primary", 0.5));
                 }
 
                 @mixin cell-inner-start() {
-                    // background-color: theme-link("loader", "accent-color", "primary", 1);
                     background-color: color-link("current_section", "accent_color", "primary", 1);
                 }
 
                 @mixin cell-inner-end() {
-                    // background-color: theme-link("loader", "accent-color", "primary", 0.1);
                     background-color: color-link("current_section", "accent_color", "primary", 0.1);
                 }
 
@@ -468,7 +462,6 @@ const _completeAnim = (el) => {
         & .BlockLoader__loading-text {
             text-align: center;
 
-            // color: theme-link("loader", "accent-color", "primary");
             color: color-link("current_section", "accent_color", "primary");
 
             font-size: 1.5rem;
