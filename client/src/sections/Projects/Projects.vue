@@ -5,7 +5,13 @@
         margin-mode="wide"
     >
         <div class="Projects__content">
-            <h1 class="Projects__title">
+            <h1 
+                class="Projects__title"
+                v-scroll-reveal="{
+                    delay: 0,
+                    duration: 800
+                }"
+            >
                 Projects
             </h1>
 
@@ -15,6 +21,10 @@
                 sub-script-class="Projects__filter-sub-script"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
+                v-scroll-reveal="{
+                    delay: 300,
+                    duration: 800
+                }"
             />
 
             <transition-group 
@@ -24,6 +34,10 @@
 
                 @enter="projectItemEnterAnim"
                 @leave="projectItemLeaveAnim"
+                v-scroll-reveal="{
+                    delay: 500,
+                    duration: 800
+                }"
             >
                 <empty-filter-display 
                     key="empty-filter-display"
@@ -285,9 +299,6 @@ query {
 
 <style lang="scss" scoped>
     .Projects {
-        // display: flex;
-        // align-items: center;
-
         & .Projects__content {
 
             & .Projects__title {
@@ -297,6 +308,10 @@ query {
                 font-size: 4rem;
                 line-height: 4rem;
                 color: color-link("current_section", "accent_color", "primary");
+
+                @include respond(phone) {
+                    
+                }
             }
 
             & .Projects__filter {
