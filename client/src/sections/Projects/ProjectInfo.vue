@@ -137,7 +137,7 @@ export default {
             display: flex;
             justify-content: space-between;
 
-            padding-top: 1.2rem;
+            margin-top: 1.2rem;
 
             & .ProjectInfo__links {
                 display: flex;
@@ -162,6 +162,8 @@ export default {
         & .ProjectInfo__tags {
             display: flex;
             flex-wrap: wrap;
+            
+            margin-top: 0.2rem;
 
             & .ProjectInfo__tag-item {
                 margin-top: 0.3rem;
@@ -169,7 +171,7 @@ export default {
         }
 
         & /deep/ .ProjectInfo__description {
-            padding-top: 1.2rem;
+            margin-top: 1.2rem;
 
             @include markdown-theme(2.5rem, 1.5rem);
         }

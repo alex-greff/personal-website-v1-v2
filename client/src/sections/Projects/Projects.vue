@@ -300,6 +300,16 @@ query {
 <style lang="scss" scoped>
     .Projects {
         & .Projects__content {
+            padding-top: 5rem;
+
+            @include respond(phone) {
+                padding-top: 2rem;
+            }
+
+            @include respond(big-desktop) {
+                padding-top: 10rem;
+            }
+
 
             & .Projects__title {
                 text-align: center;
