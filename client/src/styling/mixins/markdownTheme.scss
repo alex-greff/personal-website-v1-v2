@@ -38,7 +38,7 @@
             // color: theme-link("project-details", "accent-color", "primary");
             color: color-link("current_section", "accent_color", "primary");
 
-            font-weight: 600;
+            font-weight: 500;
 
             @if $header-lines == true {
                 // Section lines 

@@ -55,6 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $accent-offset: 5px;
+
     .ProfileImage {
         position: relative;
 
@@ -81,11 +83,11 @@ export default {
         & .ProfileImage__decorator {
             position: absolute;
 
-            width: 100%;
-            height: 100%;
+            width: calc(100% - #{$accent-offset});
+            height: calc(100% - #{$accent-offset});
 
-            top: 5px;
-            left: 5px;
+            top: $accent-offset;
+            left: $accent-offset;
 
             transition: transform 0.4s;
 
@@ -97,6 +99,9 @@ export default {
         & .ProfileImage__image {
             position: relative;
             z-index: 2;
+
+            padding-right: $accent-offset;
+            padding-bottom: $accent-offset;
         }
     }
 </style>

@@ -92,6 +92,8 @@ export default {
 
         min-height: 100vh;
 
+        overflow: hidden;
+
         & .SectionWrapper__waypoint-trigger {
             position: absolute;
 
@@ -125,7 +127,7 @@ export default {
             padding: 6rem $side-padding 6rem $side-padding;
 
             @include respond(phone) {
-                padding: 2rem $side-padding 2rem $side-padding;
+                padding: 4rem $side-padding 4rem $side-padding;
             }
         }
 

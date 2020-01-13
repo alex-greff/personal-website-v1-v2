@@ -37,7 +37,8 @@ export default {
         return {
             globalNamespace: GLOBAL_NAMESPACE,
 
-            loading: true,
+            // loading: true,
+            loading: false,
 
             pageLoadAnim: async () => {
                 // Run spoof anim
@@ -49,7 +50,7 @@ export default {
     },
     mounted() {
         this.$nextTick(() => {
-            this.pageLoadAnim();
+            // this.pageLoadAnim();
         });
     },
     computed: {

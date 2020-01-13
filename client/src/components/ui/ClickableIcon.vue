@@ -1,36 +1,24 @@
 <template>
-    <a 
-        class="LinkItem"
+    <div 
+        :class="['ClickableIcon', { disabled }]"
         :style="sizeStyles"
-        :href="href" 
-        :title="title"
-        :target="targetValue"
+        @click="onClick"
     >
-        <fa-icon :name="getIconMapping(linkType)" />
-    </a>
+        <fa-icon 
+            class="ClickableIcon__icon"
+            :name="name"
+        />
+    </div>
 </template>
 
 <script>
 import Utilities from "../../utilities";
-import ICON_MAPPINGS from "@/constants/iconMappings";
 
 export default {
     props: {
-        href: {
+        name: {
             type: String,
-            default: ""
-        },
-        title: {
-            type: String,
-            default: null
-        },
-        openNewTab: {
-            type: Boolean, 
-            default: true
-        },
-        linkType: {
-            type: String,
-            default: ""
+            required: true
         },
         size: {
             type: String,
@@ -38,12 +26,13 @@ export default {
                 return Utilities.isCSSLength(val);
             },
             default: "2rem"
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
-        targetValue() {
-            return (this.openNewTab) ? "__blank" : "";
-        },
         sizeStyles() {
             return {
                 width: this.size,
@@ -52,28 +41,25 @@ export default {
         }
     },
     methods: {
-        getIconMapping(i_sIconType) {
-            const iconMapping = ICON_MAPPINGS[i_sIconType];
-            return (iconMapping) ? iconMapping : ICON_MAPPINGS["default"];
-        },
-    }
+        onClick(e) {
+            if (this.disabled) {
+                e.preventDefault();
+                return;
+            }
+
+            this.$emit("click", e);
+        }
+    },
 }
 </script>
 
 <style lang="scss" scoped>
-    .LinkItem {
-        pointer-events: all;
-
-        $icon-size: 2rem;
-
+    .ClickableIcon {
         position: relative;
-        width: $icon-size;
-        height: $icon-size;
 
-        margin-right: 0.3rem;
-        margin-left: 0.3rem;
+        pointer-events: all;
+        cursor: pointer;
 
-        text-decoration: none;
         color: color-link("current_section", "text_color", "primary");
 
         transition: color 0.4s;
@@ -87,8 +73,16 @@ export default {
             transform: translateY(-50%);
         }
 
+        // -----------------
+        // --- Modifiers ---
+        // -----------------
         &:hover {
             color: color-link("current_section", "accent_color", "primary");
+        }
+
+        &.disabled {
+            pointer-events: none;
+            color: color-link("current_section", "text_color", "secondary");
         }
     }
 </style>

@@ -29,7 +29,7 @@
                             :link-type="linkType"
                             :title="linkType"
                             :href="`//${link}`"
-                            :size="2"
+                            size="2rem"
                         />
                     </div>
                     <div class="ProjectDetails__summary">

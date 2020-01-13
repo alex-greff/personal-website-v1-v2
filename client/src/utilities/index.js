@@ -43,7 +43,7 @@ export const isInBreakpoint = (i_sBreakpointName, i_nScreenWidth) => {
             return i_nScreenWidth > BREAKPOINT_TAB_PORT && i_nScreenWidth <= BREAKPOINT_TAB_LAND;
         case "normal":
             return i_nScreenWidth > BREAKPOINT_TAB_LAND && i_nScreenWidth < BREAKPOINT_BIG_DESKTOP;
-        case "desktop":
+        case "big-desktop":
             return i_nScreenWidth >= BREAKPOINT_BIG_DESKTOP;
         default:
             throw `Error: breakpoint '${i_sBreakpointName}' does not exist`;

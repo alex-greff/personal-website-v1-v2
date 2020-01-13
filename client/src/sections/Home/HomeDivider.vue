@@ -29,7 +29,6 @@ export default {
 
         @include respond(phone) {
             height: $divider-height-mobile;
-            bottom: calc(-1 * #{$divider-height-mobile});
         }
 
         & .HomeDivider__home-bg-clip-container {
