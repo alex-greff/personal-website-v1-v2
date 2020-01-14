@@ -18,7 +18,7 @@
     // -----------------
 
     &:focus {
-        // border: 0.1rem solid theme-link($base, "accent-color", "primary");
+        // border: 0.1rem solid color-link($base, "accent_color", "primary");
         box-shadow: 0px 0px 3px 0px color-link($base, "accent_color", "primary");
 
         &.error {

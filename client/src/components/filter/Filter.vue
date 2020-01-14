@@ -143,7 +143,6 @@ export default {
             margin-top: 0.3rem;
             margin-left: 0.7rem;
 
-            // color: theme-link("page", "text-color", "secondary", 0.3);
             color: color-link("current_section", "text_color", "secondary", 0.3);
 
             font-size: $font-size;

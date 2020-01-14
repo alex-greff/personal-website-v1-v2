@@ -267,7 +267,7 @@ export default {
                 }
                 
                 & .ProjectItem__tint {
-                    // background-color: theme-link("page", "bg-color", "primary", 0.9);
+                    // background-color: color-link("current_section", "background_color", "primary", 0.9);
                     background-color: rgba(0, 0, 0, 0.85);
                 }
 

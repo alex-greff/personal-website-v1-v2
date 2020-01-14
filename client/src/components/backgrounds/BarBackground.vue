@@ -75,7 +75,7 @@ export default {
             right: 0;
             top: 50%;
 
-            // filter: drop-shadow(0 0 5px theme-link("page", "accent-color", "primary", 0.8));
+            // filter: drop-shadow(0 0 5px color-link("current_section", "accent_color", "primary", 0.8));
         }   
 
         $num-bars: 100;
@@ -104,9 +104,6 @@ export default {
                 width: calc(#{$min-width + $pow-triangle-val * ($max-width - $min-width)}vw + #{$width-rand}px);
                 height: calc(#{100/$num-bars * $height-multiplier * $screen-height-amount}vh + #{$height-rand}px);
                 
-
-                // $theme-clr: theme-link("page", "accent-color", "primary", 0.3);
-                // $them-clr-trans: theme-link("page", "accent-color", "primary", 0);
                 $theme-clr: color-link("current_section", "accent_color", "primary", 0.3);
                 $them-clr-trans: color-link("current_section", "accent_color", "primary", 0);
 
