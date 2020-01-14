@@ -94,6 +94,10 @@ export default {
     #app {
         height: 100%;
     }
+
+    #app *::selection {
+        background-color: color-link("current_section", "selected_color", "primary", 0.3);
+    }
     
     .svg-def {
         position: fixed;
