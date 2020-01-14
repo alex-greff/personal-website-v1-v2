@@ -459,6 +459,15 @@ const PHASE_ANIM_MAPPINGS = {
 <style lang="scss" scoped>
     .Contact {
         & .Contact__content {
+            padding-top: 5rem;
+
+            @include respond(phone) {
+                padding-top: 2rem;
+            }
+
+            @include respond(big-desktop) {
+                padding-top: 10rem;
+            }
 
             & .Contact__title {
                 text-align: center;
