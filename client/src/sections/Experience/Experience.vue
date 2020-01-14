@@ -5,7 +5,13 @@
         margin-mode="narrow"
     >
         <div class="Experience__content">
-            <h1 class="Experience__title">
+            <h1 
+                class="Experience__title"
+                v-scroll-reveal="{
+                    delay: 0,
+                    duration: 800
+                }"
+            >
                 Experience
             </h1>
 
@@ -15,6 +21,10 @@
                 sub-script-class="Experience__filter-sub-script"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
+                v-scroll-reveal="{
+                    delay: 300,
+                    duration: 800
+                }"
             />
 
             <transition-group
@@ -24,6 +34,10 @@
 
                 @enter="experienceItemEnterAnim"
                 @leave="experienceItemLeaveAnim"
+                v-scroll-reveal="{
+                    delay: 500,
+                    duration: 800
+                }"
             >
                 <empty-filter-display 
                     key="empty-filter-display"
