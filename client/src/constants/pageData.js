@@ -1,5 +1,5 @@
 export const pageData = {
-    navPageOrder: ["home", "about", "projects", "experience", "contact"],
+    navPageOrder: ["home", "about", "experience", "projects", "contact"],
     pages: {
         home: {
             name: "home",
@@ -17,20 +17,20 @@ export const pageData = {
                 targetTheme: "cyan"
             }
         },
-        projects: {
-            name: "projects",
-            link: "projects",
-            theme: {
-                namespace: "section_projects",
-                targetTheme: "red"
-            }
-        },
         experience: {
             name: "experience",
             link: "experience",
             theme: {
                 namespace: "section_experience",
                 targetTheme: "lime"
+            }
+        },
+        projects: {
+            name: "projects",
+            link: "projects",
+            theme: {
+                namespace: "section_projects",
+                targetTheme: "red"
             }
         },
         contact: {

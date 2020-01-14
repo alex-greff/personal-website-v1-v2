@@ -117,7 +117,7 @@ export default {
         }
 
         &.narrow {
-            max-width: calc(75rem - #{$side-padding});
+            max-width: calc(90rem - #{$side-padding});
 
             margin-right: auto;
             margin-left: auto;

@@ -1,6 +1,6 @@
 export const GREY_1 = "#1E1E1E";
 export const GREY_2 = "#1E1E1E";
-export const GREY_3 = "#3C3C3C";
+export const GREY_3 = "#373737";
 export const GREY_4 = "#3F3F3F";
 
 export const TEXT_1 = "#FFFFFF";

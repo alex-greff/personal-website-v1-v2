@@ -87,7 +87,7 @@ import Utilities from "../../utilities";
 import { wrapGrid } from "animate-css-grid";
 
 /* global Power1 */
-import { TweenLite, TweenMax, TimelineLite } from "gsap/all";
+import { TweenLite } from "gsap/all";
 
 import SectionWrapper from "@/components/wrappers/SectionWrapper.vue";
 import ProjectFilter from "@/sections/Projects/ProjectFilter.vue";

@@ -28,6 +28,9 @@ import "vue-awesome/icons/brands/twitter";
 import "vue-awesome/icons/link";
 import "vue-awesome/icons/download";
 import "vue-awesome/icons/angle-right";
+import "vue-awesome/icons/angle-left";
+import "vue-awesome/icons/angle-up";
+import "vue-awesome/icons/angle-down";
 import "vue-awesome/icons/times";
 
 import DefaultLayout from '@/layouts/Default.vue';

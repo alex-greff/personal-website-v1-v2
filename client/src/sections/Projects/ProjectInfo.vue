@@ -173,7 +173,7 @@ export default {
         & /deep/ .ProjectInfo__description {
             margin-top: 1.2rem;
 
-            @include markdown-theme(2.5rem, 1.5rem);
+            @include markdown-theme(2.3rem, 1.5rem);
         }
     }
 </style>
