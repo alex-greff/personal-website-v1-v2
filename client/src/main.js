@@ -8,9 +8,6 @@ import VueScrollTo from "vue-scrollto";
 
 import store from '@/store/store';
 
-import { MdIcon } from 'vue-material/dist/components';
-import 'vue-material/dist/vue-material.min.css';
-
 import Icon from 'vue-awesome/components/Icon';
 import "vue-awesome/icons/brands/github";
 import "vue-awesome/icons/brands/linkedin";
@@ -39,9 +36,6 @@ import "@/styling/main.scss";
 
 
 export default function (Vue, { router, head, isClient, appOptions }) {
-    // Material UI 
-    Vue.use(MdIcon);
-
     // Font Awesome
     Vue.component('fa-icon', Icon);
 

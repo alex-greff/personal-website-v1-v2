@@ -22,7 +22,6 @@
         "vue-awesome": "^3.5.1",
         "vue-axios": "^2.1.4",
         "vue-fragment": "^1.5.0",
-        "vue-material": "^1.0.0-beta-10.2",
         "vue-scroll-reveal": "^1.0.11",
         "vue-scrollto": "^2.17.1",
         "vue-waypoint": "^3.2.2",
