@@ -100,6 +100,10 @@ export default {
             position: relative;
             z-index: 2;
 
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
             padding-right: $accent-offset;
             padding-bottom: $accent-offset;
         }

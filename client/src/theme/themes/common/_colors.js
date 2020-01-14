@@ -17,6 +17,11 @@ export const DEFAULT_SELECTED_1 = "#FFFFFF";
 export const DEFAULT_DISABLED_1 = "#C8C8C8";
 
 export const ERROR_1 = "#FA3737";
+export const ERROR_2 = "rgb(255, 0, 0)";
+export const SUCCESS_1 = "#6FD66F";
+export const SUCCESS_2 = "rgb(0, 255, 0)";
+export const WARNING_1 = "#E5CC66";
+export const WARNING_2 = "#FFCD00";
 
 export const BLUE_THEME_ACCENT_1 = "#70A7FA";
 export const BLUE_THEME_ACCENT_2 = "#4F8DEB";

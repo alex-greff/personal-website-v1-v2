@@ -29,6 +29,8 @@ import "vue-awesome/icons/angle-left";
 import "vue-awesome/icons/angle-up";
 import "vue-awesome/icons/angle-down";
 import "vue-awesome/icons/times";
+import "vue-awesome/icons/check";
+import "vue-awesome/icons/exclamation";
 
 import DefaultLayout from '@/layouts/Default.vue';
 

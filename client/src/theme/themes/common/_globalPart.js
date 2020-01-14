@@ -24,7 +24,16 @@ export default {
             primary: Colors.DEFAULT_DISABLED_1
         },
         error_color: {
-            primary: Colors.ERROR_1
+            primary: Colors.ERROR_1,
+            secondary: Colors.ERROR_2
+        },
+        success_color: {
+            primary: Colors.SUCCESS_1,
+            secondary: Colors.SUCCESS_2
+        },
+        warning_color: {
+            primary: Colors.WARNING_1,
+            secondary: Colors.WARNING_2
         }
     },
     scrollbar: {

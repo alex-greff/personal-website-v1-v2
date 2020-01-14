@@ -16,7 +16,13 @@ export const schema = {
             $mixins: ['primary_modifier']
         },
         error_color: {
-            $mixins: ['primary_modifier']
+            $mixins: ['primary_modifier', 'secondary_modifier']
+        },
+        success_color: {
+            $mixins: ['primary_modifier', 'secondary_modifier']
+        },
+        warning_color: {
+            $mixins: ['primary_modifier', 'secondary_modifier']
         }
     },
     scrollbar: {
