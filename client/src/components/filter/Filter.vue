@@ -134,7 +134,6 @@ export default {
     .Filter {
         & .Filter__item {
             margin-top: 0.3rem;
-            font-size: inherit;
         }
 
         & .Filter__sub-script {
