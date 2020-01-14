@@ -5,7 +5,13 @@
         margin-mode="narrow"
     >
         <div class="Contact__content">
-            <h1 class="Contact__title">
+            <h1 
+                class="Contact__title"
+                v-scroll-reveal="{
+                    delay: 0,
+                    duration: 800
+                }"
+            >
                 Contact Me
             </h1>
 
@@ -34,6 +40,10 @@
                             :error="errors.first('name')"
                             placeholder="John Doe"
                             autofocus
+                            v-scroll-reveal="{
+                                delay: 300,
+                                duration: 800
+                            }"
                         />
 
                         <text-field 
@@ -45,6 +55,10 @@
                             :disabled="formDisabled"
                             :error="errors.first('email')"
                             placeholder="john.doe@email.com"
+                            v-scroll-reveal="{
+                                delay: 400,
+                                duration: 800
+                            }"
                         />
 
                         <text-field 
@@ -56,6 +70,10 @@
                             :disabled="formDisabled"
                             :error="errors.first('subject')"
                             placeholder="Enter subject here..."
+                            v-scroll-reveal="{
+                                delay: 500,
+                                duration: 800
+                            }"
                         />
 
                         <text-area-field 
@@ -67,6 +85,10 @@
                             :disabled="formDisabled"
                             :error="errors.first('message')"
                             placeholder="Enter message here..."
+                            v-scroll-reveal="{
+                                delay: 600,
+                                duration: 800
+                            }"
                         />
                     </form>
 
@@ -77,6 +99,10 @@
                             :form="formID"
                             :loading="requestSending"
                             loading-text="Loading"
+                            v-scroll-reveal="{
+                                delay: 700,
+                                duration: 800
+                            }"
                         >
                             Send
                         </button-loader-field>
