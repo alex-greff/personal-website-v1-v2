@@ -39,7 +39,6 @@
                             :disabled="formDisabled"
                             :error="errors.first('name')"
                             placeholder="John Doe"
-                            autofocus
                             v-scroll-reveal="{
                                 delay: 300,
                                 duration: 800
