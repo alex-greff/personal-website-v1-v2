@@ -1,1 +1,0 @@
-// Global getters here

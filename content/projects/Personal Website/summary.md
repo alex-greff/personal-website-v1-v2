@@ -1,1 +1,0 @@
-A personal website developed from scratch using a contemporary web development technology stack. Built as a side project in order to get more familiar with modern web development principals and design.

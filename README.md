@@ -1,38 +1,14 @@
-# PERSONAL WEBSITE
+# Default starter for Gridsome
 
-## Development
+This is the project you get when you run `gridsome create new-project`.
 
-* Start up docker containers with:
+### 1. Install Gridsome CLI tool if you don't have
 
-    `$ docker-compose -f docker-compose-dev.yml up --build`
+`npm install --global @gridsome/cli`
 
-* Development docker-compose for testing production containers
+### 2. Create a Gridsome project
 
-    `$ docker-compose -f docker-compose-dev-prod.yml up --build`
-
-* Connections:
-
-    * Client:
-
-        `localhost:3050`
-
-    * Server
-
-        `localhost:3050/api`
-
-**Note:** In order for the development environment to work, certain environment variables need to be setup properly. However, some of them are sensitive and cannot be shared here. Contact me (Alex) if you would like more information.
-
-## Documentation
-
-* [Client](/client/README.md)
-    * [Theme System](/client/README.md#theme-system)
-
-* [Server](/server/README.md)
-    * [Roles](/server/README.md#roles)
-    * [HTTP Requests](/server/README.md#http-requests)
-        * [Projects](/server/README.md#projects)
-        * [Experiences](/server/README.md#experiences)
-        * [Users](/server/README.md#users)
-        * [Themes](/server/README.md#themes)
-        * [Music](/server/README.md#music)
-        * [Contact](/server/README.md#contact)
+1. `gridsome create my-gridsome-site` to install default starter
+2. `cd my-gridsome-site` to open the folder
+3. `gridsome develop` to start a local dev server at `http://localhost:8080`
+4. Happy coding 🎉🙌

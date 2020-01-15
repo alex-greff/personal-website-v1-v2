@@ -1,35 +1,12 @@
 # Sets up the development environment
 version: "3.2"
 services: 
-    proxy:
-        restart: always
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./nginx
-        ports:
-            - "3050:80"
-        container_name: personal_website_proxy
-    api:
-        build:
-            dockerfile: Dockerfile.dev
-            context: ./server
-        container_name: personal_website_api
-        volumes: 
-            - /app/node_modules
-            - ./server:/app
-        environment: 
-            - "MONGO_URI=${PERSONAL_WEBSITE_MONGO_URI}"
-            - "MONGO_USERNAME=${PERSONAL_WEBSITE_MONGO_USERNAME}"
-            - "MONGO_PASSWORD=${PERSONAL_WEBSITE_MONGO_PASSWORD}"
-            - "JWT_KEY=${PERSONAL_WEBSITE_JWT_SECRET}"
-            - "JWT_TOKEN_EXPIRE_TIME=${PERSONAL_WEBSITE_JWT_TOKEN_EXPIRE_TIME}"
-            - "PERSONAL_WEBSITE_DRIVE_CLIENT_EMAIL=${PERSONAL_WEBSITE_DRIVE_CLIENT_EMAIL}"
-            - "PERSONAL_WEBSITE_DRIVE_PRIVATE_KEY=${PERSONAL_WEBSITE_DRIVE_PRIVATE_KEY}"
-            - "PERSONAL_WEBSITE_DRIVE_ROOT_FOLDER_ID=${PERSONAL_WEBSITE_DRIVE_ROOT_FOLDER_ID}"
     client:
         build: 
             dockerfile: Dockerfile.dev
             context: ./client
+        ports: 
+            - "3050:8080"
         container_name: personal_website_client
         volumes: 
             - /app/node_modules
