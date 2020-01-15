@@ -6,9 +6,7 @@ The repository for my personal website.
 
 ### Requirements
 
-This project used the Gridsome CLI make sure to install it globally with `npm install --global @gridsome/cli`
-
-Docker is also heavily used in development so make sure to have it as well.
+The development environment uses Docker so make sure to have that installed.
 
 ### Developement Server
 
