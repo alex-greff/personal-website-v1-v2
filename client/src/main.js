@@ -36,8 +36,15 @@ import DefaultLayout from '@/layouts/Default.vue';
 
 import "@/styling/main.scss";
 
+// let _VueWaypoint;
+// let _VueScrollReveal;
+// if (process.isClient) {
+//     _VueWaypoint = require('vue-waypoint');
+//     _VueScrollReveal = require('vue-scroll-reveal');
+// }
 
-export default function (Vue, { router, head, isClient, appOptions }) {
+
+export default async function (Vue, { router, head, isClient, appOptions }) {
     // Font Awesome
     Vue.component('fa-icon', Icon);
 
@@ -46,6 +53,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
     // Set default layout as a global component
     Vue.component('Layout', DefaultLayout);
+
 
     // Vue-Waypoint
     Vue.use(VueWaypoint);
@@ -61,6 +69,61 @@ export default function (Vue, { router, head, isClient, appOptions }) {
         easing: "ease",
         mobile: true
     });
+
+
+    // Libraries that don't play well with SSR
+    if (process.isClient) {
+        // const Test = await import('vue-waypoint');
+
+        // console.log(process.isClient);
+
+        // // Vue-Waypoint
+        // const VueWaypoint_ = require('vue-waypoint');
+        // Vue.use(VueWaypoint_);
+
+        // const VueScrollReveal_ = require('vue-scroll-reveal');
+        // Vue.use(VueScrollReveal_, {
+        //     // Custom default options
+        //     class: 'v-scroll-reveal', // A CSS class applied to elements with the v-scroll-reveal directive; useful for animation overrides.
+        //     duration: 1000,
+        //     scale: 1,
+        //     distance: '20px',
+        //     origin: "left",
+        //     easing: "ease",
+        //     mobile: true
+        // });
+
+        
+
+        // Vue.use(_VueWaypoint);
+
+        // Vue.use(_VueScrollReveal, {
+        //     // Custom default options
+        //     class: 'v-scroll-reveal', // A CSS class applied to elements with the v-scroll-reveal directive; useful for animation overrides.
+        //     duration: 1000,
+        //     scale: 1,
+        //     distance: '20px',
+        //     origin: "left",
+        //     easing: "ease",
+        //     mobile: true
+        // });
+
+
+        // console.log(require("vue-waypoint"));
+
+        // Vue.use(require("vue-waypoint").default);
+
+        // Vue.use(require("vue-waypoint").default, {
+        //     // Custom default options
+        //     class: 'v-scroll-reveal', // A CSS class applied to elements with the v-scroll-reveal directive; useful for animation overrides.
+        //     duration: 1000,
+        //     scale: 1,
+        //     distance: '20px',
+        //     origin: "left",
+        //     easing: "ease",
+        //     mobile: true
+        // });
+    }
 
     // Vue-ScrollTo
     Vue.use(VueScrollTo, {
