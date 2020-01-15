@@ -22,7 +22,7 @@
                     class="About__link-item sr-load-hidden"
                     :link-type="currLink.type"
                     :title="currLink.type"
-                    :href="`//${currLink.link}`"
+                    :href="`${currLink.link}`"
                     size="2.2rem"
                     v-scroll-reveal="{
                         delay: 200 + (idx * 150),
