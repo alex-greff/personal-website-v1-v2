@@ -8,7 +8,11 @@ links: [
     { type: "download", link: "github.com/alex-greff/java-text-based-game/blob/master/SpaceInvadersAlexG.zip" }
 ]
 thumbnailImage: "content/projects/SpaceInvaders/thumbnail.png"
-galleryImages: ["content/projects/SpaceInvaders/screenshot_1.png", "content/projects/SpaceInvaders/screenshot_2.png", "content/projects/SpaceInvaders/screenshot_3.png"]
+galleryImages: [
+    "content/projects/SpaceInvaders/screenshots/screenshot_1.png", 
+    "content/projects/SpaceInvaders/screenshots/screenshot_2.png", 
+    "content/projects/SpaceInvaders/screenshots/screenshot_3.png"
+]
 ---
 
 # TODO: write description

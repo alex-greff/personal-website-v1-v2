@@ -8,7 +8,11 @@ links: [
     { type: "website", link: "alex-greff.github.io/logic-high-fidelity-prototype/login.html" }
 ]
 thumbnailImage: "content/projects/Logic3010/thumbnail.png"
-galleryImages: ["content/projects/Logic3010/screenshots/screenshot_1.png", "content/projects/Logic3010/screenshots/screenshot_2.png", "content/projects/Logic3010/screenshots/screenshot_3.png"]
+galleryImages: [
+    "content/projects/Logic3010/screenshots/screenshot_1.png", 
+    "content/projects/Logic3010/screenshots/screenshot_2.png", 
+    "content/projects/Logic3010/screenshots/screenshot_3.png"
+]
 ---
 
 # TODO: write description

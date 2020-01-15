@@ -7,7 +7,11 @@ links: [
     { type: "github", link: "github.com/alex-greff/java-command-shell" }
 ]
 thumbnailImage: "content/projects/JavaCommandShell/thumbnail.png"
-galleryImages: ["content/projects/JavaCommandShell/screenshot_1.png", "content/projects/JavaCommandShell/screenshot_2.png", "content/projects/JavaCommandShell/screenshot_3.png"]
+galleryImages: [
+    "content/projects/JavaCommandShell/screenshots/screenshot_1.png", 
+    "content/projects/JavaCommandShell/screenshots/screenshot_2.png", 
+    "content/projects/JavaCommandShell/screenshots/screenshot_3.png"
+]
 ---
 
 # TODO: write description
