@@ -15,7 +15,7 @@
         "rm-services:dev-prod-client": "docker-compose -f docker-compose-dev-prod.yml rm -f client",
         "start:dev-prod": "docker-compose -f docker-compose-dev-prod.yml up --build",
         "start:dev-prod--recreate-client": "npm run rm-services:dev-prod-client && npm run start:dev",
-        "restart:dev-prod-client": "docker-compose -f docker-compose-dev.yml restart client",
+        "restart:dev-prod-client": "docker-compose -f docker-compose-dev-prod.yml restart client",
 
         "shell:client": "docker exec -it personal_website_client sh"
     },
