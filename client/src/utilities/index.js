@@ -628,6 +628,23 @@ export function getIconSizeCSSStyles(i_sSize) {
     }
 }
 
+// Source: https://stackoverflow.com/questions/10787782/full-height-of-a-html-element-div-including-border-padding-and-margin (second answer)
+export function getElementAbsoluteHeight(el) {
+    let styles = window.getComputedStyle(el);
+    let margin = parseFloat(styles['marginTop']) +
+                parseFloat(styles['marginBottom']);
+
+    return Math.ceil(el.offsetHeight + margin);
+}
+
+export function getElementAbsoluteWidth(el) {
+    let styles = window.getComputedStyle(el);
+    let margin = parseFloat(styles['marginLeft']) +
+                parseFloat(styles['marginRight']);
+
+    return Math.ceil(el.offsetWidth + margin);
+}
+
 // Public API export
 export default {
     isInBreakpoint,
@@ -672,4 +689,6 @@ export default {
     isCSSRotation,
     isDirection,
     getIconSizeCSSStyles,
+    getElementAbsoluteHeight,
+    getElementAbsoluteWidth
 };
