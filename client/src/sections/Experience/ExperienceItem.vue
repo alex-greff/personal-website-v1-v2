@@ -27,7 +27,7 @@
                         <tag-item
                             v-for="(tag, index) in experienceItemData.tags"
                             :key="index"
-                            class="ExperienceItems__tag-item"
+                            class="ExperienceItem__tag-item"
                             :height="2.5"
                         >
                             {{ tag }}
