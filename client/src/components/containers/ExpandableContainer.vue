@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import Utilities from "@/utilities";
+import Utilities from "../../utilities";
 import { TweenLite } from "gsap/all";
 
 import FlippableArrow from "@/components/ui/FlippableArrow.vue";
@@ -107,7 +107,6 @@ export default {
             const expandedHeight = `${this.fixedContentHeight + this.expandableContentHeight}px`;
             const nonExpandedHeight = `${this.fixedContentHeight}px`;
 
-
             return {
                 height: (this.expanded) ? expandedHeight : nonExpandedHeight,
                 marginBottom: `${this.toggleContainerHeight}px`
@@ -126,9 +125,9 @@ export default {
                 return;
             }
 
-            this.fixedContentHeight = this.$refs.fixedContentEl.offsetHeight;
-            this.expandableContentHeight = this.$refs.expandableContentEl.offsetHeight;
-            this.toggleContainerHeight = this.$refs.toggleContainerEl.offsetHeight;
+            this.fixedContentHeight = Utilities.getElementAbsoluteHeight(this.$refs.fixedContentEl);
+            this.expandableContentHeight = Utilities.getElementAbsoluteHeight(this.$refs.expandableContentEl);
+            this.toggleContainerHeight = Utilities.getElementAbsoluteHeight(this.$refs.toggleContainerEl);
         },
         // ----------------------
         // --- Event handlers ---
@@ -140,11 +139,6 @@ export default {
             this.onResizeDebounced();
         }
     },
-    watch: {
-        expanded(newExpanded) {
-            
-        }
-    },
     mounted() {
         // NOTE: for the trick
         this.isMounted = true;
@@ -152,6 +146,10 @@ export default {
         this.$nextTick(() => {
             this.computeContainerHeights();
         });
+
+        setTimeout(() => {
+            this.computeContainerHeights();
+        }, 1000);
 
         if (!this.$isServer)
             window.addEventListener('resize', this.__onResize);
