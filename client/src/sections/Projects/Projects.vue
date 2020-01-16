@@ -6,7 +6,9 @@
     >
         <div class="Projects__content">
             <h1 
-                class="Projects__title"
+                class="Projects__title sr-load-hidden"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 0,
                     duration: 800
@@ -16,11 +18,13 @@
             </h1>
 
             <project-filter
-                class="Projects__filter"
+                class="Projects__filter sr-load-hidden"
                 tag-class="Projects__filter-item"
                 sub-script-class="Projects__filter-sub-script"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 300,
                     duration: 800
@@ -28,12 +32,14 @@
             />
 
             <transition-group 
-                class="Projects__grid"
+                class="Projects__grid sr-load-hidden"
                 tag="div"
                 ref="gridRef"
 
                 @enter="projectItemEnterAnim"
                 @leave="projectItemLeaveAnim"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 500,
                     duration: 800
@@ -84,7 +90,7 @@
 <script>
 import Vue from "vue";
 import Utilities from "../../utilities";
-import { wrapGrid } from "animate-css-grid";
+// import { wrapGrid } from "animate-css-grid";
 
 /* global Power1 */
 import { TweenLite } from "gsap/all";
@@ -219,7 +225,10 @@ export default {
 
             const gridEl = this.$refs.gridRef.$el;
             // Wrap with animate-css-grid
-            wrapGrid(gridEl);
+            if (!this.$isServer) {
+                const wrapGrid = require("animate-css-grid").wrapGrid;
+                wrapGrid(gridEl);
+            }
             this.animateCssGridApplied = true;
         },
         projectItemEnterAnim(el, done) {
@@ -234,7 +243,7 @@ export default {
         },
         updateNumGridColumns() {
             // Note: in development, reloading the page on chrome's mobile view will not compute the right number of columns
-            const windowWidth = window.innerWidth;
+            const windowWidth = (!this.$isServer) ? window.innerWidth : 0;
 
             if (Utilities.isInBreakpoint("phone", windowWidth)) 
                 this.numGridColumns = 1;
@@ -266,10 +275,12 @@ export default {
             this.initializeGridAnimations();
         });
 
-        window.addEventListener('resize', this.__onResize);
+        if (!this.$isServer)
+            window.addEventListener('resize', this.__onResize);
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.__onResize);
+        if (!this.$isServer)
+            window.removeEventListener('resize', this.__onResize);
     }
 }
 </script>

@@ -153,10 +153,12 @@ export default {
             this.computeContainerHeights();
         });
 
-        window.addEventListener('resize', this.__onResize);
+        if (!this.$isServer)
+            window.addEventListener('resize', this.__onResize);
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.__onResize);
+        if (!this.$isServer)
+            window.removeEventListener('resize', this.__onResize);
     }
 }
 </script>

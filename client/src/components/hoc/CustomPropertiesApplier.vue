@@ -33,7 +33,7 @@ export default {
             default: undefined
         },
         el: {
-            type: HTMLElement,
+            type: (process.isClient) ? HTMLElement : Object,
             required: false, 
             default: undefined
         }
@@ -51,20 +51,24 @@ export default {
     watch: {
         // Watch for when useRoot changes
         useRoot(nextUseRoot) {
+            if (this.$isServer) return;
             this.validateProps(nextUseRoot, this.useEl, this.el);
             this.updateRootStyles(nextUseRoot, this.properties);
         },
         // Watch for when useEl changes
         useEl(nextUseEl) {
+            if (this.$isServer) return;
             this.validateProps(this.useRoot, nextUseEl, this.el);
             this.updateUseElementStyles(nextUseEl, this.el, this.properties);
         },
         el(nextEl) {
+            if (this.$isServer) return;
             this.validateProps(this.useRoot, this.useEl, nextEl);
             this.updateUseElementStyles(this.useEl, nextEl, this.properties);
         },
         // Watch for when properties changes (because of the async theme loading)
         properties(newProperties) {
+            if (this.$isServer) return;
             this.updateRootStyles(this.useRoot, newProperties);
             this.updateUseElementStyles(this.useEl, this.el, newProperties);
         }
@@ -76,6 +80,8 @@ export default {
         if (this.useRoot) {
             this.currentlyUsingRoot = true;
         }
+
+        if (this.$isServer) return;
 
         this.updateRootStyles(this.useRoot, this.properties);
         this.updateUseElementStyles(this.useEl, this.el, this.properties);

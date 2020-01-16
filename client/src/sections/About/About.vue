@@ -7,6 +7,8 @@
         <div class="About__content">
             <h1 
                 class="About__title sr-load-hidden"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 0,
                     duration: 800
@@ -24,6 +26,8 @@
                     :title="currLink.type"
                     :href="`${currLink.link}`"
                     size="2.2rem"
+                    
+                    v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 200 + (idx * 150),
                         duration: 800,
@@ -36,6 +40,8 @@
                     <themed-markdown-display 
                         class="About__description sr-load-hidden"
                         :compiled-markdown="$sectionData.content"
+
+                        v-if="!$isServer"
                         v-scroll-reveal="{
                             delay: 200,
                             duration: 1000
@@ -46,6 +52,8 @@
                         <themed-markdown-display 
                             class="About__curr-tech-intro sr-load-hidden"
                             :compiled-markdown="$sectionData.techIntroText"
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 400,
                                 duration: 1000
@@ -68,6 +76,8 @@
                     class="About__profile-image sr-load-hidden"
                     :src="$sectionData.profileImage"
                     size="28rem"
+
+                    v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 400,
                         origin: 'right',

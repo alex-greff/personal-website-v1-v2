@@ -11,6 +11,8 @@
                 :class="['BulletList__item', (enableScrollReveal) ? 'sr-load-hidden' : null]"
                 v-for="(item, idx) in columnItems(colNum)"
                 :key="`BulletList-col-${colNum}-${idx}`"
+                
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     desktop: enableScrollReveal,
                     mobile: enableScrollReveal,

@@ -6,7 +6,9 @@
     >
         <div class="Experience__content">
             <h1 
-                class="Experience__title"
+                class="Experience__title sr-load-hidden"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 0,
                     duration: 800
@@ -16,11 +18,13 @@
             </h1>
 
             <experience-filter 
-                class="Experience__filter"
+                class="Experience__filter sr-load-hidden"
                 tag-class="Experience__filter-item"
                 sub-script-class="Experience__filter-sub-script"
                 :all-filters="allTags"
                 :filter-updated="filterUpdated"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 300,
                     duration: 800
@@ -29,11 +33,13 @@
 
             <transition-group
                 ref="gridRef"
-                class="Experience__grid"
+                class="Experience__grid sr-load-hidden"
                 tag="div"
 
                 @enter="experienceItemEnterAnim"
                 @leave="experienceItemLeaveAnim"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 500,
                     duration: 800
@@ -60,7 +66,7 @@
 
 <script>
 import Vue from "vue";
-import { wrapGrid } from "animate-css-grid";
+// import { wrapGrid } from "animate-css-grid";
 import Utilities from "@/utilities";
 
 /* global Power1 */
@@ -115,7 +121,10 @@ export default {
 
             const gridEl = this.$refs["gridRef"].$el;
             // Wrap with animate-css-grid
-            wrapGrid(gridEl);
+            if (!this.$isServer) {
+                const wrapGrid = require("animate-css-grid").wrapGrid;
+                wrapGrid(gridEl);
+            }
             this.animateCssGridApplied = true;
         },
         filterUpdated(i_bShowAll, i_filterSet) {

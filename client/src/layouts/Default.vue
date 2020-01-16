@@ -55,14 +55,14 @@ export default {
     },
     computed: {
         blockLoaderNamespace() {
-            const currSection = window.location.hash.split("#")[1];
+            const currSection = (!this.$isServer) ? window.location.hash.split("#")[1] : null;
 
             return (currSection) ? `section_${currSection}` : "section_home";
         }
     },
     watch: {
         loading(currLoading) {
-            const currSection = window.location.hash.split("#")[1];
+            const currSection = (!this.$isServer) ? window.location.hash.split("#")[1] : null;
 
             if (currLoading === false && currSection) {
                 // Allow section to initially render before scrolling to it

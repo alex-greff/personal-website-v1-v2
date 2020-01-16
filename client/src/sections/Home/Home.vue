@@ -3,6 +3,8 @@
         class="Home sr-load-hidden"
         section-name="home"
         margin-mode="none"
+
+        v-if="!$isServer"
         v-scroll-reveal="{
             delay: 0,
             distance: 0,
@@ -14,6 +16,8 @@
                 <div class="Home__greeting-text">
                     <span 
                         class="Home__hi sr-load-hidden"
+
+                        v-if="!$isServer"
                         v-scroll-reveal="{
                             delay: 0,
                             duration: 1000
@@ -24,6 +28,8 @@
 
                     <span 
                         class="Home__my-name-is sr-load-hidden"
+
+                        v-if="!$isServer"
                         v-scroll-reveal="{
                             delay: 800,
                         }"
@@ -33,6 +39,8 @@
                 </div>
                 <h1 
                     class="Home__name-text sr-load-hidden"
+
+                    v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 1300
                     }"
@@ -42,6 +50,8 @@
 
                 <div 
                     class="Home__info-text sr-load-hidden"
+
+                    v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 1800
                     }"
@@ -52,6 +62,8 @@
                 <component-button 
                     href="#contact"
                     class="Home__contact-button sr-load-hidden"
+
+                    v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 2300
                     }"
@@ -61,6 +73,8 @@
             </div>
             <div 
                 class="Home__logo-container sr-load-hidden"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     duration: 1500,
                     origin: 'right',
@@ -83,6 +97,8 @@
         <bar-background 
             class="Home__bar-background sr-load-hidden"
             :z-index="0" 
+
+            v-if="!$isServer"
             v-scroll-reveal="{
                 duration: 2500,
                 origin: 'right',

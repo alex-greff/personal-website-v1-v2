@@ -37,7 +37,7 @@ export default {
             default: false
         },
         el: {
-            type: HTMLElement,
+            type: (process.isClient) ? HTMLElement : Object,
             required: false,
             default: undefined
         }

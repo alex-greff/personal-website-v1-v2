@@ -6,7 +6,9 @@
     >
         <div class="Contact__content">
             <h1 
-                class="Contact__title"
+                class="Contact__title sr-load-hidden"
+
+                v-if="!$isServer"
                 v-scroll-reveal="{
                     delay: 0,
                     duration: 800
@@ -33,12 +35,14 @@
                         <text-field 
                             v-model="formData.name"
                             v-validate="'required'"
-                            class="Contact__name-input"
+                            class="Contact__name-input sr-load-hidden"
                             title="Name"
                             name="name"
                             :disabled="formDisabled"
                             :error="errors.first('name')"
                             placeholder="John Doe"
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 300,
                                 duration: 800
@@ -48,12 +52,14 @@
                         <text-field 
                             v-model="formData.email"
                             v-validate="'required|email'"
-                            class="Contact__email-input"
+                            class="Contact__email-input sr-load-hidden"
                             title="Email"
                             name="email"
                             :disabled="formDisabled"
                             :error="errors.first('email')"
                             placeholder="john.doe@email.com"
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 400,
                                 duration: 800
@@ -63,12 +69,14 @@
                         <text-field 
                             v-model="formData.subject"
                             v-validate="'required'"
-                            class="Contact__subject-input"
+                            class="Contact__subject-input sr-load-hidden"
                             title="Subject"
                             name="subject"
                             :disabled="formDisabled"
                             :error="errors.first('subject')"
                             placeholder="Enter subject here..."
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 500,
                                 duration: 800
@@ -78,12 +86,14 @@
                         <text-area-field 
                             v-model="formData.message"
                             v-validate="'required'"
-                            class="Contact__message-input"
+                            class="Contact__message-input sr-load-hidden"
                             title="Message"
                             name="message"
                             :disabled="formDisabled"
                             :error="errors.first('message')"
                             placeholder="Enter message here..."
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 600,
                                 duration: 800
@@ -93,11 +103,13 @@
 
                     <div class="Contact__submit-container">
                         <button-loader-field
-                            class="Contact__submit-button"
+                            class="Contact__submit-button sr-load-hidden"
                             type="submit"
                             :form="formID"
                             :loading="requestSending"
                             loading-text="Loading"
+
+                            v-if="!$isServer"
                             v-scroll-reveal="{
                                 delay: 700,
                                 duration: 800

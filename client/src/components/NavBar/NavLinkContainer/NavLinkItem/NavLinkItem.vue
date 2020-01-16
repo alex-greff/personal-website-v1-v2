@@ -83,12 +83,15 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener("hashchange", this.onHashChange);
+        if (!this.$isServer)
+            window.addEventListener("hashchange", this.onHashChange);
 
-        this.changeCurrentHash(window.location.hash.split("#")[1]);
+        const hash = (!this.$isServer) ? window.location.hash.split("#")[1] : null;
+        this.changeCurrentHash(hash);
     },
     beforeDestroy() {
-        window.removeEventListener("hashchange", this.onHashChange);
+        if (!this.$isServer)
+            window.removeEventListener("hashchange", this.onHashChange);
     }
 }
 </script>

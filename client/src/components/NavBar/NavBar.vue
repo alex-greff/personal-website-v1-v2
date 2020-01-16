@@ -74,12 +74,15 @@ export default {
     },
     mounted() {
         // Initial screen sizecheck
-        this.onResize(window.innerWidth, window.innerHeight);
+        const innerWidth = (!this.$isServer) ? window.innerWidth : 0;
+        const innerHeight = (!this.$isServer) ? window.innerHeight : 0;
+        this.onResize(innerWidth, innerHeight);
 
         // Watch screen width
         this.$nextTick(() => {
             // Add resize event listener
-            window.addEventListener('resize', this.onResize);
+            if (!this.$isServer)
+                window.addEventListener('resize', this.onResize);
 
             if (this.animateIn) {
                 this.appearAnim();
@@ -87,11 +90,13 @@ export default {
         });
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.onResize);
+        if (!this.$isServer)
+            window.removeEventListener('resize', this.onResize);
     },
     methods: {
         onResize() {
-            this.determineDisplayMode(window.innerWidth);
+            const innerWidth = (!this.$isServer) ? window.innerWidth : 0;
+            this.determineDisplayMode(innerWidth);
         },
         determineDisplayMode(i_nWidth) {
             if (Utilities.isInBreakpoint("phone", i_nWidth)) {
