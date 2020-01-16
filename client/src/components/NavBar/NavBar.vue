@@ -133,6 +133,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $hamburger-margins: 0.6rem;
+
     .NavBar {
         position: fixed;
         top: 0;
@@ -147,7 +149,7 @@ export default {
         & .NavBar__hamburger-menu {
             pointer-events: all;
 
-            margin: 0.6rem;
+            margin: $hamburger-margins;
 
             z-index: 2;
         }
@@ -187,6 +189,13 @@ export default {
                 position: absolute;
                 top: 0;
                 right: 0;
+            }
+
+            & .NavBar__hamburger-menu {
+                position: absolute;
+                top: 0;
+                left: 100%;
+                transform: translateX(calc(-1 * (100% + (#{$hamburger-margins} * 2))));
             }
 
             & > .NavBar__overlay {
