@@ -229,7 +229,7 @@ export default {
                 padding: 0.75rem $padding-amount $padding-amount $padding-amount;
 
                 & .ExperienceItem__summary-markdown {
-                    @include markdown-theme(2.3rem, 1.5rem);
+                    @include markdown-theme(2.3rem, 1.7rem);
                 }
             }
         }
