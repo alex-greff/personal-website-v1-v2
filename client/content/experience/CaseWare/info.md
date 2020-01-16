@@ -7,4 +7,12 @@ startDate: "2019-01-02"
 endDate: "2019-08-30"
 ---
 
-# TODO: write description
+# Description
+
+* Proposed and developed a fully working dashboard prototype web-application using React, aimed at
+replacing the legacy dashboard application.
+
+* Updated numerous dialogs to use Vue, substantially improving code quality and reusability.
+
+* Researched and implemented fixes for multiple bugs in the core Audit system, leading to improved
+performance and user experience.

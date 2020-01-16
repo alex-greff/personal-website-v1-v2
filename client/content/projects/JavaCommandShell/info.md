@@ -14,4 +14,6 @@ galleryImages: [
 ]
 ---
 
-# TODO: write description
+# About
+
+This project is a linux-inspired command shell use Java which was done as the final project for **CSCB07: Software Design**. The project was developed in a team of 4, adhering to **Agile/Scrum** methodologies. The command implementations were built on a resuable and maintainable framework, utilizing [SOLID](https://deviq.com/solid/) design-principals and common [Design Patterns](https://sourcemaking.com/design_patterns) to do so.

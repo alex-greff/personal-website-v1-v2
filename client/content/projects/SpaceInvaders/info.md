@@ -15,4 +15,6 @@ galleryImages: [
 ]
 ---
 
-# TODO: write description
+# About
+
+A simple ASCII-based arcade inspired command-line game. The engine and the game itself were developed completely from scratch using **Java**. This project was made for a school project in my grade 12 computer science class.

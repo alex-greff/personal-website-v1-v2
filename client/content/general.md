@@ -8,7 +8,7 @@ links: [
     { type: "email", link: "mailto:alex.j.greff@gmail.com" }
 ]
 techIntroText: "Here are some technologies that I am currently using:"
-currentTech: ["Vue", "React", "JavaScript (ES6+)", "Node JS", "Python", "Docker", "GraphQL", "PostgreSQL"]
+currentTech: ["Vue", "React", "JavaScript", "Node JS", "Python", "Docker", "GraphQL", "PostgreSQL"]
 profileImage: "content/profile-picture-2.png"
 ---
 
