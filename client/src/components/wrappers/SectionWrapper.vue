@@ -29,14 +29,9 @@ import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
 import { GLOBAL_NAMESPACE } from "../../constants/general";
 
-// import { loadDirectiveAsync } from "../../loaders/AsyncDirectiveLoader";
-
 export default {
     components: {
         ThemeProvider
-    },
-    directives: {
-        // "waypoint": loadDirectiveAsync("vue-waypoint/directive", "v-waypoint")
     },
     props: {
         marginMode: {
@@ -50,6 +45,10 @@ export default {
         sectionName: {
             type: String, 
             default: null
+        },
+        updateUrlHash: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
@@ -77,7 +76,7 @@ export default {
         onWaypoint({ going, direction }) {
             if (going === this.$waypointMap.GOING_IN) {
                 // Update URL hash to current section
-                (!this.$isServer)
+                if (!this.$isServer && this.updateUrlHash) 
                     window.location.hash = `#${this.sanitizedSectionName}`;
 
                 this.$emit('sectionEnter');

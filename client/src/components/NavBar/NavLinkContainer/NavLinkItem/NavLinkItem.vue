@@ -1,5 +1,6 @@
 <template>
     <a
+        v-if="isRootPage"
         :class="[
             'NavLinkItem', 
             displayMode, 
@@ -22,6 +23,30 @@
             </div>
         </theme-provider>
     </a>
+    <router-link
+        v-else
+        :class="[
+            'NavLinkItem', 
+            displayMode, 
+            modifierClass,
+            (active) ? 'active' : null
+        ]"
+        ref="routerRef"
+        :to="{ path: '/', hash: link }"
+        tag="a"
+        @click="onClick"
+    >
+        <theme-provider 
+            class="NavLinkItem__container"
+            :namespace="namespace"
+            :use-el="true"
+            :el="routerEl"
+        >
+            <div class="NavLinkItem__content">
+                <slot></slot>
+            </div>
+        </theme-provider>
+    </router-link>
 </template>
 
 <script>
@@ -29,14 +54,16 @@ import { mapGetters } from "vuex";
 import { getterTypes } from "@/store/types";
 import ThemeProvider from "@/components/hoc/ThemeProvider.vue";
 
-// TODO: figure out how to detect which # section is in view and apply the active class when needed
 export default {
     components: {
         themeProvider: ThemeProvider,
     },
     data() {
         return {
-            active: false
+            active: false,
+
+            // NOTE: for the trick
+            isMounted: false
         }
     },
     props: {
@@ -68,6 +95,20 @@ export default {
         }),
         modifierClass() {
             return (this.isOpen) ? "visible" : "hidden";
+        },
+        isRootPage() {
+            if (this.$isServer)
+                return true;
+
+            return window.location.pathname === "/";
+        },
+        routerEl() {
+            // NOTE: for the trick
+            // This tricks vue into updating the refs once they are attached
+            if (!this.isMounted) {
+                return;
+            }
+            return this.$refs.routerRef.$el;
         }
     },
     methods: {
@@ -83,6 +124,9 @@ export default {
         }
     },
     mounted() {
+        // NOTE: for the trick
+        this.isMounted = true;
+
         if (!this.$isServer)
             window.addEventListener("hashchange", this.onHashChange);
 

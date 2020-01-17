@@ -1,11 +1,11 @@
 <template>
-    <Layout>
+    <layout>
         <home-section />
         <about-section />
         <experience-section />
         <projects-section />
         <contact-section />
-    </Layout>
+    </layout>
 </template>
 
 <script>

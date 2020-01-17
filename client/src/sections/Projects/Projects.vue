@@ -329,10 +329,6 @@ query {
                 font-size: 4rem;
                 line-height: 4rem;
                 color: color-link("current_section", "accent_color", "primary");
-
-                @include respond(phone) {
-                    
-                }
             }
 
             & .Projects__filter {
