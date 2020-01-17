@@ -1,0 +1,2 @@
+# Redirect default Netlify subdomain to primary domain
+https://alexgreff.netlify.com/* https://alexgreff.com/:splat 301!
