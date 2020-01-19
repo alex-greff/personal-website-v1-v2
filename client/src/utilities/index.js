@@ -503,17 +503,21 @@ export const runSpoofedAsyncFunc = (i_fnAsyncCall, i_nMinDuration = 1500) => {
  * 
  * @param {Object} i_oItems The object containing all the items data.
  * @param {String} i_sNameKey The accessor for the name field.
+ * @param {String} i_sStartDateKey The accessor for the start date field.
  * @param {String} i_sEndDateKey The accessor for the end date field.
  */
-export const sortStandardItemsObject = (i_oItems, i_sNameKey = "name", i_sEndDateKey = "endDate") => {
+export const sortStandardItemsObject = (i_oItems, i_sNameKey = "name", i_sStartDateKey = "startDate", i_sEndDateKey = "endDate") => {
     // Convert items object into an array
     let aSortedItems = Object.values(i_oItems).map(i_oItemData => i_oItemData);
 
     // Sort the items by date and sub-sorted by name, when needed
     aSortedItems.sort((oItemA, oItemB) => {
         const sNameA = oItemA[i_sNameKey];
+        const sStartDateA = oItemA[i_sStartDateKey];
         const sEndDateA = oItemA[i_sEndDateKey];
+
         const sNameB = oItemB[i_sNameKey];
+        const sStartDateB = oItemB[i_sStartDateKey];
         const sEndDateB = oItemB[i_sEndDateKey];
 
         // Case 1: both end dates are defined
@@ -537,12 +541,38 @@ export const sortStandardItemsObject = (i_oItems, i_sNameKey = "name", i_sEndDat
             // Sort A in front of B
             return -1;
         } 
-        // Case 3: B's end date is not defined by A's is
+        // Case 3: B's end date is not defined but A's is
         else if (sEndDateA && !sEndDateB) {
             // Sort B in front of A
             return 1;
         }
-        // Case 4: both end dates are not defined
+        // Case 4: both end dates are not defined but both their start dates are
+        else if (sStartDateA && sStartDateB) {
+            const dStartDateA = new Date(sStartDateA);
+            const dStartDateB = new Date(sStartDateB);
+
+            // Case 4a: start dates are the same
+            if (dStartDateA.getTime() === dStartDateB.getTime()) {
+                // Sort by name
+                return (`${sNameA}`).localeCompare(sNameB);
+            }
+            // Case 4b: start dates are different
+            else {
+                // Sort by start date
+                return dStartDateB - dStartDateA;
+            }
+        }
+        // Case 5: both end dates are not defined and A's start date is not defined but B's is
+        else if (!sStartDateA && sStartDateB) {
+            // Sort A in front of B
+            return -1;
+        }
+        // Case 6: both end dates are not defined and B's end date is not defined but A's is
+        else if (sStartDateA && !sStartDateB) {
+            // Sort B in front of A
+            return 1;
+        }
+        // Case 5: both start and end dates are not defined
         else {
             // Sort by name
             return (`${sNameA}`).localeCompare(sNameB);

@@ -76,11 +76,11 @@ export default {
         // Date properties
         startDate() {
             const sStartDate = this.projectData.startDate;
-            return (sStartDate) ? new Date(sStartDate) : null;
+            return (sStartDate) ? new Date(sStartDate + " ") : null; // Note: this extra space fixes a bug...
         },
         endDate() {
             const sEndDate = this.projectData.endDate;
-            return (sEndDate) ? new Date(sEndDate) : null;
+            return (sEndDate) ? new Date(sEndDate + " ") : null; // Note: this extra space fixes a bug...
         },
         startDateFormatted() {
             return Utilities.getFormattedStartDate(this.startDate, false);

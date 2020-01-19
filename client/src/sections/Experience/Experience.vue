@@ -106,7 +106,7 @@ export default {
         },
         sortedExperienceItemsList() {
             // Sort the projects
-            let aSortedExperiences = Utilities.sortStandardItemsObject(this.$experienceItems, "title", "endDate");
+            let aSortedExperiences = Utilities.sortStandardItemsObject(this.$experienceItems, "title", "startDate", "endDate");
             return aSortedExperiences;
         },
         emptyFilter() {

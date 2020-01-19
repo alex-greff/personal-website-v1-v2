@@ -138,7 +138,7 @@ export default {
         },
         sortedProjectsList() {
             // Sort the projects
-            let aSortedProjects = Utilities.sortStandardItemsObject(this.$projects, "title", "endDate");
+            let aSortedProjects = Utilities.sortStandardItemsObject(this.$projects, "title", "startDate", "endDate");
             return aSortedProjects;
         },
         emptyFilter() {
