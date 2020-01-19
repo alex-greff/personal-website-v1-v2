@@ -60,15 +60,29 @@
                 </div>
 
                 <component-button 
-                    href="#contact"
                     class="Home__contact-button sr-load-hidden"
+                    href="#contact"
 
                     v-if="!$isServer"
                     v-scroll-reveal="{
                         delay: 2300
                     }"
+                    v-scroll-to="`#contact`"
                 >
                     Contact Me
+                </component-button>
+
+                <component-button 
+                    class="Home__resume-button sr-load-hidden"
+                    :href="resumeLink"
+                    target="__blank"
+
+                    v-if="!$isServer && resumeLink"
+                    v-scroll-reveal="{
+                        delay: 2300
+                    }"
+                >
+                    Resume
                 </component-button>
             </div>
             <div 
@@ -131,6 +145,11 @@ export default {
     computed: {
         $sectionData() {
             return this.$static.allGeneralData.edges[0].node;
+        },
+        resumeLink() {
+            const linkData = this.$sectionData.links.find(currLink => currLink.type === "resume");
+
+            return (linkData) ? linkData.link : null;
         }
     },
 }
@@ -143,6 +162,10 @@ query {
             node {
                 name
                 subText
+                links {
+                    type
+                    link
+                }
             }
         }
     }
@@ -259,8 +282,12 @@ query {
             max-width: 50rem;
         }
 
-        & .Home__contact-button {
+        & .Home__contact-button, & .Home__resume-button {
             margin-top: 2.5rem;
+        }
+
+        & .Home__contact-button {
+            margin-right: 0.5rem;
         }
     }
 

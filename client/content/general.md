@@ -5,7 +5,8 @@ subText: "I am a computer science student specializing in software engineering a
 links: [
     { type: "github", link: "https://github.com/alex-greff" },
     { type: "linkedin", link: "https://linkedin.com/in/alex-greff/" },
-    { type: "email", link: "mailto:alex.j.greff@gmail.com" }
+    { type: "email", link: "mailto:alex.j.greff@gmail.com" },
+    { type: "resume", link: "/resume.pdf" }
 ]
 techIntroText: "Here are some technologies that I am currently using:"
 currentTech: ["Vue", "React", "JavaScript", "Node JS", "Python", "Docker", "GraphQL", "PostgreSQL"]

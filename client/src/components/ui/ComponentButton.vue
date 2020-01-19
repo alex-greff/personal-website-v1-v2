@@ -14,7 +14,10 @@
         v-else
         class="Button"
     >
-        <a :href="href">
+        <a 
+            :href="href"
+            v-bind="$attrs"
+        >
             <slot></slot>
         </a>
     </component>
