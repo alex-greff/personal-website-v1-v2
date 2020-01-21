@@ -1,5 +1,5 @@
 ---
-title: "Co-Op Software Developer"
+title: "Co-op Software Developer"
 company: "CaseWare"
 companyLink: "www.caseware.com/ca"
 tags: ["JavaScript", "C#", "React", "Vue", "Agile"]
