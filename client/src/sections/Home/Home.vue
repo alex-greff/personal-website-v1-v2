@@ -59,7 +59,7 @@
                     <themed-markdown-display :markdown="$sectionData.subText" />
                 </div>
 
-                <component-button 
+                <!-- <component-button 
                     class="Home__contact-button sr-load-hidden"
                     href="#contact"
 
@@ -70,7 +70,7 @@
                     v-scroll-to="`#contact`"
                 >
                     Contact Me
-                </component-button>
+                </component-button> -->
 
                 <component-button 
                     class="Home__resume-button sr-load-hidden"

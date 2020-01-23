@@ -4,7 +4,7 @@
         <about-section />
         <experience-section />
         <projects-section />
-        <contact-section />
+        <!-- <contact-section /> -->
     </layout>
 </template>
 
