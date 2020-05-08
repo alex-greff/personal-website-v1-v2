@@ -18,6 +18,7 @@ function addStyleResource (rule) {
 
 module.exports = {
     siteName: 'Personal Website',
+    siteDescription: "The personal website of Alexander Greff, a computer science student specializing in software engineering at the University of Toronto: Scarborough (UTSC)",
     plugins: [
         // Load general info
         {
