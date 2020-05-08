@@ -1,7 +1,7 @@
 FROM node:alpine as builder
 WORKDIR /app
-COPY ./package.json ./
-RUN apk add --no-cache git
+COPY ./package*.json ./
+RUN apk add --no-cache git python make g++
 RUN npm install
 COPY . .
 RUN npm run build
